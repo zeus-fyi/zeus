@@ -10,7 +10,7 @@ type Path struct {
 	PackageName string
 	DirIn       string
 	DirOut      string
-	Fn          string
+	FnIn        string
 	FnOut       string
 	Env         string
 	FilterFiles strings_filter.FilterOpts
@@ -29,7 +29,7 @@ func (p *Path) FileOutPath() string {
 }
 
 func (p *Path) FileInPath() string {
-	return path.Join(p.DirIn, p.Fn)
+	return path.Join(p.DirIn, p.FnIn)
 }
 
 func (p *Path) LeftExtendDirInPath(dirExtend string) string {

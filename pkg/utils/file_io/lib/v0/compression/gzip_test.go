@@ -17,14 +17,15 @@ type CompressionTestSuite struct {
 
 func (c *CompressionTestSuite) SetupTest() {
 	c.Comp = NewCompression()
+	c.ChangeToTestDir()
 }
 
 func (c *CompressionTestSuite) TestTarGzip() {
 	p := filepaths.Path{
 		PackageName: "",
-		DirIn:       "./.kube",
-		DirOut:      "./",
-		Fn:          "kube",
+		DirIn:       "./mocks/kubernetes_apps/demo",
+		DirOut:      "./outputs/compression/gzip",
+		FnIn:        "demo",
 		Env:         "",
 		FilterFiles: strings_filter.FilterOpts{},
 	}
@@ -36,28 +37,14 @@ func (c *CompressionTestSuite) TestTarGzip() {
 func (c *CompressionTestSuite) TestUnGzip() {
 	p := filepaths.Path{
 		PackageName: "",
-		DirIn:       "./",
-		DirOut:      "./kube",
-		Fn:          "./kube.tar.gz",
+		DirIn:       "./outputs/compression/gzip",
+		DirOut:      "./outputs/compression/ungzip",
+		FnIn:        "demo.tar.gz",
+		FnOut:       "",
 		Env:         "",
 		FilterFiles: strings_filter.FilterOpts{},
 	}
-
 	err := c.Comp.UnGzip(&p)
-	c.Require().Nil(err)
-}
-
-func (c *CompressionTestSuite) TestTar() {
-	p := filepaths.Path{
-		PackageName: "",
-		DirIn:       "./.kube",
-		DirOut:      "./",
-		Fn:          "kube.tar",
-		Env:         "",
-		FilterFiles: strings_filter.FilterOpts{},
-	}
-
-	err := c.Comp.TarFolder(&p)
 	c.Require().Nil(err)
 }
 

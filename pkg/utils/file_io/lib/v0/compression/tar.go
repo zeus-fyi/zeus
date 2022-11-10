@@ -20,7 +20,7 @@ func (c *Compression) TarFolder(p *filepaths.Path) error {
 	if err != nil {
 		return err
 	}
-	tarfile, err := os.Create(p.Fn)
+	tarfile, err := os.Create(p.FnIn)
 	if err != nil {
 		return err
 	}

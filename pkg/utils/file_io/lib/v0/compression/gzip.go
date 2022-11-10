@@ -8,6 +8,8 @@ import (
 	"io/fs"
 	"os"
 	"path/filepath"
+
+	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 )
 
 func (c *Compression) CreateTarGzipArchiveDir(p *filepaths.Path) error {
@@ -18,7 +20,7 @@ func (c *Compression) CreateTarGzipArchiveDir(p *filepaths.Path) error {
 	if p == nil {
 		return errors.New("need to include a path")
 	}
-	p.FnOut = p.Fn + ".tar.gz"
+	p.FnOut = p.FnIn + ".tar.gz"
 	out, err := os.Create(p.FileOutPath())
 	if err != nil {
 		return err
@@ -46,7 +48,7 @@ func (c *Compression) CreateTarGzipArchiveDir(p *filepaths.Path) error {
 	})
 
 	p.DirIn = p.DirOut
-	p.Fn = p.FnOut
+	p.FnIn = p.FnOut
 	return err
 }
 
