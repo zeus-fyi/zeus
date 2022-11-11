@@ -8,12 +8,12 @@ import (
 )
 
 type TopologyDeployRequest struct {
-	TopologyID    int    `db:"topology_id" json:"topologyID"`
-	CloudProvider string `db:"cloud_provider" json:"cloudProvider"`
-	Region        string `db:"region" json:"region"`
-	Context       string `db:"context" json:"context"`
-	Namespace     string `db:"namespace" json:"namespace"`
-	Env           string `db:"env" json:"env"`
+	TopologyID    int    `json:"topologyID"`
+	CloudProvider string `json:"cloudProvider"`
+	Region        string `json:"region"`
+	Context       string `json:"context"`
+	Namespace     string `json:"namespace"`
+	Env           string `json:"env"`
 }
 
 func DeployDemoProdChartApiCall() error {
