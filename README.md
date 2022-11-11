@@ -5,6 +5,16 @@ Zeus is used to create, deploy, and manage infrastructure programmatically via A
 See demos section for api calls, you'll need to get a bearer token from us first while we're in beta testing. More documentation to come.
 Schedule a demo: https://calendly.com/alex-zeus-fyi/zeus-demo
 
+### API Endpoints 
+
+Documentation and code examples are found here 
+
+[README.md](https://github.com/zeus-fyi/zeus/blob/main/demos/README.md)
+
+The test directory contains useful mocks and tools for interacting with the API. It also contains a useful
+config-sample.yaml, convert this to config.yaml and set your bearer token here, which makes allows you to
+use the demo code to create your first api request in seconds
+
 ### Beta Version Overview 
 
 1. Automates translation of kubernetes yaml configurations into representative SQL models
@@ -28,7 +38,7 @@ StatefulSets are still undergoing setup of end to end integration testing.
 
 ### Automated web3 infrastructure setup
 
--> Completely orchestrated and automated web3 infra. Sets up infrastructure on demand, automates run books, 
+ Completely orchestrated and automated web3 infra. Sets up infrastructure on demand, automates run books, 
 automates devops that's done by hand today, automates interactions for seeding validators, automates upgrades,
 automates configuration setup and verification. Enables web3 staking infrastructure to be portable across cloud, 
 and for vendor switching on demand. Starting with Ethereum.
@@ -42,7 +52,7 @@ IN: Params(Contract ABI, Address, Network, UsersAddresses)
 
 OUT: Array(Funcs, Params to Tune/Approve)
 ```
--> Set up an orchestrated highly reliable web3 action such as creating a validator, withdrawing from a smart contract,  or
+Set up an orchestrated highly reliable web3 action such as creating a validator, withdrawing from a smart contract,  or
 sending transactions or notifications based on event triggers such as smart contract state changes. 
 
 #### Timeline ~ Q1/Q2 23'
