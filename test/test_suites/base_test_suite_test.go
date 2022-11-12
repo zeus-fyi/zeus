@@ -13,6 +13,8 @@ type BaseTestSuiteTester struct {
 
 func (s *BaseTestSuiteTester) TestConfigReader() {
 	tc := configs.InitLocalTestConfigs()
+
+	// test/mocks/contract_abis/eth_deposit_contract_abi.json
 	s.Assert().Equal("local", tc.Env)
 }
 
