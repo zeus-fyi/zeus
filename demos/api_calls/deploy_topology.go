@@ -4,21 +4,13 @@ import (
 	"fmt"
 
 	"github.com/zeus-fyi/zeus/demos/api_calls/endpoints"
+	"github.com/zeus-fyi/zeus/pkg/zeus/client/req_types"
 	"github.com/zeus-fyi/zeus/test/configs"
 )
 
-type TopologyDeployRequest struct {
-	TopologyID    int    `json:"topologyID"`
-	CloudProvider string `json:"cloudProvider"`
-	Region        string `json:"region"`
-	Context       string `json:"context"`
-	Namespace     string `json:"namespace"`
-	Env           string `json:"env"`
-}
-
 func DeployDemoProdChartApiCall() error {
 	cfg := configs.InitLocalTestConfigs()
-	deployKns := TopologyDeployRequest{
+	deployKns := req_types.TopologyDeployRequest{
 		TopologyID:    0,
 		CloudProvider: "do",
 		Region:        "sfo3",
