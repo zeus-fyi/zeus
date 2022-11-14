@@ -9,6 +9,10 @@ import (
 	v1networking "k8s.io/api/networking/v1"
 )
 
+type TopologyCreateResponse struct {
+	ID int `json:"id"`
+}
+
 type TopologyChartWorkload struct {
 	*v1core.Service       `json:"service"`
 	*v1core.ConfigMap     `json:"configMap"`
@@ -24,11 +28,11 @@ type DeployStatus struct {
 }
 
 type ReadTopologiesMetadata struct {
-	TopologyID       int            `db:"topology_id" json:"topology_id"`
-	TopologyName     string         `db:"topology_name" json:"topology_name"`
-	ChartName        string         `db:"chart_name" json:"chart_name"`
-	ChartVersion     string         `db:"chart_version" json:"chart_version"`
-	ChartDescription sql.NullString `db:"chart_description" json:"chart_description"`
+	TopologyID       int            `db:"topology_id" json:"topologyID"`
+	TopologyName     string         `db:"topology_name" json:"topologyName"`
+	ChartName        string         `db:"chart_name" json:"chartName"`
+	ChartVersion     string         `db:"chart_version" json:"chartVersion"`
+	ChartDescription sql.NullString `db:"chart_description" json:"chartDescription"`
 }
 
 type ReadTopologiesMetadataGroup struct {

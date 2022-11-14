@@ -30,7 +30,6 @@ use the demo code to create your first api request in seconds
 5. Ingresses
 
 Not every possible field type is supported in the MVP version, but the most common ones are.
-StatefulSets are still undergoing setup of end to end integration testing.
 
 ### Upcoming Features Overview 
 

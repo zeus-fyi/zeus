@@ -1,5 +1,12 @@
 package req_types
 
+type TopologyCreateRequest struct {
+	TopologyName     string `json:"topologyName"`
+	ChartName        string `json:"chartName"`
+	ChartDescription string `json:"chartDescription,omitempty"`
+	Version          string `json:"version"`
+}
+
 type TopologyDeployRequest struct {
 	TopologyID    int    `json:"topologyID"`
 	CloudProvider string `json:"cloudProvider"`
