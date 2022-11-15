@@ -1,6 +1,6 @@
 ## Zeus ##
 
-Zeus is used to create, deploy, and manage infrastructure programmatically via APIs and orchestration.   
+Zeus is used to create, deploy, and manage infrastructure programmatically via APIs and orchestration. Using this tooling I was able to create an orchestrated setup of a lighthouse-geth beacon in less than an hour. It can reliably can install/uninstall in seconds. See the test/mocks section for a copy of the configs I used.  
 
 ## Hercules ##
 
