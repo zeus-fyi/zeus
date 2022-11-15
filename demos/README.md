@@ -86,4 +86,4 @@ Post to this endpoint to deploy this infrastructure topology
 const DestroyDeployInfraV1Path = "/v1/deploy/destroy"
 ```
 
-Post to this endpoint to destroy this infrastructure topology, coming online soon.
+Uses the same struct as deploy
