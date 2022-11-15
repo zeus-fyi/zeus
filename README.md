@@ -37,10 +37,7 @@ Not every possible field type is supported in the MVP version, but the most comm
 
 ### Automated web3 infrastructure setup
 
- Completely orchestrated and automated web3 infra. Sets up infrastructure on demand, automates run books, 
-automates devops that's done by hand today, automates interactions for seeding validators, automates upgrades,
-automates configuration setup and verification. Enables web3 staking infrastructure to be portable across cloud, 
-and for vendor switching on demand. Starting with Ethereum.
+Completely orchestrated and automated web3 infra. Sets up infrastructure on demand, automates run books, sets up mev-boost, web3signer, adds snapshot chain download integration, automates devops that's done by hand today, automates interactions for seeding and withdrawing validators, automates upgrades, automates configuration setup and verification, automates notifications and rewards info. Enables web3 staking infrastructure to be portable across cloud, and for vendor switching on demand. Starting with Ethereum.
 
 #### Timeline ~ Early January 23'
 
