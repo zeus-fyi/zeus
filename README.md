@@ -4,7 +4,7 @@ Zeus is used to create, deploy, and manage infrastructure programmatically via A
 
 ## Hercules ##
 
-Hercules is web3 middleware that manages web3 infrastruture and connections to other middleware packages, such as web3signer, chain snapshot downloading, setting up mev-boost, orchestrating transcations and client switching, and much more.
+Hercules is web3 middleware that manages web3 infrastruture and connections to other middleware packages, such as web3signer, chain snapshot downloading, setting up mev-boost, orchestrating transcations and client switching, key generation and management, and much more.
 
 See demos section for api calls, you'll need to get a bearer token from us first while we're in beta testing. More documentation to come.
 Schedule a demo: https://calendly.com/alex-zeus-fyi/zeus-demo
