@@ -1,0 +1,111 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: zeus-geth
+  labels:
+    app.kubernetes.io/name: geth
+    app.kubernetes.io/instance: zeus
+    app.kubernetes.io/managed-by: zeus
+  annotations:
+    {}
+spec:
+  podManagementPolicy: OrderedReady
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: geth
+      app.kubernetes.io/instance: zeus
+  serviceName: zeus-geth
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: geth
+        app.kubernetes.io/instance: zeus
+      annotations:
+        {}
+    spec:
+      initContainers:
+        - name: init-chown-data
+          image: "busybox:1.34.0"
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            runAsNonRoot: false
+            runAsUser: 0
+          command: ["chown", "-R", "10001:10001", "/data"]
+          resources:
+            {}
+          volumeMounts:
+            - name: exec-client-storage
+              mountPath: "/data"
+      containers:
+        - name: geth
+          image: "ethereum/client-go:v1.10.23"
+          imagePullPolicy: IfNotPresent
+          command: [ "/bin/sh" ]
+          args: [ "-c","/scripts/start.sh" ]
+          volumeMounts:
+            - name: exec-client-storage
+              mountPath: "/data"
+            - name: cm-geth
+              mountPath: "/scripts"
+          ports:
+            - name: p2p-tcp
+              containerPort: 30303
+              protocol: TCP
+            - name: p2p-udp
+              containerPort: 30303
+              protocol: UDP
+            - name: http-rpc
+              containerPort: 8545
+              protocol: TCP
+            - name: ws-rpc
+              containerPort: 8546
+              protocol: TCP
+            - name: auth-rpc
+              containerPort: 8551
+              protocol: TCP
+            - name: metrics
+              containerPort: 6060
+              protocol: TCP
+          livenessProbe:
+            initialDelaySeconds: 60
+            periodSeconds: 120
+            tcpSocket:
+              port: http-rpc
+          readinessProbe:
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            tcpSocket:
+              port: http-rpc
+          resources:
+            {}
+          env:
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+      nodeSelector:
+        {}
+      affinity:
+        {}
+      tolerations:
+        []
+      terminationGracePeriodSeconds: 300
+      volumes:
+        - name: cm-geth
+          configMap:
+            name: cm-geth
+            defaultMode: 0744
+  volumeClaimTemplates:
+    - metadata:
+        name: exec-client-storage
+        annotations:
+          {}
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: "475Gi"
