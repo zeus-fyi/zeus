@@ -39,6 +39,10 @@ Not every possible field type is supported in the MVP version, but the most comm
 
 ### Upcoming Features Overview 
 
+#### Timeline ~ End of Nov 22'
+
+Automated blockchain snapshot downloads and setup for a lighthouse-geth beacon.
+
 #### Timeline ~ Early January 23'
 
 ### Automated web3 infrastructure setup
