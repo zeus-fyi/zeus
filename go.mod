@@ -3,11 +3,13 @@ module github.com/zeus-fyi/zeus
 go 1.19
 
 require (
+	github.com/cbergoon/merkletree v0.2.0
 	github.com/ethereum/go-ethereum v1.10.26
 	github.com/go-resty/resty/v2 v2.7.0
 	github.com/rs/zerolog v1.28.0
 	github.com/spf13/viper v1.14.0
 	github.com/stretchr/testify v1.8.1
+	github.com/supranational/blst v0.3.8-0.20220526154634-513d2456b344
 	github.com/tidwall/pretty v1.2.1
 	k8s.io/api v0.25.4
 )
