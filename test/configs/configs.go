@@ -14,7 +14,7 @@ type TestContainer struct {
 func InitLocalTestConfigs() TestContainer {
 	InitEnvFromConfig(ForceDirToConfigLocation())
 	testCont.Env = viper.GetString("ENV")
-	testCont.Bearer = viper.GetString("BEARER_TOKEN")
+	testCont.Bearer = viper.GetString("BEARER")
 
 	return testCont
 }

@@ -13,7 +13,6 @@ type BaseTestSuiteTester struct {
 
 func (s *BaseTestSuiteTester) TestConfigReader() {
 	tc := configs.InitLocalTestConfigs()
-
 	s.Assert().Equal("local", tc.Env)
 }
 
