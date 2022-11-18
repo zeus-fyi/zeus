@@ -2,6 +2,8 @@
 
 Zeus is used to create, deploy, and manage infrastructure programmatically via APIs and orchestration. Using this tooling I was able to create an orchestrated setup of a lighthouse-geth beacon in less than an hour. It can reliably install/uninstall kubernetes workloads in seconds. See the test/mocks section for a copy of the configs I used.  
 
+![Screenshot 2022-11-17 at 8 09 48 PM](https://user-images.githubusercontent.com/17446735/202614955-2708063e-1547-4dae-9332-f712102c287e.png)
+
 ## Hercules ##
 
 Hercules is web3 middleware that manages web3 infrastruture and connections to other middleware packages, such as web3signer, chain snapshot downloading, setting up mev-boost, orchestrating transcations and client switching, key generation and management, and much more coming soon.
