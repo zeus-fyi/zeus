@@ -14,7 +14,7 @@ Schedule a demo: https://calendly.com/alex-zeus-fyi/zeus-demo
 ### API Endpoints 
 
 Documentation and code examples are found here
-[API_README.md](https://github.com/zeus-fyi/zeus/blob/main/pkg/zeus/API_README.md))
+[API_README.md](https://github.com/zeus-fyi/zeus/blob/main/pkg/zeus/API_README.md)
 
 How to use the test suite to setup your own api calls
 [README.md](https://github.com/zeus-fyi/zeus/blob/main/pkg/zeus/README.md)
