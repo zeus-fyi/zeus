@@ -4,6 +4,41 @@ Zeus is used to create, deploy, and manage infrastructure programmatically via A
 
 ![Screenshot 2022-11-17 at 8 09 48 PM](https://user-images.githubusercontent.com/17446735/202614955-2708063e-1547-4dae-9332-f712102c287e.png)
 
+Cluster Topology Class Hierarchy Definitions 
+
+Cluster class creation coming soon for better organziation and easier management of more complex app configurations, here's an overview of how the hiearchy system will work.
+
+### Highest to Lowest Level ###
+
+### Deployable Topologies ###
+
+### Matrix Topology ###
+
+A multi-component cluster topology that accomplishes one or more system components on its own and combined with a Zeus injection deploys this topology onto the network. Some but not all of these topologies can be stacked with another cluster topology or a base topology to create a higher level system component.
+
+It can be any combination of lower level system topologies or components.
+
+### Cluster Topology ###
+
+A fully working single component cluster topology that accomplishes one system component on its own and combined with a Zeus injection deploys this topology onto the network. Some but not all of these topologies can be stacked with another cluster topology or a base topology to create a higher level system component.
+
+### Deployable but Incomplete Topologies ###
+
+### Base Topology ###
+
+A fully working single cluster topology that needs at least one other Base Topology to create a higher level component. An example would be deploying an execution client by itself post-merge on ethereum. It would be able to download chain data, but it wouldn’t be able to fulfill a useful purpose without another piece e.g. a consensus client component.  
+
+Not deployable on its own, a mix of these is combined to create a deployable topology
+
+### Infrastructure Base ###
+An abstract atomic infrastructure base that needs a Skeleton and Configuration to create a Base Topology
+
+### Configuration Base ###
+An abstract atomic configuration base that needs an Infrastructure Base and Skeleton to create a Base Topology
+
+### Skeleton Base ###
+An abstract atomic component base that needs additional pieces to create deployable infrastructure like config map, docker image links, etc. Needs an Infrastructure and Configuration Base to create a Base Topology
+
 ## Hercules ##
 
 Hercules is web3 middleware that manages web3 infrastruture and connections to other middleware packages, such as web3signer, chain snapshot downloading, setting up mev-boost, orchestrating transcations and client switching, key generation and management, and much more coming soon.
