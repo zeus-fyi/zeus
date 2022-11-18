@@ -6,7 +6,7 @@ import (
 )
 
 type TopologyCreateResponse struct {
-	ID int `json:"id"`
+	TopologyID int `db:"topology_id" json:"topologyID"`
 }
 
 type DeployStatus struct {

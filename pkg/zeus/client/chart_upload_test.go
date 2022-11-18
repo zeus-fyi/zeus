@@ -4,7 +4,7 @@ package zeus_client
 func (t *ZeusClientTestSuite) TestChartUpload() int {
 	resp, err := t.ZeusTestClient.UploadChart(ctx, demoChartPath, uploadChart)
 	t.Require().Nil(err)
-	t.Assert().NotZero(resp.ID)
+	t.Assert().NotZero(resp.TopologyID)
 
-	return resp.ID
+	return resp.TopologyID
 }

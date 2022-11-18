@@ -11,6 +11,9 @@ const InfraReadTopologyV1Path = "/v1/infra/read/topologies"
 
 // deploy infra, distributed systems api endpoints
 
+// DeployStatusV1Path gets the topology deployment status updates
+const DeployStatusV1Path = "/v1/deploy/status"
+
 // DeployTopologyV1Path deploys topology
 const DeployTopologyV1Path = "/v1/deploy"
 
