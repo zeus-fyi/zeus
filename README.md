@@ -2,6 +2,34 @@
 
 Zeus is used to create, deploy, and manage infrastructure programmatically via APIs and orchestration. Using this tooling I was able to create an orchestrated setup of a lighthouse-geth beacon in less than an hour. It can reliably install/uninstall kubernetes workloads in seconds. See the test/mocks section for a copy of the configs I used.  
 
+### API Endpoints 
+
+Documentation and code examples are found here
+[API_README.md](https://github.com/zeus-fyi/zeus/blob/main/pkg/zeus/API_README.md)
+
+How to use the test suite to setup your own api calls
+[README.md](https://github.com/zeus-fyi/zeus/blob/main/pkg/zeus/README.md)
+
+The test directory contains useful mocks and tools for interacting with the API. It also contains a useful
+config-sample.yaml, convert this to config.yaml and set your bearer token here, which makes allows you to
+use the demo code to create your first api request in seconds
+
+### Beta Version Overview 
+
+1. Automates translation of kubernetes yaml configurations into representative SQL models
+2. Users upload these infrastructure configurations via API where they are stored in the DB
+3. Users can then query the contents of these infrastructure components, deploy, mutate or destroy them on demand
+   
+### Currently Supported Workload Types
+
+1. Deployments
+2. StatefulSets
+3. Services
+4. ConfigMaps
+5. Ingresses
+
+Not every possible field type is supported in the MVP version, but the most common ones are.
+
 ![Screenshot 2022-11-17 at 8 09 48 PM](https://user-images.githubusercontent.com/17446735/202614955-2708063e-1547-4dae-9332-f712102c287e.png)
 
 ### Cluster Topology Class Hierarchy Definitions ###
@@ -45,36 +73,6 @@ Hercules is web3 middleware that manages web3 infrastruture and connections to o
 
 See demos section for api calls, you'll need to get a bearer token from us first while we're in beta testing. More documentation to come.
 Schedule a demo: https://calendly.com/alex-zeus-fyi/zeus-demo
-
-## Olympus ##
-
-### API Endpoints 
-
-Documentation and code examples are found here
-[API_README.md](https://github.com/zeus-fyi/zeus/blob/main/pkg/zeus/API_README.md)
-
-How to use the test suite to setup your own api calls
-[README.md](https://github.com/zeus-fyi/zeus/blob/main/pkg/zeus/README.md)
-
-The test directory contains useful mocks and tools for interacting with the API. It also contains a useful
-config-sample.yaml, convert this to config.yaml and set your bearer token here, which makes allows you to
-use the demo code to create your first api request in seconds
-
-### Beta Version Overview 
-
-1. Automates translation of kubernetes yaml configurations into representative SQL models
-2. Users upload these infrastructure configurations via API where they are stored in the DB
-3. Users can then query the contents of these infrastructure components, deploy, mutate or destroy them on demand
-   
-### Currently Supported Workload Types
-
-1. Deployments
-2. StatefulSets
-3. Services
-4. ConfigMaps
-5. Ingresses
-
-Not every possible field type is supported in the MVP version, but the most common ones are.
 
 ### Upcoming Features Overview 
 
