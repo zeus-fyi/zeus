@@ -23,7 +23,7 @@ type TopologyRequest struct {
 
 // Response 
 type TopologyCreateResponse struct {
-    TopologyID int `db:"topology_id" json:"topologyID"`
+    TopologyID int `json:"topologyID"`
 }
 
 ```
@@ -38,11 +38,11 @@ const InfraReadTopologyV1Path = "/v1/infra/read/topologies"
 
 // Response
 type ReadTopologiesMetadata struct {
-    TopologyID       int            `db:"topology_id" json:"topologyID"`
-    TopologyName     string         `db:"topology_name" json:"topologyName"`
-    ChartName        string         `db:"chart_name" json:"chartName"`
-    ChartVersion     string         `db:"chart_version" json:"chartVersion"`
-    ChartDescription sql.NullString `db:"chart_description" json:"chartDescription"`
+    TopologyID       int            `json:"topologyID"`
+    TopologyName     string         `json:"topologyName"`
+    ChartName        string         `json:"chartName"`
+    ChartVersion     string         `json:"chartVersion"`
+    ChartDescription sql.NullString `json:"chartDescription"`
 }
 
 type ReadTopologiesMetadataGroup struct {
