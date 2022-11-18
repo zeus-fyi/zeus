@@ -30,6 +30,9 @@ use the demo code to create your first api request in seconds
 
 Not every possible field type is supported in the MVP version, but the most common ones are.
 
+See demos section for api calls, you'll need to get a bearer token from us first while we're in beta testing. More documentation to come.
+Schedule a demo: https://calendly.com/alex-zeus-fyi/zeus-demo
+
 ![Screenshot 2022-11-17 at 8 09 48 PM](https://user-images.githubusercontent.com/17446735/202614955-2708063e-1547-4dae-9332-f712102c287e.png)
 
 ### Cluster Topology Class Hierarchy Definitions ###
@@ -70,9 +73,6 @@ An abstract atomic component base that needs additional pieces to create deploya
 ## Hercules ##
 
 Hercules is web3 middleware that manages web3 infrastruture and connections to other middleware packages, such as web3signer, chain snapshot downloading, setting up mev-boost, orchestrating transcations and client switching, key generation and management, and much more coming soon.
-
-See demos section for api calls, you'll need to get a bearer token from us first while we're in beta testing. More documentation to come.
-Schedule a demo: https://calendly.com/alex-zeus-fyi/zeus-demo
 
 ### Upcoming Features Overview 
 
