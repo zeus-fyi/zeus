@@ -14,7 +14,7 @@ type MerkleTreeContent struct {
 	Value string
 }
 
-// CalculateHash hashes the values of a TestContent
+// CalculateHash hashes the values of a MerkleTreeContent
 func (t MerkleTreeContent) CalculateHash() ([]byte, error) {
 	h := sha256.New()
 	if _, err := h.Write([]byte(t.Value)); err != nil {

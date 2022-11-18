@@ -17,5 +17,5 @@ type TopologyDeployRequest struct {
 }
 
 type TopologyRequest struct {
-	TopologyID int `db:"topology_id" json:"topology_id"`
+	TopologyID int `db:"topology_id" json:"topologyID"`
 }

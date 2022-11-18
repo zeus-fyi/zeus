@@ -1,3 +1,2 @@
 ENV: "local"
-
-BEARER_TOKEN: ""
+BEARER: ""

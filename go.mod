@@ -5,13 +5,16 @@ go 1.19
 require (
 	github.com/cbergoon/merkletree v0.2.0
 	github.com/ethereum/go-ethereum v1.10.26
+	github.com/ghodss/yaml v1.0.0
 	github.com/go-resty/resty/v2 v2.7.0
+	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/rs/zerolog v1.28.0
 	github.com/spf13/viper v1.14.0
 	github.com/stretchr/testify v1.8.1
 	github.com/supranational/blst v0.3.8-0.20220526154634-513d2456b344
 	github.com/tidwall/pretty v1.2.1
 	k8s.io/api v0.25.4
+	k8s.io/apimachinery v0.25.4
 )
 
 require (
@@ -48,7 +51,6 @@ require (
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-	k8s.io/apimachinery v0.25.4 // indirect
 	k8s.io/klog/v2 v2.70.1 // indirect
 	k8s.io/utils v0.0.0-20220728103510-ee6ede2d64ed // indirect
 	sigs.k8s.io/json v0.0.0-20220713155537-f223a00ba0e2 // indirect
