@@ -1,4 +1,4 @@
-package resp_types
+package zeus_resp_types
 
 import (
 	"database/sql"

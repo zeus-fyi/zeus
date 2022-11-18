@@ -12,7 +12,7 @@ import (
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 )
 
-func (c *Compression) CreateTarGzipArchiveDir(p *filepaths.Path) error {
+func (c *Compression) GzipCompressDir(p *filepaths.Path) error {
 	// Create new Writers for gzip and tar
 	// These writers are chained. Writing to the tar writer will
 	// write to the gzip writer which in turn will write to
