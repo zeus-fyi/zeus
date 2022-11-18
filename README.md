@@ -28,7 +28,7 @@ use the demo code to create your first api request in seconds
 1. Automates translation of kubernetes yaml configurations into representative SQL models
 2. Users upload these infrastructure configurations via API where they are stored in the DB
 3. Users can then query the contents of these infrastructure components, deploy, mutate or destroy them on demand
-
+   
 ### Currently Supported Workload Types
 
 1. Deployments
