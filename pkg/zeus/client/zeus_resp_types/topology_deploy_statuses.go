@@ -11,9 +11,9 @@ type TopologyDeployStatuses struct {
 }
 
 type TopologyDeployStatus struct {
-	TopologyID     int       `db:"topology_id" json:"topologyID"`
-	TopologyName   string    `db:"topology_name" json:"topologyName"`
-	TopologyStatus string    `db:"topology_status" json:"topologyStatus"`
-	UpdatedAt      time.Time `db:"updated_at" json:"updatedAt"`
+	TopologyID     int       `json:"topologyID"`
+	TopologyName   string    `json:"topologyName"`
+	TopologyStatus string    `json:"topologyStatus"`
+	UpdatedAt      time.Time `json:"updatedAt"`
 	CloudCtxNs     zeus_common_types.CloudCtxNs
 }
