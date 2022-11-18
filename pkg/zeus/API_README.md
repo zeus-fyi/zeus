@@ -7,6 +7,18 @@
 const InfraCreateV1Path = "/v1/infra/create"
 ```
 
+You're limited to one service, one config map, one ingress, and one of either a stateful set or a deployment per infrastructure topology. If you need more resources just create another topology and deploy both of them to the same namespace location. Later on you'll be able to create topology classes where you can append these groups into a single higher level topology.
+
+```go
+type TopologyBaseInfraWorkload struct {
+	*v1core.Service       `json:"service"`
+	*v1core.ConfigMap     `json:"configMap"`
+	*v1.Deployment        `json:"deployment"` // Only 1 StatefulSet, or 1 Deployment, not both
+	*v1.StatefulSet       `json:"statefulSet"` // Only 1 StatefulSet, or 1 Deployment, not both
+	*v1networking.Ingress `json:"ingress"`
+}
+```
+
 See example in chart_upload_test.go
 Gzips the k8s workload, fills out the form params, and uploads via API
 
