@@ -4,7 +4,7 @@ Zeus is used to create, deploy, and manage infrastructure programmatically via A
 
 ![Screenshot 2022-11-17 at 8 09 48 PM](https://user-images.githubusercontent.com/17446735/202614955-2708063e-1547-4dae-9332-f712102c287e.png)
 
-Cluster Topology Class Hierarchy Definitions 
+### Cluster Topology Class Hierarchy Definitions ###
 
 Cluster class creation coming soon for better organziation and easier management of more complex app configurations, here's an overview of how the hiearchy system will work.
 
