@@ -6,21 +6,21 @@ import (
 )
 
 type TopologyCreateResponse struct {
-	ID int `json:"id"`
+	TopologyID int `json:"topologyID"`
 }
 
 type DeployStatus struct {
-	TopologyID     int       `db:"topology_id" json:"topologyID"`
-	TopologyStatus string    `db:"topology_status" json:"topologyStatus"`
-	UpdatedAt      time.Time `db:"updated_at" json:"updatedAt"`
+	TopologyID     int       `json:"topologyID"`
+	TopologyStatus string    `json:"topologyStatus"`
+	UpdatedAt      time.Time `json:"updatedAt"`
 }
 
 type ReadTopologiesMetadata struct {
-	TopologyID       int            `db:"topology_id" json:"topologyID"`
-	TopologyName     string         `db:"topology_name" json:"topologyName"`
-	ChartName        string         `db:"chart_name" json:"chartName"`
-	ChartVersion     string         `db:"chart_version" json:"chartVersion"`
-	ChartDescription sql.NullString `db:"chart_description" json:"chartDescription"`
+	TopologyID       int            `json:"topologyID"`
+	TopologyName     string         `json:"topologyName"`
+	ChartName        string         `json:"chartName"`
+	ChartVersion     string         `json:"chartVersion"`
+	ChartDescription sql.NullString `json:"chartDescription"`
 }
 
 type ReadTopologiesMetadataGroup struct {

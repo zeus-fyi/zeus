@@ -9,6 +9,7 @@ import (
 	"github.com/stretchr/testify/suite"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 	strings_filter "github.com/zeus-fyi/zeus/pkg/utils/strings"
+	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_common_types"
 	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_req_types"
 	test_base "github.com/zeus-fyi/zeus/test"
 	"github.com/zeus-fyi/zeus/test/configs"
@@ -31,7 +32,7 @@ var uploadChart = zeus_req_types.TopologyCreateRequest{
 }
 
 // directs your api request to the right location
-var topCloudCtxNs = zeus_req_types.TopologyCloudCtxNsQueryRequest{
+var topCloudCtxNs = zeus_common_types.CloudCtxNs{
 	CloudProvider: "do",
 	Region:        "sfo3",
 	Context:       "do-sfo3-dev-do-sfo3-zeus",
@@ -41,8 +42,8 @@ var topCloudCtxNs = zeus_req_types.TopologyCloudCtxNsQueryRequest{
 
 // set your own topologyID here after uploading a chart workload
 var deployKnsReq = zeus_req_types.TopologyDeployRequest{
-	TopologyID:                     0,
-	TopologyCloudCtxNsQueryRequest: topCloudCtxNs,
+	TopologyID: 0,
+	CloudCtxNs: topCloudCtxNs,
 }
 
 // DirOut is where it will write a copy of the chart you uploaded, which helps verify the workload is correct

@@ -13,9 +13,11 @@ Schedule a demo: https://calendly.com/alex-zeus-fyi/zeus-demo
 
 ### API Endpoints 
 
-Documentation and code examples are found here 
+Documentation and code examples are found here
+[API_README.md](https://github.com/zeus-fyi/zeus/blob/main/pkg/zeus/API_README.md))
 
-[README.md](https://github.com/zeus-fyi/zeus/blob/main/demos/README.md)
+How to use the test suite to setup your own api calls
+[README.md](https://github.com/zeus-fyi/zeus/blob/main/pkg/zeus/README.md)
 
 The test directory contains useful mocks and tools for interacting with the API. It also contains a useful
 config-sample.yaml, convert this to config.yaml and set your bearer token here, which makes allows you to
