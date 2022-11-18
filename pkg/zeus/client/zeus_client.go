@@ -14,7 +14,8 @@ func NewZeusClient(baseURL, bearer string) ZeusClient {
 	return z
 }
 
-const ZeusEndpoint = "https://api.zeus.fyi"
+// const ZeusEndpoint = "https://api.zeus.fyi"
+const ZeusEndpoint = "http://localhost:9001"
 
 func NewDefaultZeusClient(bearer string) ZeusClient {
 	return NewZeusClient(ZeusEndpoint, bearer)

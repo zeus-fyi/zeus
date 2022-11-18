@@ -5,13 +5,13 @@ import (
 	"net/http"
 
 	"github.com/rs/zerolog/log"
-	"github.com/zeus-fyi/zeus/pkg/zeus/client/resp_types"
+	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_resp_types"
 
 	zeus_endpoints "github.com/zeus-fyi/zeus/pkg/zeus/client/endpoints"
 )
 
-func (z *ZeusClient) ReadTopologies(ctx context.Context) (resp_types.ReadTopologiesMetadataGroup, error) {
-	respJson := resp_types.ReadTopologiesMetadataGroup{}
+func (z *ZeusClient) ReadTopologies(ctx context.Context) (zeus_resp_types.ReadTopologiesMetadataGroup, error) {
+	respJson := zeus_resp_types.ReadTopologiesMetadataGroup{}
 	resp, err := z.R().
 		SetResult(&respJson.Slice).
 		Get(zeus_endpoints.InfraReadTopologyV1Path)

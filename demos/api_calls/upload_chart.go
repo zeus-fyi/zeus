@@ -34,7 +34,7 @@ func CreateDemoChartApiCall() error {
 		Version:          fmt.Sprintf("v0.0.%d", time.Now().Unix()),
 	}
 	PrintReqJson(tar)
-	err := comp.CreateTarGzipArchiveDir(&uploadPath)
+	err := comp.GzipCompressDir(&uploadPath)
 	if err != nil {
 		return err
 	}

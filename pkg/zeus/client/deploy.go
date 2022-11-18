@@ -6,14 +6,14 @@ import (
 
 	"github.com/rs/zerolog/log"
 	zeus_endpoints "github.com/zeus-fyi/zeus/pkg/zeus/client/endpoints"
-	"github.com/zeus-fyi/zeus/pkg/zeus/client/req_types"
-	"github.com/zeus-fyi/zeus/pkg/zeus/client/resp_types"
+	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_req_types"
+	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_resp_types"
 )
 
-func (z *ZeusClient) Deploy(ctx context.Context, tar req_types.TopologyDeployRequest) (resp_types.DeployStatus, error) {
+func (z *ZeusClient) Deploy(ctx context.Context, tar zeus_req_types.TopologyDeployRequest) (zeus_resp_types.DeployStatus, error) {
 	z.PrintReqJson(tar)
 
-	respJson := resp_types.DeployStatus{}
+	respJson := zeus_resp_types.DeployStatus{}
 	resp, err := z.R().
 		SetResult(&respJson).
 		SetBody(tar).

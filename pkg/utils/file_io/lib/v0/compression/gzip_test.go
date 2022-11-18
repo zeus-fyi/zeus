@@ -30,7 +30,7 @@ func (c *CompressionTestSuite) TestTarGzip() {
 		FilterFiles: strings_filter.FilterOpts{},
 	}
 
-	err := c.Comp.CreateTarGzipArchiveDir(&p)
+	err := c.Comp.GzipCompressDir(&p)
 	c.Require().Nil(err)
 }
 

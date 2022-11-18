@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/suite"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 	strings_filter "github.com/zeus-fyi/zeus/pkg/utils/strings"
-	"github.com/zeus-fyi/zeus/pkg/zeus/client/req_types"
+	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_req_types"
 	test_base "github.com/zeus-fyi/zeus/test"
 	"github.com/zeus-fyi/zeus/test/configs"
 	"github.com/zeus-fyi/zeus/test/test_suites"
@@ -23,21 +23,26 @@ type ZeusClientTestSuite struct {
 var ctx = context.Background()
 
 // chart workload metadata
-var uploadChart = req_types.TopologyCreateRequest{
+var uploadChart = zeus_req_types.TopologyCreateRequest{
 	TopologyName:     "demo",
 	ChartName:        "demo",
 	ChartDescription: "demo",
 	Version:          fmt.Sprintf("v0.0.%d", time.Now().Unix()),
 }
 
-// set your own topologyID here after uploading a chart workload
-var deployKnsReq = req_types.TopologyDeployRequest{
-	TopologyID:    1668729756201039000,
+// directs your api request to the right location
+var topCloudCtxNs = zeus_req_types.TopologyCloudCtxNsQueryRequest{
 	CloudProvider: "do",
 	Region:        "sfo3",
 	Context:       "do-sfo3-dev-do-sfo3-zeus",
-	Namespace:     "demo",
+	Namespace:     "demo", // set with your own namespace
 	Env:           "dev",
+}
+
+// set your own topologyID here after uploading a chart workload
+var deployKnsReq = zeus_req_types.TopologyDeployRequest{
+	TopologyID:                     0,
+	TopologyCloudCtxNsQueryRequest: topCloudCtxNs,
 }
 
 // DirOut is where it will write a copy of the chart you uploaded, which helps verify the workload is correct
