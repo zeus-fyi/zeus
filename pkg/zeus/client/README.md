@@ -6,8 +6,7 @@ following these steps
 1. In /test/configs -> create a config.yaml using the sample-config.yaml as a reference, the config.yaml should be in .gitignore by default so it doesn't commit your tokens
 2. Add your bearer token to this config, otherwise config it directly in the client
 3. Override the zeus_client_test variables that are used to point to your desired chart and kubernetes location
-4. Then run the test
+4. Then run the test, the zeus_client_integrated_test will upload and then query for the uploaded chart and then print it.
 
-The 
 
 
