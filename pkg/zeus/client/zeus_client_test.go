@@ -2,7 +2,9 @@ package zeus_client
 
 import (
 	"context"
+	"fmt"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/suite"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
@@ -20,13 +22,21 @@ type ZeusClientTestSuite struct {
 
 var ctx = context.Background()
 
-// set your own topologyID here
+// chart workload metadata
+var uploadChart = req_types.TopologyCreateRequest{
+	TopologyName:     "demo",
+	ChartName:        "demo",
+	ChartDescription: "demo",
+	Version:          fmt.Sprintf("v0.0.%d", time.Now().Unix()),
+}
+
+// set your own topologyID here after uploading a chart workload
 var deployKnsReq = req_types.TopologyDeployRequest{
-	TopologyID:    0,
+	TopologyID:    1668729756201039000,
 	CloudProvider: "do",
 	Region:        "sfo3",
 	Context:       "do-sfo3-dev-do-sfo3-zeus",
-	Namespace:     "",
+	Namespace:     "demo",
 	Env:           "dev",
 }
 
@@ -35,7 +45,7 @@ var demoChartPath = filepaths.Path{
 	PackageName: "",
 	DirIn:       "./mocks/kubernetes_apps/demo",
 	DirOut:      "./outputs/demo_read_chart",
-	FnIn:        "",
+	FnIn:        "demo", // filename for your gzip workload
 	FnOut:       "",
 	Env:         "",
 	FilterFiles: strings_filter.FilterOpts{},
