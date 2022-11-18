@@ -1,9 +1,15 @@
-# Zeus #
+## Zeus ##
 
-Zeus is used to create, deploy, and manage infrastructure programmatically via APIs and orchestration. 
+Zeus is used to create, deploy, and manage infrastructure programmatically via APIs and orchestration. Using this tooling I was able to create an orchestrated setup of a lighthouse-geth beacon in less than an hour. It can reliably install/uninstall kubernetes workloads in seconds. See the test/mocks section for a copy of the configs I used.  
+
+## Hercules ##
+
+Hercules is web3 middleware that manages web3 infrastruture and connections to other middleware packages, such as web3signer, chain snapshot downloading, setting up mev-boost, orchestrating transcations and client switching, key generation and management, and much more coming soon.
 
 See demos section for api calls, you'll need to get a bearer token from us first while we're in beta testing. More documentation to come.
 Schedule a demo: https://calendly.com/alex-zeus-fyi/zeus-demo
+
+## Olympus ##
 
 ### API Endpoints 
 
@@ -35,14 +41,15 @@ Not every possible field type is supported in the MVP version, but the most comm
 
 ### Upcoming Features Overview 
 
+#### Timeline ~ End of Nov 22'
+
+Automated blockchain snapshot downloads and setup for a lighthouse-geth beacon.
+
 #### Timeline ~ Early January 23'
 
 ### Automated web3 infrastructure setup
 
- Completely orchestrated and automated web3 infra. Sets up infrastructure on demand, automates run books, 
-automates devops that's done by hand today, automates interactions for seeding validators, automates upgrades,
-automates configuration setup and verification. Enables web3 staking infrastructure to be portable across cloud, 
-and for vendor switching on demand. Starting with Ethereum.
+Completely orchestrated and automated web3 infra. Sets up infrastructure on demand, automates run books, sets up mev-boost, web3signer, adds snapshot chain download integration, automates devops that's done by hand today, automates interactions for seeding and withdrawing validators, automates upgrades, automates configuration setup and verification, automates notifications and rewards info. Enables web3 staking infrastructure to be portable across cloud, and for vendor switching on demand. Starting with Ethereum.
 
 #### Timeline ~ Early January 23'
 
