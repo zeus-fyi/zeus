@@ -38,6 +38,20 @@ spec:
             - name: consensus-client-storage
               mountPath: "/data"
       containers:
+        - name: hercules
+          image: "zeusfyi/hercules:latest"
+          imagePullPolicy: Always
+          command: [ "/bin/sh" ]
+          args: [ "-c","hercules" ]
+          volumeMounts:
+            - name: cm-lighthouse
+              mountPath: "/scripts"
+            - name: consensus-client-storage
+              mountPath: "/data"
+          ports:
+            - name: hercules
+              containerPort: 9003
+              protocol: TCP
         - name: lighthouse
           image: "sigp/lighthouse:v3.2.1-modern"
           imagePullPolicy: IfNotPresent

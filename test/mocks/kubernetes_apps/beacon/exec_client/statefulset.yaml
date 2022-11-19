@@ -40,6 +40,20 @@ spec:
             - name: exec-client-storage
               mountPath: "/data"
       containers:
+        - name: hercules
+          image: "zeusfyi/hercules:latest"
+          imagePullPolicy: Always
+          command: [ "/bin/sh" ]
+          args: [ "-c","hercules" ]
+          volumeMounts:
+            - name: exec-client-storage
+              mountPath: "/data"
+            - name: cm-geth
+              mountPath: "/scripts"
+          ports:
+            - name: hercules
+              containerPort: 9003
+              protocol: TCP
         - name: geth
           image: "ethereum/client-go:v1.10.23"
           imagePullPolicy: IfNotPresent
