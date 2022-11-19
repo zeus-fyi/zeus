@@ -28,6 +28,13 @@ use the demo code to create your first api request in seconds
 4. ConfigMaps
 5. Ingresses
 
+### Pods Controller 
+
+1. GetPods
+2. GetPodLogs
+3. PortforwardReqToPods
+4. DeletePods
+
 Not every possible field type is supported in the MVP version, but the most common ones are.
 
 See demos section for api calls, you'll need to get a bearer token from us first while we're in beta testing. More documentation to come.
