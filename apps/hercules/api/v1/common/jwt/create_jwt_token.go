@@ -19,3 +19,11 @@ func (t *TokenRequestJWT) Create(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, nil)
 }
+
+func (t *TokenRequestJWT) ReplaceJWT(c echo.Context) error {
+	err := hercules_jwt.ReplaceToken(v1_common_routes.CommonManager.Path, t.JWT)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, nil)
+	}
+	return c.JSON(http.StatusOK, nil)
+}

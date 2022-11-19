@@ -18,7 +18,7 @@ var useDefaultToken bool
 
 func Hercules() {
 	if useDefaultToken {
-		_ = hercules_jwt.CheckIfJwtTokenExistsElseWriteDefault(dataDir, "jwt.hex", jwtToken)
+		_ = hercules_jwt.SetTokenToDefault(dataDir, "jwt.hex", jwtToken)
 	}
 	cfg.Host = "0.0.0.0"
 	srv := NewHerculesServer(cfg)
