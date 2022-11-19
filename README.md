@@ -50,6 +50,10 @@ Cluster class creation coming soon for better organziation and easier management
 
 ### Deployable Topologies ###
 
+### Systems Orchestration Topology ###
+
+One or many network matrix system topologies that are combined with orchestration workflows from Artemis (coming soon), and Zeus, to build comlplex control flows and/or sequenced network states.
+
 ### Matrix Topology ###
 
 A multi-component cluster topology that accomplishes one or more system components on its own and combined with a Zeus injection deploys this topology onto the network. Some but not all of these topologies can be stacked with another cluster topology or a base topology to create a higher level system component.
