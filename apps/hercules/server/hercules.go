@@ -33,7 +33,7 @@ func init() {
 	Cmd.Flags().StringVar(&dataDir.DirIn, "dataDirIn", "/data", "data directory location")
 	Cmd.Flags().StringVar(&env, "env", "local", "environment")
 	// uses a default token for demo, set your own jwt for production usage if desired
-	Cmd.Flags().StringVar(&jwtToken, "jwt", "fb495bff094bbeab0481e40608bf5a8e90737bd2c88405e537505e9a17795918", "set jwt in datadir")
+	Cmd.Flags().StringVar(&jwtToken, "jwt", "0x6ad1acdc50a4141e518161ab2fe2bf6294de4b4d48bf3582f22cae8113f0cadc", "set jwt in datadir")
 	Cmd.Flags().BoolVar(&useDefaultToken, "useDefaultToken", true, "use default jwt token")
 }
 
