@@ -9,3 +9,11 @@ func JwtHandler(c echo.Context) error {
 	}
 	return request.Create(c)
 }
+
+func JwtReplaceHandler(c echo.Context) error {
+	request := new(TokenRequestJWT)
+	if err := c.Bind(request); err != nil {
+		return err
+	}
+	return request.ReplaceJWT(c)
+}

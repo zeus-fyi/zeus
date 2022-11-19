@@ -6,7 +6,6 @@ import (
 )
 
 func main() {
-
 	if err := hercules_server.Cmd.Execute(); err != nil {
 		log.Err(err)
 	}
