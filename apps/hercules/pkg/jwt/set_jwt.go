@@ -7,6 +7,9 @@ import (
 
 func SetToken(p filepaths.Path, token string) error {
 	err := p.WriteFileInPath([]byte(token))
+	if err != nil {
+		log.Err(err).Msg("error setting jwt token")
+	}
 	return err
 }
 
@@ -16,10 +19,7 @@ func CheckIfJwtTokenExistsElseWriteDefault(p filepaths.Path, tokenFileName, defa
 
 	if !p.FileInPathExists() {
 		p.FnOut = "jwt.hex"
-		err := p.WriteFileInPath([]byte(defaultToken))
-		if err != nil {
-			log.Err(err).Msg("error setting jwt token")
-		}
+		err := SetToken(p, defaultToken)
 		return err
 	}
 	return nil
