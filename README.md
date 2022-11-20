@@ -83,7 +83,7 @@ An abstract atomic component base that needs additional pieces to create deploya
 
 ## Hercules ##
 
-Hercules is web3 middleware that manages web3 infrastruture and connections to other middleware packages, such as web3signer, chain snapshot downloading, setting up mev-boost, orchestrating transcations and client switching, key generation and management, and much more coming soon.
+Hercules is web3 middleware that manages web3 infrastructure and connections to other middleware packages, such as web3signer, chain snapshot downloading, setting up mev-boost, orchestrating transactions and client switching, key generation and management, and much more coming soon.
 
 ### Upcoming Features Overview 
 
