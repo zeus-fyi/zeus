@@ -16,4 +16,6 @@ data:
               --http-address=0.0.0.0 \
               --http-port=5052 \
               --execution-jwt=/data/jwt.hex \
-              --execution-endpoint="http://zeus-geth:8551"
+              --execution-endpoint="http://zeus-geth:8551" \
+              --checkpoint-sync-url="https://sync-mainnet.beaconcha.in" 
+

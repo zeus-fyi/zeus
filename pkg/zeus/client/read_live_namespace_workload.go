@@ -17,7 +17,7 @@ func (z *ZeusClient) ReadNamespaceWorkload(ctx context.Context, tar zeus_req_typ
 	resp, err := z.R().
 		SetResult(&respJson).
 		SetBody(tar).
-		Post(zeus_endpoints.ReadWorkload)
+		Post(zeus_endpoints.ReadWorkloadV1Path)
 
 	if err != nil || resp.StatusCode() != http.StatusOK {
 		log.Ctx(ctx).Err(err).Msg("ZeusClient: ReadNamespaceWorkload")
