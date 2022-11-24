@@ -122,4 +122,4 @@ spec:
           - ReadWriteOnce
         resources:
           requests:
-            storage: "475Gi"
+            storage: "1Ti"
