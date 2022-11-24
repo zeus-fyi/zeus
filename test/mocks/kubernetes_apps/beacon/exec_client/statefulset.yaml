@@ -26,7 +26,6 @@ spec:
       annotations:
         {}
     spec:
-      shareProcessNamespace: true
       initContainers:
         - name: init-chown-data
           image: "busybox:1.34.0"
