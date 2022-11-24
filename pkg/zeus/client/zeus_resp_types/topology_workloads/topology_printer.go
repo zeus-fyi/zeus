@@ -63,7 +63,7 @@ func (t *TopologyBaseInfraWorkload) printYaml(p *filepaths.Path, name string, wo
 }
 
 func (t *TopologyBaseInfraWorkload) WriteYamlConfig(p filepaths.Path, jsonBytes []byte) error {
-	err := p.WriteFileInPath(jsonBytes)
+	err := p.WriteToFileOutPath(jsonBytes)
 	if err != nil {
 		log.Err(err).Msgf("TopologyBaseInfraWorkload: WriteYamlConfig %s", p.FnOut)
 		return err

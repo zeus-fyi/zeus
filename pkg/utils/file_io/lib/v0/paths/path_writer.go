@@ -6,7 +6,7 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-func (p *Path) WriteFileInPath(data []byte) error {
+func (p *Path) WriteToFileOutPath(data []byte) error {
 	// make path if it doesn't exist
 	if _, err := os.Stat(p.FileOutPath()); os.IsNotExist(err) {
 		_ = os.MkdirAll(p.DirOut, 0700) // Create your dir
