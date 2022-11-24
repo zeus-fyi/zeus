@@ -26,6 +26,7 @@ spec:
       annotations:
         {}
     spec:
+      shareProcessNamespace: true
       initContainers:
         - name: init-chown-data
           image: "busybox:1.34.0"
@@ -122,4 +123,4 @@ spec:
           - ReadWriteOnce
         resources:
           requests:
-            storage: "475Gi"
+            storage: "1Ti"
