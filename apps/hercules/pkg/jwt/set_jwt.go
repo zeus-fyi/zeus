@@ -16,7 +16,7 @@ func ReplaceToken(p filepaths.Path, token string) error {
 
 func SetToken(p filepaths.Path, token string) error {
 	p.DirOut = p.DirIn
-	err := p.WriteFileInPath([]byte(token))
+	err := p.WriteToFileOutPath([]byte(token))
 	if err != nil {
 		log.Err(err).Msg("error setting jwt token")
 	}

@@ -12,7 +12,7 @@ func Routes(e *echo.Echo, p filepaths.Path) *echo.Echo {
 	// Routes
 	e.GET("/health", Health)
 
-	eg := e.Group("/v1")
+	eg := e.Group("/v1/internal")
 	v1_hercules.CommonRoutes(eg, p)
 	return e
 }

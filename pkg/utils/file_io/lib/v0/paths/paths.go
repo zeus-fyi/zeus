@@ -1,8 +1,10 @@
 package filepaths
 
 import (
+	"os"
 	"path"
 
+	"github.com/rs/zerolog/log"
 	strings_filter "github.com/zeus-fyi/zeus/pkg/utils/strings"
 )
 
@@ -50,4 +52,13 @@ func (p *Path) LeftExtendDirOutPath(dirExtend string) string {
 func (p *Path) RightExtendDirOutPath(dirExtend string) string {
 	p.DirOut = path.Join(p.DirOut, dirExtend)
 	return p.DirOut
+}
+
+func (p *Path) OpenFileOutPath() (*os.File, error) {
+	f, err := os.Open(p.FileOutPath())
+	if err != nil {
+		log.Err(err).Msg("FileOutPath")
+		return nil, err
+	}
+	return f, err
 }

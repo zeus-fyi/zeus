@@ -9,7 +9,7 @@ import (
 	zeus_pods_reqs "github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_req_types/pods"
 )
 
-func (z *ZeusClient) DeletePods(ctx context.Context, par zeus_pods_reqs.PodActionRequest) error {
+func (z *ZeusClient) DeletePods(ctx context.Context, par zeus_pods_reqs.PodActionRequest) ([]byte, error) {
 	par.Action = zeus_pods_reqs.DeleteAllPods
 	resp, err := z.R().
 		SetBody(par).
@@ -17,8 +17,8 @@ func (z *ZeusClient) DeletePods(ctx context.Context, par zeus_pods_reqs.PodActio
 
 	if err != nil || resp.StatusCode() != http.StatusOK {
 		log.Ctx(ctx).Err(err).Msg("ZeusClient: DeletePods")
-		return err
+		return resp.Body(), err
 	}
 	z.PrintRespJson(resp.Body())
-	return err
+	return resp.Body(), err
 }
