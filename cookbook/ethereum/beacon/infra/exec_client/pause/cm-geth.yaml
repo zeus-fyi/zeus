@@ -6,3 +6,6 @@ data:
   start.sh: |-
     #!/bin/sh
     exec sleep 100000000000000000
+  download.sh: |-
+    #!/bin/sh
+    exec snapshot --downloadURL="" --clientName="geth"
