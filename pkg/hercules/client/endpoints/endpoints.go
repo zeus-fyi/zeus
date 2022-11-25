@@ -1,15 +1,15 @@
 package hercules_endpoints
 
-const InternalSuspendV1Path = "/v1/routines/suspend"
+const InternalSuspendV1Path = "/v1beta/internal/routines/suspend"
 
-const InternalResumeV1Path = "/v1/routines/resume"
+const InternalResumeV1Path = "/v1beta/internal/routines/resume"
 
-const InternalKillV1Path = "/v1/routines/kill"
+const InternalKillV1Path = "/v1beta/internal/routines/kill"
 
-const InternalDiskWipeV1Path = "/v1/routines/disk/wipe"
+const InternalDiskWipeV1Path = "/v1beta/internal/routines/disk/wipe"
 
-const InternalDownloadV1Path = "/v1/snapshot/download"
+const InternalDownloadV1Path = "/v1beta/internal/snapshot/download"
 
-const InternalHostDiskV1Path = "/v1/host/disk"
+const InternalHostDiskV1Path = "/v1beta/internal/host/disk"
 
-const InternalHostMemV1Path = "/v1/host/memory"
+const InternalHostMemV1Path = "/v1beta/internal/host/memory"
