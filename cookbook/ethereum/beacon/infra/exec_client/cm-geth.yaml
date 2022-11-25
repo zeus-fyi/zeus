@@ -21,4 +21,6 @@ data:
       --authrpc.addr=0.0.0.0 \
       --authrpc.port=8551 \
       --authrpc.vhosts=* 
-    
+  download.sh: |-
+    #!/bin/sh
+    exec snapshot --downloadURL="" --clientName="geth"

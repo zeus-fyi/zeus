@@ -18,6 +18,10 @@ var clientName string
 
 func ChainDownload() {
 	ctx := context.Background()
+	if len(preSignedURL) == 0 {
+		log.Ctx(ctx).Info().Msg("No download url provided, skipping snapshot download")
+		return
+	}
 	stats, err := host_info.GetDiskUsageStats(ctx, dataDir.DirIn)
 	if err != nil {
 		log.Ctx(ctx).Panic().Err(err).Msg("GetDiskUsageStats")

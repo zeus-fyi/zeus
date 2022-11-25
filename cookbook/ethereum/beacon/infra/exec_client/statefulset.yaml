@@ -39,6 +39,18 @@ spec:
           volumeMounts:
             - name: exec-client-storage
               mountPath: "/data"
+        - name: init-snapshot
+          image: "registry.digitalocean.com/zeus-fyi/hercules:latest"
+          imagePullPolicy: IfNotPresent
+          command: [ "/bin/sh" ]
+          args: [ "-c","/scripts/download.sh" ]
+          resources:
+            {}
+          volumeMounts:
+            - name: cm-geth
+              mountPath: "/scripts"
+            - name: exec-client-storage
+              mountPath: "/data"
       containers:
         - name: hercules
           image: "registry.digitalocean.com/zeus-fyi/hercules:latest"
@@ -122,4 +134,4 @@ spec:
           - ReadWriteOnce
         resources:
           requests:
-            storage: "475Gi"
+            storage: "2Ti"
