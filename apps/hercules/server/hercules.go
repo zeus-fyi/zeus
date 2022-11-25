@@ -6,6 +6,7 @@ import (
 	"github.com/spf13/viper"
 	v1_common_routes "github.com/zeus-fyi/hercules/api/v1/common"
 	hercules_jwt "github.com/zeus-fyi/hercules/pkg/jwt"
+	"github.com/zeus-fyi/zeus/pkg/aegis"
 
 	hercules_router "github.com/zeus-fyi/hercules/api"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
@@ -30,6 +31,8 @@ func Hercules() {
 	v1_common_routes.CommonManager.BucketURL = bucketURL
 	v1_common_routes.CommonManager.Path = dataDir
 	srv.E = hercules_router.Routes(srv.E, dataDir)
+
+	aegis.InitValidatorDB()
 	srv.Start()
 }
 
