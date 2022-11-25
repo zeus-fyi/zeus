@@ -14,7 +14,7 @@ require (
 	github.com/shirou/gopsutil/v3 v3.22.10
 	github.com/spf13/viper v1.14.0
 	github.com/stretchr/testify v1.8.1
-	github.com/supranational/blst v0.3.8-0.20220526154634-513d2456b344
+	github.com/supranational/blst v0.3.10
 	github.com/tidwall/pretty v1.2.1
 	k8s.io/api v0.25.4
 	k8s.io/apimachinery v0.25.4

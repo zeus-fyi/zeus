@@ -1,15 +1,14 @@
-package snapshots
+package main
 
 import (
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
-	"github.com/zeus-fyi/snapshots/download"
+	snapshot_init "github.com/zeus-fyi/snapshots/downloader"
 )
 
 func main() {
 	zerolog.TimeFieldFormat = zerolog.TimeFormatUnix
-
-	if err := download.Cmd.Execute(); err != nil {
+	if err := snapshot_init.Cmd.Execute(); err != nil {
 		log.Err(err)
 	}
 }

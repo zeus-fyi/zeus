@@ -29,6 +29,11 @@ func InitValidatorDB() {
 			"validator": &memdb.TableSchema{
 				Name: "validator",
 				Indexes: map[string]*memdb.IndexSchema{
+					"id": &memdb.IndexSchema{
+						Name:    "id",
+						Unique:  true,
+						Indexer: &memdb.StringFieldIndex{Field: "Id"},
+					},
 					"index": &memdb.IndexSchema{
 						Name:    "index",
 						Unique:  true,
