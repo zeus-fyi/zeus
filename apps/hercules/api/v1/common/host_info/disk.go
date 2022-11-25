@@ -7,7 +7,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/rs/zerolog/log"
 	v1_common_routes "github.com/zeus-fyi/hercules/api/v1/common"
-	"github.com/zeus-fyi/hercules/pkg/host_info"
+	"github.com/zeus-fyi/zeus/pkg/utils/host_info"
 )
 
 type InfoRequest struct {

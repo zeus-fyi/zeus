@@ -1,2 +1,3 @@
 ENV: "local"
 BEARER: ""
+PRESIGNED_BUCKET_URL: ""
