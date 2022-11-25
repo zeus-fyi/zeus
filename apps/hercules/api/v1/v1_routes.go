@@ -2,6 +2,7 @@ package v1_hercules
 
 import (
 	"github.com/labstack/echo/v4"
+	"github.com/zeus-fyi/hercules/api/v1/common/aegis"
 	hercules_chain_snapshots "github.com/zeus-fyi/hercules/api/v1/common/chain_snapshots"
 	host "github.com/zeus-fyi/hercules/api/v1/common/host_info"
 	hercules_jwt_route "github.com/zeus-fyi/hercules/api/v1/common/jwt"
@@ -18,10 +19,11 @@ func CommonRoutes(e *echo.Group, p filepaths.Path) *echo.Group {
 	e.POST("/routines/start", hercules_routines.StartAppRoutineHandler)
 	e.POST("/routines/resume", hercules_routines.ResumeProcessRoutineHandler)
 	e.POST("/routines/kill", hercules_routines.KillProcessRoutineHandler)
-
 	e.POST("/routines/disk/wipe", hercules_routines.WipeDiskHandler)
 
 	e.GET("/host/disk", host.GetDiskStatsHandler)
 	e.GET("/host/memory", host.GetMemStatsHandler)
+
+	e.POST("/import/validators", aegis.ImportValidatorsHandler)
 	return e
 }
