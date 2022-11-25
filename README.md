@@ -44,11 +44,15 @@ Schedule a demo: https://calendly.com/alex-zeus-fyi/zeus-demo
 
 ### Cluster Topology Class Hierarchy Definitions ###
 
-Cluster class creation coming soon for better organziation and easier management of more complex app configurations, here's an overview of how the hiearchy system will work.
+Cluster class creation coming soon for better organziation and easier management of more complex app configurations, here's an overview of how the hierarchy system will work.
 
 ### Highest to Lowest Level ###
 
 ### Deployable Topologies ###
+
+### Systems Orchestration Topology ###
+
+One or many network matrix system topologies that are combined with orchestration workflows from Artemis (coming soon), and Zeus, to build complex control flows and/or sequenced network states. This could be an enterprise fleet of infrastructure, a complex devops operation done at scale, or a simulation of a large testnet, or a built-in orchstration flow for automating web3 smart contract interactions for users and sending them notifications and prompts.
 
 ### Matrix Topology ###
 
@@ -79,7 +83,7 @@ An abstract atomic component base that needs additional pieces to create deploya
 
 ## Hercules ##
 
-Hercules is web3 middleware that manages web3 infrastruture and connections to other middleware packages, such as web3signer, chain snapshot downloading, setting up mev-boost, orchestrating transcations and client switching, key generation and management, and much more coming soon.
+Hercules is web3 middleware that manages web3 infrastructure and connections to other middleware packages, such as web3signer, chain snapshot downloading, setting up mev-boost, orchestrating transactions and client switching, key generation and management, and much more coming soon.
 
 ### Upcoming Features Overview 
 
