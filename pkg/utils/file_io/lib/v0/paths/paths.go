@@ -34,6 +34,10 @@ func (p *Path) FileInPath() string {
 	return path.Join(p.DirIn, p.FnIn)
 }
 
+func (p *Path) FileDirOutFnInPath() string {
+	return path.Join(p.DirOut, p.FnIn)
+}
+
 func (p *Path) LeftExtendDirInPath(dirExtend string) string {
 	p.DirIn = path.Join(dirExtend, p.DirIn)
 	return p.DirIn

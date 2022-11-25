@@ -48,6 +48,20 @@ func (c *CompressionTestSuite) TestUnGzip() {
 	c.Require().Nil(err)
 }
 
+func (c *CompressionTestSuite) TestLz4Dec() {
+	p := filepaths.Path{
+		PackageName: "",
+		DirIn:       "/Users/alex/go/Olympus/Zeus/pkg/utils/file_io/lib/v0/compression/",
+		DirOut:      "/Users/alex/go/Olympus/Zeus/pkg/utils/file_io/lib/v0/compression",
+		FnIn:        "geth.tar.lz4",
+		FnOut:       "",
+		Env:         "",
+		FilterFiles: strings_filter.FilterOpts{},
+	}
+	err := c.Comp.Lz4Decompress(&p)
+	c.Require().Nil(err)
+}
+
 func TestCompressionTestSuite(t *testing.T) {
 	suite.Run(t, new(CompressionTestSuite))
 }

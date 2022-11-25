@@ -9,6 +9,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/rs/zerolog/log"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 )
 
@@ -38,7 +39,7 @@ func (c *Compression) GzipCompressDir(p *filepaths.Path) error {
 		if err != nil {
 			return err
 		}
-		if !d.IsDir() {
+		if !d.IsDir() && path != p.FnOut {
 			aerr := addToArchive(p, tw, path)
 			if aerr != nil {
 				return aerr
@@ -56,6 +57,7 @@ func addToArchive(p *filepaths.Path, tw *tar.Writer, filename string) error {
 	// Open the file which will be written into the archive
 	file, err := os.Open(p.DirIn + string(filepath.Separator) + filename)
 	if err != nil {
+		log.Err(err).Msg("Compression: addToArchive,  os.Open(p.DirIn + string(filepath.Separator) + filename)")
 		return err
 	}
 	defer file.Close()
@@ -63,32 +65,36 @@ func addToArchive(p *filepaths.Path, tw *tar.Writer, filename string) error {
 	// Get FileInfo about our file providing file size, mode, etc.
 	info, err := file.Stat()
 	if err != nil {
+		log.Err(err).Msg("Compression: addToArchive, file.Stat()")
 		return err
 	}
 
 	// Create a tar Header from the FileInfo data
 	header, err := tar.FileInfoHeader(info, info.Name())
 	if err != nil {
+		log.Err(err).Msg("Compression: addToArchive, tar.FileInfoHeader(info, info.Name())")
 		return err
 	}
 
-	// Use the full path as name (FileInfoHeader only takes the basename)
+	// Use full path as name (FileInfoHeader only takes the basename)
 	// If we don't do this the directory strucuture would
 	// not be preserved
 	// https://golang.org/src/archive/tar/common.go?#L626
 	header.Name = filename
-
+	header.Size = info.Size()
 	// Write file header to the tar archive
 	err = tw.WriteHeader(header)
 	if err != nil {
+		log.Err(err).Msg("Compression: addToArchive, WriteHeader(header)")
 		return err
 	}
 
 	// Copy file content to tar archive
-	_, err = io.Copy(tw, file)
+	_, err = io.CopyN(tw, file, info.Size())
 	if err != nil {
+		log.Info().Int64("filesize", info.Size())
+		log.Err(err).Msg("Compression: addToArchive, io.Copy(tw, file)")
 		return err
 	}
-
 	return nil
 }
