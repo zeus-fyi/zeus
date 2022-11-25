@@ -6,7 +6,7 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"github.com/rs/zerolog/log"
-	"github.com/zeus-fyi/hercules/pkg/host_info"
+	"github.com/zeus-fyi/zeus/pkg/utils/host_info"
 )
 
 func (h *InfoRequest) GetMemStats(c echo.Context) error {
