@@ -38,6 +38,18 @@ spec:
           volumeMounts:
             - name: consensus-client-storage
               mountPath: "/data"
+        - name: init-snapshot
+          image: "registry.digitalocean.com/zeus-fyi/hercules:latest"
+          imagePullPolicy: IfNotPresent
+          command: [ "/bin/sh" ]
+          args: [ "-c","/scripts/download.sh" ]
+          resources:
+            {}
+          volumeMounts:
+            - name: cm-lighthouse
+              mountPath: "/scripts"
+            - name: consensus-client-storage
+              mountPath: "/data"
       containers:
         - name: hercules
           image: "registry.digitalocean.com/zeus-fyi/hercules:latest"
@@ -113,6 +125,6 @@ spec:
           - ReadWriteOnce
         resources:
           requests:
-            storage: "240Gi"
+            storage: "300Gi"
 
 
