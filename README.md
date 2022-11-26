@@ -1,6 +1,6 @@
 ## Zeus ##
 
-Zeus is used to create, deploy, and manage infrastructure programmatically via APIs and orchestration. Using this tooling I was able to create an orchestrated setup of a lighthouse-geth beacon in less than an hour. It can reliably install/uninstall kubernetes workloads in seconds. See the test/mocks section for a copy of the configs I used. See the cookbook for common infra setups & automated actions for an ethereum beacon.
+Zeus is a web3 infrastructure & middleware manager for standardizing ecosystem components and interactions. It can be used to create, deploy, and manage web3 docker & Kubernetes apps dynamically via APIs & orchestration technology.See the cookbook for common infra setups & automated actions for an ethereum beacon.
 
 ### Beacon API ###
 
