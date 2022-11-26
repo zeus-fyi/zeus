@@ -4,7 +4,7 @@ metadata:
   name: zeus-geth
   labels:
     app.kubernetes.io/name: geth
-    app.kubernetes.io/instance: zeus
+    app.kubernetes.io/instance: zeus-geth
     app.kubernetes.io/managed-by: zeus
 spec:
   type: ClusterIP
@@ -37,7 +37,11 @@ spec:
       targetPort: metrics
       protocol: TCP
       name: metrics
+    - port: 80
+      targetPort: http-rpc
+      protocol: TCP
+      name: http
   selector:
     app.kubernetes.io/name: geth
-    app.kubernetes.io/instance: zeus
+    app.kubernetes.io/instance: zeus-geth
 

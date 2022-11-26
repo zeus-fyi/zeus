@@ -29,6 +29,10 @@ spec:
       targetPort: metrics
       protocol: TCP
       name: metrics
+    - port: 80
+      targetPort: http-api
+      protocol: TCP
+      name: http
   selector:
     app.kubernetes.io/name: lighthouse
     app.kubernetes.io/instance: zeus-lighthouse

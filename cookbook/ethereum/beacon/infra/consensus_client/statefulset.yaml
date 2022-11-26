@@ -4,7 +4,7 @@ metadata:
   name: zeus-lighthouse
   labels:
     app.kubernetes.io/name: lighthouse
-    app.kubernetes.io/instance: zeus
+    app.kubernetes.io/instance: zeus-lighthouse
     app.kubernetes.io/managed-by: zeus
   annotations:
     {}
@@ -14,7 +14,7 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: lighthouse
-      app.kubernetes.io/instance: zeus
+      app.kubernetes.io/instance: zeus-lighthouse
   serviceName: zeus-lighthouse
   updateStrategy:
     type: RollingUpdate
