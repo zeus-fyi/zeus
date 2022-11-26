@@ -1,14 +1,53 @@
-## Zeus ##
+## Zeus Cookbooks ##
 
-Zeus is a web3 infrastructure & middleware manager for standardizing ecosystem components and interactions. It can be used to create, deploy, and manage web3 docker & Kubernetes apps dynamically via APIs & orchestration technology.See the cookbook for common infra setups & automated actions for an ethereum beacon.
+Contains common web3 components, their setups in kubernetes, and startup commands, and useful tools for debugging, interacting, and automating actions.
+
+### Cookbook Structure ###
+
+#### ```protocol/components```
+
+Cookbook items listed by protocol & component class. Eg. Ethereum has a beacon component group. 
+
+#### ```../../infra```
+
+Contains kubernetes config setup templates
+
+#### ```../../constants```
+#### ```../../actions```
+#### ```../../logs```
+
+Example actions do log dumps, pod restarts, configuration changes on demand for k8s applications, and more.
+
+#### Ethereum ####
+
+Contains full kubernetes infra setup for a lighthouse-geth beacon with snapshot download capability, and common interactions for developing & debugging an ethereum beacon. 
+
+## Zeus Clients ##
+
+#### Zeus ####
+
+#### ```pkg/zeus/client```
+
+Zeus is a web3 infrastructure & middleware manager for standardizing ecosystem components and interactions. It can be used to create, deploy, and manage  Kubernetes apps dynamically via APIs & orchestration technology. 
+
+#### Hercules ####
+
+#### ```pkg/hercules/client```
+
+Hercules is web3 middleware that manages web3 infrastructure and connections to other middleware packages, such as web3signer, chain snapshot downloading, setting up mev-boost, orchestrating transactions and client switching, key generation and management, and much more coming soon.
+
+
+## Zeus Users ##
 
 ### Beacon API ###
 
-Users with bearer tokens are able to access our common beacon API at eth.zeus.fyi, which supports both consensus client & exec client requests.
+Users with bearer tokens are able to access our common beacon API at https://eth.zeus.fyi, which supports both consensus client & exec client requests.
 
 ### Snapshot Downloads ###
 
 Snapshot download urls for mainnet geth & lighthouse available on request.
+
+## Zeus Documentation ##
 
 ### API Endpoints 
 
@@ -89,15 +128,7 @@ An abstract atomic configuration base that needs an Infrastructure Base and Skel
 ### Skeleton Base ###
 An abstract atomic component base that needs additional pieces to create deployable infrastructure like config map, docker image links, etc. Needs an Infrastructure and Configuration Base to create a Base Topology
 
-## Hercules ##
-
-Hercules is web3 middleware that manages web3 infrastructure and connections to other middleware packages, such as web3signer, chain snapshot downloading, setting up mev-boost, orchestrating transactions and client switching, key generation and management, and much more coming soon.
-
-### Upcoming Features Overview 
-
-#### Timeline ~ End of Nov 22'
-
-Automated blockchain snapshot downloads and setup for a lighthouse-geth beacon.
+## Upcoming Features Overview ##
 
 #### Timeline ~ Early January 23'
 
