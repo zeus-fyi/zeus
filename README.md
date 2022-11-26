@@ -4,7 +4,7 @@ Zeus is used to create, deploy, and manage infrastructure programmatically via A
 
 ### Beacon API ###
 
-Bearer tokens are able to access our common beacon API at eth.zeus.fyi, which supports both consensus client & exec client requests.
+Users with bearer tokens are able to access our common beacon API at eth.zeus.fyi, which supports both consensus client & exec client requests.
 
 ### Snapshot Downloads ###
 
