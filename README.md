@@ -22,20 +22,26 @@ Example actions do log dumps, pod restarts, configuration changes on demand for 
 
 Contains full kubernetes infra setup for a lighthouse-geth beacon with snapshot download capability, and common interactions for developing & debugging an ethereum beacon. 
 
-## Zeus Clients ##
+## Zeus Apps ##
 
 #### Zeus ####
 
 #### ```pkg/zeus/client```
 
-Zeus is a web3 infrastructure & middleware manager for standardizing ecosystem components and interactions. It can be used to create, deploy, and manage  Kubernetes apps dynamically via APIs & orchestration technology. 
+Zeus is a web3 infrastructure & middleware manager for standardizing ecosystem components and interactions. It can be used to create, deploy, and manage  Kubernetes apps dynamically via APIs & orchestration technology. The Zeus client is for interacting with our cloud services.
 
 #### Hercules ####
 
+#### ```apps/hercules``` ####
 #### ```pkg/hercules/client```
 
 Hercules is web3 middleware that manages web3 infrastructure and connections to other middleware packages, such as web3signer, chain snapshot downloading, setting up mev-boost, orchestrating transactions and client switching, key generation and management, and much more coming soon.
+ 
+#### Snapshots ####
 
+#### ```apps/snapshots``` ####
+
+Snapshot app is embedded into the hercules docker app, and it can be used as an init container to download snapshot data on new node creation.
 
 ## Zeus Users ##
 
