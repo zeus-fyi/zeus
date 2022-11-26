@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/suite"
-	"github.com/zeus-fyi/zeus/cookbook"
+	"github.com/zeus-fyi/zeus/cookbooks"
 	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_common_types"
 	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_req_types"
 	zeus_pods_reqs "github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_req_types/pods"
@@ -49,7 +49,7 @@ func (t *BeaconActionsTestSuite) SetupTest() {
 
 	// uses the bearer token from test/configs/config.yaml
 	t.BeaconActionsClient = NewDefaultBeaconActionsClient(tc.Bearer)
-	dir := cookbook.ChangeToCookbookDir()
+	dir := cookbooks.ChangeToCookbookDir()
 
 	t.BeaconActionsClient.PrintPath.DirIn = path.Join(dir, "/ethereum/beacon/logs")
 	t.BeaconActionsClient.PrintPath.DirOut = path.Join(dir, "/ethereum/outputs")

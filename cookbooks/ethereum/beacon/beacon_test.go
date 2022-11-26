@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/suite"
-	"github.com/zeus-fyi/zeus/cookbook"
+	"github.com/zeus-fyi/zeus/cookbooks"
 	zeus_client "github.com/zeus-fyi/zeus/pkg/zeus/client"
 	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_req_types"
 	"github.com/zeus-fyi/zeus/test/configs"
@@ -56,7 +56,7 @@ func (t *BeaconCookbookTestSuite) SetupTest() {
 	// uses the bearer token from test/configs/config.yaml
 	t.ZeusTestClient = zeus_client.NewDefaultZeusClient(tc.Bearer)
 	//t.ZeusTestClient = zeus_client.NewLocalZeusClient(tc.Bearer)
-	cookbook.ChangeToCookbookDir()
+	cookbooks.ChangeToCookbookDir()
 }
 
 func TestBeaconCookbookTestSuite(t *testing.T) {

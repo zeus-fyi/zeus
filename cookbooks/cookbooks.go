@@ -1,4 +1,4 @@
-package cookbook
+package cookbooks
 
 import (
 	"os"
