@@ -30,12 +30,6 @@ Contains full kubernetes infra setup for a lighthouse-geth beacon with snapshot 
 
 Zeus is a cloud infrastructure & orchestration manager. It can be used to create, deploy, and manage  Kubernetes apps dynamically via APIs & orchestration technology. The Zeus client is for interacting with our cloud services.
 
-### Hades Library
-
-#### ```pkg/hades```
-
-Hades is used to interact with kubernetes workloads via API, and can apply saved Zeus workloads & cookbooks onto your own in house infrastructure.
-
 #### API Endpoints 
 
 Documentation and code examples are found here
@@ -47,6 +41,12 @@ How to use the test suite to setup your own api calls
 The test directory contains useful mocks and tools for interacting with the API. It also contains a useful
 config-sample.yaml, convert this to config.yaml and set your bearer token here, which then allows you to
 use the demo code to create your first api request in seconds
+
+### Hades Library
+
+#### ```pkg/hades```
+
+Hades is used to interact with kubernetes workloads via API, and can apply saved Zeus workloads & cookbooks onto your own in house infrastructure.
 
 ### Hercules ###
 
