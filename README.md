@@ -22,22 +22,34 @@ Example actions do log dumps, pod restarts, configuration changes on demand for 
 
 Contains full kubernetes infra setup for a lighthouse-geth beacon with snapshot download capability, and common interactions for developing & debugging an ethereum beacon. 
 
-## Zeus Apps ##
+## Zeus Apps & Clients ##
 
-#### Zeus ####
+### Zeus Client
 
 #### ```pkg/zeus/client```
 
 Zeus is a web3 infrastructure & middleware manager for standardizing ecosystem components and interactions. It can be used to create, deploy, and manage  Kubernetes apps dynamically via APIs & orchestration technology. The Zeus client is for interacting with our cloud services.
 
-#### Hercules ####
+#### API Endpoints 
+
+Documentation and code examples are found here
+[API_README.md](https://github.com/zeus-fyi/zeus/blob/main/pkg/zeus/API_README.md)
+
+How to use the test suite to setup your own api calls
+[README.md](https://github.com/zeus-fyi/zeus/blob/main/pkg/zeus/README.md)
+
+The test directory contains useful mocks and tools for interacting with the API. It also contains a useful
+config-sample.yaml, convert this to config.yaml and set your bearer token here, which then allows you to
+use the demo code to create your first api request in seconds
+
+### Hercules ###
 
 #### ```apps/hercules``` ####
 #### ```pkg/hercules/client```
 
 Hercules is web3 middleware that manages web3 infrastructure and connections to other middleware packages, such as web3signer, chain snapshot downloading, setting up mev-boost, orchestrating transactions and client switching, key generation and management, and much more coming soon.
  
-#### Snapshots ####
+### Snapshots ###
 
 #### ```apps/snapshots``` ####
 
@@ -52,20 +64,6 @@ Users with bearer tokens are able to access our common beacon API at https://eth
 ### Snapshot Downloads ###
 
 Snapshot download urls for mainnet geth & lighthouse available on request.
-
-## Zeus Documentation ##
-
-### API Endpoints 
-
-Documentation and code examples are found here
-[API_README.md](https://github.com/zeus-fyi/zeus/blob/main/pkg/zeus/API_README.md)
-
-How to use the test suite to setup your own api calls
-[README.md](https://github.com/zeus-fyi/zeus/blob/main/pkg/zeus/README.md)
-
-The test directory contains useful mocks and tools for interacting with the API. It also contains a useful
-config-sample.yaml, convert this to config.yaml and set your bearer token here, which then allows you to
-use the demo code to create your first api request in seconds
 
 ### Beta Version Overview 
 
