@@ -35,7 +35,7 @@ func ChainDownload() {
 		}
 
 		switch compressionType {
-		case ".tar.lzr":
+		case ".tar.lz4":
 			dec := compression.NewCompression()
 			dataDir.DirOut = dataDir.DirIn
 			dataDir.FnIn = clientName + compressionType
