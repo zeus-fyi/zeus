@@ -28,7 +28,13 @@ Contains full kubernetes infra setup for a lighthouse-geth beacon with snapshot 
 
 #### ```pkg/zeus/client```
 
-Zeus is a cloud infrastructure & orchestration manager. It can be used to create, deploy, and manage  Kubernetes apps dynamically via APIs & orchestration technology. The Zeus client is for interacting with our cloud services.
+Zeus is a cloud infrastructure & orchestration manager. It can be used to create, deploy, and manage  Kubernetes apps dynamically via APIs & orchestration technology. The Zeus client is for interacting with our cloud services.  Zeus can be configured to automate logging of all infra interactions to help meeting centralized logging requirements such as ISO 27000, ISO 27001, SOC
+
+A.12.4 Logging and Monitoring Its objective is recording events and generating evidence.
+A.12.4.2  Protection of Log Information
+A.12.4.3  Administrator and Operator Logs
+
+Every infra action can be traced to the user who initiated it and the org they are part of, permissions can be made granular to user role, every state change to the system can be logged, archived, and then queried. Tx, and receipt of blockchain events can also be saved or generated on demand, such as validator state changes.
 
 #### API Endpoints 
 
