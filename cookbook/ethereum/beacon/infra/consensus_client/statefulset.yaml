@@ -22,7 +22,7 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/name: lighthouse
-        app.kubernetes.io/instance: zeus
+        app.kubernetes.io/instance: zeus-lighthouse
     spec:
       shareProcessNamespace: true
       initContainers:
@@ -39,25 +39,25 @@ spec:
             - name: consensus-client-storage
               mountPath: "/data"
         - name: init-snapshot
-          image: "registry.digitalocean.com/zeus-fyi/hercules:latest"
-          imagePullPolicy: IfNotPresent
+          image: "zeusfyi/hercules:latest"
+          imagePullPolicy: Always
           command: [ "/bin/sh" ]
           args: [ "-c","/scripts/download.sh" ]
           resources:
             {}
           volumeMounts:
-            - name: cm-lighthouse
+            - name: cm-consensus-client
               mountPath: "/scripts"
             - name: consensus-client-storage
               mountPath: "/data"
       containers:
         - name: hercules
-          image: "registry.digitalocean.com/zeus-fyi/hercules:latest"
-          imagePullPolicy: IfNotPresent
+          image: "zeusfyi/hercules:latest"
+          imagePullPolicy: Always
           command: [ "/bin/sh" ]
           args: [ "-c","hercules" ]
           volumeMounts:
-            - name: cm-lighthouse
+            - name: cm-consensus-client
               mountPath: "/scripts"
             - name: consensus-client-storage
               mountPath: "/data"
@@ -71,7 +71,7 @@ spec:
           command: [ "/bin/sh" ]
           args: [ "-c","/scripts/start.sh" ]
           volumeMounts:
-            - name: cm-lighthouse
+            - name: cm-consensus-client
               mountPath: "/scripts"
             - name: consensus-client-storage
               mountPath: "/data"
@@ -111,9 +111,9 @@ spec:
       tolerations:
         []
       volumes:
-        - name: cm-lighthouse
+        - name: cm-consensus-client
           configMap:
-            name: cm-lighthouse
+            name: cm-consensus-client
             defaultMode: 0744
   volumeClaimTemplates:
     - metadata:

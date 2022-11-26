@@ -4,7 +4,7 @@ metadata:
   name: zeus-geth
   labels:
     app.kubernetes.io/name: geth
-    app.kubernetes.io/instance: zeus
+    app.kubernetes.io/instance: zeus-geth
     app.kubernetes.io/managed-by: zeus
   annotations:
     {}
@@ -14,7 +14,7 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: geth
-      app.kubernetes.io/instance: zeus
+      app.kubernetes.io/instance: zeus-geth
   serviceName: zeus-geth
   updateStrategy:
     type: RollingUpdate
@@ -22,7 +22,7 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/name: geth
-        app.kubernetes.io/instance: zeus
+        app.kubernetes.io/instance: zeus-geth
       annotations:
         {}
     spec:
