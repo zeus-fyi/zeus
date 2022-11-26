@@ -4,7 +4,7 @@ metadata:
   name: zeus-geth
   labels:
     app.kubernetes.io/name: geth
-    app.kubernetes.io/instance: zeus
+    app.kubernetes.io/instance: zeus-geth
     app.kubernetes.io/managed-by: zeus
 spec:
   type: ClusterIP
@@ -39,5 +39,5 @@ spec:
       name: metrics
   selector:
     app.kubernetes.io/name: geth
-    app.kubernetes.io/instance: zeus
+    app.kubernetes.io/instance: zeus-geth
 

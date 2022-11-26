@@ -40,27 +40,27 @@ spec:
             - name: exec-client-storage
               mountPath: "/data"
         - name: init-snapshot
-          image: "registry.digitalocean.com/zeus-fyi/hercules:latest"
-          imagePullPolicy: IfNotPresent
+          image: "zeusfyi/hercules:latest"
+          imagePullPolicy: Always
           command: [ "/bin/sh" ]
           args: [ "-c","/scripts/download.sh" ]
           resources:
             {}
           volumeMounts:
-            - name: cm-geth
+            - name: cm-exec-client
               mountPath: "/scripts"
             - name: exec-client-storage
               mountPath: "/data"
       containers:
         - name: hercules
-          image: "registry.digitalocean.com/zeus-fyi/hercules:latest"
-          imagePullPolicy: IfNotPresent
+          image: "zeusfyi/hercules:latest"
+          imagePullPolicy: Always
           command: [ "/bin/sh" ]
           args: [ "-c","hercules" ]
           volumeMounts:
             - name: exec-client-storage
               mountPath: "/data"
-            - name: cm-geth
+            - name: cm-exec-client
               mountPath: "/scripts"
           ports:
             - name: hercules
@@ -74,7 +74,7 @@ spec:
           volumeMounts:
             - name: exec-client-storage
               mountPath: "/data"
-            - name: cm-geth
+            - name: cm-exec-client
               mountPath: "/scripts"
           ports:
             - name: p2p-tcp
@@ -120,9 +120,9 @@ spec:
         []
       terminationGracePeriodSeconds: 300
       volumes:
-        - name: cm-geth
+        - name: cm-exec-client
           configMap:
-            name: cm-geth
+            name: cm-exec-client
             defaultMode: 0744
   volumeClaimTemplates:
     - metadata:
