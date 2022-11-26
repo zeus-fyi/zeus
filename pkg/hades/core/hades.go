@@ -43,7 +43,7 @@ func (h *Hades) SetContext(context string) {
 	h.cfgAccess = cc.ConfigAccess()
 	h.clientCfg, err = cc.ClientConfig()
 	if err != nil {
-		log.Panic().Msg("Zeus: SetContext, failed to set ClientConfig")
+		log.Panic().Msg("Hades: SetContext, failed to set ClientConfig")
 		panic(err)
 	}
 	h.SetClient(h.clientCfg)
@@ -53,7 +53,7 @@ func (h *Hades) SetClient(config *rest.Config) {
 	var err error
 	h.kc, err = kubernetes.NewForConfig(config)
 	if err != nil {
-		log.Panic().Msg("Zeus: SetClient, failed to set client")
+		log.Panic().Msg("Hades: SetClient, failed to set client")
 		panic(err)
 	}
 }
