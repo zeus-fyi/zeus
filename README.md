@@ -28,7 +28,7 @@ Contains full kubernetes infra setup for a lighthouse-geth beacon with snapshot 
 
 #### ```pkg/zeus/client```
 
-Zeus is a web3 infrastructure & middleware manager for standardizing ecosystem components and interactions. It can be used to create, deploy, and manage  Kubernetes apps dynamically via APIs & orchestration technology. The Zeus client is for interacting with our cloud services.
+Zeus is a cloud infrastructure & orchestration manager. It can be used to create, deploy, and manage  Kubernetes apps dynamically via APIs & orchestration technology. The Zeus client is for interacting with our cloud services.
 
 #### API Endpoints 
 
