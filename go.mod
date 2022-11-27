@@ -7,6 +7,7 @@ require (
 	github.com/cbergoon/merkletree v0.2.0
 	github.com/ghodss/yaml v1.0.0
 	github.com/go-resty/resty/v2 v2.7.0
+	github.com/gochain/gochain/v4 v4.1.0
 	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/hashicorp/go-memdb v1.3.4
 	github.com/pierrec/lz4 v2.6.1+incompatible
@@ -62,6 +63,7 @@ require (
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/subosito/gotenv v1.4.1 // indirect
 	github.com/yusufpapurcu/wmi v1.2.2 // indirect
+	golang.org/x/crypto v0.0.0-20220525230936-793ad666bf5e // indirect
 	golang.org/x/net v0.0.0-20221014081412-f15817d10f9b // indirect
 	golang.org/x/oauth2 v0.0.0-20221014153046-6fdb5e3db783 // indirect
 	golang.org/x/sys v0.2.0 // indirect

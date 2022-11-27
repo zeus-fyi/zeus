@@ -4,4 +4,6 @@ use (
 	.
 	./apps/hercules
 	./apps/snapshots
+
+	./apps/external/web3
 )
