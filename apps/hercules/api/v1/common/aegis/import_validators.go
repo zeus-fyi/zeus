@@ -6,10 +6,11 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
+	aegis_inmemdbs "github.com/zeus-fyi/zeus/pkg/aegis/inmemdbs"
 )
 
 type ImportValidatorsRequest struct {
-	ValidatorSlice []inmemdbs.Validator
+	ValidatorSlice []aegis_inmemdbs.Validator
 }
 
 type RoutineResp struct {
@@ -19,7 +20,7 @@ type RoutineResp struct {
 func (t *ImportValidatorsRequest) ImportValidators(c echo.Context) error {
 	ctx := context.Background()
 	ctx = context.WithValue(ctx, "func", "ImportValidators")
-	inmemdbs.InsertValidators(t.ValidatorSlice)
+	aegis_inmemdbs.InsertValidatorsInMemDb(ctx, t.ValidatorSlice)
 	resp := RoutineResp{Status: fmt.Sprintf("imported %d validators succesfully", len(t.ValidatorSlice))}
 	return c.JSON(http.StatusOK, resp)
 }
