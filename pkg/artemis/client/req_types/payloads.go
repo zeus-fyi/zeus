@@ -1,4 +1,4 @@
-package artemis
+package artemis_req_types
 
 import (
 	"math/big"
@@ -10,7 +10,6 @@ import (
 type SignedTxPayload struct {
 	*types.Transaction
 }
-
 type SendEtherPayload struct {
 	Amount    *big.Int
 	ToAddress common.Address

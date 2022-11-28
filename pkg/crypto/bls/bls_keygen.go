@@ -6,9 +6,13 @@ import (
 	blst "github.com/supranational/blst/bindings/go"
 )
 
+type Account struct {
+	KeyBLS
+}
+
 type KeyBLS struct {
-	PublicKey blst.P1Affine
-	SecretKey *blst.SecretKey
+	PublicKey PublicKey
+	SecretKey SecretKey
 }
 
 func NewKeyBLS() KeyBLS {
@@ -18,7 +22,7 @@ func NewKeyBLS() KeyBLS {
 		panic(err)
 	}
 	sk := blst.KeyGen(ikm[:])
-	pk := new(PublicKey).From(sk)
-	k := KeyBLS{PublicKey: *pk, SecretKey: sk}
+	pk := new(blst.P1Affine).From(sk)
+	k := KeyBLS{PublicKey: NewPubKey(*pk), SecretKey: NewSecretKey(sk)}
 	return k
 }
