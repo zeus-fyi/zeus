@@ -48,11 +48,22 @@ The test directory contains useful mocks and tools for interacting with the API.
 config-sample.yaml, convert this to config.yaml and set your bearer token here, which then allows you to
 use the demo code to create your first api request in seconds
 
-### Hades Library
+### Artemis ###
 
-#### ```pkg/hades```
+#### ```artemis.zeus.fyi``` ####
+#### ```pkg/artemis/client```
 
-Hades is used to interact with kubernetes workloads via API, and can apply saved Zeus workloads & cookbooks onto your own in house infrastructure.
+Artemis is a tx orchestrator. It reliably submits & confirms ethereum transactions and logs their receipts. Chain with 
+the in memory db for storing web3 signer keys to build highly reliable web3 api actions with other users and smart contracts. You'll need
+a bearer token to use this client. 
+
+### Aegis ###
+
+#### ```pkg/aegis/inmemdbs```
+#### ```pkg/crypto```
+
+Aegis is a library for securely managing crypto keys. It currently contains an in memory database for storing ethereum validators
+and for storing ecdsa, eth1 wallet keys. 
 
 ### Hercules ###
 
@@ -60,12 +71,38 @@ Hades is used to interact with kubernetes workloads via API, and can apply saved
 #### ```pkg/hercules/client```
 
 Hercules is web3 middleware that manages web3 infrastructure and connections to other middleware packages, such as web3signer, chain snapshot downloading, setting up mev-boost, orchestrating transactions and client switching, key generation and management, and much more coming soon.
- 
+
+It also contains useful apis to debug and troubleshoot web3 infrastructure.
+
+```go
+    // used to initiate downloads for blockchain db snapshots 
+	e.POST("/snapshot/download", hercules_chain_snapshots.DownloadChainSnapshotHandler)
+
+    // used to suspend, start, kill, resume processes inside the container
+	e.POST("/routines/suspend", hercules_routines.SuspendRoutineHandler)
+	e.POST("/routines/start", hercules_routines.StartAppRoutineHandler)
+	e.POST("/routines/resume", hercules_routines.ResumeProcessRoutineHandler)
+	e.POST("/routines/kill", hercules_routines.KillProcessRoutineHandler)
+
+    // used to wipe your data dir contents
+	e.POST("/routines/disk/wipe", hercules_routines.WipeDiskHandler)
+
+    // used to query disk & memory stats in your container
+	e.GET("/host/disk", host.GetDiskStatsHandler)
+	e.GET("/host/memory", host.GetMemStatsHandler)
+```
+
 ### Snapshots ###
 
 #### ```apps/snapshots``` ####
 
 Snapshot app is embedded into the hercules docker app, and it can be used as an init container to download snapshot data on new node creation.
+
+### Hades Library
+
+#### ```pkg/hades```
+
+Hades is used to interact with kubernetes workloads via API, and can apply saved Zeus workloads & cookbooks onto your own in house infrastructure.
 
 ## Zeus Users ##
 
