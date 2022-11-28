@@ -14,7 +14,11 @@ func (t *ArtemisClientTestSuite) TestSendEthEndpoints() {
 }
 
 func (t *ArtemisClientTestSuite) TestSendEthPayload() {
-	sendEthTx := artemis_req_types.SendEtherPayload{}
+	sendEthTx := artemis_req_types.SendEtherPayload{
+		Amount:         Finney,
+		ToAddress:      t.TestAccount2.Address(),
+		GasPriceLimits: artemis_req_types.GasPriceLimits{},
+	}
 	resp, err := t.ArtemisTestClient.SendEther(ctx, sendEthTx, ArtemisEthereumGoerli)
 	t.Assert().Nil(err)
 	t.Assert().NotNil(resp)
