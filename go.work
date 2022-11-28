@@ -2,8 +2,8 @@ go 1.19
 
 use (
 	.
-	./apps/hercules
-	./apps/snapshots
 
 	./apps/external/web3
+	./apps/hercules
+	./apps/snapshots
 )
