@@ -8,14 +8,14 @@ import (
 
 	"github.com/rs/zerolog/log"
 	artemis_req_types "github.com/zeus-fyi/zeus/pkg/artemis/client/req_types"
-	artemis_resp_types "github.com/zeus-fyi/zeus/pkg/artemis/client/req_types/resp_types"
+	"github.com/zeus-fyi/zeus/pkg/artemis/client/resp_types"
 )
 
 func (a *ArtemisClient) SendSignedTx(ctx context.Context, rr artemis_req_types.SignedTxPayload, networkRoute ArtemisConfig) (artemis_resp_types.Response, error) {
 	a.PrintReqJson(rr)
 	respJson := artemis_resp_types.Response{}
 	resp, err := a.R().
-		SetResult(respJson).
+		SetResult(&respJson).
 		SetBody(rr).
 		Post(getSendSignedTxEndpoint(networkRoute))
 

@@ -1,5 +1,5 @@
 package artemis_resp_types
 
 type Response struct {
-	Message string
+	Message string `json:"message"`
 }
