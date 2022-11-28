@@ -12,7 +12,6 @@ type BLSTestSuite struct {
 
 // https://github.com/supranational/blst/blob/master/bindings/go/blst_minsig_test.go
 func (s *BLSTestSuite) TestKeyGenSignAndVerify() {
-
 	k := NewKeyBLS()
 	s.Assert().NotEmpty(k)
 	s.Assert().NotEmpty(k.PublicKey)
@@ -23,6 +22,12 @@ func (s *BLSTestSuite) TestKeyGenSignAndVerify() {
 	s.Assert().True(k.Verify(*sig, msg))
 	msgUnauthorized := []byte("hello bar")
 	s.Assert().False(k.Verify(*sig, msgUnauthorized))
+
+	reGenSecKey := SecretKeyFromBytes(k.SecretKey.Serialize())
+	s.Assert().Equal(k.SecretKey, reGenSecKey)
+
+	reGenPubKey := PublicKeyFromBytes(k.PublicKey.Serialize())
+	s.Assert().Equal(k.PublicKey, reGenPubKey)
 }
 
 func TestBLSTestSuite(t *testing.T) {
