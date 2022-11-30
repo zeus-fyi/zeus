@@ -30,8 +30,8 @@ func (t *ArtemisClientTestSuite) TestSignedTxPayload() {
 	signedTx, err := testClient1.GetSignedTxToCallFunctionWithArgs(ctx, &params)
 	t.Require().Nil(err)
 	t.Require().NotNil(signedTx)
-	payload := artemis_req_types.SignedTxPayload{Transaction: signedTx}
-	resp, err := t.ArtemisTestClient.SendSignedTx(ctx, payload, ArtemisEthereumGoerli)
+	payload := artemis_req_types.SignedTxPayload{Transaction: *signedTx}
+	resp, err := t.ArtemisTestClient.SendSignedTx(ctx, &payload, ArtemisEthereumGoerli)
 	t.Assert().Nil(err)
 	t.Assert().NotNil(resp)
 }

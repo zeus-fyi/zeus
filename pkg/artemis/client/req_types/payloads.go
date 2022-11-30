@@ -8,7 +8,7 @@ import (
 )
 
 type SignedTxPayload struct {
-	*types.Transaction
+	types.Transaction `json:"tx"`
 }
 type SendEtherPayload struct {
 	Amount    *big.Int

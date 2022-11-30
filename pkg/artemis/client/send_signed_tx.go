@@ -11,7 +11,7 @@ import (
 	"github.com/zeus-fyi/zeus/pkg/artemis/client/resp_types"
 )
 
-func (a *ArtemisClient) SendSignedTx(ctx context.Context, rr artemis_req_types.SignedTxPayload, networkRoute ArtemisConfig) (artemis_resp_types.Response, error) {
+func (a *ArtemisClient) SendSignedTx(ctx context.Context, rr *artemis_req_types.SignedTxPayload, networkRoute ArtemisConfig) (artemis_resp_types.Response, error) {
 	a.PrintReqJson(rr)
 	respJson := artemis_resp_types.Response{}
 	resp, err := a.R().
