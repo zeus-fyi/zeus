@@ -10,6 +10,7 @@ type TestContainer struct {
 	Env                string
 	Bearer             string
 	PresignedBucketURL string
+	NodeURL            string
 
 	LocalEcsdaTestPkey  string
 	LocalEcsdaTestPkey2 string
@@ -24,6 +25,7 @@ func InitLocalTestConfigs() TestContainer {
 	testCont.PresignedBucketURL = viper.GetString("PRESIGNED_BUCKET_URL")
 
 	// artemis testing
+	testCont.NodeURL = viper.GetString("NODE_URL")
 	testCont.LocalEcsdaTestPkey = viper.GetString("LOCAL_TESTING_ECDSA_PKEY")
 	testCont.LocalEcsdaTestPkey2 = viper.GetString("LOCAL_TESTING_ECDSA_PKEY_2")
 	return testCont
