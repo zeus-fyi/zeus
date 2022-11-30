@@ -26,7 +26,7 @@ func (t *ArtemisClientTestSuite) SetupTest() {
 	tc := configs.InitLocalTestConfigs()
 	t.NodeURL = tc.NodeURL
 	t.ArtemisTestClient = NewDefaultArtemisClient(tc.Bearer)
-	t.ArtemisTestClient = NewLocalArtemisClient(tc.Bearer)
+	//t.ArtemisTestClient = NewLocalArtemisClient(tc.Bearer)
 	// points working dir to inside /test
 
 	pkHexString := tc.LocalEcsdaTestPkey
