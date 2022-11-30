@@ -75,6 +75,10 @@ Hercules is web3 middleware that manages web3 infrastructure and connections to 
 It also contains useful apis to debug and troubleshoot web3 infrastructure.
 
 ```go
+    // manage jwt tokens
+	e.POST("/jwt/create", hercules_jwt_route.JwtHandler)
+	e.POST("/jwt/replace", hercules_jwt_route.JwtReplaceHandler)
+	
     // used to initiate downloads for blockchain db snapshots 
 	e.POST("/snapshot/download", hercules_chain_snapshots.DownloadChainSnapshotHandler)
 
@@ -90,6 +94,9 @@ It also contains useful apis to debug and troubleshoot web3 infrastructure.
     // used to query disk & memory stats in your container
 	e.GET("/host/disk", host.GetDiskStatsHandler)
 	e.GET("/host/memory", host.GetMemStatsHandler)
+	
+    // import to secure in memdb
+	e.POST("/import/validators", aegis.ImportValidatorsHandler)
 ```
 
 ### Snapshots ###
