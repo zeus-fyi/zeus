@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cm-generic-deployment
+data:
+  start.sh: |-
+    #!/bin/sh
+    exec http-echo -text="hello world"
