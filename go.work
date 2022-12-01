@@ -2,8 +2,9 @@ go 1.19
 
 use (
 	.
-	./apps/hercules
-	./apps/snapshots
+	./apps/cookbooks/microservices/server_template
 
 	./apps/external/web3
+	./apps/hercules
+	./apps/snapshots
 )
