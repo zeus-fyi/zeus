@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+  creationTimestamp: null
+  labels:
+    version: version-1669879938711235219
+  name: generic-deployment
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: api.zeus.fyi
+    http:
+      paths:
+      - backend:
+          service:
+            name: generic-deployment
+            port:
+              number: 80
+        path: /
+        pathType: ImplementationSpecific
+  tls:
+  - hosts:
+    - api.zeus.fyi
+    secretName: generic-deployment-tls
+status:
+  loadBalancer: {}

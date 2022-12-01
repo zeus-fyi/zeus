@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app.kubernetes.io/instance: generic-deployment
+    app.kubernetes.io/managed-by: zeus
+    app.kubernetes.io/name: generic-deployment
+    version: version-1669879938711222190
+  name: generic-deployment
+spec:
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: http
+  selector:
+    app.kubernetes.io/instance: generic-deployment
+    app.kubernetes.io/name: generic-deployment
+  type: ClusterIP
+status:
+  loadBalancer: {}
