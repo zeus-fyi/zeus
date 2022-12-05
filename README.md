@@ -117,6 +117,13 @@ Hades is used to interact with kubernetes workloads via API, and can apply saved
 
 Users with bearer tokens are able to access our common beacon API at https://eth.zeus.fyi, which supports both consensus client & exec client requests.
 
+### Beacon Indexer ###
+
+#### ```https://apollo.eth.zeus.fyi```
+#### ```pkg/apollo```
+
+Users with bearer tokens are able to access our common beacon balance & status indexer at https://apollo.eth.zeus.fyi, which indexes mainnet validator balances and statuses. It only indexes from epoch 164,000+. It contains an updatedAt field for validator statuses, so you can tell how recent the status update was. It follows head behind ~10 epochs, tracking the finalized checkpoint range plus some small margin. The API is limited to 10k records per request. Requesting >10k, or requesting an epoch that isn't indexed yet will usually result in a null response. Better error messages will come soon though. See the pkg section for the apollo client which shows you how to use it, and makes it easy to integrate directly using the client.
+
 ### Snapshot Downloads ###
 
 Snapshot download urls for mainnet geth & lighthouse available on request.
