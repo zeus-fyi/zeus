@@ -14,7 +14,7 @@ type Resty struct {
 	PrintResp bool
 }
 
-func GetBaseRestyAresTestClient(baseURL, bearer string) Resty {
+func GetBaseRestyTestClient(baseURL, bearer string) Resty {
 	r := Resty{}
 	r.Client = resty.New()
 	r.Client.SetBaseURL(baseURL)
