@@ -164,9 +164,9 @@ Cluster class creation coming soon for better organziation and easier management
 
 ### Deployable Topologies ###
 
-### Systems Orchestration Topology ###
+### Network Orchestration Topology ###
 
-One or many network matrix system topologies that are combined with orchestration workflows from Artemis (coming soon), and Zeus, to build complex control flows and/or sequenced network states. This could be an enterprise fleet of infrastructure, a complex devops operation done at scale, or a simulation of a large testnet, or a built-in orchstration flow for automating web3 smart contract interactions for users and sending them notifications and prompts.
+One or many network matrix system topologies that are combined with orchestration workflows from Artemis, and Zeus, to build complex control flows and/or sequenced network states. This could be an enterprise fleet of infrastructure, a complex devops operation done at scale, or a simulation of a large testnet, or a built-in orchstration flow for automating web3 smart contract interactions for users and sending them notifications and prompts.
 
 ### Matrix Topology ###
 
