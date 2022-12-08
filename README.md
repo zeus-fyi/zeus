@@ -20,7 +20,7 @@ Example actions do log dumps, pod restarts, configuration changes on demand for 
 
 ### ```zeus/cookbooks/ethereum/beacons/beacon_cluster_test.go ```
 
-See this test case to see how a beacon cluster class was created. 
+See this test case to see how a beacon cluster class was created. Use a versioned release tag to ensure consistent stable setups if using any of the examples, the main branch is frequently in flux.
 
 #### Ethereum ####
 
