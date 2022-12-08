@@ -18,6 +18,10 @@ Contains kubernetes config setup templates
 
 Example actions do log dumps, pod restarts, configuration changes on demand for k8s applications, and more.
 
+### ```zeus/cookbooks/ethereum/beacons/beacon_cluster_test.go ```
+
+See this test case to see how a beacon cluster class was created. 
+
 #### Ethereum ####
 
 Contains full kubernetes infra setup for a lighthouse-geth beacon with snapshot download capability, and common interactions for developing & debugging an ethereum beacon. 
