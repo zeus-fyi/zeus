@@ -17,18 +17,20 @@ var deployConsensusClientKnsReq = zeus_req_types.TopologyDeployRequest{
 
 // chart workload metadata
 var consensusClientChart = zeus_req_types.TopologyCreateRequest{
-	TopologyName:     "lighthouse",
-	ChartName:        "lighthouse-hercules",
-	ChartDescription: "lighthouse-hercules",
-	Version:          fmt.Sprintf("v0.0.%d", time.Now().Unix()),
+	TopologyName:     "lighthouseHercules",
+	ChartName:        "lighthouseHercules",
+	ChartDescription: "lighthouseHercules",
+	Version:          fmt.Sprintf("lighthouseHerculesv0.0.%d", time.Now().Unix()),
+	SkeletonBaseName: "lighthouseHercules",
+	Tag:              "latest",
 }
 
 // DirOut is where it will write a copy of the chart you uploaded, which helps verify the workload is correct
 var beaconConsensusClientChartPath = filepaths.Path{
 	PackageName: "",
-	DirIn:       "./ethereum/beacon/infra",
+	DirIn:       "./ethereum/beacons/infra/consensus_client",
 	DirOut:      "./ethereum/outputs",
-	FnIn:        "lighthouse", // filename for your gzip workload
+	FnIn:        "lighthouseHercules", // filename for your gzip workload
 	FnOut:       "",
 	Env:         "",
 	FilterFiles: strings_filter.FilterOpts{},
