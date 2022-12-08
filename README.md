@@ -158,7 +158,7 @@ Schedule a demo: https://calendly.com/alex-zeus-fyi/zeus-demo
 
 ### Cluster Topology Class Hierarchy Definitions ###
 
-Cluster class creation coming soon for better organziation and easier management of more complex app configurations, here's an overview of how the hierarchy system will work.
+Network class creation coming soon for better organziation and easier management of more complex ecosystem configurations, here's an overview of how the hierarchy system will work.
 
 ### Highest to Lowest Level ###
 
