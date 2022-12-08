@@ -40,7 +40,7 @@ spec:
               containerPort: 9003
               protocol: TCP
         - name: zeus-validators
-          image: "sigp/zeus-validators:v3.2.1-modern"
+          image: "sigp/lighthouse:v3.2.1-modern"
           imagePullPolicy: IfNotPresent
           command: [ "/bin/sh" ]
           args: [ "-c","/scripts/start.sh" ]
