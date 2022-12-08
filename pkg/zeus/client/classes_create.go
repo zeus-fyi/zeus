@@ -16,7 +16,7 @@ func (z *ZeusClient) CreateClass(ctx context.Context, tar zeus_req_types.Topolog
 	respJson := topology_workloads.TopologyCreateClassResponse{}
 	resp, err := z.R().
 		SetResult(&respJson).
-		SetBody(tar).
+		SetBody(&tar).
 		Post(zeus_endpoints.InfraCreateClassV1Path)
 
 	if err != nil || resp.StatusCode() != http.StatusOK {

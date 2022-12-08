@@ -7,6 +7,9 @@ type TopologyCreateRequest struct {
 	ChartName        string `json:"chartName"`
 	ChartDescription string `json:"chartDescription,omitempty"`
 	Version          string `json:"version"`
+
+	SkeletonBaseName string `json:"skeletonBaseName,omitempty"`
+	Tag              string `json:"tag,omitempty"`
 }
 
 type TopologyDeployRequest struct {
