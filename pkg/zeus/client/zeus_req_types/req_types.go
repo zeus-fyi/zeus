@@ -21,3 +21,25 @@ type TopologyRequest struct {
 type TopologyCloudCtxNsQueryRequest struct {
 	zeus_common_types.CloudCtxNs
 }
+
+type TopologyCreateOrAddBasesToClassesRequest struct {
+	ClassName      string   `json:"className"`
+	ClassBaseNames []string `json:"classBaseNames,omitempty"`
+}
+
+type ClusterTopologyDeployRequest struct {
+	ClusterName string   `json:"clusterName"`
+	BaseOptions []string `json:"baseOptions"`
+	zeus_common_types.CloudCtxNs
+}
+
+type ClusterTopology struct {
+	ClusterName string              `json:"clusterName"`
+	Topologies  []ClusterTopologies `json:"topologies"`
+}
+
+type ClusterTopologies struct {
+	TopologyID       int    `json:"topologyID"`
+	SkeletonBaseName string `json:"skeletonBaseName"`
+	Tag              string `json:"tag"`
+}

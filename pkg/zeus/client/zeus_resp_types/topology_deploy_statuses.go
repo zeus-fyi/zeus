@@ -17,3 +17,8 @@ type TopologyDeployStatus struct {
 	UpdatedAt      time.Time `json:"updatedAt"`
 	CloudCtxNs     zeus_common_types.CloudCtxNs
 }
+
+type ClusterStatus struct {
+	ClusterName string `json:"clusterName"`
+	Status      string `json:"status"`
+}
