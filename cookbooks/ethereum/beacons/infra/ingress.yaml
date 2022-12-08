@@ -19,13 +19,13 @@ spec:
             pathType: ImplementationSpecific
             backend:
               service:
-                name: zeus-lighthouse
+                name: zeus-consensus-client
                 port:
                   number: 80
           - path: /
             pathType: Exact
             backend:
               service:
-                name: zeus-geth
+                name: zeus-exec-client
                 port:
                   number: 80

@@ -1,10 +1,10 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: zeus-geth
+  name: zeus-exec-client
   labels:
-    app.kubernetes.io/name: geth
-    app.kubernetes.io/instance: zeus-geth
+    app.kubernetes.io/name: zeus-exec-client
+    app.kubernetes.io/instance: zeus-exec-client
     app.kubernetes.io/managed-by: zeus
   annotations:
     {}
@@ -13,16 +13,16 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: geth
-      app.kubernetes.io/instance: zeus-geth
-  serviceName: zeus-geth
+      app.kubernetes.io/name: zeus-exec-client
+      app.kubernetes.io/instance: zeus-exec-client
+  serviceName: zeus-exec-client
   updateStrategy:
     type: RollingUpdate
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: geth
-        app.kubernetes.io/instance: zeus-geth
+        app.kubernetes.io/name: zeus-exec-client
+        app.kubernetes.io/instance: zeus-exec-client
       annotations:
         {}
     spec:
@@ -66,7 +66,7 @@ spec:
             - name: hercules
               containerPort: 9003
               protocol: TCP
-        - name: geth
+        - name: zeus-exec-client
           image: "ethereum/client-go:v1.10.23"
           imagePullPolicy: IfNotPresent
           command: [ "/bin/sh" ]
