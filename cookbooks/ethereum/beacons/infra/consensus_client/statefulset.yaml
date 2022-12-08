@@ -66,7 +66,7 @@ spec:
               containerPort: 9003
               protocol: TCP
         - name: zeus-consensus-client
-          image: "sigp/zeus-consensus-client:v3.2.1-modern"
+          image: "sigp/lighthouse:v3.2.1-modern"
           imagePullPolicy: IfNotPresent
           command: [ "/bin/sh" ]
           args: [ "-c","/scripts/start.sh" ]
