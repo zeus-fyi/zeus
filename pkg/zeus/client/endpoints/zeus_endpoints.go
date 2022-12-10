@@ -41,3 +41,5 @@ const DestroyDeployInfraV1Path = "/v1/deploy/destroy"
 const ReadWorkloadV1Path = "/v1/workload/read"
 
 const PodsActionV1Path = "/v1/pods"
+
+const ConfigMapsActionV1Path = "/v1/configmaps"
