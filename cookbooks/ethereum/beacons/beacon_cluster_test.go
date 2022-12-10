@@ -1,4 +1,4 @@
-package beacon_cookbook
+package beacon_cookbooks
 
 import (
 	"context"
@@ -72,8 +72,8 @@ func (t *BeaconCookbookTestSuite) TestUploadBeaconCharts() {
 	t.Require().Nil(err)
 	t.Assert().NotZero(resp.TopologyID)
 
-	deployConsensusClientKnsReq.TopologyID = resp.TopologyID
-	tar := zeus_req_types.TopologyRequest{TopologyID: deployConsensusClientKnsReq.TopologyID}
+	DeployConsensusClientKnsReq.TopologyID = resp.TopologyID
+	tar := zeus_req_types.TopologyRequest{TopologyID: DeployConsensusClientKnsReq.TopologyID}
 	chartResp, err := t.ZeusTestClient.ReadChart(ctx, tar)
 	t.Require().Nil(err)
 	t.Assert().NotEmpty(chartResp)

@@ -1,4 +1,4 @@
-package beacon_cookbook
+package beacon_cookbooks
 
 import "github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_req_types"
 
