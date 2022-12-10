@@ -1,4 +1,4 @@
-package beacon_cookbook
+package beacon_cookbooks
 
 import (
 	"context"

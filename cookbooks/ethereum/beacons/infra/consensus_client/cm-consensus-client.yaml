@@ -24,3 +24,18 @@ data:
   pause.sh: |-
     #!/bin/sh
     exec sleep 100000000000000000
+  lighthouse.sh: |-
+    #!/bin/sh
+    exec lighthouse beacon_node \
+              --log-format=JSON \
+              --datadir=/data \
+              --enr-tcp-port=9000 \
+              --enr-udp-port=9000 \
+              --listen-address=0.0.0.0 \
+              --port=9000 \
+              --discovery-port=9000 \
+              --http \
+              --http-address=0.0.0.0 \
+              --http-port=5052 \
+              --execution-jwt=/data/jwt.hex \
+              --execution-endpoint="http://zeus-geth:8551"

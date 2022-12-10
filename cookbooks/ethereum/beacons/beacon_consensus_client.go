@@ -1,4 +1,4 @@
-package beacon_cookbook
+package beacon_cookbooks
 
 import (
 	"fmt"
@@ -9,8 +9,8 @@ import (
 	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_req_types"
 )
 
-// set your own topologyID here after uploading a chart workload
-var deployConsensusClientKnsReq = zeus_req_types.TopologyDeployRequest{
+// DeployConsensusClientKnsReq set your own topologyID here after uploading a chart workload
+var DeployConsensusClientKnsReq = zeus_req_types.TopologyDeployRequest{
 	TopologyID: 0,
 	CloudCtxNs: beaconCloudCtxNs,
 }
