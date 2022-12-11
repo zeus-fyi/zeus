@@ -27,7 +27,7 @@ func (t *BeaconCookbookTestSuite) SetupTest() {
 }
 
 func (t *BeaconCookbookTestSuite) TestDestroyDeployBeacon() {
-	resp, err := t.ZeusTestClient.DestroyDeploy(context.Background(), deployExecClientKnsReq)
+	resp, err := t.ZeusTestClient.DestroyDeploy(context.Background(), DeployExecClientKnsReq)
 	t.Require().Nil(err)
 	t.Assert().NotEmpty(resp)
 }

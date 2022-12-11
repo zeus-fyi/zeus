@@ -86,8 +86,8 @@ func (t *BeaconCookbookTestSuite) TestUploadBeaconCharts() {
 	t.Require().Nil(err)
 	t.Assert().NotZero(resp.TopologyID)
 
-	deployExecClientKnsReq.TopologyID = resp.TopologyID
-	tar = zeus_req_types.TopologyRequest{TopologyID: deployExecClientKnsReq.TopologyID}
+	DeployExecClientKnsReq.TopologyID = resp.TopologyID
+	tar = zeus_req_types.TopologyRequest{TopologyID: DeployExecClientKnsReq.TopologyID}
 	chartResp, err = t.ZeusTestClient.ReadChart(ctx, tar)
 	t.Require().Nil(err)
 	t.Assert().NotEmpty(chartResp)
