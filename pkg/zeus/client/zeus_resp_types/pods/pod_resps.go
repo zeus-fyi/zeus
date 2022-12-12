@@ -7,7 +7,7 @@ import (
 )
 
 type ClientResp struct {
-	ReplyBodies map[string]string
+	ReplyBodies map[string][]byte
 }
 
 type PodsSummary struct {

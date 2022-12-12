@@ -9,8 +9,8 @@ import (
 	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_req_types"
 )
 
-// set your own topologyID here after uploading a chart workload
-var deployExecClientKnsReq = zeus_req_types.TopologyDeployRequest{
+// DeployExecClientKnsReq set your own topologyID here after uploading a chart workload
+var DeployExecClientKnsReq = zeus_req_types.TopologyDeployRequest{
 	TopologyID: 0,
 	CloudCtxNs: beaconCloudCtxNs,
 }

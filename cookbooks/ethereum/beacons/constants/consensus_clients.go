@@ -25,3 +25,11 @@ func IsConsensusClient(name string) bool {
 		return false
 	}
 }
+
+type ConsensusClientSyncStatus struct {
+	Data struct {
+		HeadSlot     string `json:"head_slot"`
+		SyncDistance string `json:"sync_distance"`
+		IsSyncing    bool   `json:"is_syncing"`
+	} `json:"data"`
+}
