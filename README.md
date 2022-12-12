@@ -59,7 +59,7 @@ use the demo code to create your first api request in seconds
 
 Artemis is a tx orchestrator. It reliably submits & confirms ethereum transactions and logs their receipts. Chain with 
 the in memory db for storing web3 signer keys to build highly reliable web3 api actions with other users and smart contracts. You'll need
-a bearer token to use this client. 
+a bearer token to use this client. A more advanced orchestrator that can handle high volume DeFi trading, which manages nonce sequences, sets up event triggers & scheduling, and has queriable event artifacts is in works, targeted release by end of Feb.
 
 ### Aegis ###
 
