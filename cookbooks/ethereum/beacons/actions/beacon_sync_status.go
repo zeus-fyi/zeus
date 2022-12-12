@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 
 	"github.com/rs/zerolog/log"
-	beacon_cookbooks "github.com/zeus-fyi/zeus/cookbooks/ethereum/beacons"
 	client_consts "github.com/zeus-fyi/zeus/cookbooks/ethereum/beacons/constants"
 	strings_filter "github.com/zeus-fyi/zeus/pkg/utils/strings"
 	zeus_pods_reqs "github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_req_types/pods"
@@ -18,9 +17,8 @@ func (b *BeaconActionsClient) GetConsensusClientSyncStatus(ctx context.Context) 
 		Ports:      client_consts.GetClientBeaconPortsHTTP(b.ConsensusClient),
 	}
 	filter := strings_filter.FilterOpts{Contains: b.ConsensusClient}
-	routeHeader := beacon_cookbooks.DeployConsensusClientKnsReq
 	par := zeus_pods_reqs.PodActionRequest{
-		TopologyDeployRequest: routeHeader,
+		TopologyDeployRequest: b.BeaconKnsReq,
 		Action:                zeus_pods_reqs.PortForwardToAllMatchingPods,
 		ClientReq:             &cliReq,
 		FilterOpts:            &filter,
@@ -54,9 +52,8 @@ func (b *BeaconActionsClient) GetExecClientSyncStatus(ctx context.Context) ([]cl
 		Payload:         `{"method":"eth_syncing","params":[],"id":1,"jsonrpc":"2.0"}`,
 	}
 	filter := strings_filter.FilterOpts{Contains: b.ExecClient}
-	routeHeader := beacon_cookbooks.DeployExecClientKnsReq
 	par := zeus_pods_reqs.PodActionRequest{
-		TopologyDeployRequest: routeHeader,
+		TopologyDeployRequest: b.BeaconKnsReq,
 		Action:                zeus_pods_reqs.PortForwardToAllMatchingPods,
 		ClientReq:             &cliReq,
 		FilterOpts:            &filter,

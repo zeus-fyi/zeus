@@ -12,7 +12,7 @@ import (
 // DeployExecClientKnsReq set your own topologyID here after uploading a chart workload
 var DeployExecClientKnsReq = zeus_req_types.TopologyDeployRequest{
 	TopologyID: 0,
-	CloudCtxNs: beaconCloudCtxNs,
+	CloudCtxNs: BeaconCloudCtxNs,
 }
 
 // chart workload metadata

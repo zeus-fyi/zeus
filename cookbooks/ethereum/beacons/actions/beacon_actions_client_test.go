@@ -17,7 +17,7 @@ import (
 var ctx = context.Background()
 
 var basePar = zeus_pods_reqs.PodActionRequest{
-	TopologyDeployRequest: beaconKnsReq,
+	TopologyDeployRequest: BeaconKnsReq,
 	PodName:               "",
 	FilterOpts:            nil,
 	ClientReq:             nil,
@@ -25,7 +25,7 @@ var basePar = zeus_pods_reqs.PodActionRequest{
 }
 
 // set your own topologyID here after uploading a chart workload
-var beaconKnsReq = zeus_req_types.TopologyDeployRequest{
+var BeaconKnsReq = zeus_req_types.TopologyDeployRequest{
 	TopologyID: 1669159384971627008,
 	CloudCtxNs: beaconCloudCtxNs,
 }
@@ -48,7 +48,7 @@ func (t *BeaconActionsTestSuite) SetupTest() {
 	tc := configs.InitLocalTestConfigs()
 
 	// uses the bearer token from test/configs/config.yaml
-	t.BeaconActionsClient = NewDefaultBeaconActionsClient(tc.Bearer)
+	t.BeaconActionsClient = NewDefaultBeaconActionsClient(tc.Bearer, BeaconKnsReq)
 	dir := cookbooks.ChangeToCookbookDir()
 
 	t.BeaconActionsClient.PrintPath.DirIn = path.Join(dir, "/ethereum/beacon/logs")
