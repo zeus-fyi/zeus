@@ -6,5 +6,5 @@ var cd = zeus_req_types.ClusterTopologyDeployRequest{
 	// ethereumBeacons is a reserved keyword, to make it global, you can replace the below with your own setup
 	ClusterName: "ethereumBeacons",
 	BaseOptions: []string{"gethHercules", "lighthouseHercules"},
-	CloudCtxNs:  beaconCloudCtxNs,
+	CloudCtxNs:  BeaconCloudCtxNs,
 }
