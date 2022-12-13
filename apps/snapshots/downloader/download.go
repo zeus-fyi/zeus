@@ -29,9 +29,9 @@ func ChainDownload() {
 	switch {
 	// just approximates empty as <= 1% disk usage in dataDir
 	case onlyIfEmptyDir && stats.UsedPercent <= float64(1):
-		err = poseidon.DownloadSnapshot(ctx, dataDir.DirIn, preSignedURL)
+		err = poseidon.DownloadFile(ctx, dataDir.DirIn, preSignedURL)
 		if err != nil {
-			log.Ctx(ctx).Panic().Err(err).Msg("DownloadSnapshot")
+			log.Ctx(ctx).Panic().Err(err).Msg("DownloadFile")
 		}
 
 		switch compressionType {

@@ -9,13 +9,13 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-func DownloadSnapshot(ctx context.Context, dataDir, bucketURL string) error {
+func DownloadFile(ctx context.Context, dataDir, url string) error {
 	// download procedure
 	client := grab.NewClient()
 	// Downloads to your datadir
-	req, err := grab.NewRequest(dataDir, bucketURL)
+	req, err := grab.NewRequest(dataDir, url)
 	if err != nil {
-		log.Ctx(ctx).Err(err).Msgf("DownloadSnapshot: NewRequest, %s", bucketURL)
+		log.Ctx(ctx).Err(err).Msgf("DownloadFile: NewRequest, %s", url)
 		return err
 	}
 	// start download
@@ -38,7 +38,7 @@ func DownloadSnapshot(ctx context.Context, dataDir, bucketURL string) error {
 			// download is complete
 			err = resp.Err()
 			if err != nil {
-				log.Ctx(ctx).Err(err).Msg("DownloadSnapshot")
+				log.Ctx(ctx).Err(err).Msg("DownloadFile")
 				return err
 			}
 			fmt.Printf("Downloading Complete")
