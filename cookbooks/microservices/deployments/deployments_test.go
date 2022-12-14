@@ -17,6 +17,20 @@ type DeploymentsCookbookTestSuite struct {
 	ZeusTestClient zeus_client.ZeusClient
 }
 
+func (t *DeploymentsCookbookTestSuite) TestDeployMicroservice() {
+	ctx := context.Background()
+	resp, err := t.ZeusTestClient.Deploy(ctx, genericDeploymentKnsReq)
+	t.Require().Nil(err)
+	t.Assert().NotEmpty(resp)
+}
+
+func (t *DeploymentsCookbookTestSuite) TestDestroyMicroservice() {
+	ctx := context.Background()
+	resp, err := t.ZeusTestClient.DestroyDeploy(ctx, genericDeploymentKnsReq)
+	t.Require().Nil(err)
+	t.Assert().NotEmpty(resp)
+}
+
 func (t *DeploymentsCookbookTestSuite) TestUploadCharts() {
 	ctx := context.Background()
 	resp, err := t.ZeusTestClient.UploadChart(ctx, genericDeploymentChartPath, genericDeploymentChart)

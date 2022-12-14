@@ -10,9 +10,9 @@ spec:
   tls:
     - secretName: generic-deployment-tls
       hosts:
-        - api.zeus.fyi
+        - generic.zeus.fyi
   rules:
-    - host: api.zeus.fyi
+    - host: generic.zeus.fyi
       http:
         paths:
           - path: /

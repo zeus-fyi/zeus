@@ -4,6 +4,11 @@ import (
 	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_common_types"
 )
 
+const (
+	start    = "start"
+	download = "download"
+)
+
 var BeaconCloudCtxNs = zeus_common_types.CloudCtxNs{
 	CloudProvider: "do",
 	Region:        "sfo3",

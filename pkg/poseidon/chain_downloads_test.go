@@ -20,7 +20,7 @@ func (t *ChainDownloadsClientTestSuite) SetupTest() {
 
 func (t *ChainDownloadsClientTestSuite) TestDownloader() {
 	cfgs := configs.InitLocalTestConfigs()
-	err := DownloadSnapshot(ctx, ".", cfgs.PresignedBucketURL)
+	err := DownloadFile(ctx, ".", cfgs.PresignedBucketURL)
 	t.Assert().Nil(err)
 }
 
