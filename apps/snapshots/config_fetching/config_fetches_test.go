@@ -30,7 +30,6 @@ func (t *ConfigFetchTestSuite) TestGetConfig() {
 	url := GetLatestReleaseConfigDownloadURL()
 	t.Require().NotEmpty(url)
 	fmt.Println(url)
-
 }
 
 func (t *ConfigFetchTestSuite) SetupTest() {

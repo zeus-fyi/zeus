@@ -18,7 +18,7 @@ var (
 func StartUp() {
 	ChainDownload()
 	// the below uses a switch case to download if an ephemeralClientName is used
-	config_fetching.ExtractAndDecEphemeralTestnetConfig(clientName)
+	config_fetching.ExtractAndDecEphemeralTestnetConfig(dataDir, clientName)
 }
 
 func init() {

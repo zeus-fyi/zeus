@@ -2,6 +2,7 @@ package config_fetching
 
 import (
 	"context"
+	"os"
 	"path"
 
 	"github.com/rs/zerolog/log"
@@ -11,23 +12,26 @@ import (
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 )
 
-var dataDir filepaths.Path
-
-func ExtractAndDecEphemeralTestnetConfig(clientName string) {
+func ExtractAndDecEphemeralTestnetConfig(dataDir filepaths.Path, clientName string) {
 	switch clientName {
 	case beacon_cookbooks.LighthouseEphemeral:
-		dataDir.DirIn = path.Join(dataDir.DirIn, "/configs/testnet")
-		dataDir.DirOut = dataDir.DirIn
+		dataDir.DirOut = path.Join(dataDir.DirIn, "/configs/testnet")
+		log.Info().Interface("dataDir", dataDir).Msg("ExtractAndDecEphemeralTestnetConfig: LighthouseEphemeral")
 	case beacon_cookbooks.GethEphemeral:
 		// placing a genesis.json file directly in the datadir path should set the chain to the expected value
 		dataDir.DirOut = dataDir.DirIn
+		log.Info().Interface("dataDir", dataDir).Msg("ExtractAndDecEphemeralTestnetConfig: GethEphemeral")
 	case "test":
 		dataDir.DirIn = "."
-		dataDir.DirOut = "configs"
+		dataDir.DirOut = "./configs"
 	default:
 		return
 	}
 	ctx := context.Background()
+	log.Info().Interface("dataDir.DirOut", dataDir.DirOut)
+	if _, zerr := os.Stat(dataDir.DirOut); os.IsNotExist(zerr) {
+		_ = os.MkdirAll(dataDir.DirOut, 0700) // Create your dir
+	}
 	url := GetLatestReleaseConfigDownloadURL()
 	dataDir.FnIn = ephemeralTestnetFile
 	err := poseidon.DownloadFile(ctx, dataDir.DirIn, url)

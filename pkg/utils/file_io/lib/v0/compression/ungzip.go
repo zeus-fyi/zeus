@@ -8,6 +8,7 @@ import (
 	"os"
 	"path"
 
+	"github.com/rs/zerolog/log"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 )
 
@@ -17,9 +18,9 @@ func (c *Compression) UnGzip(p *filepaths.Path) error {
 	if p == nil {
 		return errors.New("need to include a path")
 	}
-
 	r, err := os.Open(p.FileInPath())
 	if err != nil {
+		log.Err(err).Interface("path", p).Msg("UnGzip: os.Open")
 		return err
 	}
 	defer r.Close()
@@ -66,9 +67,11 @@ func (c *Compression) UnGzip(p *filepaths.Path) error {
 			}
 			outFile, perr := os.Create(fo)
 			if perr != nil {
+				log.Err(perr).Interface("path", p).Msg("UnGzip: os.Create(fo)")
 				return perr
 			}
 			if _, cerr := io.Copy(outFile, tr); cerr != nil {
+				log.Err(cerr).Interface("path", p).Msg("UnGzip: io.Copy")
 				return cerr
 			}
 			outFile.Close()

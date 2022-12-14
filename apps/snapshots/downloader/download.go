@@ -11,7 +11,7 @@ import (
 
 func ChainDownload() {
 	ctx := context.Background()
-	if len(preSignedURL) == 0 {
+	if len(preSignedURL) <= 0 {
 		log.Ctx(ctx).Info().Msg("No download url provided, skipping snapshot download")
 		return
 	}
