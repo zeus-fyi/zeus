@@ -8,19 +8,17 @@ import (
 )
 
 var (
-	dataDir                      filepaths.Path
-	preSignedURL                 string
-	onlyIfEmptyDir               bool
-	compressionType              string
-	clientName                   string
-	dlExtractEphemeralTestnetCfg bool
+	dataDir         filepaths.Path
+	preSignedURL    string
+	onlyIfEmptyDir  bool
+	compressionType string
+	clientName      string
 )
 
 func StartUp() {
 	ChainDownload()
-	if dlExtractEphemeralTestnetCfg {
-		config_fetching.ExtractAndDecEphemeralTestnetConfig()
-	}
+	// the below uses a switch case to download if an ephemeralClientName is used
+	config_fetching.ExtractAndDecEphemeralTestnetConfig(clientName)
 }
 
 func init() {
@@ -30,7 +28,6 @@ func init() {
 	Cmd.Flags().BoolVar(&onlyIfEmptyDir, "onlyIfEmptyDir", true, "only download & extract if the datadir is empty")
 	Cmd.Flags().StringVar(&compressionType, "compressionExtension", ".tar.lz4", "compression type")
 	Cmd.Flags().StringVar(&clientName, "clientName", "geth", "client name")
-	Cmd.Flags().BoolVar(&dlExtractEphemeralTestnetCfg, "dlExtractEphemeralTestnetCfg", true, "extract the latest config for the ephemeral testnet")
 }
 
 // Cmd represents the base command when called without any subcommands

@@ -10,14 +10,14 @@ const (
 	consensusClient             = "zeus-consensus-client"
 	lighthouseDockerImage       = "sigp/lighthouse:v3.3.0-modern"
 	downloadLighthouseEphemeral = "downloadLighthouseEphemeral"
-	lighthouseEphemeral         = "lighthouseEphemeral"
+	LighthouseEphemeral         = "lighthouseEphemeral"
 )
 
 func EphemeralConsensusClientLighthouseConfig(inf topology_workloads.TopologyBaseInfraWorkload) {
 	if inf.ConfigMap != nil {
 		m := make(map[string]string)
 		m = inf.ConfigMap.Data
-		vSrc, ok := inf.ConfigMap.Data[lighthouseEphemeral+".sh"]
+		vSrc, ok := inf.ConfigMap.Data[LighthouseEphemeral+".sh"]
 		if ok {
 			m[start+".sh"] = vSrc
 		} else {

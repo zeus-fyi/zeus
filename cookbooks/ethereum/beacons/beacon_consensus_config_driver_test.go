@@ -14,7 +14,7 @@ func (t *BeaconCookbookTestSuite) TestConsensusClientBeaconConfigDriver() {
 	EphemeralConsensusClientLighthouseConfig(inf)
 
 	t.Require().NotEmpty(inf.ConfigMap)
-	t.Assert().Equal(inf.ConfigMap.Data["start.sh"], inf.ConfigMap.Data[lighthouseEphemeral+".sh"])
+	t.Assert().Equal(inf.ConfigMap.Data["start.sh"], inf.ConfigMap.Data[LighthouseEphemeral+".sh"])
 
 	t.Require().NotEmpty(inf.StatefulSet)
 

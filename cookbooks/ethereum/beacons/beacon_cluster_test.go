@@ -95,3 +95,7 @@ func (t *BeaconCookbookTestSuite) TestUploadBeaconCharts() {
 	err = chartResp.PrintWorkload(beaconExecClientChartPath)
 	t.Require().Nil(err)
 }
+
+func (t *BeaconCookbookTestSuite) TestEphemeralStakingBeaconConfig() {
+	ConfigEphemeralLighthouseGethStakingBeacon()
+}

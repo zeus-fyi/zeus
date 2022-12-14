@@ -10,14 +10,14 @@ const (
 	execClient            = "zeus-exec-client"
 	gethDockerImage       = "ethereum/client-go:v1.10.26"
 	downloadGethEphemeral = "downloadGethEphemeral"
-	gethEphemeral         = "gethEphemeral"
+	GethEphemeral         = "gethEphemeral"
 )
 
-func EphemeralConsensusClientGethConfig(inf topology_workloads.TopologyBaseInfraWorkload) {
+func EphemeralExecClientGethConfig(inf topology_workloads.TopologyBaseInfraWorkload) {
 	if inf.ConfigMap != nil {
 		m := make(map[string]string)
 		m = inf.ConfigMap.Data
-		vSrc, ok := inf.ConfigMap.Data[gethEphemeral+".sh"]
+		vSrc, ok := inf.ConfigMap.Data[GethEphemeral+".sh"]
 		if ok {
 			m[start+".sh"] = vSrc
 		} else {

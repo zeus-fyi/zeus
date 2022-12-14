@@ -12,18 +12,16 @@ import (
 
 var ctx = context.Background()
 
-type ArtemisConfigFetchTestSuite struct {
+type ConfigFetchTestSuite struct {
 	test_suites.BaseTestSuite
 	TestClient resty_base.Resty
 }
 
-func (t *ArtemisConfigFetchTestSuite) TestDownloadExtract() {
-	dataDir.DirIn = "."
-	dataDir.DirOut = "."
-	ExtractAndDecEphemeralTestnetConfig()
+func (t *ConfigFetchTestSuite) TestDownloadExtract() {
+	ExtractAndDecEphemeralTestnetConfig("test")
 }
 
-func (t *ArtemisConfigFetchTestSuite) TestGetConfig() {
+func (t *ConfigFetchTestSuite) TestGetConfig() {
 	r, err := getLatestTestnetDataReleaseNumber()
 	t.Require().Nil(err)
 	t.Assert().NotEmpty(r)
@@ -35,12 +33,12 @@ func (t *ArtemisConfigFetchTestSuite) TestGetConfig() {
 
 }
 
-func (t *ArtemisConfigFetchTestSuite) SetupTest() {
+func (t *ConfigFetchTestSuite) SetupTest() {
 	// points dir to test/configs
 	//tc := configs.InitLocalTestConfigs()
 	t.TestClient = resty_base.GetBaseRestyTestClient("", "")
 }
 
-func TestArtemisConfigFetchTestSuite(t *testing.T) {
-	suite.Run(t, new(ArtemisConfigFetchTestSuite))
+func TestConfigFetchTestSuite(t *testing.T) {
+	suite.Run(t, new(ConfigFetchTestSuite))
 }

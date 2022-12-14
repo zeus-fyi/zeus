@@ -11,10 +11,10 @@ func (t *BeaconCookbookTestSuite) TestExecClientBeaconConfigDriver() {
 	t.Require().Nil(err)
 	t.Require().NotEmpty(inf)
 
-	EphemeralConsensusClientGethConfig(inf)
+	EphemeralExecClientGethConfig(inf)
 
 	t.Require().NotEmpty(inf.ConfigMap)
-	t.Assert().Equal(inf.ConfigMap.Data["start.sh"], inf.ConfigMap.Data[gethEphemeral+".sh"])
+	t.Assert().Equal(inf.ConfigMap.Data["start.sh"], inf.ConfigMap.Data[GethEphemeral+".sh"])
 
 	t.Require().NotEmpty(inf.StatefulSet)
 

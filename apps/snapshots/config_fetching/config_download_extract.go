@@ -5,6 +5,7 @@ import (
 	"path"
 
 	"github.com/rs/zerolog/log"
+	beacon_cookbooks "github.com/zeus-fyi/zeus/cookbooks/ethereum/beacons"
 	"github.com/zeus-fyi/zeus/pkg/poseidon"
 	"github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/compression"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
@@ -12,10 +13,21 @@ import (
 
 var dataDir filepaths.Path
 
-func ExtractAndDecEphemeralTestnetConfig() {
+func ExtractAndDecEphemeralTestnetConfig(clientName string) {
+	switch clientName {
+	case beacon_cookbooks.LighthouseEphemeral:
+		dataDir.DirOut = path.Join(dataDir.DirIn, "/configs/testnet")
+	case beacon_cookbooks.GethEphemeral:
+		// placing a genesis.json file directly in the datadir path should set the chain to the expected value
+		dataDir.DirOut = dataDir.DirIn
+	case "test":
+		dataDir.DirIn = "."
+		dataDir.DirOut = "configs"
+	default:
+		return
+	}
 	ctx := context.Background()
 	url := GetLatestReleaseConfigDownloadURL()
-	dataDir.DirOut = path.Join(dataDir.DirIn, "/configs/testnet")
 	dataDir.FnIn = ephemeralTestnetFile
 	err := poseidon.DownloadFile(ctx, dataDir.DirIn, url)
 	if err != nil {
