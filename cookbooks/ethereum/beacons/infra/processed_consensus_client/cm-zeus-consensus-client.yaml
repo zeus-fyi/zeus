@@ -64,5 +64,5 @@ kind: ConfigMap
 metadata:
   creationTimestamp: null
   labels:
-    version: version-1670990410247830196
+    version: version-1670997023017383949
   name: cm-zeus-consensus-client
