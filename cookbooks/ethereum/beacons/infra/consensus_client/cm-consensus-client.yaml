@@ -39,3 +39,6 @@ data:
               --http-port=5052 \
               --execution-jwt=/data/jwt.hex \
               --execution-endpoint="http://zeus-geth:8551"
+  downloadEphemeral.sh: |-
+    #!/bin/sh
+    exec snapshot --downloadURL="" --clientName="lighthouse" --dlExtractEphemeralTestnetCfg=true

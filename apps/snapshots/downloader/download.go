@@ -6,15 +6,8 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/zeus-fyi/zeus/pkg/poseidon"
 	"github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/compression"
-	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 	"github.com/zeus-fyi/zeus/pkg/utils/host_info"
 )
-
-var dataDir filepaths.Path
-var preSignedURL string
-var onlyIfEmptyDir bool
-var compressionType string
-var clientName string
 
 func ChainDownload() {
 	ctx := context.Background()
