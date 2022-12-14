@@ -132,7 +132,7 @@ Users with bearer tokens are able to access our common beacon balance & status i
 
 Snapshot download urls for mainnet geth & lighthouse available on request.
 
-### Beta Version Overview 
+### Overview 
 
 1. Automates translation of kubernetes yaml configurations into representative SQL models
 2. Users upload these infrastructure configurations via API where they are stored in the DB
