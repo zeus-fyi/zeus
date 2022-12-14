@@ -7,6 +7,7 @@ import (
 	hercules_router "github.com/zeus-fyi/hercules/api"
 	v1_common_routes "github.com/zeus-fyi/hercules/api/v1/common"
 	hercules_jwt "github.com/zeus-fyi/hercules/pkg/jwt"
+	aegis_inmemdbs "github.com/zeus-fyi/zeus/pkg/aegis/inmemdbs"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 )
 
@@ -30,7 +31,7 @@ func Hercules() {
 	v1_common_routes.CommonManager.Path = dataDir
 	srv.E = hercules_router.Routes(srv.E, dataDir)
 
-	inmemdbs.InitValidatorDB()
+	aegis_inmemdbs.InitValidatorDB()
 	srv.Start()
 }
 
