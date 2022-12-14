@@ -7,10 +7,12 @@ import (
 )
 
 const (
-	downloadLighthouse  = "downloadLighthouseEphemeral"
-	lighthouseEphemeral = "lighthouseEphemeral"
-	start               = "start"
-	download            = "download"
+	consensusClient       = "zeus-consensus-client"
+	lighthouseDockerImage = "sigp/lighthouse:v3.3.0-modern"
+	downloadLighthouse    = "downloadLighthouseEphemeral"
+	lighthouseEphemeral   = "lighthouseEphemeral"
+	start                 = "start"
+	download              = "download"
 )
 
 func EphemeralConsensusClientLighthouseConfig(inf topology_workloads.TopologyBaseInfraWorkload) {
@@ -32,4 +34,13 @@ func EphemeralConsensusClientLighthouseConfig(inf topology_workloads.TopologyBas
 			panic(err)
 		}
 	}
+
+	if inf.StatefulSet != nil {
+		for i, c := range inf.StatefulSet.Spec.Template.Spec.Containers {
+			if c.Name == consensusClient {
+				inf.StatefulSet.Spec.Template.Spec.Containers[i].Image = lighthouseDockerImage
+			}
+		}
+	}
+
 }

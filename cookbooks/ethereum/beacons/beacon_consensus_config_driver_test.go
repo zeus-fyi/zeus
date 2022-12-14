@@ -13,6 +13,20 @@ func (t *BeaconCookbookTestSuite) TestConsensusClientBeaconConfigDriver() {
 
 	EphemeralConsensusClientLighthouseConfig(inf)
 
+	t.Require().NotEmpty(inf.ConfigMap)
+	t.Assert().Equal(inf.ConfigMap.Data["start.sh"], inf.ConfigMap.Data[lighthouseEphemeral+".sh"])
+
+	t.Require().NotEmpty(inf.StatefulSet)
+
+	count := 0 // verifies consensusClient key is found
+	for _, c := range inf.StatefulSet.Spec.Template.Spec.Containers {
+		if c.Name == consensusClient {
+			t.Assert().Equal(lighthouseDockerImage, c.Image)
+			count += 1
+		}
+	}
+	t.Require().Equal(1, count)
+
 	t.Assert().Equal(inf.ConfigMap.Data["start.sh"], inf.ConfigMap.Data[lighthouseEphemeral+".sh"])
 	p.DirOut = "./ethereum/beacons/infra/processed_consensus_client"
 
