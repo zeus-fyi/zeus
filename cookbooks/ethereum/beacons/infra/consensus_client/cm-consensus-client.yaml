@@ -20,7 +20,7 @@ data:
               --execution-endpoint="http://zeus-exec-client:8551"
   download.sh: |-
     #!/bin/sh
-    exec snapshot --downloadURL="" --clientName="lighthouse"
+    exec snapshots --downloadURL="" --clientName="lighthouse"
   pause.sh: |-
     #!/bin/sh
     exec sleep 100000000000000000
@@ -41,7 +41,7 @@ data:
               --execution-endpoint="http://zeus-exec-client:8551"
   downloadLighthouseEphemeral.sh: |-
     #!/bin/sh
-    exec snapshot --downloadURL="" --clientName="lighthouseEphemeral"
+    exec snapshots --downloadURL="" --clientName="lighthouseEphemeral"
   lighthouseEphemeral.sh: |-
     #!/bin/sh
     exec lighthouse beacon_node \

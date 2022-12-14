@@ -2,10 +2,10 @@ apiVersion: v1
 data:
   download.sh: |-
     #!/bin/sh
-    exec snapshot --downloadURL="" --clientName="lighthouseEphemeral"
+    exec snapshots --downloadURL="" --clientName="lighthouseEphemeral"
   downloadLighthouseEphemeral.sh: |-
     #!/bin/sh
-    exec snapshot --downloadURL="" --clientName="lighthouseEphemeral"
+    exec snapshots --downloadURL="" --clientName="lighthouseEphemeral"
   lighthouse.sh: |-
     #!/bin/sh
     exec lighthouse beacon_node \
@@ -64,5 +64,5 @@ kind: ConfigMap
 metadata:
   creationTimestamp: null
   labels:
-    version: version-1671004831702524380
+    version: version-1671005557449870479
   name: cm-zeus-consensus-client

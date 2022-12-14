@@ -2,10 +2,10 @@ apiVersion: v1
 data:
   download.sh: |-
     #!/bin/sh
-    exec snapshot --downloadURL="" --clientName="gethEphemeral"
+    exec snapshots --downloadURL="" --clientName="gethEphemeral"
   downloadGethEphemeral.sh: |-
     #!/bin/sh
-    exec snapshot --downloadURL="" --clientName="gethEphemeral"
+    exec snapshots --downloadURL="" --clientName="gethEphemeral"
   geth.sh: |-
     #!/bin/sh
     exec geth \
@@ -71,5 +71,5 @@ kind: ConfigMap
 metadata:
   creationTimestamp: null
   labels:
-    version: version-1671004831865317700
+    version: version-1671005557566596118
   name: cm-exec-client

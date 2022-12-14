@@ -23,10 +23,10 @@ data:
       --authrpc.vhosts=* 
   download.sh: |-
     #!/bin/sh
-    exec snapshot --downloadURL="" --clientName="geth"
+    exec snapshots --downloadURL="" --clientName="geth"
   downloadGethEphemeral.sh: |-
     #!/bin/sh
-    exec snapshot --downloadURL="" --clientName="gethEphemeral"
+    exec snapshots --downloadURL="" --clientName="gethEphemeral"
   pause.sh: |-
     #!/bin/sh
     exec sleep 100000000000000000
