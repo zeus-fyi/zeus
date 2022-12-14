@@ -21,9 +21,9 @@ func (t *BeaconCookbookTestSuite) TestClusterDeploy() {
 // ethereumBeacons is a reserved keyword, so it can be global to our stored config we maintain.
 // you can replace the below with your own setup by changing the class name and following the tests.
 
-var className = "ethereumBeacons"
+var className = "ethereumEphemeralBeacons"
 
-func (t *BeaconCookbookTestSuite) EndToEndTest() {
+func (t *BeaconCookbookTestSuite) TestEndToEnd() {
 	t.TestCreateClusterClass()
 	t.TestCreateClusterBase()
 	t.TestCreateClusterSkeletonBases()
@@ -118,4 +118,8 @@ func (t *BeaconCookbookTestSuite) TestEphemeralStakingBeaconConfig() {
 	ep := beaconExecClientChartPath
 	ep.DirOut = "./ethereum/beacons/infra/processed_exec_client"
 	ConfigEphemeralLighthouseGethStakingBeacon(cp, ep)
+
+	cp.DirIn = cp.DirOut
+	ep.DirIn = ep.DirOut
+	t.TestUploadBeaconCharts(cp, ep)
 }

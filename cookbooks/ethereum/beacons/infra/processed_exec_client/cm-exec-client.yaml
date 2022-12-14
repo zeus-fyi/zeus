@@ -1,0 +1,75 @@
+apiVersion: v1
+data:
+  download.sh: |-
+    #!/bin/sh
+    exec snapshot --downloadURL="" --clientName="gethEphemeral"
+  downloadGethEphemeral.sh: |-
+    #!/bin/sh
+    exec snapshot --downloadURL="" --clientName="gethEphemeral"
+  geth.sh: |-
+    #!/bin/sh
+    exec geth \
+      --datadir=/data \
+      --port=30303 \
+      --http \
+      --http.addr=0.0.0.0 \
+      --http.port=8545 \
+      --http.vhosts=* \
+      --http.corsdomain=* \
+      --ws \
+      --ws.addr=0.0.0.0 \
+      --ws.port=8546 \
+      --ws.origins=* \
+      --authrpc.jwtsecret=/data/jwt.hex \
+      --authrpc.addr=0.0.0.0 \
+      --authrpc.port=8551 \
+      --authrpc.vhosts=*
+  gethEphemeral.sh: |-
+    #!/bin/sh
+    exec geth \
+      --datadir=/data \
+      --port=30303 \
+      --http \
+      --http.addr=0.0.0.0 \
+      --http.port=8545 \
+      --http.vhosts=* \
+      --http.corsdomain=* \
+      --ws \
+      --ws.addr=0.0.0.0 \
+      --ws.port=8546 \
+      --ws.origins=* \
+      --authrpc.jwtsecret=/data/jwt.hex \
+      --authrpc.addr=0.0.0.0 \
+      --authrpc.port=8551 \
+      --authrpc.vhosts=* \
+      --networkid=1337531 \
+      --bootnodes=enode://0f2c301a9a3f9fa2ccfa362b79552c052905d8c2982f707f46cd29ece5a9e1c14ecd06f4ac951b228f059a43c6284a1a14fce709e8976cac93b50345218bf2e9@135.181.140.168:30343
+  pause.sh: |-
+    #!/bin/sh
+    exec sleep 100000000000000000
+  start.sh: |-
+    #!/bin/sh
+    exec geth \
+      --datadir=/data \
+      --port=30303 \
+      --http \
+      --http.addr=0.0.0.0 \
+      --http.port=8545 \
+      --http.vhosts=* \
+      --http.corsdomain=* \
+      --ws \
+      --ws.addr=0.0.0.0 \
+      --ws.port=8546 \
+      --ws.origins=* \
+      --authrpc.jwtsecret=/data/jwt.hex \
+      --authrpc.addr=0.0.0.0 \
+      --authrpc.port=8551 \
+      --authrpc.vhosts=* \
+      --networkid=1337531 \
+      --bootnodes=enode://0f2c301a9a3f9fa2ccfa362b79552c052905d8c2982f707f46cd29ece5a9e1c14ecd06f4ac951b228f059a43c6284a1a14fce709e8976cac93b50345218bf2e9@135.181.140.168:30343
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  labels:
+    version: version-1670989397178468425
+  name: cm-exec-client
