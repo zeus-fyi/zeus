@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/instance: zeus-exec-client
     app.kubernetes.io/managed-by: zeus
     app.kubernetes.io/name: zeus-exec-client
-    version: version-1670997023382629811
+    version: version-1671004831865233099
   name: zeus-exec-client
 spec:
   podManagementPolicy: OrderedReady
@@ -22,7 +22,7 @@ spec:
       labels:
         app.kubernetes.io/instance: zeus-exec-client
         app.kubernetes.io/name: zeus-exec-client
-        version: version-1670997023382728657
+        version: version-1671004831865298694
     spec:
       containers:
       - args:
@@ -44,20 +44,20 @@ spec:
             port: http-rpc
         name: zeus-exec-client
         ports:
+        - containerPort: 6060
+          name: metrics
+          protocol: TCP
         - containerPort: 8545
           name: http-rpc
-          protocol: TCP
-        - containerPort: 8546
-          name: ws-rpc
           protocol: TCP
         - containerPort: 8551
           name: auth-rpc
           protocol: TCP
-        - containerPort: 6060
-          name: metrics
-          protocol: TCP
         - containerPort: 30303
           name: p2p-tcp
+          protocol: TCP
+        - containerPort: 8546
+          name: ws-rpc
           protocol: TCP
         - containerPort: 30303
           name: p2p-udp
@@ -92,6 +92,20 @@ spec:
         - mountPath: /scripts
           name: cm-exec-client
       initContainers:
+      - args:
+        - -c
+        - /scripts/download.sh
+        command:
+        - /bin/sh
+        image: zeusfyi/hercules:latest
+        imagePullPolicy: Always
+        name: init-snapshot
+        resources: {}
+        volumeMounts:
+        - mountPath: /scripts
+          name: cm-exec-client
+        - mountPath: /data
+          name: exec-client-storage
       - command:
         - chown
         - -R

@@ -6,10 +6,22 @@ metadata:
     app.kubernetes.io/instance: zeus-exec-client
     app.kubernetes.io/managed-by: zeus
     app.kubernetes.io/name: zeus-exec-client
-    version: version-1670997023382733742
+    version: version-1671004831865302043
   name: zeus-exec-client
 spec:
   ports:
+  - name: metrics
+    port: 6060
+    protocol: TCP
+    targetPort: metrics
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: http-rpc
+  - name: hercules
+    port: 9003
+    protocol: TCP
+    targetPort: hercules
   - name: p2p-tcp
     port: 30303
     protocol: TCP
@@ -30,18 +42,6 @@ spec:
     port: 8551
     protocol: TCP
     targetPort: auth-rpc
-  - name: metrics
-    port: 6060
-    protocol: TCP
-    targetPort: metrics
-  - name: http
-    port: 80
-    protocol: TCP
-    targetPort: http-rpc
-  - name: hercules
-    port: 9003
-    protocol: TCP
-    targetPort: hercules
   selector:
     app.kubernetes.io/instance: zeus-exec-client
     app.kubernetes.io/name: zeus-exec-client
