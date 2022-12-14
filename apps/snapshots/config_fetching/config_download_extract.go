@@ -3,6 +3,7 @@ package config_fetching
 import (
 	"context"
 	"os"
+	"os/exec"
 	"path"
 
 	"github.com/rs/zerolog/log"
@@ -47,5 +48,13 @@ func ExtractAndDecEphemeralTestnetConfig(dataDir filepaths.Path, clientName stri
 	err = dataDir.RemoveFileInPath()
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("RemoveFileInPath")
+	}
+
+	if clientName == beacon_cookbooks.GethEphemeral {
+		cmd := exec.Command("geth", "--datadir", dataDir.DirIn, "init", path.Join(dataDir.DirIn, "genesis.json"))
+		err = cmd.Run()
+		if err != nil {
+			log.Ctx(ctx).Panic().Err(err).Msg("setting geth genesis")
+		}
 	}
 }

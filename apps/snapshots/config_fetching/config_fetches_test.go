@@ -1,16 +1,15 @@
 package config_fetching
 
 import (
-	"context"
 	"fmt"
+	"os/exec"
 	"testing"
 
 	"github.com/stretchr/testify/suite"
+	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 	resty_base "github.com/zeus-fyi/zeus/pkg/zeus/client/base"
 	"github.com/zeus-fyi/zeus/test/test_suites"
 )
-
-var ctx = context.Background()
 
 type ConfigFetchTestSuite struct {
 	test_suites.BaseTestSuite
@@ -18,7 +17,12 @@ type ConfigFetchTestSuite struct {
 }
 
 func (t *ConfigFetchTestSuite) TestDownloadExtract() {
-	ExtractAndDecEphemeralTestnetConfig("test")
+	dd := filepaths.Path{}
+	ExtractAndDecEphemeralTestnetConfig(dd, "test")
+
+	cmd := exec.Command("geth", "--datadir", "./configs", "init", "./configs/genesis.json")
+	err := cmd.Run()
+	t.Require().Nil(err)
 }
 
 func (t *ConfigFetchTestSuite) TestGetConfig() {

@@ -28,10 +28,21 @@ RUN --mount=type=cache,target=${GOMODCACHE} go mod download
 COPY . .
 RUN --mount=type=cache,target=${GOCACHE} CGO_ENABLED=1 GOOS=${GOOS} GOARCH=${GOARCH} go build -ldflags="-s -w" -o snapshots apps/snapshots/main.go
 
+FROM ubuntu:22.04 as geth
+RUN apt-get update && apt-get install -y wget
+WORKDIR /app
+
+ARG GETH_VERSION
+
+RUN wget https://github.com/ethereum/go-ethereum/archive/refs/tags/v${GETH_VERSION}.tar.gz -O geth.tar.gz
+RUN tar xf geth.tar.gz
+RUN mv go-ethereum-${GETH_VERSION} geth
+
 FROM ubuntu:22.04
 RUN apt-get update && apt-get install -y ca-certificates
 
 COPY --from=builder /app/hercules /usr/bin/hercules
 COPY --from=snapshot_builder /app/snapshots /usr/bin/snapshots
+COPY --from=geth /app/geth /usr/bin/geth
 
 EXPOSE 9003
