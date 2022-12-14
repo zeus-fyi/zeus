@@ -27,6 +27,7 @@ func (z *ZeusClient) UploadChart(ctx context.Context, p filepaths.Path, tar zeus
 			"chartName":        tar.ChartName,
 			"chartDescription": tar.ChartDescription,
 			"version":          tar.Version,
+			"clusterBaseName":  tar.ClusterBaseName,
 			"skeletonBaseName": tar.SkeletonBaseName,
 			"tag":              tar.Tag,
 		}).

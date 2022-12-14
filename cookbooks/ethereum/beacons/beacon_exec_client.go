@@ -22,6 +22,7 @@ var execClientChart = zeus_req_types.TopologyCreateRequest{
 	ChartDescription: "gethHercules",
 	Version:          fmt.Sprintf("gethHerculesv0.0.%d", time.Now().Unix()),
 	SkeletonBaseName: "gethHercules",
+	ClusterBaseName:  "ethereumBeacons",
 	Tag:              "latest",
 }
 

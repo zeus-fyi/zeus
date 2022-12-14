@@ -22,6 +22,7 @@ func (t *BeaconCookbookTestSuite) SetupTest() {
 
 	// uses the bearer token from test/configs/config.yaml
 	t.ZeusTestClient = zeus_client.NewDefaultZeusClient(tc.Bearer)
+	//t.ZeusTestClient.SetBaseURL("http://localhost:9001")
 	//t.ZeusTestClient = zeus_client.NewLocalZeusClient(tc.Bearer)
 	cookbooks.ChangeToCookbookDir()
 }

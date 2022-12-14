@@ -10,8 +10,11 @@ import (
 
 // ethereumBeacons is a reserved keyword, so it can be global to our stored config we maintain.
 // you can replace the below with your own setup by changing the class name and following the tests.
-
-var className = "ethereumEphemeralBeacons"
+var (
+	className      = "ethereumEphemeralBeacons"
+	execBases      = []string{"gethHercules"}
+	consensusBases = []string{"lighthouseHercules"}
+)
 
 func (t *BeaconCookbookTestSuite) TestClusterDeploy() {
 	ctx := context.Background()
@@ -51,6 +54,8 @@ func (t *BeaconCookbookTestSuite) TestEndToEnd() {
 	case "ethereumBeacons":
 		t.TestUploadStandardBeaconCharts()
 	case "ethereumEphemeralBeacons":
+		consensusClientChart.ClusterBaseName = className
+		execClientChart.ClusterBaseName = className
 		t.TestUploadEphemeralStakingBeaconConfig()
 	}
 }
@@ -80,17 +85,16 @@ func (t *BeaconCookbookTestSuite) TestCreateClusterBase() {
 
 func (t *BeaconCookbookTestSuite) TestCreateClusterSkeletonBases() {
 	ctx := context.Background()
-	basesInsert := []string{"gethHercules"}
+
 	cc := zeus_req_types.TopologyCreateOrAddBasesToClassesRequest{
 		ClassName:      "executionClient",
-		ClassBaseNames: basesInsert,
+		ClassBaseNames: execBases,
 	}
 	_, err := t.ZeusTestClient.AddSkeletonBasesToClass(ctx, cc)
 
-	basesInsert = []string{"lighthouseHercules"}
 	cc = zeus_req_types.TopologyCreateOrAddBasesToClassesRequest{
 		ClassName:      "consensusClient",
-		ClassBaseNames: basesInsert,
+		ClassBaseNames: consensusBases,
 	}
 	_, err = t.ZeusTestClient.AddSkeletonBasesToClass(ctx, cc)
 	t.Require().Nil(err)
