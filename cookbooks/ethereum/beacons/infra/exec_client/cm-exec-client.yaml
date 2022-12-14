@@ -24,6 +24,45 @@ data:
   download.sh: |-
     #!/bin/sh
     exec snapshot --downloadURL="" --clientName="geth"
+  downloadGethEphemeral.sh: |-
+    #!/bin/sh
+    exec snapshot --downloadURL="" --clientName="geth"
   pause.sh: |-
     #!/bin/sh
     exec sleep 100000000000000000
+  geth.sh: |-
+    #!/bin/sh
+    exec geth \
+      --datadir=/data \
+      --port=30303 \
+      --http \
+      --http.addr=0.0.0.0 \
+      --http.port=8545 \
+      --http.vhosts=* \
+      --http.corsdomain=* \
+      --ws \
+      --ws.addr=0.0.0.0 \
+      --ws.port=8546 \
+      --ws.origins=* \
+      --authrpc.jwtsecret=/data/jwt.hex \
+      --authrpc.addr=0.0.0.0 \
+      --authrpc.port=8551 \
+      --authrpc.vhosts=*
+  gethEphemeral.sh: |-
+    #!/bin/sh
+    exec geth \
+      --datadir=/data \
+      --port=30303 \
+      --http \
+      --http.addr=0.0.0.0 \
+      --http.port=8545 \
+      --http.vhosts=* \
+      --http.corsdomain=* \
+      --ws \
+      --ws.addr=0.0.0.0 \
+      --ws.port=8546 \
+      --ws.origins=* \
+      --authrpc.jwtsecret=/data/jwt.hex \
+      --authrpc.addr=0.0.0.0 \
+      --authrpc.port=8551 \
+      --authrpc.vhosts=*

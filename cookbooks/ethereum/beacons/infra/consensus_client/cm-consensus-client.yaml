@@ -48,6 +48,7 @@ data:
               --log-format=JSON \
               --testnet-dir=/data/configs/testnet \
               --datadir=/data \
+              --staking \
               --enr-tcp-port=9000 \
               --enr-udp-port=9000 \
               --listen-address=0.0.0.0 \
@@ -59,4 +60,4 @@ data:
               --execution-jwt=/data/jwt.hex \
               --execution-endpoint="http://zeus-exec-client:8551" \
               --boot-nodes="enr:-Iq4QGdecZrX_n9aWd0T0r3w9aVTnjbrO9nyDSMunKwxh6M3fkTuDamFtcu4Ulgq82WA7V10XJJJgDFUqrYEGAonNGiGAYSHF-YRgmlkgnY0gmlwhIjzHgyJc2VjcDI1NmsxoQJDyix-IHa_mVwLBEN9NeG8I-RUjNQK_MGxk9OqRQUAtIN1ZHCCIyg,enr:-Ly4QCLjeoItd4CpnAm524ZO4NWZipkQxnal6fm3QU9LvRbiSImfn4hvDGxe9wtAZRVk5WudniqRtnYo-fmsmBo9Fi0Bh2F0dG5ldHOIAAAAAAAAAACEZXRoMpDGUVuCMAAQGP__________gmlkgnY0gmlwhIe1jKiJc2VjcDI1NmsxoQJN-fBhwvE0x2osJPG3V9UtqACpngpJAG1KFOaRz9voT4hzeW5jbmV0cwCDdGNwgiNQg3VkcIIjUA,enr:-Jq4QLz5xnHfiSTMnzgp20cY6uWI-jiIcFAOVw55cYuUdcFhDR1AB3jb_O-5k97k8X78zkg8zeroLZQD4iJ5Qa5xUyQBhGV0aDKQxlFbgjAAEBj__________4JpZIJ2NIJpcISI8x4MiXNlY3AyNTZrMaECz28TxI2TLY8Z_u_u-Q7rDtBw4KFe9Hta5tAP1WCjOYGDdWRwgiMp"
-
+    

@@ -27,7 +27,7 @@ func (t *BeaconCookbookTestSuite) TestConsensusClientBeaconConfigDriver() {
 	}
 	t.Require().Equal(1, count)
 
-	t.Assert().Equal(inf.ConfigMap.Data["start.sh"], inf.ConfigMap.Data[lighthouseEphemeral+".sh"])
+	t.Assert().Equal(inf.ConfigMap.Data[download+".sh"], inf.ConfigMap.Data[downloadLighthouseEphemeral+".sh"])
 	p.DirOut = "./ethereum/beacons/infra/processed_consensus_client"
 
 	err = inf.PrintWorkload(p)
