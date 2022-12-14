@@ -75,6 +75,11 @@ func addPrefixAndYamlSuffixIfNotExists(prefix, name string) string {
 	if !strings.HasPrefix(name, prefix) {
 		name = prefix + "-" + name
 	}
+	name = addYamlSuffixIfNotExists(name)
+	return name
+}
+
+func addYamlSuffixIfNotExists(name string) string {
 	if !strings.HasSuffix(name, ".yaml") {
 		name = name + ".yaml"
 	}

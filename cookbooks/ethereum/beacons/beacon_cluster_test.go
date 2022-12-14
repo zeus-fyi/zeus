@@ -15,7 +15,7 @@ func (t *BeaconCookbookTestSuite) TestClusterDeploy() {
 }
 
 // Follow this order of commands to create a beacon class with infra, then use the above ^ to deploy it
-// cd is
+// cd is the cluster definition
 func (t *BeaconCookbookTestSuite) EndToEndTest() {
 	// ethereumBeacons is a reserved keyword, so it can be global to our stored config we maintain.
 	// you can replace the below with your own setup by changing the class name and following the tests.

@@ -10,12 +10,12 @@ func (t *BeaconCookbookTestSuite) TestConsensusClientBeaconConfigDriver() {
 	err := p.WalkAndApplyFuncToFileType(".yaml", inf.DecodeK8sWorkload)
 	t.Require().Nil(err)
 	t.Require().NotEmpty(inf)
-}
 
-func (t *BeaconCookbookTestSuite) TestExecClientBeaconConfigDriver() {
-	p := beaconExecClientChartPath
-	inf := topology_workloads.NewTopologyBaseInfraWorkload()
-	err := p.WalkAndApplyFuncToFileType(".yaml", inf.DecodeK8sWorkload)
+	EphemeralConsensusClientLighthouseConfig(inf)
+
+	t.Assert().Equal(inf.ConfigMap.Data["start.sh"], inf.ConfigMap.Data[lighthouseEphemeral+".sh"])
+	p.DirOut = "./ethereum/beacons/infra/processed_consensus_client"
+
+	err = inf.PrintWorkload(p)
 	t.Require().Nil(err)
-	t.Require().NotEmpty(inf)
 }
