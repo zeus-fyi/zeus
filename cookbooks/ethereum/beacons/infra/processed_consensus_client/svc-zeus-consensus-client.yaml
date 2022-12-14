@@ -6,18 +6,10 @@ metadata:
     app.kubernetes.io/instance: zeus-consensus-client
     app.kubernetes.io/managed-by: zeus
     app.kubernetes.io/name: zeus-consensus-client
-    version: version-1670989397033935206
+    version: version-1670990410247821279
   name: zeus-consensus-client
 spec:
   ports:
-  - name: p2p-tcp
-    port: 9000
-    protocol: TCP
-    targetPort: p2p-tcp
-  - name: p2p-udp
-    port: 9000
-    protocol: UDP
-    targetPort: p2p-udp
   - name: http-api
     port: 5052
     protocol: TCP
@@ -34,6 +26,14 @@ spec:
     port: 9003
     protocol: TCP
     targetPort: hercules
+  - name: p2p-tcp
+    port: 9000
+    protocol: TCP
+    targetPort: p2p-tcp
+  - name: p2p-udp
+    port: 9000
+    protocol: UDP
+    targetPort: p2p-udp
   selector:
     app.kubernetes.io/instance: zeus-consensus-client
     app.kubernetes.io/name: zeus-consensus-client

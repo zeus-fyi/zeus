@@ -8,20 +8,39 @@ import (
 	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_req_types"
 )
 
+// ethereumBeacons is a reserved keyword, so it can be global to our stored config we maintain.
+// you can replace the below with your own setup by changing the class name and following the tests.
+
+var className = "ethereumEphemeralBeacons"
+
 func (t *BeaconCookbookTestSuite) TestClusterDeploy() {
 	ctx := context.Background()
+	switch className {
+	case "ethereumEphemeralBeacons":
+		cd.ClusterName = className
+		cd.Namespace = "ephemeral"
+	}
 	resp, err := t.ZeusTestClient.DeployCluster(ctx, cd)
+	t.Require().Nil(err)
+	t.Assert().NotEmpty(resp)
+}
+
+func (t *BeaconCookbookTestSuite) TestClusterDestroy() {
+	ctx := context.Background()
+
+	knsReq := DeployConsensusClientKnsReq
+	switch className {
+	case "ethereumEphemeralBeacons":
+		cd.ClusterName = className
+		knsReq.Namespace = "ephemeral"
+	}
+	resp, err := t.ZeusTestClient.DestroyDeploy(ctx, knsReq)
 	t.Require().Nil(err)
 	t.Assert().NotEmpty(resp)
 }
 
 // Follow this order of commands to create a beacon class with infra, then use the above ^ to deploy it
 // cd is the cluster definition
-
-// ethereumBeacons is a reserved keyword, so it can be global to our stored config we maintain.
-// you can replace the below with your own setup by changing the class name and following the tests.
-
-var className = "ethereumEphemeralBeacons"
 
 func (t *BeaconCookbookTestSuite) TestEndToEnd() {
 	t.TestCreateClusterClass()
@@ -32,7 +51,7 @@ func (t *BeaconCookbookTestSuite) TestEndToEnd() {
 	case "ethereumBeacons":
 		t.TestUploadStandardBeaconCharts()
 	case "ethereumEphemeralBeacons":
-		t.TestEphemeralStakingBeaconConfig()
+		t.TestUploadEphemeralStakingBeaconConfig()
 	}
 }
 
@@ -111,7 +130,7 @@ func (t *BeaconCookbookTestSuite) TestUploadBeaconCharts(consensusChartPath, exe
 func (t *BeaconCookbookTestSuite) TestUploadStandardBeaconCharts() {
 	t.TestUploadBeaconCharts(beaconConsensusClientChartPath, beaconExecClientChartPath)
 }
-func (t *BeaconCookbookTestSuite) TestEphemeralStakingBeaconConfig() {
+func (t *BeaconCookbookTestSuite) TestUploadEphemeralStakingBeaconConfig() {
 	cp := beaconConsensusClientChartPath
 	cp.DirOut = "./ethereum/beacons/infra/processed_consensus_client"
 
