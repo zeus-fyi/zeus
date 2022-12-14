@@ -1,30 +1,29 @@
 package beacon_cookbooks
 
-import "github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_resp_types/topology_workloads"
+import (
+	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
+	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_resp_types/topology_workloads"
+)
 
-func ConfigEphemeralLighthouseGethStakingBeacon() {
-	pc := beaconConsensusClientChartPath
+func ConfigEphemeralLighthouseGethStakingBeacon(cp, ep filepaths.Path) {
 	inf := topology_workloads.NewTopologyBaseInfraWorkload()
-	err := pc.WalkAndApplyFuncToFileType(".yaml", inf.DecodeK8sWorkload)
+	err := cp.WalkAndApplyFuncToFileType(".yaml", inf.DecodeK8sWorkload)
 	if err != nil {
 		panic(err)
 	}
 	EphemeralConsensusClientLighthouseConfig(inf)
-	pc.DirOut = "./ethereum/beacons/infra/processed_consensus_client"
-	err = inf.PrintWorkload(pc)
+	err = inf.PrintWorkload(cp)
 	if err != nil {
 		panic(err)
 	}
 
-	pe := beaconExecClientChartPath
 	infe := topology_workloads.NewTopologyBaseInfraWorkload()
-	err = pe.WalkAndApplyFuncToFileType(".yaml", infe.DecodeK8sWorkload)
+	err = ep.WalkAndApplyFuncToFileType(".yaml", infe.DecodeK8sWorkload)
 	if err != nil {
 		panic(err)
 	}
 	EphemeralExecClientGethConfig(infe)
-	pe.DirOut = "./ethereum/beacons/infra/processed_exec_client"
-	err = infe.PrintWorkload(pe)
+	err = infe.PrintWorkload(ep)
 	if err != nil {
 		panic(err)
 	}
