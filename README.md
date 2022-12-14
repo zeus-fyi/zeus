@@ -155,8 +155,9 @@ Snapshot download urls for mainnet geth & lighthouse available on request.
 
 Not every possible field type is supported in the MVP version, but the most common ones are.
 
-See demos section for api calls, you'll need to get a bearer token from us first while we're in beta testing. More documentation to come.
+See demos section for api calls, you'll need to get a bearer token from us first. More documentation to come.
 Schedule a demo: https://calendly.com/alex-zeus-fyi/zeus-demo
+Request a bearer token, email: alex@zeus.fyi
 
 ![Screenshot 2022-11-17 at 8 09 48 PM](https://user-images.githubusercontent.com/17446735/202614955-2708063e-1547-4dae-9332-f712102c287e.png)
 
