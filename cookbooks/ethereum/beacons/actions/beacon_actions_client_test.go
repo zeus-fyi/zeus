@@ -35,7 +35,7 @@ var beaconCloudCtxNs = zeus_common_types.CloudCtxNs{
 	Region:        "sfo3",
 	Context:       "do-sfo3-dev-do-sfo3-zeus",
 	Namespace:     "beacon", // set with your own namespace
-	Env:           "dev",
+	Env:           "production",
 }
 
 type BeaconActionsTestSuite struct {
@@ -51,9 +51,9 @@ func (t *BeaconActionsTestSuite) SetupTest() {
 	t.BeaconActionsClient = NewDefaultBeaconActionsClient(tc.Bearer, BeaconKnsReq)
 	dir := cookbooks.ChangeToCookbookDir()
 
-	t.BeaconActionsClient.PrintPath.DirIn = path.Join(dir, "/ethereum/beacon/logs")
+	t.BeaconActionsClient.PrintPath.DirIn = path.Join(dir, "/ethereum/beacons/logs")
 	t.BeaconActionsClient.PrintPath.DirOut = path.Join(dir, "/ethereum/outputs")
-	t.BeaconActionsClient.ConfigPaths.DirIn = "./ethereum/beacon/infra"
+	t.BeaconActionsClient.ConfigPaths.DirIn = "./ethereum/beacons/infra"
 	t.BeaconActionsClient.ConfigPaths.DirOut = "./ethereum/outputs"
 }
 

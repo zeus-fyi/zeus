@@ -27,8 +27,8 @@ func (p *Path) RemoveFileInPath() error {
 	return err
 }
 
-func (p *Path) Print(data []byte) error {
-	p.FnOut += fmt.Sprintf("_%d.log", time.Now().Unix())
+func (p *Path) Print(data []byte, ext string) error {
+	p.FnOut += fmt.Sprintf("_%d.%s", time.Now().Unix(), ext)
 	err := p.WriteToFileOutPath(data)
 	if err != nil {
 		return err

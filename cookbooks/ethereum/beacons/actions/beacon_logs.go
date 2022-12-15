@@ -12,10 +12,10 @@ import (
 
 func (b *BeaconActionsClient) PrintConsensusClientPodLogs(ctx context.Context, par zeus_pods_reqs.PodActionRequest) ([]byte, error) {
 	b.PrintReqJson(par)
-	par.PodName = b.ConsensusClient
-	par.ContainerName = b.ConsensusClient
-	filter := strings_filter.FilterOpts{Contains: b.ConsensusClient}
-	logOpts := &v1.PodLogOptions{Container: b.ConsensusClient}
+	par.PodName = "zeus-consensus-client"
+	par.ContainerName = "zeus-consensus-client"
+	filter := strings_filter.FilterOpts{Contains: "zeus-consensus-client"}
+	logOpts := &v1.PodLogOptions{Container: "zeus-consensus-client"}
 	par.LogOpts = logOpts
 	par.FilterOpts = &filter
 
@@ -26,18 +26,18 @@ func (b *BeaconActionsClient) PrintConsensusClientPodLogs(ctx context.Context, p
 	}
 	b.PrintPath.FnOut = b.ConsensusClient + "_logs"
 	b.PrintPath.DirOut = path.Join(b.PrintPath.DirIn, "/consensus_client")
-	err = b.PrintPath.Print(resp)
+	err = b.PrintPath.Print(resp, "json")
 	return resp, err
 }
 
 func (b *BeaconActionsClient) PrintExecClientPodLogs(ctx context.Context, par zeus_pods_reqs.PodActionRequest) ([]byte, error) {
 	b.PrintReqJson(par)
-	par.PodName = b.ExecClient
-	par.ContainerName = b.ExecClient
-	logOpts := &v1.PodLogOptions{Container: b.ExecClient}
+	par.PodName = "zeus-exec-client"
+	par.ContainerName = "zeus-exec-client"
+	logOpts := &v1.PodLogOptions{Container: "zeus-exec-client"}
 	par.LogOpts = logOpts
 
-	filter := strings_filter.FilterOpts{Contains: b.ConsensusClient}
+	filter := strings_filter.FilterOpts{Contains: "zeus-exec-client"}
 	par.FilterOpts = &filter
 	resp, err := b.GetPodLogs(ctx, par)
 	if err != nil {
@@ -46,6 +46,6 @@ func (b *BeaconActionsClient) PrintExecClientPodLogs(ctx context.Context, par ze
 	}
 	b.PrintPath.FnOut = b.ExecClient + "_logs"
 	b.PrintPath.DirOut = path.Join(b.PrintPath.DirIn, "/exec_client")
-	err = b.PrintPath.WriteToFileOutPath(resp)
+	err = b.PrintPath.Print(resp, "logs")
 	return resp, err
 }

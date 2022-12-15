@@ -5,7 +5,7 @@ import (
 
 	"github.com/labstack/echo/v4"
 	v1_common_routes "github.com/zeus-fyi/hercules/api/v1/common"
-	hercules_jwt "github.com/zeus-fyi/hercules/pkg/jwt"
+	init_jwt "github.com/zeus-fyi/zeus/pkg/aegis/jwt"
 )
 
 type TokenRequestJWT struct {
@@ -13,7 +13,7 @@ type TokenRequestJWT struct {
 }
 
 func (t *TokenRequestJWT) Create(c echo.Context) error {
-	err := hercules_jwt.SetToken(v1_common_routes.CommonManager.Path, t.JWT)
+	err := init_jwt.SetToken(v1_common_routes.CommonManager.Path, t.JWT)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, nil)
 	}
@@ -21,7 +21,7 @@ func (t *TokenRequestJWT) Create(c echo.Context) error {
 }
 
 func (t *TokenRequestJWT) ReplaceJWT(c echo.Context) error {
-	err := hercules_jwt.ReplaceToken(v1_common_routes.CommonManager.Path, t.JWT)
+	err := init_jwt.ReplaceToken(v1_common_routes.CommonManager.Path, t.JWT)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, nil)
 	}
