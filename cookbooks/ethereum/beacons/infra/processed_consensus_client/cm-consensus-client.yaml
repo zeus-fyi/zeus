@@ -25,7 +25,7 @@ data:
     #!/bin/sh
     exec lighthouse beacon_node \
               --log-format=JSON \
-              --testnet-dir=/data/configs/testnet \
+              --testnet-dir=/data/testnet \
               --datadir=/data \
               --staking \
               --enr-tcp-port=9000 \
@@ -46,7 +46,7 @@ data:
     #!/bin/sh
     exec lighthouse beacon_node \
               --log-format=JSON \
-              --testnet-dir=/data/configs/testnet \
+              --testnet-dir=/data/testnet \
               --datadir=/data \
               --staking \
               --enr-tcp-port=9000 \
@@ -64,5 +64,5 @@ kind: ConfigMap
 metadata:
   creationTimestamp: null
   labels:
-    version: version-1671063533472959224
+    version: version-1671064865674765409
   name: cm-consensus-client

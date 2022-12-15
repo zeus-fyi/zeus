@@ -24,7 +24,7 @@ func ExtractAndDecEphemeralTestnetConfig(dataDir filepaths.Path, clientName stri
 		log.Info().Interface("dataDir", dataDir).Msg("ExtractAndDecEphemeralTestnetConfig: GethEphemeral")
 	case "test":
 		dataDir.DirIn = "."
-		dataDir.DirOut = "./configs"
+		dataDir.DirOut = "./testnet"
 	default:
 		return
 	}
