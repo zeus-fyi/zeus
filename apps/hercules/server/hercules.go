@@ -6,8 +6,8 @@ import (
 	"github.com/spf13/viper"
 	hercules_router "github.com/zeus-fyi/hercules/api"
 	v1_common_routes "github.com/zeus-fyi/hercules/api/v1/common"
-	hercules_jwt "github.com/zeus-fyi/hercules/pkg/jwt"
 	aegis_inmemdbs "github.com/zeus-fyi/zeus/pkg/aegis/inmemdbs"
+	init_jwt "github.com/zeus-fyi/zeus/pkg/aegis/jwt"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 )
 
@@ -20,7 +20,7 @@ var bucketURL string
 
 func Hercules() {
 	if useDefaultToken {
-		_ = hercules_jwt.SetTokenToDefault(dataDir, "jwt.hex", jwtToken)
+		_ = init_jwt.SetTokenToDefault(dataDir, "jwt.hex", jwtToken)
 	}
 	cfg.Host = "0.0.0.0"
 	srv := NewHerculesServer(cfg)

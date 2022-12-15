@@ -1,4 +1,4 @@
-package hercules_jwt
+package init_jwt
 
 import (
 	"github.com/rs/zerolog/log"
