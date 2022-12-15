@@ -10,7 +10,7 @@ import (
 const (
 	execClient         = "zeus-exec-client"
 	execClientDiskName = "exec-client-storage"
-	execClientDiskSize = "500Mi"
+	execClientDiskSize = "10Gi"
 
 	GethEphemeral         = "gethEphemeral"
 	downloadGethEphemeral = "downloadGethEphemeral"

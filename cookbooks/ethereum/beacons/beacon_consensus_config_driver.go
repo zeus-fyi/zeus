@@ -10,7 +10,7 @@ import (
 const (
 	consensusClient          = "zeus-consensus-client"
 	consensusStorageDiskName = "consensus-client-storage"
-	consensusStorageDiskSize = "100Mi"
+	consensusStorageDiskSize = "2Gi"
 
 	LighthouseEphemeral         = "lighthouseEphemeral"
 	downloadLighthouseEphemeral = "downloadLighthouseEphemeral"
