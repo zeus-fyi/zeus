@@ -29,7 +29,6 @@ data:
               --execution-endpoint="http://zeus-exec-client:8551" \
               --testnet-dir=/data/testnet \
               --datadir=/data \
-              --staking \
               --enr-tcp-port=9000 \
               --enr-udp-port=9000 \
               --listen-address=0.0.0.0 \
@@ -50,7 +49,6 @@ data:
               --execution-endpoint="http://zeus-exec-client:8551" \
               --testnet-dir=/data/testnet \
               --datadir=/data \
-              --staking \
               --enr-tcp-port=9000 \
               --enr-udp-port=9000 \
               --listen-address=0.0.0.0 \
@@ -64,5 +62,5 @@ kind: ConfigMap
 metadata:
   creationTimestamp: null
   labels:
-    version: version-1671080580587164902
+    version: version-1671084375180252483
   name: cm-consensus-client

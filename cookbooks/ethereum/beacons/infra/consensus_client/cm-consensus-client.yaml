@@ -47,10 +47,9 @@ data:
     exec lighthouse beacon_node \
               --log-format=JSON \
               --execution-jwt=/data/jwt.hex \
-              --execution-endpoint="http://exec-client:8551" \
+              --execution-endpoint="http://zeus-exec-client:8551" \
               --testnet-dir=/data/testnet \
               --datadir=/data \
-              --staking \
               --enr-tcp-port=9000 \
               --enr-udp-port=9000 \
               --listen-address=0.0.0.0 \

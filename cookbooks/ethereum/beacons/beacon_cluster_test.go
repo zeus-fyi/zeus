@@ -21,7 +21,7 @@ func (t *BeaconCookbookTestSuite) TestClusterDeploy() {
 	switch className {
 	case "ethereumEphemeralBeacons":
 		cd.ClusterName = className
-		cd.Namespace = "ephemeral"
+		//cd.Namespace = "ephemeral"
 	}
 	resp, err := t.ZeusTestClient.DeployCluster(ctx, cd)
 	t.Require().Nil(err)
@@ -35,7 +35,7 @@ func (t *BeaconCookbookTestSuite) TestClusterDestroy() {
 	switch className {
 	case "ethereumEphemeralBeacons":
 		cd.ClusterName = className
-		knsReq.Namespace = "ephemeral"
+		//knsReq.Namespace = "ephemeral"
 	}
 	resp, err := t.ZeusTestClient.DestroyDeploy(ctx, knsReq)
 	t.Require().Nil(err)
