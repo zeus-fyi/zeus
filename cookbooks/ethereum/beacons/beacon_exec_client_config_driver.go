@@ -4,13 +4,17 @@ import (
 	"errors"
 
 	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_resp_types/topology_workloads"
+	"k8s.io/apimachinery/pkg/api/resource"
 )
 
 const (
-	execClient            = "zeus-exec-client"
-	gethDockerImage       = "ethereum/client-go:v1.10.26"
-	downloadGethEphemeral = "downloadGethEphemeral"
+	execClient         = "zeus-exec-client"
+	execClientDiskName = "exec-client-storage"
+	execClientDiskSize = "500Mi"
+
 	GethEphemeral         = "gethEphemeral"
+	downloadGethEphemeral = "downloadGethEphemeral"
+	gethDockerImage       = "ethereum/client-go:v1.10.26"
 )
 
 func EphemeralExecClientGethConfig(inf topology_workloads.TopologyBaseInfraWorkload) {
@@ -36,6 +40,20 @@ func EphemeralExecClientGethConfig(inf topology_workloads.TopologyBaseInfraWorkl
 		for i, c := range inf.StatefulSet.Spec.Template.Spec.Containers {
 			if c.Name == execClient {
 				inf.StatefulSet.Spec.Template.Spec.Containers[i].Image = gethDockerImage
+			}
+		}
+
+		for i, v := range inf.StatefulSet.Spec.VolumeClaimTemplates {
+			if v.Name == execClientDiskName {
+				q, err := resource.ParseQuantity(execClientDiskSize)
+				if err != nil {
+					panic(err)
+				}
+				for j, _ := range inf.StatefulSet.Spec.VolumeClaimTemplates[i].Spec.Resources.Requests {
+					tmp := inf.StatefulSet.Spec.VolumeClaimTemplates[i].Spec.Resources.Requests[j]
+					tmp.Set(q.Value())
+					inf.StatefulSet.Spec.VolumeClaimTemplates[i].Spec.Resources.Requests[j] = tmp
+				}
 			}
 		}
 	}

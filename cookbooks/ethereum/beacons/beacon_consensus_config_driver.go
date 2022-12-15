@@ -4,13 +4,17 @@ import (
 	"errors"
 
 	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_resp_types/topology_workloads"
+	"k8s.io/apimachinery/pkg/api/resource"
 )
 
 const (
-	consensusClient             = "zeus-consensus-client"
-	lighthouseDockerImage       = "sigp/lighthouse:v3.3.0-modern"
-	downloadLighthouseEphemeral = "downloadLighthouseEphemeral"
+	consensusClient          = "zeus-consensus-client"
+	consensusStorageDiskName = "consensus-client-storage"
+	consensusStorageDiskSize = "100Mi"
+
 	LighthouseEphemeral         = "lighthouseEphemeral"
+	downloadLighthouseEphemeral = "downloadLighthouseEphemeral"
+	lighthouseDockerImage       = "sigp/lighthouse:v3.3.0-modern"
 )
 
 func EphemeralConsensusClientLighthouseConfig(inf topology_workloads.TopologyBaseInfraWorkload) {
@@ -36,6 +40,19 @@ func EphemeralConsensusClientLighthouseConfig(inf topology_workloads.TopologyBas
 		for i, c := range inf.StatefulSet.Spec.Template.Spec.Containers {
 			if c.Name == consensusClient {
 				inf.StatefulSet.Spec.Template.Spec.Containers[i].Image = lighthouseDockerImage
+			}
+		}
+		for i, v := range inf.StatefulSet.Spec.VolumeClaimTemplates {
+			if v.Name == consensusStorageDiskName {
+				q, err := resource.ParseQuantity(consensusStorageDiskSize)
+				if err != nil {
+					panic(err)
+				}
+				for j, _ := range inf.StatefulSet.Spec.VolumeClaimTemplates[i].Spec.Resources.Requests {
+					tmp := inf.StatefulSet.Spec.VolumeClaimTemplates[i].Spec.Resources.Requests[j]
+					tmp.Set(q.Value())
+					inf.StatefulSet.Spec.VolumeClaimTemplates[i].Spec.Resources.Requests[j] = tmp
+				}
 			}
 		}
 	}

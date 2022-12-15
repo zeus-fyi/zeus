@@ -26,4 +26,5 @@ tag.push:
 	git push origin v${VERSION}
 
 docker.debug:
-	docker run -it --entrypoint /bin/bash zeusfyi/hercules:latest
+	docker run -it --entrypoint /bin/sh ethereum/client-go:stable
+

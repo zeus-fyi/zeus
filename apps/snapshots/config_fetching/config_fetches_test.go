@@ -20,6 +20,7 @@ func (t *ConfigFetchTestSuite) TestDownloadExtract() {
 	dd := filepaths.Path{}
 	ExtractAndDecEphemeralTestnetConfig(dd, "test")
 
+	// requires geth to be installed
 	cmd := exec.Command("geth", "--datadir", "./configs", "init", "./configs/genesis.json")
 	err := cmd.Run()
 	t.Require().Nil(err)

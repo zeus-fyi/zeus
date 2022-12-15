@@ -2,6 +2,7 @@ package beacon_cookbooks
 
 import (
 	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_resp_types/topology_workloads"
+	"k8s.io/apimachinery/pkg/api/resource"
 )
 
 func (t *BeaconCookbookTestSuite) TestExecClientBeaconConfigDriver() {
@@ -32,4 +33,15 @@ func (t *BeaconCookbookTestSuite) TestExecClientBeaconConfigDriver() {
 
 	err = inf.PrintWorkload(p)
 	t.Require().Nil(err)
+
+	q, err := resource.ParseQuantity(execClientDiskSize)
+	if err != nil {
+		panic(err)
+	}
+
+	for _, v := range inf.StatefulSet.Spec.VolumeClaimTemplates {
+		if v.Name == "exec-client-storage" {
+			t.Assert().True(v.Spec.Resources.Requests.Storage().Equal(q))
+		}
+	}
 }
