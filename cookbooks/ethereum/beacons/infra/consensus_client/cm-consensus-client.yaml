@@ -48,7 +48,6 @@ data:
               --log-format=JSON \
               --testnet-dir=/data/testnet \
               --datadir=/data \
-              --staking \
               --enr-tcp-port=9000 \
               --enr-udp-port=9000 \
               --listen-address=0.0.0.0 \

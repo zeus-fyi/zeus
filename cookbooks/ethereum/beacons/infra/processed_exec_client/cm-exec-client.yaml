@@ -20,7 +20,7 @@ data:
       --ws.addr=0.0.0.0 \
       --ws.port=8546 \
       --ws.origins=* \
-      --authrpc.jwtsecret=/data/jwt.hex \
+      --authrpc.jwtsecret=/jwt/jwt.hex \
       --authrpc.addr=0.0.0.0 \
       --authrpc.port=8551 \
       --authrpc.vhosts=*
@@ -38,7 +38,7 @@ data:
       --ws.addr=0.0.0.0 \
       --ws.port=8546 \
       --ws.origins=* \
-      --authrpc.jwtsecret=/data/jwt.hex \
+      --authrpc.jwtsecret=/jwt/jwt.hex \
       --authrpc.addr=0.0.0.0 \
       --authrpc.port=8551 \
       --authrpc.vhosts=* \
@@ -61,7 +61,7 @@ data:
       --ws.addr=0.0.0.0 \
       --ws.port=8546 \
       --ws.origins=* \
-      --authrpc.jwtsecret=/data/jwt.hex \
+      --authrpc.jwtsecret=/jwt/jwt.hex \
       --authrpc.addr=0.0.0.0 \
       --authrpc.port=8551 \
       --authrpc.vhosts=* \
@@ -71,5 +71,5 @@ kind: ConfigMap
 metadata:
   creationTimestamp: null
   labels:
-    version: version-1671064865797185309
+    version: version-1671079153731648000
   name: cm-exec-client
