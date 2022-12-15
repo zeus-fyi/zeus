@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/instance: zeus-consensus-client
     app.kubernetes.io/managed-by: zeus
     app.kubernetes.io/name: zeus-consensus-client
-    version: version-1671079153579521629
+    version: version-1671080580587097150
   name: zeus-consensus-client
 spec:
   podManagementPolicy: OrderedReady
@@ -22,7 +22,7 @@ spec:
       labels:
         app.kubernetes.io/instance: zeus-consensus-client
         app.kubernetes.io/name: zeus-consensus-client
-        version: version-1671079153579593547
+        version: version-1671080580587154236
     spec:
       containers:
       - args:
@@ -44,17 +44,17 @@ spec:
             port: http-api
         name: zeus-consensus-client
         ports:
-        - containerPort: 9000
-          name: p2p-udp
-          protocol: TCP
-        - containerPort: 9000
-          name: p2p-tcp
+        - containerPort: 5052
+          name: http-api
           protocol: TCP
         - containerPort: 5054
           name: metrics
           protocol: TCP
-        - containerPort: 5052
-          name: http-api
+        - containerPort: 9000
+          name: p2p-tcp
+          protocol: TCP
+        - containerPort: 9000
+          name: p2p-udp
           protocol: TCP
         readinessProbe:
           initialDelaySeconds: 10
@@ -67,8 +67,6 @@ spec:
           name: cm-consensus-client
         - mountPath: /data
           name: consensus-client-storage
-        - mountPath: /jwt
-          name: jwt
       - args:
         - -c
         - hercules
@@ -87,8 +85,6 @@ spec:
           name: cm-consensus-client
         - mountPath: /data
           name: consensus-client-storage
-        - mountPath: /jwt
-          name: jwt
       initContainers:
       - args:
         - -c
@@ -104,8 +100,6 @@ spec:
           name: cm-consensus-client
         - mountPath: /data
           name: consensus-client-storage
-        - mountPath: /jwt
-          name: jwt
       - command:
         - chown
         - -R
@@ -127,9 +121,6 @@ spec:
           defaultMode: 484
           name: cm-consensus-client
         name: cm-consensus-client
-      - emptyDir:
-          sizeLimit: 1Mi
-        name: jwt
   updateStrategy:
     type: RollingUpdate
   volumeClaimTemplates:
