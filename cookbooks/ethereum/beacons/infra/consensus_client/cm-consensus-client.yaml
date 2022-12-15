@@ -46,7 +46,7 @@ data:
     #!/bin/sh
     exec lighthouse beacon_node \
               --log-format=JSON \
-              --testnet-dir=/data/configs/testnet \
+              --testnet-dir=/data/testnet \
               --datadir=/data \
               --staking \
               --enr-tcp-port=9000 \

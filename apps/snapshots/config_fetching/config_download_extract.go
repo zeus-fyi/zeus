@@ -16,7 +16,7 @@ import (
 func ExtractAndDecEphemeralTestnetConfig(dataDir filepaths.Path, clientName string) {
 	switch clientName {
 	case beacon_cookbooks.LighthouseEphemeral:
-		dataDir.DirOut = path.Join(dataDir.DirIn, "/configs/testnet")
+		dataDir.DirOut = path.Join(dataDir.DirIn, "/testnet")
 		log.Info().Interface("dataDir", dataDir).Msg("ExtractAndDecEphemeralTestnetConfig: LighthouseEphemeral")
 	case beacon_cookbooks.GethEphemeral:
 		// placing a genesis.json file directly in the datadir path should set the chain to the expected value
