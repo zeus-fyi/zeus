@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/instance: zeus-consensus-client
     app.kubernetes.io/managed-by: zeus
     app.kubernetes.io/name: zeus-consensus-client
-    version: version-1671084375180184042
+    version: version-1671138573764677554
   name: zeus-consensus-client
 spec:
   podManagementPolicy: OrderedReady
@@ -22,7 +22,7 @@ spec:
       labels:
         app.kubernetes.io/instance: zeus-consensus-client
         app.kubernetes.io/name: zeus-consensus-client
-        version: version-1671084375180242026
+        version: version-1671138573764736822
     spec:
       containers:
       - args:
@@ -63,10 +63,10 @@ spec:
             port: http-api
         resources: {}
         volumeMounts:
-        - mountPath: /data
-          name: consensus-client-storage
         - mountPath: /scripts
           name: cm-consensus-client
+        - mountPath: /data
+          name: consensus-client-storage
       - args:
         - -c
         - hercules

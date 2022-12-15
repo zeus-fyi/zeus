@@ -5,7 +5,7 @@ import (
 	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_resp_types/topology_workloads"
 )
 
-func ConfigEphemeralLighthouseGethStakingBeacon(cp, ep filepaths.Path) {
+func ConfigEphemeralLighthouseGethStakingBeacon(cp, ep, ing filepaths.Path) {
 	inf := topology_workloads.NewTopologyBaseInfraWorkload()
 	err := cp.WalkAndApplyFuncToFileType(".yaml", inf.DecodeK8sWorkload)
 	if err != nil {
@@ -27,4 +27,11 @@ func ConfigEphemeralLighthouseGethStakingBeacon(cp, ep filepaths.Path) {
 	if err != nil {
 		panic(err)
 	}
+
+	ingr := topology_workloads.NewTopologyBaseInfraWorkload()
+	err = ing.WalkAndApplyFuncToFileType(".yaml", ingr.DecodeK8sWorkload)
+	if err != nil {
+		panic(err)
+	}
+	EphemeralIngressConfig(ingr)
 }
