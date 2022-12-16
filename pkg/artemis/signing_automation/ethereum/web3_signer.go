@@ -1,15 +1,15 @@
-package artemis_client
+package signing_automation_ethereum
 
 import (
 	"github.com/zeus-fyi/gochain/web3/accounts"
 	"github.com/zeus-fyi/gochain/web3/web3_actions"
 )
 
-type Web3Client struct {
+type Web3SignerClient struct {
 	web3_actions.Web3Actions
 }
 
-func NewWeb3Client(nodeUrl string, acc *accounts.Account) Web3Client {
+func NewWeb3Client(nodeUrl string, acc *accounts.Account) Web3SignerClient {
 	w := web3_actions.NewWeb3ActionsClientWithAccount(nodeUrl, acc)
-	return Web3Client{w}
+	return Web3SignerClient{w}
 }
