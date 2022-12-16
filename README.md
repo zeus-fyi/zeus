@@ -119,7 +119,11 @@ Hades is used to interact with kubernetes workloads via API, and can apply saved
 
 ### Beacon API ###
 
-Users with bearer tokens are able to access our common beacon API at https://eth.zeus.fyi, which supports both consensus client & exec client requests.
+Users with bearer tokens are able to access our common mainnet Ethereum beacon API at https://eth.zeus.fyi, which supports both consensus client & exec client requests.
+
+The ephemeral beacon is open to anyone, no auth is requried. Large Eth quantities for testing is available on request.
+
+### https://eth.ephemeral.zeus.fyi
 
 ### Beacon Indexer ###
 
