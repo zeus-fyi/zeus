@@ -70,4 +70,6 @@ data:
 kind: ConfigMap
 metadata:
   creationTimestamp: null
+  labels:
+    version: version-1671166619837576983
   name: cm-exec-client

@@ -25,13 +25,14 @@ var BeaconCloudCtxNs = zeus_common_types.CloudCtxNs{
 
 // chart workload metadata
 var ingressChart = zeus_req_types.TopologyCreateRequest{
-	TopologyName:     "beaconIngress",
-	ChartName:        "beaconIngress",
-	ChartDescription: "beaconIngress",
-	Version:          fmt.Sprintf("beaconIngress-v.0.%d", time.Now().Unix()),
-	SkeletonBaseName: "beaconIngress",
-	ClusterBaseName:  "beaconIngress",
-	Tag:              "latest",
+	TopologyName:      "beaconIngress",
+	ChartName:         "beaconIngress",
+	ChartDescription:  "beaconIngress",
+	Version:           fmt.Sprintf("beaconIngress-v.0.%d", time.Now().Unix()),
+	SkeletonBaseName:  "beaconIngress",
+	ComponentBaseName: "beaconIngress",
+	ClusterBaseName:   "ethereumBeacon",
+	Tag:               "latest",
 }
 
 var ingressChartPath = filepaths.Path{

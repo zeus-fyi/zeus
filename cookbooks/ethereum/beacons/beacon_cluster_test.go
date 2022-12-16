@@ -160,6 +160,7 @@ func (t *BeaconCookbookTestSuite) TestUploadStandardBeaconCharts() {
 func (t *BeaconCookbookTestSuite) TestUploadEphemeralStakingBeaconConfig() {
 	consensusClientChart.ClusterBaseName = className
 	execClientChart.ClusterBaseName = className
+	ingressChart.ClusterBaseName = className
 
 	cp := beaconConsensusClientChartPath
 	cp.DirOut = "./ethereum/beacons/infra/processed_consensus_client"

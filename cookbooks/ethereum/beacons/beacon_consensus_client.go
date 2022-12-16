@@ -17,13 +17,14 @@ var DeployConsensusClientKnsReq = zeus_req_types.TopologyDeployRequest{
 
 // chart workload metadata
 var consensusClientChart = zeus_req_types.TopologyCreateRequest{
-	TopologyName:     "lighthouseHercules",
-	ChartName:        "lighthouseHercules",
-	ChartDescription: "lighthouseHercules",
-	Version:          fmt.Sprintf("lighthouseHerculesv0.0.%d", time.Now().Unix()),
-	SkeletonBaseName: "lighthouseHercules",
-	ClusterBaseName:  "ethereumBeacons",
-	Tag:              "latest",
+	TopologyName:      "lighthouseHercules",
+	ChartName:         "lighthouseHercules",
+	ChartDescription:  "lighthouseHercules",
+	Version:           fmt.Sprintf("lighthouseHerculesv0.0.%d", time.Now().Unix()),
+	ClusterBaseName:   "ethereumBeacons",
+	ComponentBaseName: "consensusClient",
+	SkeletonBaseName:  "lighthouseHercules",
+	Tag:               "latest",
 }
 
 // DirOut is where it will write a copy of the chart you uploaded, which helps verify the workload is correct

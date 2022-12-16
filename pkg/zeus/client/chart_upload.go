@@ -23,13 +23,14 @@ func (z *ZeusClient) UploadChart(ctx context.Context, p filepaths.Path, tar zeus
 	resp, err := z.R().
 		SetResult(&respJson).
 		SetFormData(map[string]string{
-			"topologyName":     tar.TopologyName,
-			"chartName":        tar.ChartName,
-			"chartDescription": tar.ChartDescription,
-			"version":          tar.Version,
-			"clusterBaseName":  tar.ClusterBaseName,
-			"skeletonBaseName": tar.SkeletonBaseName,
-			"tag":              tar.Tag,
+			"topologyName":      tar.TopologyName,
+			"chartName":         tar.ChartName,
+			"chartDescription":  tar.ChartDescription,
+			"version":           tar.Version,
+			"clusterBaseName":   tar.ClusterBaseName,
+			"componentBaseName": tar.ComponentBaseName,
+			"skeletonBaseName":  tar.SkeletonBaseName,
+			"tag":               tar.Tag,
 		}).
 		SetFile("chart", p.FileOutPath()).
 		Post(zeus_endpoints.InfraCreateV1Path)

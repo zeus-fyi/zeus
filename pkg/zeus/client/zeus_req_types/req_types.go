@@ -8,9 +8,10 @@ type TopologyCreateRequest struct {
 	ChartDescription string `json:"chartDescription,omitempty"`
 	Version          string `json:"version"`
 
-	ClusterBaseName  string `json:"clusterBaseName,omitempty"`
-	SkeletonBaseName string `json:"skeletonBaseName,omitempty"`
-	Tag              string `json:"tag,omitempty"`
+	ClusterBaseName   string `json:"clusterBaseName,omitempty"`
+	ComponentBaseName string `json:"componentBaseName,omitempty"`
+	SkeletonBaseName  string `json:"skeletonBaseName,omitempty"`
+	Tag               string `json:"tag,omitempty"`
 }
 
 type TopologyDeployRequest struct {

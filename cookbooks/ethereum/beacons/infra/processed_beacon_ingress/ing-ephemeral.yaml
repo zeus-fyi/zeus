@@ -5,7 +5,7 @@ metadata:
     cert-manager.io/cluster-issuer: letsencrypt-prod
   creationTimestamp: null
   labels:
-    version: version-1671138574058009928
+    version: version-1671166624186508126
   name: ephemeral
 spec:
   ingressClassName: nginx

@@ -17,13 +17,14 @@ var DeployExecClientKnsReq = zeus_req_types.TopologyDeployRequest{
 
 // chart workload metadata
 var execClientChart = zeus_req_types.TopologyCreateRequest{
-	TopologyName:     "gethHercules",
-	ChartName:        "gethHercules",
-	ChartDescription: "gethHercules",
-	Version:          fmt.Sprintf("gethHerculesv0.0.%d", time.Now().Unix()),
-	SkeletonBaseName: "gethHercules",
-	ClusterBaseName:  "ethereumBeacons",
-	Tag:              "latest",
+	TopologyName:      "gethHercules",
+	ChartName:         "gethHercules",
+	ChartDescription:  "gethHercules",
+	Version:           fmt.Sprintf("gethHerculesv0.0.%d", time.Now().Unix()),
+	ClusterBaseName:   "ethereumBeacons",
+	ComponentBaseName: "executionClient",
+	SkeletonBaseName:  "gethHercules",
+	Tag:               "latest",
 }
 
 var beaconExecClientChartPath = filepaths.Path{

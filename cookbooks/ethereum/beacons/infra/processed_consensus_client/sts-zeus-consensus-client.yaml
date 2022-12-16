@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/instance: zeus-consensus-client
     app.kubernetes.io/managed-by: zeus
     app.kubernetes.io/name: zeus-consensus-client
-    version: version-1671138573764677554
+    version: version-1671166605408328400
   name: zeus-consensus-client
 spec:
   podManagementPolicy: OrderedReady
@@ -22,7 +22,7 @@ spec:
       labels:
         app.kubernetes.io/instance: zeus-consensus-client
         app.kubernetes.io/name: zeus-consensus-client
-        version: version-1671138573764736822
+        version: version-1671166605408528567
     spec:
       containers:
       - args:
@@ -81,10 +81,10 @@ spec:
           protocol: TCP
         resources: {}
         volumeMounts:
-        - mountPath: /scripts
-          name: cm-consensus-client
         - mountPath: /data
           name: consensus-client-storage
+        - mountPath: /scripts
+          name: cm-consensus-client
       initContainers:
       - args:
         - -c
@@ -96,10 +96,10 @@ spec:
         name: init-snapshot
         resources: {}
         volumeMounts:
-        - mountPath: /scripts
-          name: cm-consensus-client
         - mountPath: /data
           name: consensus-client-storage
+        - mountPath: /scripts
+          name: cm-consensus-client
       - command:
         - chown
         - -R
