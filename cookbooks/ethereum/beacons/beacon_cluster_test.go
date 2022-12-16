@@ -23,6 +23,7 @@ func (t *BeaconCookbookTestSuite) TestClusterDeploy() {
 	case "ethereumEphemeralBeacons":
 		cd.ClusterName = className
 		cd.Namespace = "ephemeral"
+		cd.BaseOptions = append(cd.BaseOptions, ingressBase...)
 	}
 	resp, err := t.ZeusTestClient.DeployCluster(ctx, cd)
 	t.Require().Nil(err)
