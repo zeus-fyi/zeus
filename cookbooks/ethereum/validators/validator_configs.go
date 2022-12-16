@@ -11,13 +11,14 @@ import (
 )
 
 // TODO, will use matrix class later. Cluster class is a good near-term substitute
+// extends on the beacon cluster test cases for now
 var (
 	className     = "ethereumEphemeralValidatorCluster"
 	execBase      = "gethHercules"
 	consensusBase = "lighthouseHercules"
 
 	consensusValidatorClientComponentBaseName = "consensusValidatorClients"
-	validatorSkeletonBaseName                 = "lighthouseHercules"
+	validatorSkeletonBaseName                 = "lighthouseHerculesValidatorClient"
 )
 
 var cd = zeus_req_types.ClusterTopologyDeployRequest{
