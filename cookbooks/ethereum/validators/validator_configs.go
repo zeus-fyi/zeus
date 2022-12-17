@@ -13,12 +13,12 @@ import (
 // TODO, will use matrix class later. Cluster class is a good near-term substitute
 // extends on the beacon cluster test cases for now
 var (
-	ValidatorClusterClassName = "ethereumEphemeralValidatorCluster"
-	execSkeletonBase          = "gethHercules"
-	consensusSkeletonBase     = "lighthouseHercules"
-
+	ValidatorClusterClassName                 = "ethereumEphemeralValidatorCluster"
 	consensusValidatorClientComponentBaseName = "consensusValidatorClients"
 	validatorSkeletonBaseName                 = "lighthouseHerculesValidatorClient"
+
+	execSkeletonBase      = "gethHercules"
+	consensusSkeletonBase = "lighthouseHercules"
 )
 
 var cd = zeus_req_types.ClusterTopologyDeployRequest{

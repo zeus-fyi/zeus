@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app.kubernetes.io/instance: zeus-validators
+    app.kubernetes.io/managed-by: zeus-validators
+    app.kubernetes.io/name: zeus-validators
+    version: version-1671249404895125821
+  name: zeus-validators
+spec:
+  ports:
+  - name: metrics
+    port: 5054
+    protocol: TCP
+    targetPort: metrics
+  - name: hercules
+    port: 9003
+    protocol: TCP
+    targetPort: hercules
+  selector:
+    app.kubernetes.io/instance: zeus-validators
+    app.kubernetes.io/name: zeus-validators
+  type: ClusterIP
+status:
+  loadBalancer: {}
