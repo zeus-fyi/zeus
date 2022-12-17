@@ -17,6 +17,9 @@ data:
   pause.sh: |-
     #!/bin/sh
     exec sleep 100000000000000000
+  download.sh: |-
+    #!/bin/sh
+    exec snapshots --downloadURL="" --clientName="ethereumEphemeralValidatorCluster"
   lighthouseEphemeral.sh: |-
     #!/bin/sh
     exec lighthouse vc \

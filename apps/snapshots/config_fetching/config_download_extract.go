@@ -8,6 +8,7 @@ import (
 
 	"github.com/rs/zerolog/log"
 	beacon_cookbooks "github.com/zeus-fyi/zeus/cookbooks/ethereum/beacons"
+	validator_cookbooks "github.com/zeus-fyi/zeus/cookbooks/ethereum/validators"
 	"github.com/zeus-fyi/zeus/pkg/poseidon"
 	"github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/compression"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
@@ -15,7 +16,7 @@ import (
 
 func ExtractAndDecEphemeralTestnetConfig(dataDir filepaths.Path, clientName string) {
 	switch clientName {
-	case beacon_cookbooks.LighthouseEphemeral:
+	case beacon_cookbooks.LighthouseEphemeral, validator_cookbooks.ValidatorClusterClassName:
 		dataDir.DirIn = "/data/testnet"
 		dataDir.DirOut = path.Join(dataDir.DirIn)
 		log.Info().Interface("dataDir", dataDir).Msg("ExtractAndDecEphemeralTestnetConfig: LighthouseEphemeral")

@@ -12,48 +12,24 @@ import (
 	"github.com/zeus-fyi/zeus/test/test_suites"
 )
 
-func (t *ValidatorCookbookTestSuite) TestClusterDeploy() {
-	ctx := context.Background()
-	resp, err := t.ZeusTestClient.DeployCluster(ctx, cd)
-	t.Require().Nil(err)
-	t.Assert().NotEmpty(resp)
-}
-
-func (t *ValidatorCookbookTestSuite) TestClusterDestroy() {
-	ctx := context.Background()
-
-	knsReq := DeployConsensusValidatorClientKnsReq
-
-	resp, err := t.ZeusTestClient.DestroyDeploy(ctx, knsReq)
-	t.Require().Nil(err)
-	t.Assert().NotEmpty(resp)
-}
-
-func (t *ValidatorCookbookTestSuite) TestCreateClusterBase() {
+func (t *ValidatorCookbookTestSuite) TestCreateClusterValidatorBase() {
 	ctx := context.Background()
 	basesInsert := []string{consensusValidatorClientComponentBaseName}
 	cc := zeus_req_types.TopologyCreateOrAddBasesToClassesRequest{
-		ClassName:      className,
+		ClassName:      ValidatorClusterClassName,
 		ClassBaseNames: basesInsert,
 	}
 	_, err := t.ZeusTestClient.AddBasesToClass(ctx, cc)
 	t.Require().Nil(err)
 }
 
-func (t *ValidatorCookbookTestSuite) TestUploadValidatorClientCharts() {
+func (t *ValidatorCookbookTestSuite) TestCreateClusterValidatorSkeletonBase() {
 	ctx := context.Background()
-	// Consensus
-	resp, err := t.ZeusTestClient.UploadChart(ctx, validatorsChartPath, validatorsChart)
-	t.Require().Nil(err)
-	t.Assert().NotZero(resp.TopologyID)
-
-	DeployConsensusValidatorClientKnsReq.TopologyID = resp.TopologyID
-	tar := zeus_req_types.TopologyRequest{TopologyID: DeployConsensusValidatorClientKnsReq.TopologyID}
-	chartResp, err := t.ZeusTestClient.ReadChart(ctx, tar)
-	t.Require().Nil(err)
-	t.Assert().NotEmpty(chartResp)
-
-	err = chartResp.PrintWorkload(validatorsChartPath)
+	cc := zeus_req_types.TopologyCreateOrAddBasesToClassesRequest{
+		ClassName:      consensusValidatorClientComponentBaseName,
+		ClassBaseNames: []string{validatorSkeletonBaseName},
+	}
+	_, err := t.ZeusTestClient.AddSkeletonBasesToClass(ctx, cc)
 	t.Require().Nil(err)
 }
 

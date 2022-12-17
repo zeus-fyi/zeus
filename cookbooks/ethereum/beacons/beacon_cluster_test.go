@@ -11,7 +11,7 @@ import (
 // ethereumBeacons is a reserved keyword, so it can be global to our stored config we maintain.
 // you can replace the below with your own setup by changing the class name and following the tests.
 var (
-	className      = "ethereumEphemeralBeacons"
+	className      = "ethereumEphemeralValidatorCluster"
 	execBases      = []string{"gethHercules"}
 	consensusBases = []string{"lighthouseHercules"}
 	ingressBase    = []string{"beaconIngress"}
@@ -38,6 +38,9 @@ func (t *BeaconCookbookTestSuite) TestClusterDestroy() {
 	case "ethereumEphemeralBeacons":
 		cd.ClusterName = className
 		knsReq.Namespace = "ephemeral"
+	case "ethereumEphemeralValidatorCluster":
+		cd.ClusterName = className
+		knsReq.Namespace = "ephemeral.staking"
 	}
 	resp, err := t.ZeusTestClient.DestroyDeploy(ctx, knsReq)
 	t.Require().Nil(err)
@@ -55,10 +58,14 @@ func (t *BeaconCookbookTestSuite) TestEndToEnd() {
 	switch className {
 	case "ethereumBeacons":
 		t.TestUploadStandardBeaconCharts()
+	case "ethereumEphemeralValidatorCluster":
+		consensusClientChart.ClusterBaseName = className
+		execClientChart.ClusterBaseName = className
+		t.TestUploadEphemeralBeaconConfig(false)
 	case "ethereumEphemeralBeacons":
 		consensusClientChart.ClusterBaseName = className
 		execClientChart.ClusterBaseName = className
-		t.TestUploadEphemeralStakingBeaconConfig()
+		t.TestUploadEphemeralBeaconConfig(true)
 	}
 }
 
@@ -110,7 +117,7 @@ func (t *BeaconCookbookTestSuite) TestCreateClusterSkeletonBases() {
 	t.Require().Nil(err)
 }
 
-func (t *BeaconCookbookTestSuite) TestUploadBeaconCharts(consensusChartPath, execChartPath, ingChartPath filepaths.Path) {
+func (t *BeaconCookbookTestSuite) TestUploadBeaconCharts(consensusChartPath, execChartPath, ingChartPath filepaths.Path, withIngress bool) {
 	ctx := context.Background()
 	// Consensus
 	resp, err := t.ZeusTestClient.UploadChart(ctx, consensusChartPath, consensusClientChart)
@@ -140,25 +147,27 @@ func (t *BeaconCookbookTestSuite) TestUploadBeaconCharts(consensusChartPath, exe
 	err = chartResp.PrintWorkload(execChartPath)
 	t.Require().Nil(err)
 
-	// Ingress
-	resp, err = t.ZeusTestClient.UploadChart(ctx, ingChartPath, ingressChart)
-	t.Require().Nil(err)
-	t.Assert().NotZero(resp.TopologyID)
+	if withIngress {
+		// Ingress
+		resp, err = t.ZeusTestClient.UploadChart(ctx, ingChartPath, ingressChart)
+		t.Require().Nil(err)
+		t.Assert().NotZero(resp.TopologyID)
 
-	DeployExecClientKnsReq.TopologyID = resp.TopologyID
-	tar = zeus_req_types.TopologyRequest{TopologyID: DeployExecClientKnsReq.TopologyID}
-	chartResp, err = t.ZeusTestClient.ReadChart(ctx, tar)
-	t.Require().Nil(err)
-	t.Assert().NotEmpty(chartResp)
+		DeployExecClientKnsReq.TopologyID = resp.TopologyID
+		tar = zeus_req_types.TopologyRequest{TopologyID: DeployExecClientKnsReq.TopologyID}
+		chartResp, err = t.ZeusTestClient.ReadChart(ctx, tar)
+		t.Require().Nil(err)
+		t.Assert().NotEmpty(chartResp)
 
-	err = chartResp.PrintWorkload(ingChartPath)
-	t.Require().Nil(err)
+		err = chartResp.PrintWorkload(ingChartPath)
+		t.Require().Nil(err)
+	}
 }
 
 func (t *BeaconCookbookTestSuite) TestUploadStandardBeaconCharts() {
-	t.TestUploadBeaconCharts(beaconConsensusClientChartPath, beaconExecClientChartPath, ingressChartPath)
+	t.TestUploadBeaconCharts(beaconConsensusClientChartPath, beaconExecClientChartPath, ingressChartPath, true)
 }
-func (t *BeaconCookbookTestSuite) TestUploadEphemeralStakingBeaconConfig() {
+func (t *BeaconCookbookTestSuite) TestUploadEphemeralBeaconConfig(withIngress bool) {
 	consensusClientChart.ClusterBaseName = className
 	execClientChart.ClusterBaseName = className
 	ingressChart.ClusterBaseName = className
@@ -172,10 +181,10 @@ func (t *BeaconCookbookTestSuite) TestUploadEphemeralStakingBeaconConfig() {
 	ing := ingressChartPath
 	ing.DirOut = "./ethereum/beacons/infra/processed_beacon_ingress"
 
-	ConfigEphemeralLighthouseGethStakingBeacon(cp, ep, ing)
+	ConfigEphemeralLighthouseGethBeacon(cp, ep, ing, withIngress)
 
 	cp.DirIn = cp.DirOut
 	ep.DirIn = ep.DirOut
 	ing.DirIn = ing.DirOut
-	t.TestUploadBeaconCharts(cp, ep, ing)
+	t.TestUploadBeaconCharts(cp, ep, ing, withIngress)
 }

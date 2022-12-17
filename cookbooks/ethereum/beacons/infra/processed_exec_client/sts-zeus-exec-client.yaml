@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/instance: zeus-exec-client
     app.kubernetes.io/managed-by: zeus
     app.kubernetes.io/name: zeus-exec-client
-    version: version-1671166619837438353
+    version: version-1671248620582053151
   name: zeus-exec-client
 spec:
   podManagementPolicy: OrderedReady
@@ -22,7 +22,7 @@ spec:
       labels:
         app.kubernetes.io/instance: zeus-exec-client
         app.kubernetes.io/name: zeus-exec-client
-        version: version-1671166619837551800
+        version: version-1671248620582122043
     spec:
       containers:
       - args:
@@ -47,20 +47,20 @@ spec:
         - containerPort: 30303
           name: p2p-tcp
           protocol: TCP
-        - containerPort: 8545
-          name: http-rpc
+        - containerPort: 8546
+          name: ws-rpc
           protocol: TCP
         - containerPort: 30303
           name: p2p-udp
-          protocol: TCP
-        - containerPort: 8546
-          name: ws-rpc
           protocol: TCP
         - containerPort: 6060
           name: metrics
           protocol: TCP
         - containerPort: 8551
           name: auth-rpc
+          protocol: TCP
+        - containerPort: 8545
+          name: http-rpc
           protocol: TCP
         readinessProbe:
           initialDelaySeconds: 10
