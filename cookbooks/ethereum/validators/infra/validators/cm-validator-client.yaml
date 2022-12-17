@@ -6,9 +6,10 @@ data:
   start.sh: |-
     #!/bin/sh
     exec lighthouse vc \
-              --network mainnet \
+              --testnet-dir=/data/testnet \
               --log-format=JSON \
               --datadir=/validators \
+    	      --init-slashing-protection \
               --http \
               --http-address=0.0.0.0 \
               --http-port=5062 \
@@ -16,12 +17,13 @@ data:
   pause.sh: |-
     #!/bin/sh
     exec sleep 100000000000000000
-  lighthouse.sh: |-
+  lighthouseEphemeral.sh: |-
     #!/bin/sh
     exec lighthouse vc \
-              --network mainnet \
+              --testnet-dir=/data/testnet \
               --log-format=JSON \
               --datadir=/validators \
+        	  --init-slashing-protection \
               --http \
               --http-address=0.0.0.0 \
               --http-port=5062 \
