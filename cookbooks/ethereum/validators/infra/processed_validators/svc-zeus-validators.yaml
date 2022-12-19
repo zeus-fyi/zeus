@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/instance: zeus-validators
     app.kubernetes.io/managed-by: zeus-validators
     app.kubernetes.io/name: zeus-validators
-    version: version-1671249404895125821
+    version: version-1671415199329883522
   name: zeus-validators
 spec:
   ports:

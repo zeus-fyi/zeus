@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/instance: zeus-validators
     app.kubernetes.io/managed-by: zeus
     app.kubernetes.io/name: zeus-validators
-    version: version-1671249404895077717
+    version: version-1671415199329834222
   name: zeus-validators
 spec:
   podManagementPolicy: OrderedReady
@@ -22,7 +22,7 @@ spec:
       labels:
         app.kubernetes.io/instance: zeus-validators
         app.kubernetes.io/name: zeus-validators
-        version: version-1671249404895122841
+        version: version-1671415199329881203
     spec:
       containers:
       - args:
@@ -87,10 +87,10 @@ spec:
         name: init-validator
         resources: {}
         volumeMounts:
-        - mountPath: /data
-          name: validator-client-storage
         - mountPath: /scripts
           name: cm-validator-client
+        - mountPath: /data
+          name: validator-client-storage
       volumes:
       - configMap:
           defaultMode: 484
