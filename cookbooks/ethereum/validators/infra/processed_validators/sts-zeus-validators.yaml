@@ -3,26 +3,26 @@ kind: StatefulSet
 metadata:
   creationTimestamp: null
   labels:
-    app.kubernetes.io/instance: zeus-exec-client
+    app.kubernetes.io/instance: zeus-validators
     app.kubernetes.io/managed-by: zeus
-    app.kubernetes.io/name: zeus-exec-client
-    version: version-1671250158033796049
-  name: zeus-exec-client
+    app.kubernetes.io/name: zeus-validators
+    version: version-1671249404895077717
+  name: zeus-validators
 spec:
   podManagementPolicy: OrderedReady
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/instance: zeus-exec-client
-      app.kubernetes.io/name: zeus-exec-client
-  serviceName: zeus-exec-client
+      app.kubernetes.io/instance: zeus-validators
+      app.kubernetes.io/name: zeus-validators
+  serviceName: zeus-validators
   template:
     metadata:
       creationTimestamp: null
       labels:
-        app.kubernetes.io/instance: zeus-exec-client
-        app.kubernetes.io/name: zeus-exec-client
-        version: version-1671250158033852882
+        app.kubernetes.io/instance: zeus-validators
+        app.kubernetes.io/name: zeus-validators
+        version: version-1671249404895122841
     spec:
       containers:
       - args:
@@ -35,44 +35,29 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: status.podIP
-        image: ethereum/client-go:v1.10.26
+        image: sigp/lighthouse:v3.2.1-modern
         imagePullPolicy: IfNotPresent
         livenessProbe:
           initialDelaySeconds: 60
           periodSeconds: 120
           tcpSocket:
-            port: http-rpc
-        name: zeus-exec-client
+            port: metrics
+        name: zeus-validators
         ports:
-        - containerPort: 8545
-          name: http-rpc
-          protocol: TCP
-        - containerPort: 30303
-          name: p2p-udp
-          protocol: TCP
-        - containerPort: 8546
-          name: ws-rpc
-          protocol: TCP
-        - containerPort: 8551
-          name: auth-rpc
-          protocol: TCP
-        - containerPort: 6060
+        - containerPort: 5054
           name: metrics
-          protocol: TCP
-        - containerPort: 30303
-          name: p2p-tcp
           protocol: TCP
         readinessProbe:
           initialDelaySeconds: 10
           periodSeconds: 10
           tcpSocket:
-            port: http-rpc
+            port: metrics
         resources: {}
         volumeMounts:
-        - mountPath: /data
-          name: exec-client-storage
         - mountPath: /scripts
-          name: cm-exec-client
+          name: cm-validator-client
+        - mountPath: /validators
+          name: validator-client-storage
       - args:
         - -c
         - hercules
@@ -87,10 +72,10 @@ spec:
           protocol: TCP
         resources: {}
         volumeMounts:
-        - mountPath: /data
-          name: exec-client-storage
         - mountPath: /scripts
-          name: cm-exec-client
+          name: cm-validator-client
+        - mountPath: /validators
+          name: validator-client-storage
       initContainers:
       - args:
         - -c
@@ -99,45 +84,30 @@ spec:
         - /bin/sh
         image: zeusfyi/hercules:latest
         imagePullPolicy: Always
-        name: init-snapshot
+        name: init-validator
         resources: {}
         volumeMounts:
+        - mountPath: /data
+          name: validator-client-storage
         - mountPath: /scripts
-          name: cm-exec-client
-        - mountPath: /data
-          name: exec-client-storage
-      - command:
-        - chown
-        - -R
-        - 10001:10001
-        - /data
-        image: busybox:1.34.0
-        imagePullPolicy: IfNotPresent
-        name: init-chown-data
-        resources: {}
-        securityContext:
-          runAsNonRoot: false
-          runAsUser: 0
-        volumeMounts:
-        - mountPath: /data
-          name: exec-client-storage
+          name: cm-validator-client
       volumes:
       - configMap:
           defaultMode: 484
-          name: cm-exec-client
-        name: cm-exec-client
+          name: cm-validator-client
+        name: cm-validator-client
   updateStrategy:
     type: RollingUpdate
   volumeClaimTemplates:
   - metadata:
       creationTimestamp: null
-      name: exec-client-storage
+      name: validator-client-storage
     spec:
       accessModes:
       - ReadWriteOnce
       resources:
         requests:
-          storage: 10Gi
+          storage: 100Mi
     status: {}
 status:
   availableReplicas: 0

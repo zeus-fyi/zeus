@@ -3,6 +3,7 @@ package artemis_client
 import (
 	artemis_endpoints "github.com/zeus-fyi/zeus/pkg/artemis/client/endpoints"
 	artemis_req_types "github.com/zeus-fyi/zeus/pkg/artemis/client/req_types"
+	"github.com/zeus-fyi/zeus/pkg/artemis/signing_automation/ethereum"
 )
 
 func (t *ArtemisClientTestSuite) TestSendEthEndpoints() {
@@ -15,7 +16,7 @@ func (t *ArtemisClientTestSuite) TestSendEthEndpoints() {
 
 func (t *ArtemisClientTestSuite) TestSendEthPayload() {
 	sendEthTx := artemis_req_types.SendEtherPayload{
-		Amount:         Finney,
+		Amount:         signing_automation_ethereum.Finney,
 		ToAddress:      t.TestAccount2.Address(),
 		GasPriceLimits: artemis_req_types.GasPriceLimits{},
 	}

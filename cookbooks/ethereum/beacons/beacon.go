@@ -31,7 +31,7 @@ var ingressChart = zeus_req_types.TopologyCreateRequest{
 	Version:           fmt.Sprintf("beaconIngress-v.0.%d", time.Now().Unix()),
 	SkeletonBaseName:  "beaconIngress",
 	ComponentBaseName: "beaconIngress",
-	ClusterBaseName:   "ethereumBeacon",
+	ClusterClassName:  "ethereumBeacon",
 	Tag:               "latest",
 }
 

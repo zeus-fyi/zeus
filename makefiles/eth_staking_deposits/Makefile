@@ -1,5 +1,5 @@
 REPO	:= zeusfyi
-NAME    := hera
+NAME    := staking-deposit-cli
 GIT_SHA := $(shell git rev-parse HEAD)
 IMG     := ${REPO}/${NAME}:${GIT_SHA}
 LATEST  := ${REPO}/${NAME}:latest

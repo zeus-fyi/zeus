@@ -10,6 +10,8 @@ import (
 	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_resp_types"
 )
 
+// TODO validate ns '[a-z0-9]([-a-z0-9]*[a-z0-9])?')
+
 func (z *ZeusClient) Deploy(ctx context.Context, tar zeus_req_types.TopologyDeployRequest) (zeus_resp_types.DeployStatus, error) {
 	z.PrintReqJson(tar)
 

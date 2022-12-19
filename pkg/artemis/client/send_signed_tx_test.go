@@ -4,6 +4,7 @@ import (
 	"github.com/zeus-fyi/gochain/web3/web3_actions"
 	artemis_endpoints "github.com/zeus-fyi/zeus/pkg/artemis/client/endpoints"
 	artemis_req_types "github.com/zeus-fyi/zeus/pkg/artemis/client/req_types"
+	"github.com/zeus-fyi/zeus/pkg/artemis/signing_automation/ethereum"
 )
 
 func (t *ArtemisClientTestSuite) TestSignedTxEndpoints() {
@@ -24,9 +25,9 @@ func (t *ArtemisClientTestSuite) TestSignedTxPayload() {
 		SendEtherPayload: web3_actions.SendEtherPayload{
 			GasPriceLimits: web3_actions.GasPriceLimits{},
 		},
-		Params: []interface{}{t.TestAccount2.Address(), Finney},
+		Params: []interface{}{t.TestAccount2.Address(), signing_automation_ethereum.Finney},
 	}
-	testClient1 := NewWeb3Client(t.NodeURL, t.TestAccount1.Account)
+	testClient1 := signing_automation_ethereum.NewWeb3Client(t.NodeURL, t.TestAccount1.Account)
 	signedTx, err := testClient1.GetSignedTxToCallFunctionWithArgs(ctx, &params)
 	t.Require().Nil(err)
 	t.Require().NotNil(signedTx)

@@ -21,7 +21,7 @@ var consensusClientChart = zeus_req_types.TopologyCreateRequest{
 	ChartName:         "lighthouseHercules",
 	ChartDescription:  "lighthouseHercules",
 	Version:           fmt.Sprintf("lighthouseHerculesv0.0.%d", time.Now().Unix()),
-	ClusterBaseName:   "ethereumBeacons",
+	ClusterClassName:  "ethereumBeacons",
 	ComponentBaseName: "consensusClient",
 	SkeletonBaseName:  "lighthouseHercules",
 	Tag:               "latest",
