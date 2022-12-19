@@ -9,6 +9,7 @@ data:
               --testnet-dir=/data/testnet \
               --log-format=JSON \
               --datadir=/validators \
+              --unencrypted-http-transport \
     	      --init-slashing-protection \
               --http \
               --http-address=0.0.0.0 \
@@ -27,6 +28,7 @@ data:
               --log-format=JSON \
               --datadir=/validators \
         	  --init-slashing-protection \
+              --unencrypted-http-transport \
               --http \
               --http-address=0.0.0.0 \
               --http-port=5062 \

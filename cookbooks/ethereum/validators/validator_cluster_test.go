@@ -23,6 +23,17 @@ func (t *ValidatorCookbookTestSuite) TestClusterDestroy() {
 	t.Assert().NotEmpty(resp)
 }
 
+func (t *ValidatorCookbookTestSuite) TestCreateClusterBase() {
+	ctx := context.Background()
+	basesInsert := []string{"executionClient", "consensusClient", consensusValidatorClientComponentBaseName}
+	cc := zeus_req_types.TopologyCreateOrAddComponentBasesToClassesRequest{
+		ClusterClassName:   ValidatorClusterClassName,
+		ComponentBaseNames: basesInsert,
+	}
+	_, err := t.ZeusTestClient.AddComponentBasesToClass(ctx, cc)
+	t.Require().Nil(err)
+}
+
 func (t *ValidatorCookbookTestSuite) TestUploadValidatorClientCharts() {
 	ctx := context.Background()
 	// Consensus

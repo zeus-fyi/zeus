@@ -11,7 +11,7 @@ import (
 	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_resp_types/topology_workloads"
 )
 
-func (z *ZeusClient) AddBasesToClass(ctx context.Context, tar zeus_req_types.TopologyCreateOrAddBasesToClassesRequest) (topology_workloads.TopologyCreateClassResponse, error) {
+func (z *ZeusClient) AddComponentBasesToClass(ctx context.Context, tar zeus_req_types.TopologyCreateOrAddComponentBasesToClassesRequest) (topology_workloads.TopologyCreateClassResponse, error) {
 	z.PrintReqJson(tar)
 	respJson := topology_workloads.TopologyCreateClassResponse{}
 	resp, err := z.R().
@@ -20,7 +20,7 @@ func (z *ZeusClient) AddBasesToClass(ctx context.Context, tar zeus_req_types.Top
 		Post(zeus_endpoints.InfraAddBasesToClassV1Path)
 
 	if err != nil || resp.StatusCode() != http.StatusOK {
-		log.Ctx(ctx).Err(err).Msg("ZeusClient: AddBasesToClass")
+		log.Ctx(ctx).Err(err).Msg("ZeusClient: AddComponentBasesToClass")
 		if resp.StatusCode() == http.StatusBadRequest {
 			err = errors.New("bad request")
 		}
@@ -30,7 +30,7 @@ func (z *ZeusClient) AddBasesToClass(ctx context.Context, tar zeus_req_types.Top
 	return respJson, err
 }
 
-func (z *ZeusClient) AddSkeletonBasesToClass(ctx context.Context, tar zeus_req_types.TopologyCreateOrAddBasesToClassesRequest) (topology_workloads.TopologyCreateClassResponse, error) {
+func (z *ZeusClient) AddSkeletonBasesToClass(ctx context.Context, tar zeus_req_types.TopologyCreateOrAddSkeletonBasesToClassesRequest) (topology_workloads.TopologyCreateClassResponse, error) {
 	z.PrintReqJson(tar)
 	respJson := topology_workloads.TopologyCreateClassResponse{}
 	resp, err := z.R().

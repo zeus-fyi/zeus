@@ -22,9 +22,9 @@ var (
 )
 
 var cd = zeus_req_types.ClusterTopologyDeployRequest{
-	ClusterName: ValidatorClusterClassName,
-	BaseOptions: []string{execSkeletonBase, consensusSkeletonBase, validatorSkeletonBaseName},
-	CloudCtxNs:  ValidatorCloudCtxNs,
+	ClusterClassName:    ValidatorClusterClassName,
+	SkeletonBaseOptions: []string{execSkeletonBase, consensusSkeletonBase, validatorSkeletonBaseName},
+	CloudCtxNs:          ValidatorCloudCtxNs,
 }
 
 var DeployConsensusValidatorClientKnsReq = zeus_req_types.TopologyDeployRequest{
@@ -36,7 +36,7 @@ var ValidatorCloudCtxNs = zeus_common_types.CloudCtxNs{
 	CloudProvider: "do",
 	Region:        "sfo3",
 	Context:       "do-sfo3-dev-do-sfo3-zeus",
-	Namespace:     "ephemeral.staking", // set with your own namespace
+	Namespace:     "ephemeral-staking", // set with your own namespace
 	Env:           "production",
 }
 
@@ -48,7 +48,7 @@ var validatorsChart = zeus_req_types.TopologyCreateRequest{
 	Version:           fmt.Sprintf("validatorBase-v.0.%d", time.Now().Unix()),
 	SkeletonBaseName:  validatorSkeletonBaseName,
 	ComponentBaseName: consensusValidatorClientComponentBaseName,
-	ClusterBaseName:   ValidatorClusterClassName,
+	ClusterClassName:  ValidatorClusterClassName,
 	Tag:               "latest",
 }
 

@@ -15,19 +15,20 @@ import (
 func (t *ValidatorCookbookTestSuite) TestCreateClusterValidatorBase() {
 	ctx := context.Background()
 	basesInsert := []string{consensusValidatorClientComponentBaseName}
-	cc := zeus_req_types.TopologyCreateOrAddBasesToClassesRequest{
-		ClassName:      ValidatorClusterClassName,
-		ClassBaseNames: basesInsert,
+	cc := zeus_req_types.TopologyCreateOrAddComponentBasesToClassesRequest{
+		ClusterClassName:   ValidatorClusterClassName,
+		ComponentBaseNames: basesInsert,
 	}
-	_, err := t.ZeusTestClient.AddBasesToClass(ctx, cc)
+	_, err := t.ZeusTestClient.AddComponentBasesToClass(ctx, cc)
 	t.Require().Nil(err)
 }
 
 func (t *ValidatorCookbookTestSuite) TestCreateClusterValidatorSkeletonBase() {
 	ctx := context.Background()
-	cc := zeus_req_types.TopologyCreateOrAddBasesToClassesRequest{
-		ClassName:      consensusValidatorClientComponentBaseName,
-		ClassBaseNames: []string{validatorSkeletonBaseName},
+	cc := zeus_req_types.TopologyCreateOrAddSkeletonBasesToClassRequest{
+		ClusterClassName: consensusValidatorClientComponentBaseName,
+
+		SkeletonBaseNames: []string{validatorSkeletonBaseName},
 	}
 	_, err := t.ZeusTestClient.AddSkeletonBasesToClass(ctx, cc)
 	t.Require().Nil(err)

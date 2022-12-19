@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/instance: zeus-consensus-client
     app.kubernetes.io/managed-by: zeus
     app.kubernetes.io/name: zeus-consensus-client
-    version: version-1671248620341522397
+    version: version-1671250157896365595
   name: zeus-consensus-client
 spec:
   ports:

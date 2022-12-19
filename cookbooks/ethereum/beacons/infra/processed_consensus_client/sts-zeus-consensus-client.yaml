@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/instance: zeus-consensus-client
     app.kubernetes.io/managed-by: zeus
     app.kubernetes.io/name: zeus-consensus-client
-    version: version-1671248620341275600
+    version: version-1671250157896305810
   name: zeus-consensus-client
 spec:
   podManagementPolicy: OrderedReady
@@ -22,7 +22,7 @@ spec:
       labels:
         app.kubernetes.io/instance: zeus-consensus-client
         app.kubernetes.io/name: zeus-consensus-client
-        version: version-1671248620341519724
+        version: version-1671250157896361939
     spec:
       containers:
       - args:
@@ -44,17 +44,17 @@ spec:
             port: http-api
         name: zeus-consensus-client
         ports:
+        - containerPort: 5054
+          name: metrics
+          protocol: TCP
+        - containerPort: 5052
+          name: http-api
+          protocol: TCP
         - containerPort: 9000
           name: p2p-udp
           protocol: TCP
         - containerPort: 9000
           name: p2p-tcp
-          protocol: TCP
-        - containerPort: 5052
-          name: http-api
-          protocol: TCP
-        - containerPort: 5054
-          name: metrics
           protocol: TCP
         readinessProbe:
           initialDelaySeconds: 10
@@ -63,10 +63,10 @@ spec:
             port: http-api
         resources: {}
         volumeMounts:
-        - mountPath: /scripts
-          name: cm-consensus-client
         - mountPath: /data
           name: consensus-client-storage
+        - mountPath: /scripts
+          name: cm-consensus-client
       - args:
         - -c
         - hercules
@@ -81,10 +81,10 @@ spec:
           protocol: TCP
         resources: {}
         volumeMounts:
-        - mountPath: /data
-          name: consensus-client-storage
         - mountPath: /scripts
           name: cm-consensus-client
+        - mountPath: /data
+          name: consensus-client-storage
       initContainers:
       - args:
         - -c
@@ -96,10 +96,10 @@ spec:
         name: init-snapshot
         resources: {}
         volumeMounts:
-        - mountPath: /scripts
-          name: cm-consensus-client
         - mountPath: /data
           name: consensus-client-storage
+        - mountPath: /scripts
+          name: cm-consensus-client
       - command:
         - chown
         - -R
