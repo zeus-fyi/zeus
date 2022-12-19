@@ -13,5 +13,5 @@ docker.pubbuildx:
 	@ docker buildx build -t ${IMG} -t ${LATEST} --build-arg VERSION=${VERSION} --platform=${GOOS}/${GOARCH} -f ../../docker/eth_staking_deposits/Dockerfile .
 
 docker.debug:
-	docker run -it --entrypoint /bin/sh zeusfyi/hera:latest
+	docker run -it --entrypoint /bin/sh zeusfyi/staking-deposit-cli:latest
 
