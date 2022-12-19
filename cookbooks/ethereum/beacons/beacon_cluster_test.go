@@ -96,25 +96,28 @@ func (t *BeaconCookbookTestSuite) TestCreateClusterSkeletonBases() {
 	ctx := context.Background()
 
 	cc := zeus_req_types.TopologyCreateOrAddSkeletonBasesToClassesRequest{
-		ClusterClassName:  "executionClient",
+		ClusterClassName:  clusterClassName,
+		ComponentBaseName: "executionClient",
 		SkeletonBaseNames: execSkeletonBases,
 	}
 	_, err := t.ZeusTestClient.AddSkeletonBasesToClass(ctx, cc)
 	t.Require().Nil(err)
 
 	cc = zeus_req_types.TopologyCreateOrAddSkeletonBasesToClassesRequest{
-		ClusterClassName:  "consensusClient",
+		ClusterClassName:  clusterClassName,
+		ComponentBaseName: "consensusClient",
 		SkeletonBaseNames: consensusSkeletonBases,
 	}
 	_, err = t.ZeusTestClient.AddSkeletonBasesToClass(ctx, cc)
 	t.Require().Nil(err)
-	//
-	//ing := zeus_req_types.TopologyCreateOrAddSkeletonBasesToClassRequest{
-	//	ComponentBaseName:      "beaconIngress",
-	//	ClassBaseNames: ingressBaseName,
-	//}
-	//_, err = t.ZeusTestClient.AddSkeletonBasesToClass(ctx, ing)
-	//t.Require().Nil(err)
+
+	ing := zeus_req_types.TopologyCreateOrAddSkeletonBasesToClassesRequest{
+		ClusterClassName:  clusterClassName,
+		ComponentBaseName: "beaconIngress",
+		SkeletonBaseNames: ingressBaseName,
+	}
+	_, err = t.ZeusTestClient.AddSkeletonBasesToClass(ctx, ing)
+	t.Require().Nil(err)
 }
 
 func (t *BeaconCookbookTestSuite) TestUploadBeaconCharts(consensusChartPath, execChartPath, ingChartPath filepaths.Path, withIngress bool) {

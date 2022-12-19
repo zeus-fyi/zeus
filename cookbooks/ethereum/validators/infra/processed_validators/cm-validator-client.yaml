@@ -5,18 +5,18 @@ data:
     exec snapshots --downloadURL="" --clientName="ethereumEphemeralValidatorCluster"
   lighthouseEphemeral.sh: "#!/bin/sh\nexec lighthouse vc \\\n          --testnet-dir=/data/testnet
     \\\n          --log-format=JSON \\\n          --datadir=/validators \\\n    \t
-    \ --init-slashing-protection \\\n          --http \\\n          --http-address=0.0.0.0
-    \\\n          --http-port=5062 \\\n          --beacon-nodes=\"http://zeus-consensus-client:5052\""
+    \ --init-slashing-protection \\\n          --unencrypted-http-transport \\\n          --http
+    \\\n          --http-address=0.0.0.0 \\\n          --http-port=5062 \\\n          --beacon-nodes=\"http://zeus-consensus-client:5052\""
   pause.sh: |-
     #!/bin/sh
     exec sleep 100000000000000000
   start.sh: "#!/bin/sh\nexec lighthouse vc \\\n          --testnet-dir=/data/testnet
-    \\\n          --log-format=JSON \\\n          --datadir=/validators \\\n\t      --init-slashing-protection
-    \\\n          --http \\\n          --http-address=0.0.0.0 \\\n          --http-port=5062
-    \\\n          --beacon-nodes=\"http://zeus-consensus-client:5052\""
+    \\\n          --log-format=JSON \\\n          --datadir=/validators \\\n          --unencrypted-http-transport
+    \\\n\t      --init-slashing-protection \\\n          --http \\\n          --http-address=0.0.0.0
+    \\\n          --http-port=5062 \\\n          --beacon-nodes=\"http://zeus-consensus-client:5052\""
 kind: ConfigMap
 metadata:
   creationTimestamp: null
   labels:
-    version: version-1671249404895130561
+    version: version-1671415199329891387
   name: cm-validator-client
