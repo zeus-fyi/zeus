@@ -49,7 +49,7 @@ func ExtractAndDecEphemeralTestnetConfig(dataDir filepaths.Path, clientName stri
 	ok, _ := Exists("./data/testnet/retention.vars")
 	if ok {
 		kt := ExtractResetTime("./data/testnet/retention.vars")
-		fmt.Println(kt)
+		log.Info().Msgf("%s seconds until next genesis iteration")
 		if time.Now().Unix() > kt {
 			err := RemoveContents(dataDir.DirIn)
 			if err != nil {
