@@ -12,6 +12,8 @@ const (
 	execClientDiskName = "exec-client-storage"
 	execClientDiskSize = "10Gi"
 
+	hercules              = "hercules"
+	herculesEphemeral     = "herculesEphemeral"
 	GethEphemeral         = "gethEphemeral"
 	downloadGethEphemeral = "downloadGethEphemeral"
 	gethDockerImage       = "ethereum/client-go:v1.10.26"
@@ -31,6 +33,13 @@ func EphemeralExecClientGethConfig(inf topology_workloads.TopologyBaseInfraWorkl
 		vSrc, ok = inf.ConfigMap.Data[downloadGethEphemeral+".sh"]
 		if ok {
 			m[download+".sh"] = vSrc
+		} else {
+			err := errors.New("key not found")
+			panic(err)
+		}
+		vSrc, ok = inf.ConfigMap.Data[herculesEphemeral+".sh"]
+		if ok {
+			m[hercules+".sh"] = vSrc
 		} else {
 			err := errors.New("key not found")
 			panic(err)

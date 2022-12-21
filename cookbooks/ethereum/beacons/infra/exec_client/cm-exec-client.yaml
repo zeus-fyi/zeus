@@ -48,6 +48,12 @@ data:
       --authrpc.addr=0.0.0.0 \
       --authrpc.port=8551 \
       --authrpc.vhosts=*
+  hercules.sh: |-
+    #!/bin/sh 
+    hercules
+  herculesEphemeral.sh: |-
+    #!/bin/sh 
+    hercules --network="ephemery"
   gethEphemeral.sh: |-
     #!/bin/sh
     exec geth \

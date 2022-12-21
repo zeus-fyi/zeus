@@ -175,6 +175,10 @@ func (t *BeaconCookbookTestSuite) TestUploadEphemeralBeaconStakingConfig() {
 	t.TestUploadEphemeralBeaconConfig(false)
 }
 
+func (t *BeaconCookbookTestSuite) TestUploadEphemeralStandardBeaconConfig() {
+	t.TestUploadEphemeralBeaconConfig(true)
+}
+
 func (t *BeaconCookbookTestSuite) TestUploadEphemeralBeaconConfig(withIngress bool) {
 	consensusClientChart.ClusterClassName = clusterClassName
 	execClientChart.ClusterClassName = clusterClassName

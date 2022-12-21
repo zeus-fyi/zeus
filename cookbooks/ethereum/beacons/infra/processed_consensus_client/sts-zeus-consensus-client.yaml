@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/instance: zeus-consensus-client
     app.kubernetes.io/managed-by: zeus
     app.kubernetes.io/name: zeus-consensus-client
-    version: version-1671414883228269938
+    version: version-1671603326882949395
   name: zeus-consensus-client
 spec:
   podManagementPolicy: OrderedReady
@@ -22,7 +22,7 @@ spec:
       labels:
         app.kubernetes.io/instance: zeus-consensus-client
         app.kubernetes.io/name: zeus-consensus-client
-        version: version-1671414883228321145
+        version: version-1671603326883047052
     spec:
       containers:
       - args:
@@ -44,11 +44,11 @@ spec:
             port: http-api
         name: zeus-consensus-client
         ports:
-        - containerPort: 9000
-          name: p2p-tcp
-          protocol: TCP
         - containerPort: 5052
           name: http-api
+          protocol: TCP
+        - containerPort: 9000
+          name: p2p-tcp
           protocol: TCP
         - containerPort: 9000
           name: p2p-udp
@@ -69,7 +69,7 @@ spec:
           name: consensus-client-storage
       - args:
         - -c
-        - hercules
+        - /scripts/hercules.sh
         command:
         - /bin/sh
         image: zeusfyi/hercules:latest

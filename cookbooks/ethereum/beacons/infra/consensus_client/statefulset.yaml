@@ -55,7 +55,7 @@ spec:
           image: "zeusfyi/hercules:latest"
           imagePullPolicy: Always
           command: [ "/bin/sh" ]
-          args: [ "-c","hercules" ]
+          args: [ "-c","/scripts/hercules.sh" ]
           volumeMounts:
             - name: cm-consensus-client
               mountPath: "/scripts"

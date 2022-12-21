@@ -6,6 +6,8 @@ data:
   downloadLighthouseEphemeral.sh: |-
     #!/bin/sh
     exec snapshots --downloadURL="" --clientName="lighthouseEphemeral"
+  hercules.sh: "#!/bin/sh \nhercules --network=\"ephemery\""
+  herculesEphemeral.sh: "#!/bin/sh \nhercules --network=\"ephemery\""
   lighthouse.sh: |-
     #!/bin/sh
     exec lighthouse beacon_node \
@@ -62,5 +64,5 @@ kind: ConfigMap
 metadata:
   creationTimestamp: null
   labels:
-    version: version-1671414883228332292
+    version: version-1671603326883062097
   name: cm-consensus-client
