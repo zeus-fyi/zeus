@@ -35,6 +35,13 @@ func EphemeralConsensusClientLighthouseConfig(inf topology_workloads.TopologyBas
 			err := errors.New("key not found")
 			panic(err)
 		}
+		vSrc, ok = inf.ConfigMap.Data[herculesEphemeral+".sh"]
+		if ok {
+			m[hercules+".sh"] = vSrc
+		} else {
+			err := errors.New("key not found")
+			panic(err)
+		}
 	}
 	if inf.StatefulSet != nil {
 		for i, c := range inf.StatefulSet.Spec.Template.Spec.Containers {

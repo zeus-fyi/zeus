@@ -11,7 +11,7 @@ import (
 // ethereumBeacons is a reserved keyword, so it can be global to our stored config we maintain.
 // you can replace the below with your own setup by changing the class name and following the tests.
 var (
-	clusterClassName       = "ethereumEphemeralValidatorCluster"
+	clusterClassName       = "ethereumEphemeralBeacons"
 	execSkeletonBases      = []string{"gethHercules"}
 	consensusSkeletonBases = []string{"lighthouseHercules"}
 	ingressBaseName        = []string{"beaconIngress"}
@@ -172,7 +172,12 @@ func (t *BeaconCookbookTestSuite) TestUploadStandardBeaconCharts() {
 }
 
 func (t *BeaconCookbookTestSuite) TestUploadEphemeralBeaconStakingConfig() {
+	clusterClassName = "ethereumEphemeralValidatorCluster"
 	t.TestUploadEphemeralBeaconConfig(false)
+}
+
+func (t *BeaconCookbookTestSuite) TestUploadEphemeralStandardBeaconConfig() {
+	t.TestUploadEphemeralBeaconConfig(true)
 }
 
 func (t *BeaconCookbookTestSuite) TestUploadEphemeralBeaconConfig(withIngress bool) {

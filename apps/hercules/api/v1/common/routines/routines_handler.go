@@ -33,11 +33,3 @@ func ResumeProcessRoutineHandler(c echo.Context) error {
 	}
 	return request.Resume(c)
 }
-
-func WipeDiskHandler(c echo.Context) error {
-	request := new(RoutineRequest)
-	if err := c.Bind(request); err != nil {
-		return err
-	}
-	return request.WipeDisk(c)
-}

@@ -11,13 +11,6 @@ import (
 
 const EphemeralDepositContractAddr = "0x4242424242424242424242424242424242424242"
 
-type ValidatorDepositParams struct {
-	Pubkey                string
-	WithdrawalCredentials string
-	Signature             string
-	DepositDataRoot       string
-}
-
 func (w *Web3SignerClient) SignValidatorDeposit(ctx context.Context, depositParams ValidatorDepositParams) (*types.Transaction, error) {
 	params := web3_actions.SendContractTxPayload{
 		SmartContractAddr: EphemeralDepositContractAddr,
@@ -30,13 +23,12 @@ func (w *Web3SignerClient) SignValidatorDeposit(ctx context.Context, depositPara
 			},
 			GasPriceLimits: web3_actions.GasPriceLimits{},
 		},
-		Params: []interface{}{depositParams.Pubkey, depositParams.WithdrawalCredentials, depositParams.Signature, depositParams.DepositDataRoot},
+		Params: []interface{}{"0x" + depositParams.Pubkey, "0x" + depositParams.WithdrawalCredentials, "0x" + depositParams.Signature, "0x" + depositParams.DepositDataRoot},
 	}
 	signedTx, err := w.GetSignedTxToCallFunctionWithArgs(ctx, &params)
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("Web3SignerClient: SignValidatorDeposit")
 	}
-
 	return signedTx, err
 }
 

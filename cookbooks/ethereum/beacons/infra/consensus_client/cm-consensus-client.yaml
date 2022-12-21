@@ -39,6 +39,12 @@ data:
               --http-port=5052 \
               --execution-jwt=/data/jwt.hex \
               --execution-endpoint="http://zeus-exec-client:8551"
+  hercules.sh: |-
+    #!/bin/sh 
+    hercules
+  herculesEphemeral.sh: |-
+    #!/bin/sh 
+    hercules --network="ephemery" --clientName="lighthouse"
   downloadLighthouseEphemeral.sh: |-
     #!/bin/sh
     exec snapshots --downloadURL="" --clientName="lighthouseEphemeral"

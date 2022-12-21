@@ -3,6 +3,8 @@ data:
   download.sh: |-
     #!/bin/sh
     exec snapshots --downloadURL="" --clientName="ethereumEphemeralValidatorCluster"
+  hercules.sh: "#!/bin/sh \nhercules"
+  herculesEphemeral.sh: "#!/bin/sh \nhercules --network=\"ephemery\" --clientName=\"lighthouse\""
   lighthouseEphemeral.sh: "#!/bin/sh\nexec lighthouse vc \\\n          --testnet-dir=/data/testnet
     \\\n          --log-format=JSON \\\n          --datadir=/validators \\\n    \t
     \ --init-slashing-protection \\\n          --unencrypted-http-transport \\\n          --http
@@ -18,5 +20,5 @@ kind: ConfigMap
 metadata:
   creationTimestamp: null
   labels:
-    version: version-1671420624390367695
+    version: version-1671605196313677219
   name: cm-validator-client

@@ -56,7 +56,7 @@ spec:
           image: "zeusfyi/hercules:latest"
           imagePullPolicy: Always
           command: [ "/bin/sh" ]
-          args: [ "-c","hercules" ]
+          args: [ "-c","/scripts/hercules.sh" ]
           volumeMounts:
             - name: exec-client-storage
               mountPath: "/data"
@@ -66,6 +66,11 @@ spec:
             - name: hercules
               containerPort: 9003
               protocol: TCP
+          livenessProbe:
+            initialDelaySeconds: 60
+            periodSeconds: 120
+            tcpSocket:
+              port: hercules
         - name: zeus-exec-client
           image: "ethereum/client-go:v1.10.23"
           imagePullPolicy: IfNotPresent

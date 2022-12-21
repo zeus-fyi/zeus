@@ -21,6 +21,12 @@ data:
   download.sh: |-
     #!/bin/sh
     exec snapshots --downloadURL="" --clientName="ethereumEphemeralValidatorCluster"
+  hercules.sh: |-
+    #!/bin/sh 
+    hercules
+  herculesEphemeral.sh: |-
+    #!/bin/sh 
+    hercules --network="ephemery" --clientName="lighthouse"
   lighthouseEphemeral.sh: |-
     #!/bin/sh
     exec lighthouse vc \
