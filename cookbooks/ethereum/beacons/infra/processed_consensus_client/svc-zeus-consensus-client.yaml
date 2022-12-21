@@ -6,10 +6,14 @@ metadata:
     app.kubernetes.io/instance: zeus-consensus-client
     app.kubernetes.io/managed-by: zeus
     app.kubernetes.io/name: zeus-consensus-client
-    version: version-1671605277851676238
+    version: version-1671605718813292044
   name: zeus-consensus-client
 spec:
   ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: http-api
   - name: hercules
     port: 9003
     protocol: TCP
@@ -30,10 +34,6 @@ spec:
     port: 5054
     protocol: TCP
     targetPort: metrics
-  - name: http
-    port: 80
-    protocol: TCP
-    targetPort: http-api
   selector:
     app.kubernetes.io/instance: zeus-consensus-client
     app.kubernetes.io/name: zeus-consensus-client

@@ -6,26 +6,10 @@ metadata:
     app.kubernetes.io/instance: zeus-exec-client
     app.kubernetes.io/managed-by: zeus
     app.kubernetes.io/name: zeus-exec-client
-    version: version-1671605278087676129
+    version: version-1671605718965221272
   name: zeus-exec-client
 spec:
   ports:
-  - name: p2p-tcp
-    port: 30303
-    protocol: TCP
-    targetPort: p2p-tcp
-  - name: p2p-udp
-    port: 30303
-    protocol: UDP
-    targetPort: p2p-udp
-  - name: http-rpc
-    port: 8545
-    protocol: TCP
-    targetPort: http-rpc
-  - name: ws-rpc
-    port: 8546
-    protocol: TCP
-    targetPort: ws-rpc
   - name: auth-rpc
     port: 8551
     protocol: TCP
@@ -42,6 +26,22 @@ spec:
     port: 9003
     protocol: TCP
     targetPort: hercules
+  - name: p2p-tcp
+    port: 30303
+    protocol: TCP
+    targetPort: p2p-tcp
+  - name: p2p-udp
+    port: 30303
+    protocol: UDP
+    targetPort: p2p-udp
+  - name: http-rpc
+    port: 8545
+    protocol: TCP
+    targetPort: http-rpc
+  - name: ws-rpc
+    port: 8546
+    protocol: TCP
+    targetPort: ws-rpc
   selector:
     app.kubernetes.io/instance: zeus-exec-client
     app.kubernetes.io/name: zeus-exec-client
