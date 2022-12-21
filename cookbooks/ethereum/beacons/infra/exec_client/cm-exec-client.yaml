@@ -53,7 +53,7 @@ data:
     hercules
   herculesEphemeral.sh: |-
     #!/bin/sh 
-    hercules --network="ephemery"
+    hercules --network="ephemery" --clientName="geth"
   gethEphemeral.sh: |-
     #!/bin/sh
     exec geth \

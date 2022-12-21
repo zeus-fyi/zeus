@@ -26,7 +26,7 @@ data:
     hercules
   herculesEphemeral.sh: |-
     #!/bin/sh 
-    hercules --network="ephemery"
+    hercules --network="ephemery" --clientName="lighthouse"
   lighthouseEphemeral.sh: |-
     #!/bin/sh
     exec lighthouse vc \

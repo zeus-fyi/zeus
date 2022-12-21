@@ -10,16 +10,18 @@ import (
 	"github.com/spf13/viper"
 	hercules_router "github.com/zeus-fyi/hercules/api"
 	v1_common_routes "github.com/zeus-fyi/hercules/api/v1/common"
+	client_consts "github.com/zeus-fyi/zeus/cookbooks/ethereum/beacons/constants"
 	aegis_inmemdbs "github.com/zeus-fyi/zeus/pkg/aegis/inmemdbs"
 	"github.com/zeus-fyi/zeus/pkg/utils/ephemery_reset"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 )
 
 var (
-	cfg     = Config{}
-	network string
-	env     string
-	dataDir filepaths.Path
+	cfg        = Config{}
+	clientName string
+	network    string
+	env        string
+	dataDir    filepaths.Path
 )
 
 func Hercules() {
@@ -35,9 +37,15 @@ func Hercules() {
 
 	// TODO refactor
 	if network == "ephemery" {
-		ok, _ := ephemery_reset.Exists(path.Join(dataDir.DirIn, "/testnet/retention.vars"))
+		genesisPath := dataDir.DirIn
+		switch clientName {
+		case client_consts.Lighthouse:
+			genesisPath = path.Join(genesisPath, "/testnet")
+		default:
+		}
+		ok, _ := ephemery_reset.Exists(path.Join(genesisPath, "/retention.vars"))
 		if ok {
-			kt := ephemery_reset.ExtractResetTime(path.Join(dataDir.DirIn, "/testnet/retention.vars"))
+			kt := ephemery_reset.ExtractResetTime(path.Join(genesisPath, "/retention.vars"))
 			go func(timeBeforeKill int64) {
 				log.Info().Msgf("killing ephemeral infra due to genesis reset after %d seconds", timeBeforeKill)
 				time.Sleep(time.Duration(timeBeforeKill) * time.Second)
@@ -54,6 +62,7 @@ func init() {
 	Cmd.Flags().StringVar(&dataDir.DirIn, "dataDirIn", "/data", "data directory location")
 	Cmd.Flags().StringVar(&env, "env", "local", "environment")
 	Cmd.Flags().StringVar(&network, "network", "", "network")
+	Cmd.Flags().StringVar(&clientName, "clientName", "", "client name")
 }
 
 // Cmd represents the base command when called without any subcommands

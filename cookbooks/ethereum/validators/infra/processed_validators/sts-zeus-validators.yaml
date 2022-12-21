@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/instance: zeus-validators
     app.kubernetes.io/managed-by: zeus
     app.kubernetes.io/name: zeus-validators
-    version: version-1671415199329834222
+    version: version-1671605196313618052
   name: zeus-validators
 spec:
   podManagementPolicy: OrderedReady
@@ -22,7 +22,7 @@ spec:
       labels:
         app.kubernetes.io/instance: zeus-validators
         app.kubernetes.io/name: zeus-validators
-        version: version-1671415199329881203
+        version: version-1671605196313668738
     spec:
       containers:
       - args:
@@ -56,15 +56,20 @@ spec:
         volumeMounts:
         - mountPath: /scripts
           name: cm-validator-client
-        - mountPath: /validators
+        - mountPath: /data
           name: validator-client-storage
       - args:
         - -c
-        - hercules
+        - /scripts/hercules.sh
         command:
         - /bin/sh
         image: zeusfyi/hercules:latest
         imagePullPolicy: Always
+        livenessProbe:
+          initialDelaySeconds: 60
+          periodSeconds: 120
+          tcpSocket:
+            port: hercules
         name: hercules
         ports:
         - containerPort: 9003
@@ -74,7 +79,7 @@ spec:
         volumeMounts:
         - mountPath: /scripts
           name: cm-validator-client
-        - mountPath: /validators
+        - mountPath: /data
           name: validator-client-storage
       initContainers:
       - args:

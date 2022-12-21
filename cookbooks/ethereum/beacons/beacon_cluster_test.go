@@ -172,6 +172,7 @@ func (t *BeaconCookbookTestSuite) TestUploadStandardBeaconCharts() {
 }
 
 func (t *BeaconCookbookTestSuite) TestUploadEphemeralBeaconStakingConfig() {
+	clusterClassName = "ethereumEphemeralValidatorCluster"
 	t.TestUploadEphemeralBeaconConfig(false)
 }
 

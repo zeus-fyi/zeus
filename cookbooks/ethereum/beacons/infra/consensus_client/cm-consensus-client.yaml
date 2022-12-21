@@ -44,7 +44,7 @@ data:
     hercules
   herculesEphemeral.sh: |-
     #!/bin/sh 
-    hercules --network="ephemery"
+    hercules --network="ephemery" --clientName="lighthouse"
   downloadLighthouseEphemeral.sh: |-
     #!/bin/sh
     exec snapshots --downloadURL="" --clientName="lighthouseEphemeral"

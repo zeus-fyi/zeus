@@ -65,6 +65,11 @@ spec:
             - name: hercules
               containerPort: 9003
               protocol: TCP
+          livenessProbe:
+            initialDelaySeconds: 60
+            periodSeconds: 120
+            tcpSocket:
+              port: hercules
         - name: zeus-consensus-client
           image: "sigp/lighthouse:v3.2.1-modern"
           imagePullPolicy: IfNotPresent

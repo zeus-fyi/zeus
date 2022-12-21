@@ -66,6 +66,11 @@ spec:
             - name: hercules
               containerPort: 9003
               protocol: TCP
+          livenessProbe:
+            initialDelaySeconds: 60
+            periodSeconds: 120
+            tcpSocket:
+              port: hercules
         - name: zeus-exec-client
           image: "ethereum/client-go:v1.10.23"
           imagePullPolicy: IfNotPresent
