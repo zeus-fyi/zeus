@@ -51,10 +51,12 @@ func ExtractAndDecEphemeralTestnetConfig(dataDir filepaths.Path, clientName stri
 	if ok {
 		log.Info().Msg("previous genesis artifact for genesis interval found")
 		kt := ExtractResetTime(path.Join(dataDir.DirIn, "/retention.vars"))
-		log.Info().Msgf("%s seconds until next genesis iteration", kt)
+		log.Info().Int64("seconds until next genesis iteration", kt)
 		if kt <= 0 {
+			log.Info().Interface("wipingDirPath", wipeDirPath).Msg("wiping datadir in path")
 			err := RemoveContents(wipeDirPath)
 			if err != nil {
+				log.Err(err).Msg("ExtractAndDecEphemeralTestnetConfig: RemoveContents")
 				panic(err)
 			}
 		}
@@ -63,6 +65,10 @@ func ExtractAndDecEphemeralTestnetConfig(dataDir filepaths.Path, clientName stri
 	log.Info().Interface("dataDir.DirOut", dataDir.DirOut)
 	if _, zerr := os.Stat(dataDir.DirOut); os.IsNotExist(zerr) {
 		_ = os.MkdirAll(dataDir.DirOut, 0700) // Create your dir
+	}
+	log.Info().Interface("dataDir.DirIn", dataDir.DirIn)
+	if _, zerr := os.Stat(dataDir.DirIn); os.IsNotExist(zerr) {
+		_ = os.MkdirAll(dataDir.DirIn, 0700) // Create your dir
 	}
 	url := GetLatestReleaseConfigDownloadURL()
 	dataDir.FnIn = ephemeralTestnetFile

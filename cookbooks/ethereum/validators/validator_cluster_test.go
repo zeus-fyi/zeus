@@ -15,9 +15,7 @@ func (t *ValidatorCookbookTestSuite) TestClusterDeploy() {
 
 func (t *ValidatorCookbookTestSuite) TestClusterDestroy() {
 	ctx := context.Background()
-
 	knsReq := DeployConsensusValidatorClientKnsReq
-
 	resp, err := t.ZeusTestClient.DestroyDeploy(ctx, knsReq)
 	t.Require().Nil(err)
 	t.Assert().NotEmpty(resp)
