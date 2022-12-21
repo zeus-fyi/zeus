@@ -49,8 +49,9 @@ func ExtractAndDecEphemeralTestnetConfig(dataDir filepaths.Path, clientName stri
 	// TODO refactor
 	ok, _ := Exists(path.Join(dataDir.DirIn, "/retention.vars"))
 	if ok {
+		log.Info().Msg("previous genesis artifact for genesis interval found")
 		kt := ExtractResetTime(path.Join(dataDir.DirIn, "/retention.vars"))
-		log.Info().Msgf("%s seconds until next genesis iteration")
+		log.Info().Msgf("%s seconds until next genesis iteration", kt)
 		if kt <= 0 {
 			err := RemoveContents(wipeDirPath)
 			if err != nil {
