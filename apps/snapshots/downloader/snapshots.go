@@ -19,12 +19,13 @@ var (
 )
 
 func StartUp() {
+	// the below uses a switch case to download if an ephemeralClientName is used
+	ephemery_reset.ExtractAndDecEphemeralTestnetConfig(dataDir, clientName)
+
 	if useDefaultToken {
 		_ = init_jwt.SetTokenToDefault(dataDir, "jwt.hex", jwtToken)
 	}
 	ChainDownload()
-	// the below uses a switch case to download if an ephemeralClientName is used
-	ephemery_reset.ExtractAndDecEphemeralTestnetConfig(dataDir, clientName)
 }
 
 func init() {
