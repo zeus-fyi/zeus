@@ -27,7 +27,7 @@ func (t *ValidatorCookbookTestSuite) TestCreateClusterBase() {
 	ctx := context.Background()
 	basesInsert := []string{"executionClient", "consensusClient", consensusValidatorClientComponentBaseName}
 	cc := zeus_req_types.TopologyCreateOrAddComponentBasesToClassesRequest{
-		ClusterClassName:   ValidatorClusterClassName,
+		ClusterClassName:   EphemeryValidatorClusterClassName,
 		ComponentBaseNames: basesInsert,
 	}
 	_, err := t.ZeusTestClient.AddComponentBasesToClass(ctx, cc)

@@ -3,8 +3,8 @@ package snapshot_init
 import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"github.com/zeus-fyi/snapshots/config_fetching"
 	init_jwt "github.com/zeus-fyi/zeus/pkg/aegis/jwt"
+	"github.com/zeus-fyi/zeus/pkg/utils/ephemery_reset"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 )
 
@@ -24,7 +24,7 @@ func StartUp() {
 	}
 	ChainDownload()
 	// the below uses a switch case to download if an ephemeralClientName is used
-	config_fetching.ExtractAndDecEphemeralTestnetConfig(dataDir, clientName)
+	ephemery_reset.ExtractAndDecEphemeralTestnetConfig(dataDir, clientName)
 }
 
 func init() {

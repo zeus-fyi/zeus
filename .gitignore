@@ -45,3 +45,4 @@ Thumbs.db
 *.flv
 *.mov
 *.wmv
+/test/mocks/validator_keys/

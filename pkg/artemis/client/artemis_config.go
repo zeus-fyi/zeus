@@ -7,18 +7,20 @@ type ArtemisConfig struct {
 	Network  string
 }
 
-type ArtemisConfigs []ArtemisConfig
+type ArtemisConfigs []*ArtemisConfig
 
 const (
-	Mainnet  = "mainnet"
-	Goerli   = "goerli"
-	Ethereum = "ethereum"
+	Mainnet   = "mainnet"
+	Goerli    = "goerli"
+	Ephemeral = "ephemeral"
+	Ethereum  = "ethereum"
 )
 
 var (
-	ArtemisEthereumMainnet = NewArtemisConfig(Ethereum, Mainnet)
-	ArtemisEthereumGoerli  = NewArtemisConfig(Ethereum, Goerli)
-	GlobalArtemisConfigs   = []ArtemisConfig{ArtemisEthereumMainnet, ArtemisEthereumGoerli}
+	ArtemisEthereumMainnet   = NewArtemisConfig(Ethereum, Mainnet)
+	ArtemisEthereumGoerli    = NewArtemisConfig(Ethereum, Goerli)
+	ArtemisEthereumEphemeral = NewArtemisConfig(Ethereum, Ephemeral)
+	GlobalArtemisConfigs     = []*ArtemisConfig{&ArtemisEthereumMainnet, &ArtemisEthereumGoerli, &ArtemisEthereumEphemeral}
 )
 
 func (a *ArtemisConfig) GetV1BetaBaseRoute() string {
