@@ -42,12 +42,12 @@ spec:
           image: "zeusfyi/hercules:latest"
           imagePullPolicy: Always
           command: [ "/bin/sh" ]
-          args: [ "-c","hercules" ]
+          args: [ "-c","/scripts/hercules.sh" ]
           volumeMounts:
             - name: cm-validator-client
               mountPath: "/scripts"
             - name: validator-client-storage
-              mountPath: "/validators"
+              mountPath: "/data"
           ports:
             - name: hercules
               containerPort: 9003
@@ -61,7 +61,7 @@ spec:
             - name: cm-validator-client
               mountPath: "/scripts"
             - name: validator-client-storage
-              mountPath: "/validators"
+              mountPath: "/data"
           ports:
             - name: metrics
               containerPort: 5054
