@@ -6,16 +6,19 @@ By unifying the infra ecosystem tools of today it allows the acceleration of inf
 
 Lastly, by solving infra configuration and orchestration through remote API driven configuration, it allows you to run sophisticated web apps in virtually zero time on far more cost efficient bare metal cloud providers using commoditized managed kubernetes services and simple middleware we provide, which is up to 6x more cost efficient than AWS, GCP, and comparable cloud companies. Take a look for yourself, then ask yourself why you want to make Jeff Bezos richer than he already is?
 
-https://www.ibm.com/cloud/kubernetes-service
-https://us.ovhcloud.com/public-cloud/kubernetes
-https://www.linode.com/products/kubernetes
-https://www.digitalocean.com/products/kubernetes
-https://www.vultr.com/kubernetes
+#### You have alternatives
 
-https://www.ovhcloud.com/en/public-cloud/prices/
-https://www.ibm.com/cloud/virtual-servers/pricing
+##### https://www.ibm.com/cloud/kubernetes-service
+##### https://us.ovhcloud.com/public-cloud/kubernetes
+##### https://www.linode.com/products/kubernetes
+##### https://www.digitalocean.com/products/kubernetes
+##### https://www.vultr.com/kubernetes
 
-https://instances.vantage.sh/
+#### It doesn't take long to figure it out, here's some pricing links to help you out
+
+##### https://www.ovhcloud.com/en/public-cloud/prices/
+##### https://www.ibm.com/cloud/virtual-servers/pricing
+##### https://instances.vantage.sh/
 
 AWS, GCP, Azure, type cloud companies purposely have highly confusing pricing models to mislead you on costs using data transfer bills, among other sales tactics like free initial cloud usage until you're locked into their ecosystem complexity, exactly when you realize the cloud spend is outrageous. The vast majority of enterprise users simply need RAM, CPU, Bandwidth Traffic, and a few disk options like RAID setups, and HDD, SSD, NVMes. All major cloud companies have similar performance & online SLAs. Why would you want to spend 100+ engineering hours figuring out some obscure EC2 instance number that they deprecate in a year anyway? The 0.001% of people that have that need already know what they want.
 
