@@ -17,13 +17,14 @@ var (
 	consensusValidatorClientComponentBaseName = "consensusValidatorClients"
 	validatorSkeletonBaseName                 = "lighthouseHerculesValidatorClient"
 
-	execSkeletonBase      = "gethHercules"
-	consensusSkeletonBase = "lighthouseHercules"
+	execSkeletonBase         = "gethHercules"
+	consensusSkeletonBase    = "lighthouseHercules"
+	choreographySkeletonBase = "choreography"
 )
 
 var cd = zeus_req_types.ClusterTopologyDeployRequest{
 	ClusterClassName:    EphemeryValidatorClusterClassName,
-	SkeletonBaseOptions: []string{execSkeletonBase, consensusSkeletonBase, validatorSkeletonBaseName},
+	SkeletonBaseOptions: []string{execSkeletonBase, consensusSkeletonBase, validatorSkeletonBaseName, choreographySkeletonBase},
 	CloudCtxNs:          ValidatorCloudCtxNs,
 }
 
