@@ -24,7 +24,7 @@ AWS, GCP, Azure, type cloud companies purposely have highly confusing pricing mo
 
 ## Cookbooks ##
 
-Contains common web3 components, their setups in kubernetes, and startup commands, and useful tools for debugging, interacting, and automating actions.
+Contains common web2 & web3 building components like ethereum infra setups, and microservice designs & patterns like injectable choreography, their setups in kubernetes, golang, docker, and startup commands, and useful tools for debugging, interacting, and automating actions.
 
 ### Cookbook Structure ###
 
