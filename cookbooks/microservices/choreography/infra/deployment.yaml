@@ -22,7 +22,7 @@ spec:
           image: "zeusfyi/choreography:latest"
           volumeMounts:
             - mountPath: "/scripts"
-              name: "cm-zeus-choreography"
+              name: "cm-choreography"
           imagePullPolicy: Always
           command: [ "/bin/sh" ]
           args: [ "-c","/scripts/start.sh" ]
