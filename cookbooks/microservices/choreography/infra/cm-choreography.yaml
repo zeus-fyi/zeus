@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cm-choreography
+data:
+  start.sh: |-
+    #!/bin/sh
+    exec choreography --bearer="${BEARER}" --cloud-provider"${CLOUD_PROVIDER}" --ctx="${CTX}" --ns="${NS}" --region="${REGION}"

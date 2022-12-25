@@ -1,10 +1,10 @@
 package hercules_server
 
 import (
-	"os"
 	"path"
 	"time"
 
+	"github.com/go-resty/resty/v2"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -49,7 +49,12 @@ func Hercules() {
 			go func(timeBeforeKill int64) {
 				log.Info().Msgf("killing ephemeral infra due to genesis reset after %d seconds", timeBeforeKill)
 				time.Sleep(time.Duration(timeBeforeKill) * time.Second)
-				os.Exit(1)
+				rc := resty.New()
+				// assumes you have the default choreography sidecar in your namespace cluster
+				_, err := rc.R().Get("http://zeus-choreography:9999/delete/pods")
+				if err != nil {
+					log.Err(err)
+				}
 			}(kt)
 		}
 	}

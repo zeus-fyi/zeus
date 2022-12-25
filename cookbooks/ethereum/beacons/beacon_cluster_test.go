@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/zeus-fyi/zeus/cookbooks"
+	choreography_cookbooks "github.com/zeus-fyi/zeus/cookbooks/microservices/choreography"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_req_types"
 )
@@ -23,6 +24,8 @@ func (t *BeaconCookbookTestSuite) TestClusterDeploy() {
 	case "ethereumEphemeralBeacons":
 		cd.ClusterClassName = clusterClassName
 		cd.Namespace = "ephemeral"
+		// choreography is a reserved skeleton base keyword that will always deploy a choreography secret to support actions
+		cd.SkeletonBaseOptions = append(cd.SkeletonBaseOptions, choreography_cookbooks.GenericChoreographyChart.SkeletonBaseName)
 		cd.SkeletonBaseOptions = append(cd.SkeletonBaseOptions, ingressBaseName...)
 	}
 	resp, err := t.ZeusTestClient.DeployCluster(ctx, cd)
@@ -83,7 +86,7 @@ func (t *BeaconCookbookTestSuite) TestCreateClusterClass() {
 
 func (t *BeaconCookbookTestSuite) TestCreateClusterBase() {
 	ctx := context.Background()
-	basesInsert := []string{"executionClient", "consensusClient", "beaconIngress"}
+	basesInsert := []string{"executionClient", "consensusClient", "beaconIngress", "choreography"}
 	cc := zeus_req_types.TopologyCreateOrAddComponentBasesToClassesRequest{
 		ClusterClassName:   clusterClassName,
 		ComponentBaseNames: basesInsert,
@@ -117,6 +120,14 @@ func (t *BeaconCookbookTestSuite) TestCreateClusterSkeletonBases() {
 		SkeletonBaseNames: ingressBaseName,
 	}
 	_, err = t.ZeusTestClient.AddSkeletonBasesToClass(ctx, ing)
+	t.Require().Nil(err)
+
+	cc = zeus_req_types.TopologyCreateOrAddSkeletonBasesToClassesRequest{
+		ClusterClassName:  clusterClassName,
+		ComponentBaseName: "choreography",
+		SkeletonBaseNames: []string{"choreography"},
+	}
+	_, err = t.ZeusTestClient.AddSkeletonBasesToClass(ctx, cc)
 	t.Require().Nil(err)
 }
 
@@ -200,4 +211,13 @@ func (t *BeaconCookbookTestSuite) TestUploadEphemeralBeaconConfig(withIngress bo
 	ep.DirIn = ep.DirOut
 	ing.DirIn = ing.DirOut
 	t.TestUploadBeaconCharts(cp, ep, ing, withIngress)
+
+	ctx := context.Background()
+
+	// choreography option
+	choreography_cookbooks.GenericChoreographyChart.ClusterClassName = clusterClassName
+	resp, err := t.ZeusTestClient.UploadChart(ctx, choreography_cookbooks.GenericDeploymentChartPath, choreography_cookbooks.GenericChoreographyChart)
+	t.Require().Nil(err)
+	t.Assert().NotZero(resp.TopologyID)
+
 }
