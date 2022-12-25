@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "zeus-choreography"
+  labels:
+    app.kubernetes.io/instance: "zeus-choreography"
+    app.kubernetes.io/name: "zeus-choreography"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "zeus-choreography"
+      app.kubernetes.io/instance: "zeus-choreography"
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: "zeus-choreography"
+        app.kubernetes.io/instance: "zeus-choreography"
+    spec:
+      containers:
+        - name: "zeus-choreography"
+          image: "zeusfyi/choreography:latest"
+          volumeMounts:
+            - mountPath: "/scripts"
+              name: "cm-zeus-choreography"
+          imagePullPolicy: Always
+          command: [ "/bin/sh" ]
+          args: [ "-c","/scripts/start.sh" ]
+          env:
+            - name: BEARER
+              valueFrom:
+                secretKeyRef:
+                  name: choreography
+                  key: bearer
+            - name: CLOUD_PROVIDER
+              valueFrom:
+                secretKeyRef:
+                  name: choreography
+                  key: cloud-provider
+            - name: CTX
+              valueFrom:
+                secretKeyRef:
+                  name: choreography
+                  key: ctx
+            - name: NS
+              valueFrom:
+                secretKeyRef:
+                  name: choreography
+                  key: ns
+            - name: REGION
+              valueFrom:
+                secretKeyRef:
+                  name: choreography
+                  key: region
+          ports:
+            - name: "http"
+              containerPort: 9999
+              protocol: "TCP"
+          livenessProbe:
+            httpGet:
+              path: "/health"
+              port: "http"
+          readinessProbe:
+            httpGet:
+              path: "/health"
+              port: "http"
+          resources:
+            {}
+      volumes:
+        - name: cm-choreography
+          configMap:
+            name: cm-choreography
+            defaultMode: 0744
+      nodeSelector:
+        {}
+      affinity:
+        {}
+      tolerations:
+        []
