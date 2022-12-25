@@ -1,10 +1,10 @@
 ## Zeus ##
 
-Zeus is an evolution of web container orchestration into web system building and orchestration. It changes the paradigm into one that unifies configuration with the underlying orchestrator, instead of decoupling them into confusing messes like helm, terraform, and GitOps, while also reducing the complexity of kubernetes into one that takes almost zero knowledge of the underlying operational knowledge needed to operate kubernetes apps today. It's designed to solve complex infra configuration, operation, and building bottlenecks as dramatically as those the printing press solved for the book industry, and is capable of building systems at the scale and complexity of AWS by unifying multi-network kubernetes node pools with SQL driven relationship building & querying.
+Zeus is an evolution of web container orchestration into web system building and orchestration. It changes the paradigm into one that unifies configuration with the underlying orchestrator, instead of decoupling them into confusing messes like helm, terraform, and GitOps, while also reducing the operational complexity of building with kubernetes now into something a single mid-level IC without an infra background could operate for a medium sized technology business within a week. It's designed to solve complex infra configuration, operation, and building bottlenecks as dramatically as those the printing press solved for the book industry, and is capable of building systems at the scale and complexity of AWS by unifying multi-network kubernetes node pools with SQL driven relationship building & querying.
 
 By unifying the infra ecosystem tools of today it allows the acceleration of infra development exponentially overtime with each new open source cookbook & system template allowing you to glue sophisticated distributed systems together in zero time, which lets decentralized solo & small team builders compete directly against large incumbents at the edge of technology by erasing the need for large investment in infra & devops departments that are needed now to even get started.
 
-Zeus will you build & operate complex web systems as complex as AWS in timeframes that are unheard of today over time, and is doing this for web3 infra right now in the near term.
+Zeus will you build & operate complex web systems as complex as modern day AWS in timeframes that are unheard of today, over time, and is doing this for web3 infra right now in the near term.
 
 ## Cookbooks ##
 
