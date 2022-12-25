@@ -5,4 +5,4 @@ metadata:
 data:
   start.sh: |-
     #!/bin/sh
-    exec choreography --bearer="${BEARER}" --cloud-provider"${CLOUD_PROVIDER}" --ctx="${CTX}" --ns="${NS}" --region="${REGION}"
+    exec choreography --bearer="${BEARER}" --cloud-provider="${CLOUD_PROVIDER}" --ctx="${CTX}" --ns="${NS}" --region="${REGION}"
