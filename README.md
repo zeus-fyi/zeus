@@ -1,4 +1,12 @@
-## Zeus Cookbooks ##
+## Zeus ##
+
+Zeus is an evolution of web container orchestration into web system building and orchestration. It changes the paradigm into one that unifies configuration with the underlying orchestrator, instead of decoupling them into confusing messes like helm and terraform. It's designed to solve complex infra configuration, operation, and building bottlenecks as dramatically as those the printing press solved for the book industry, and is capable of building systems at the scale and complexity of AWS by unifying multi-network kubernetes node pools.
+
+By unifying the infra ecosystem tools of today it allows the acceleration of infra development exponentially overtime with each new open source cookbook & system template allowing you to glue sophisticated distributed systems together in zero time, which lets small decentralized solo & small team builders compete directly against large incumbents at the edge of technology by erasing the need for large investment in infra & devops departments that are needed now to even get started.
+
+Zeus will you build & operate complex web systems as complex as AWS in timeframes that are unheard of today, and is doing this for web3 infra right now.
+
+## Cookbooks ##
 
 Contains common web3 components, their setups in kubernetes, and startup commands, and useful tools for debugging, interacting, and automating actions.
 
@@ -31,14 +39,6 @@ Contains full kubernetes infra setup for a lighthouse-geth beacon with snapshot 
 ### Zeus Client
 
 #### ```pkg/zeus/client```
-
-Zeus is a cloud infrastructure & orchestration manager. It can be used to create, deploy, and manage  Kubernetes apps dynamically via APIs & orchestration technology. The Zeus client is for interacting with our cloud services.  Zeus can be configured to automate logging of all infra interactions to help meet centralized logging requirements needed for compliance in ISO 27000, ISO 27001, SOC-2, and more. By using our defined interface to interact with kubernetes, it limits interactions to appoved patterns of use, which are more secure than unlimited control over a cluster.
-
-#### A.12.4 Logging and Monitoring Its objective is recording events and generating evidence.
-#### A.12.4.2  Protection of Log Information
-#### A.12.4.3  Administrator and Operator Logs
-
-Every infra action can be traced to the user who initiated it and the org they are part of, permissions can be made granular to user role, every state change to the system can be logged, archived, and then queried. Tx, and receipt of blockchain events can also be saved or generated on demand, such as validator state changes. 
 
 #### API Endpoints 
 
