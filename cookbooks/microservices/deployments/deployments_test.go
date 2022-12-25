@@ -1,4 +1,4 @@
-package deployments_cookbook
+package deployment_cookbooks
 
 import (
 	"context"

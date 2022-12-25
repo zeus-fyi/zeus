@@ -17,6 +17,8 @@ type TopologyCreateRequest struct {
 type TopologyDeployRequest struct {
 	TopologyID int `json:"topologyID"`
 	zeus_common_types.CloudCtxNs
+
+	RequestChoreographySecretDeploy bool `json:"requestChoreographySecretDeploy,omitempty"`
 }
 
 type TopologyRequest struct {
