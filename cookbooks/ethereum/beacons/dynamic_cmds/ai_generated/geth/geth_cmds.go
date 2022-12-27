@@ -1,4 +1,4 @@
-package geth
+package geth_cmds
 
 import "time"
 
