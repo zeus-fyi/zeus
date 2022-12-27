@@ -22,6 +22,7 @@ var ctx = context.Background()
 var demoChartPath = filepaths.Path{
 	PackageName: "",
 	DirIn:       "./mocks/hera",
+	DirOut:      "./mocks/outputs",
 	FnIn:        "demo", // filename for your gzip workload
 	FnOut:       "",
 	Env:         "",
