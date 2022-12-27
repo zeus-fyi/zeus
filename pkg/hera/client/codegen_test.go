@@ -31,6 +31,8 @@ func (t *HeraClientTestSuite) TestTokenCountApproximate() {
 	t.Assert().Equal(61, tokenCount)
 	// NOTE open gpt-3 https://beta.openai.com/tokenizer returns 64 tokens as the count
 	// there's no opensource transformer for this, so use this + some margin when sending requests
+	// 2048 is the max token count for most models, the max size - prompt size, is your limitation on completion
+	// tokens
 }
 
 func (t *HeraClientTestSuite) TestFilesUploadToCodeGen() {
