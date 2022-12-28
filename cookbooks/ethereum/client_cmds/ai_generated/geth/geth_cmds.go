@@ -36,6 +36,7 @@ type APIConfig struct {
 	AuthRPCJWTSecret      string        `long:"authrpc.jwtsecret" description:"Path to a JWT secret to use for authenticated RPC endpoints"`
 	AuthRPCAddr           string        `long:"authrpc.addr" default:"localhost" description:"Listening address for authenticated APIs"`
 	AuthRPCPort           int           `long:"authrpc.port" default:"8551" description:"Listening port for authenticated APIs"`
+	AuthRPCVHosts         string        `long:"authrpc.vhosts" default:"localhost" description:"Comma separated list of virtual hostnames from which to accept requests (server enforced). Accepts '*' wildcard."`
 	GraphQL               bool          `long:"graphql" description:"Enable GraphQL on the HTTP-RPC server. Note that GraphQL can only be started if an HTTP server is started as well."`
 	GraphQLCorsDomain     []string      `long:"graphql.corsdomain" description:"Comma separated list of domains from which to accept cross origin requests (browser enforced)"`
 	GraphQLVHosts         []string      `long:"graphql.vhosts" default:"localhost" description:"Comma separated list of virtual hostnames from which to accept requests (server enforced). Accepts '*' wildcard."`
@@ -105,16 +106,16 @@ type TransactionPoolOptions struct {
 }
 
 type PerformanceTuningOptions struct {
-	Cache         int           `long:"cache" default:"1024" description:"Megabytes of memory allocated to internal caching (default = 4096 mainnet full node, 128 light mode)"`
-	Database      int           `long:"cache.database" default:"50" description:"Percentage of cache memory allowance to use for database io"`
-	Trie          int           `long:"cache.trie" default:"15" description:"Percentage of cache memory allowance to use for trie caching (default = 15% full mode, 30% archive mode)"`
-	TrieJournal   string        `long:"cache.trie.journal" default:"triecache" description:"Disk journal directory for trie cache to survive node restarts"`
-	TrieRejournal time.Duration `long:"cache.trie.rejournal" default:"1h0m0s" description:"Time interval to regenerate the trie cache journal"`
-	GC            int           `long:"cache.gc" default:"25" description:"Percentage of cache memory allowance to use for trie pruning (default = 25% full mode, 0% archive mode)"`
-	Snapshot      int           `long:"cache.snapshot" default:"10" description:"Percentage of cache memory allowance to use for snapshot caching (default = 10% full mode, 20% archive mode)"`
-	NoPrefetch    bool          `long:"cache.noprefetch" default:"false" description:"Disable heuristic state prefetch during block import (less CPU and disk IO, more time waiting for data)"`
-	Preimages     bool          `long:"cache.preimages" default:"false" description:"Enable recording the SHA3/keccak preimages of trie keys"`
-	FDLimit       int           `long:"fdlimit" default:"0" description:"Raise the open file descriptor resource limit (default = system fd limit)"`
+	Cache         int            `long:"cache" default:"1024" description:"Megabytes of memory allocated to internal caching (default = 4096 mainnet full node, 128 light mode)"`
+	Database      int            `long:"cache.database" default:"50" description:"Percentage of cache memory allowance to use for database io"`
+	Trie          int            `long:"cache.trie" default:"15" description:"Percentage of cache memory allowance to use for trie caching (default = 15% full mode, 30% archive mode)"`
+	TrieJournal   string         `long:"cache.trie.journal" default:"triecache" description:"Disk journal directory for trie cache to survive node restarts"`
+	TrieRejournal *time.Duration `long:"cache.trie.rejournal" default:"1h0m0s" description:"Time interval to regenerate the trie cache journal"`
+	GC            int            `long:"cache.gc" default:"25" description:"Percentage of cache memory allowance to use for trie pruning (default = 25% full mode, 0% archive mode)"`
+	Snapshot      int            `long:"cache.snapshot" default:"10" description:"Percentage of cache memory allowance to use for snapshot caching (default = 10% full mode, 20% archive mode)"`
+	NoPrefetch    bool           `long:"cache.noprefetch" default:"false" description:"Disable heuristic state prefetch during block import (less CPU and disk IO, more time waiting for data)"`
+	Preimages     bool           `long:"cache.preimages" default:"false" description:"Enable recording the SHA3/keccak preimages of trie keys"`
+	FDLimit       int            `long:"fdlimit" default:"0" description:"Raise the open file descriptor resource limit (default = system fd limit)"`
 }
 
 type NetworkingOptions struct {
@@ -139,8 +140,9 @@ type GasPriceOracleOptions struct {
 }
 
 type LoggingOptions struct {
-	FakePow          bool   `long:"fakepow" default:"false" description:"Disables proof-of-work verification"`
-	NoCompaction     bool   `long:"nocompaction" default:"false" description:"Disables db compaction after import"`
+	FakePow          bool `long:"fakepow" default:"false" description:"Disables proof-of-work verification"`
+	NoCompaction     bool `long:"nocompaction" default:"false" description:"Disables db compaction after import"`
+	VerbosityEnabled bool
 	Verbosity        int    `long:"verbosity" default:"3" description:"Logging verbosity: 0=silent, 1=error, 2=warn, 3=info, 4=debug, 5=detail"`
 	VModule          string `long:"vmodule" default:"" description:"Per-module verbosity: comma-separated list of <pattern>=<level> (e.g. eth/*=5,p2p=4)"`
 	JSON             bool   `long:"log.json" default:"false" description:"Format logs with JSON"`
