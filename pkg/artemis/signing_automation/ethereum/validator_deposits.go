@@ -9,13 +9,23 @@ import (
 	"github.com/zeus-fyi/gochain/web3/web3_actions"
 )
 
-const EphemeralDepositContractAddr = "0x4242424242424242424242424242424242424242"
+const (
+	validatorDepositMethodName   = "deposit"
+	validatorAbiFileLocation     = "smart_contracts/eth_deposit_contract.json"
+	EphemeralDepositContractAddr = "0x4242424242424242424242424242424242424242"
+)
 
 func (w *Web3SignerClient) SignValidatorDeposit(ctx context.Context, depositParams ValidatorDepositParams) (*types.Transaction, error) {
+
+	abiFile, err := ABIOpenFile(validatorAbiFileLocation)
+	if err != nil {
+		log.Ctx(ctx).Err(err).Msg("Web3SignerClient: SignValidatorDeposit: ABIOpenFile")
+		return nil, err
+	}
 	params := web3_actions.SendContractTxPayload{
 		SmartContractAddr: EphemeralDepositContractAddr,
-		ContractFile:      web3_actions.ValidatorDeposits,
-		MethodName:        web3_actions.Deposit,
+		ContractABI:       abiFile,
+		MethodName:        validatorDepositMethodName,
 		SendEtherPayload: web3_actions.SendEtherPayload{
 			TransferArgs: web3_actions.TransferArgs{
 				Amount:    ValidatorDeposit32Eth,
@@ -31,27 +41,3 @@ func (w *Web3SignerClient) SignValidatorDeposit(ctx context.Context, depositPara
 	}
 	return signedTx, err
 }
-
-/*
-reference
-   {
-     "internalType": "bytes",
-     "name": "pubkey",
-     "type": "bytes"
-   },
-   {
-     "internalType": "bytes",
-     "name": "withdrawal_credentials",
-     "type": "bytes"
-   },
-   {
-     "internalType": "bytes",
-     "name": "signature",
-     "type": "bytes"
-   },
-   {
-     "internalType": "bytes32",
-     "name": "deposit_data_root",
-     "type": "bytes32"
-   }
-*/

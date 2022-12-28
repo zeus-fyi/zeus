@@ -3,6 +3,8 @@ package signing_automation_ethereum
 import (
 	"context"
 
+	artemis_client "github.com/zeus-fyi/zeus/pkg/artemis/client"
+	artemis_req_types "github.com/zeus-fyi/zeus/pkg/artemis/client/req_types"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 	strings_filter "github.com/zeus-fyi/zeus/pkg/utils/strings"
 	test_base "github.com/zeus-fyi/zeus/test"
@@ -44,10 +46,25 @@ func (t *Web3SignerClientTestSuite) TestSignedValidatorDepositTxPayload() {
 		t.Require().NotNil(signedTx)
 
 		if i == 0 {
-			//payload := artemis_req_types.SignedTxPayload{Transaction: *signedTx}
-			//resp, aerr := t.ArtemisTestClient.SendSignedTx(ctx, &payload, artemis_client.ArtemisEthereumEphemeral)
-			//t.Require().Nil(aerr)
-			//t.Require().NotNil(resp)
+			payload := artemis_req_types.SignedTxPayload{Transaction: *signedTx}
+			resp, aerr := t.ArtemisTestClient.SendSignedTx(ctx, &payload, artemis_client.ArtemisEthereumEphemeral)
+			t.Require().Nil(aerr)
+			t.Require().NotNil(resp)
 		}
 	}
+}
+
+func (t *Web3SignerClientTestSuite) TestValidatorABI() {
+	ForceDirToEthSigningDirLocation()
+	f, err := ABIOpenFile(validatorAbiFileLocation)
+	t.Require().Nil(err)
+	t.Require().NotEmpty(f)
+
+	depositExists := false
+	for _, mn := range f.Methods {
+		if mn.Name == validatorDepositMethodName {
+			depositExists = true
+		}
+	}
+	t.Require().True(depositExists)
 }
