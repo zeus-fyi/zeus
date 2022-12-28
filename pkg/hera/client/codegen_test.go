@@ -56,5 +56,4 @@ func (t *HeraClientTestSuite) TestFilesUploadToCodeGen() {
 		werr := demoChartPath.WriteToFileOutPath([]byte(choice.Text))
 		t.Require().Nil(werr)
 	}
-
 }
