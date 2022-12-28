@@ -2,6 +2,10 @@ package client_cmds
 
 import geth_cmds "github.com/zeus-fyi/zeus/cookbooks/ethereum/client_cmds/ai_generated/geth"
 
+// You should verify commands give the right cli format if using the ai generated cmd structs,
+// since they aren't tested with 100% coverages and the ai could have misinterpreted some of them
+// you can set your own cli commands and use client_cmds_test case to print the cli it creates to verify
+
 var GethEphemeralConfigTemplate = geth_cmds.GethCmdConfig{
 	APIConfig: geth_cmds.APIConfig{
 		HTTP:             true,

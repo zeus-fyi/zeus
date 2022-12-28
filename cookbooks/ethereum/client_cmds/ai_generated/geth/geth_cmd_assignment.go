@@ -115,7 +115,6 @@ func (a *APIConfig) BuildCliCmd() string {
 	}
 	return b.String()
 }
-
 func (eo *EthereumOptions) BuildCliCmd() string {
 	var b strings.Builder
 
@@ -415,7 +414,6 @@ func (no *NetworkingOptions) BuildCliCmd() string {
 	}
 	return b.String()
 }
-
 func (gpo *GasPriceOracleOptions) BuildCliCmd() string {
 	b := strings.Builder{}
 	if gpo.Blocks != 0 {
@@ -436,7 +434,6 @@ func (gpo *GasPriceOracleOptions) BuildCliCmd() string {
 	}
 	return b.String()
 }
-
 func (lo *LoggingOptions) BuildCliCmd() string {
 	cmd := bytes.Buffer{}
 	if lo.FakePow {
