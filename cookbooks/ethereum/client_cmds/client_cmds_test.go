@@ -12,8 +12,8 @@ type ClientCmdTestSuite struct {
 }
 
 func (s *ClientCmdTestSuite) TestGethCmdStr() {
-	cliCmdStr := GethEphemeralConfigTemplate.BuildCliCmd()
-	fmt.Println(cliCmdStr)
+	cliCmdArgs := GethEphemeralConfigTemplate.BuildCliCmd()
+	fmt.Println(cliCmdArgs)
 }
 
 func TestClientCmdTestSuite(t *testing.T) {
