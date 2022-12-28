@@ -29,7 +29,7 @@ func (t *HeraClientTestSuite) TestTokenCountApproximate() {
 
 var demoChartPath = filepaths.Path{
 	PackageName: "",
-	DirIn:       "./mocks/hera/custom_make",
+	DirIn:       "./mocks/hera/prompt_example",
 	DirOut:      "./mocks/outputs/hera",
 	FnIn:        "prompt", // filename for your gzip workload
 	FnOut:       "",
