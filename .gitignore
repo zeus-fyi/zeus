@@ -3,6 +3,7 @@
 TODO.txt
 SCRATCH_PAD.txt
 
+test/mocks/hera/custom_make/prompt.txt
 *scratch_pad.go
 *scratch_pad_test.go
 # Compiled Java class files
@@ -46,3 +47,4 @@ Thumbs.db
 *.mov
 *.wmv
 /test/mocks/validator_keys/
+/test/mocks/outputs/hera/openai.txt

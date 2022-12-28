@@ -7,11 +7,13 @@ type GethCmdConfig struct {
 	EthereumOptions
 	LightClientOptions
 	AccountOptions
+	TransactionPoolOptions
 	PerformanceTuningOptions
 	NetworkingOptions
 	GasPriceOracleOptions
 	LoggingOptions
 	MetricsOptions
+	Options
 }
 
 // APIConfig holds the configuration options for the api CLI commands.
