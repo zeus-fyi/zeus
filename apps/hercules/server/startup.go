@@ -1,7 +1,9 @@
 package hercules_server
 
 import (
+	"os"
 	"path"
+	"strconv"
 	"time"
 
 	"github.com/go-resty/resty/v2"
@@ -10,8 +12,7 @@ import (
 	"github.com/zeus-fyi/zeus/pkg/utils/ephemery_reset"
 )
 
-// TODO refactor
-func EphemeryInit(network string) {
+func StartAndConfigClientNetworkSettings(client, network string) {
 	if network == "ephemery" {
 		genesisPath := dataDir.DirIn
 		switch clientName {
@@ -19,6 +20,7 @@ func EphemeryInit(network string) {
 			genesisPath = path.Join(genesisPath, "/testnet")
 		default:
 		}
+
 		ok, _ := ephemery_reset.Exists(path.Join(genesisPath, "/retention.vars"))
 		if ok {
 			kt := ephemery_reset.ExtractResetTime(path.Join(genesisPath, "/retention.vars"))
@@ -33,10 +35,10 @@ func EphemeryInit(network string) {
 				}
 			}(kt)
 		}
-
-		// TODO, for others with own setups, not sure if delay is needed, may depend on user specific possible race conditions
-
-		time.Sleep(3 * time.Second)
-
+		chainID := ephemery_reset.ExtractChainID(path.Join(genesisPath, "/retention.vars"))
+		err := os.Setenv("NETWORK_ID", strconv.FormatInt(chainID, 10))
+		if err != nil {
+			panic(err)
+		}
 	}
 }
