@@ -68,6 +68,12 @@ The test directory contains useful mocks and tools for interacting with the API.
 config-sample.yaml, convert this to config.yaml and set your bearer token here, which then allows you to
 use the demo code to create your first api request in seconds
 
+### Hera Client
+
+#### ```pkg/hera/client```
+
+This client uses the OpenAI API to generate code with AI. This service is available at OpenAI cost, so just pay for the token cost, otherwise it is free to use.
+
 ### Artemis ###
 
 #### ```artemis.zeus.fyi``` ####
