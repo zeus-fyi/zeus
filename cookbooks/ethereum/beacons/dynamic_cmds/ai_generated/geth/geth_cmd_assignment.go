@@ -6,6 +6,7 @@ import (
 	"strings"
 )
 
+// API config
 func gethCLI(config GethCmdConfig) string {
 	cli := "geth"
 	var b strings.Builder
@@ -98,6 +99,7 @@ func gethCLI(config GethCmdConfig) string {
 	return cli
 }
 
+// EthereumOptions config
 func gethCommand(config GethCmdConfig) string {
 	var b strings.Builder
 

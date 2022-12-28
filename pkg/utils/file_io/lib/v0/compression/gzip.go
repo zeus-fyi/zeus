@@ -22,6 +22,11 @@ func (c *Compression) GzipCompressDir(p *filepaths.Path) error {
 		return errors.New("need to include a path")
 	}
 	p.FnOut = p.FnIn + ".tar.gz"
+	err := os.MkdirAll(filepath.Dir(p.FileOutPath()), 0755)
+	if err != nil {
+		return err
+	}
+
 	out, err := os.Create(p.FileOutPath())
 	if err != nil {
 		return err

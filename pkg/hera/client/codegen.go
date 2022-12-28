@@ -3,16 +3,18 @@ package hera_client
 import (
 	"context"
 	"net/http"
+	"os"
 
 	"github.com/rs/zerolog/log"
+	gogpt "github.com/sashabaranov/go-gpt3"
 	"github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/compression"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 )
 
 const heraCodeGenRoute = "/v1beta/openai/codegen"
 
-func (h *HeraClient) UploadFiles(ctx context.Context, p filepaths.Path, model string) (interface{}, error) {
-	var respJson interface{}
+func (h *HeraClient) UploadFiles(ctx context.Context, p filepaths.Path, model, maxTokens string) (gogpt.CompletionResponse, error) {
+	var respJson gogpt.CompletionResponse
 	err := h.ZipFilesInPath(&p)
 	if err != nil {
 		return respJson, err
@@ -20,7 +22,8 @@ func (h *HeraClient) UploadFiles(ctx context.Context, p filepaths.Path, model st
 	resp, err := h.R().
 		SetResult(&respJson).
 		SetFormData(map[string]string{
-			"model": model,
+			"model":     model,
+			"maxTokens": maxTokens,
 		}).
 		SetFile("prompt", p.FileOutPath()).
 		Post(heraCodeGenRoute)
@@ -30,6 +33,10 @@ func (h *HeraClient) UploadFiles(ctx context.Context, p filepaths.Path, model st
 		return respJson, err
 	}
 	h.PrintRespJson(resp.Body())
+	err = os.Remove(p.FileOutPath())
+	if err != nil {
+		log.Err(err)
+	}
 	return respJson, err
 }
 
