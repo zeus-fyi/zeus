@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/instance: zeus-consensus-client
     app.kubernetes.io/managed-by: zeus
     app.kubernetes.io/name: zeus-consensus-client
-    version: version-1671940685638627664
+    version: version-1672203539403829307
   name: zeus-consensus-client
 spec:
   podManagementPolicy: OrderedReady
@@ -22,7 +22,7 @@ spec:
       labels:
         app.kubernetes.io/instance: zeus-consensus-client
         app.kubernetes.io/name: zeus-consensus-client
-        version: version-1671940685638695453
+        version: version-1672203539403880766
     spec:
       containers:
       - args:
@@ -47,11 +47,11 @@ spec:
         - containerPort: 9000
           name: p2p-udp
           protocol: TCP
-        - containerPort: 9000
-          name: p2p-tcp
-          protocol: TCP
         - containerPort: 5054
           name: metrics
+          protocol: TCP
+        - containerPort: 9000
+          name: p2p-tcp
           protocol: TCP
         - containerPort: 5052
           name: http-api
@@ -101,10 +101,10 @@ spec:
         name: init-snapshot
         resources: {}
         volumeMounts:
-        - mountPath: /scripts
-          name: cm-consensus-client
         - mountPath: /data
           name: consensus-client-storage
+        - mountPath: /scripts
+          name: cm-consensus-client
       - command:
         - chown
         - -R

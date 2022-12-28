@@ -1,9 +1,7 @@
 package hercules_server
 
 import (
-	"os"
 	"path"
-	"strconv"
 	"time"
 
 	"github.com/go-resty/resty/v2"
@@ -34,11 +32,6 @@ func StartAndConfigClientNetworkSettings(client, network string) {
 					log.Err(err)
 				}
 			}(kt)
-		}
-		chainID := ephemery_reset.ExtractChainID(path.Join(genesisPath, "/retention.vars"))
-		err := os.Setenv("NETWORK_ID", strconv.FormatInt(chainID, 10))
-		if err != nil {
-			panic(err)
 		}
 	}
 }

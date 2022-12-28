@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/instance: zeus-exec-client
     app.kubernetes.io/managed-by: zeus
     app.kubernetes.io/name: zeus-exec-client
-    version: version-1671940685794846113
+    version: version-1672203539537138576
   name: zeus-exec-client
 spec:
   ports:
