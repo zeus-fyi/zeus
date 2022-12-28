@@ -7,6 +7,25 @@ import (
 	"strings"
 )
 
+func (g *GethCmdConfig) BuildCliCmd() string {
+	apiCmd := g.APIConfig.BuildCliCmd()
+	ethOptCmd := g.EthereumOptions.BuildCliCmd()
+	lightOptCmd := g.LightClientOptions.BuildCliCmd()
+	accountOptCmd := g.AccountOptions.BuildCliCmd()
+	txPoolOptCmd := g.TransactionPoolOptions.BuildCliCmd()
+	perfTuningOptCmd := g.PerformanceTuningOptions.BuildCliCmd()
+	networkOptCmd := g.NetworkingOptions.BuildCliCmd()
+	gasPriceOptCmd := g.GasPriceOracleOptions.BuildCliCmd()
+	loggingOptCmd := g.LoggingOptions.BuildCliCmd()
+	metricsOptCmd := g.MetricsOptions.BuildCliCmd()
+	optCmd := g.Options.BuildCliCmd()
+	cmd := apiCmd + " " + ethOptCmd + " " + lightOptCmd + " " + accountOptCmd + " " +
+		txPoolOptCmd + " " + perfTuningOptCmd + " " + networkOptCmd + " " +
+		gasPriceOptCmd + " " + loggingOptCmd + " " + metricsOptCmd + " " +
+		optCmd
+	return cmd
+}
+
 func (a *APIConfig) BuildCliCmd() string {
 	var b strings.Builder
 
@@ -220,7 +239,7 @@ func (lco *LightClientOptions) BuildCliCmd() string {
 	b.WriteString(strconv.FormatBool(lco.NoSyncServe))
 	return b.String()
 }
-func (ao *AccountOptions) BuildCliCmd() (string, error) {
+func (ao *AccountOptions) BuildCliCmd() string {
 	b := &strings.Builder{}
 	if len(ao.Unlock) > 0 {
 		b.WriteString(`--unlock "`)
@@ -243,7 +262,7 @@ func (ao *AccountOptions) BuildCliCmd() (string, error) {
 	if ao.AllowUnlock {
 		b.WriteString(`--allow-insecure-unlock `)
 	}
-	return b.String(), nil
+	return b.String()
 }
 func (tpo *TransactionPoolOptions) BuildCliCmd() string {
 	b := strings.Builder{}
