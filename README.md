@@ -2,26 +2,6 @@
 
 Zeus is an evolution of web container orchestration into web system building and orchestration. It changes the paradigm into one that unifies configuration with the underlying orchestrator, instead of decoupling them into confusing messes like helm, terraform, and GitOps, while also reducing the operational complexity of building with kubernetes now into something a single mid-level IC without an infra background could operate for a medium sized technology business within a week. It's designed to solve complex infra configuration, operation, and building bottlenecks as dramatically as those the printing press solved for the book industry, and is capable of building systems at the scale and complexity of AWS by unifying multi-network kubernetes node pools with SQL driven relationship building & querying.
 
-By unifying the infra ecosystem tools of today it allows the acceleration of infra development exponentially overtime with each new open source cookbook & system template allowing you to glue sophisticated distributed systems together in zero time, which lets decentralized solo & small team builders compete directly against large incumbents at the edge of technology by erasing the need for large investment in infra & devops departments that are needed now to even get started.
-
-Lastly, by solving infra configuration, mobility, and orchestration through remote API driven configuration, it allows you to run sophisticated web apps in virtually zero time on far more cost efficient bare metal cloud providers using commoditized managed kubernetes services and simple middleware we provide, which is up to 6x more cost efficient than AWS, GCP, and comparable cloud companies. Take a look for yourself, then ask yourself why you want to make Jeff Bezos richer than he already is?
-
-#### You have alternatives
-
-##### https://www.ibm.com/cloud/kubernetes-service
-##### https://us.ovhcloud.com/public-cloud/kubernetes
-##### https://www.linode.com/products/kubernetes
-##### https://www.digitalocean.com/products/kubernetes
-##### https://www.vultr.com/kubernetes
-
-#### It doesn't take long to figure it out, here's some pricing links to help you out
-
-##### https://www.ovhcloud.com/en/public-cloud/prices/
-##### https://www.ibm.com/cloud/virtual-servers/pricing
-##### https://instances.vantage.sh/
-
-AWS, GCP, Azure, type cloud companies purposely have highly confusing pricing models to mislead you on costs using data transfer bills, among other sales tactics like free initial cloud usage until you're locked into their ecosystem complexity, exactly when you realize the cloud spend is outrageous. The vast majority of enterprise users simply need RAM, CPU, Bandwidth Traffic, and a few disk options like RAID setups, and HDD, SSD, NVMes. All major cloud companies have similar performance & online SLAs. Why would you want to spend 100+ engineering hours figuring out some obscure EC2 instance number that they deprecate in a year anyway? The 0.001% of people that have that need already know what they want.
-
 ## Upcoming Features Overview ##
 
 #### Timeline ~ End of January/Early Feb 23'
@@ -54,10 +34,14 @@ Completely orchestrated and automated web3 infra. Sets up infrastructure on dema
 ### Automated web3 network setup for large scale private network testing
 
 Create network from scratch that can replicate the size of mainnet, starting with Ethereum.
-
 ```
 Runs Genesis -> Seeds Validators -> Deploys Validator Infra -> Metrics/Data
 ```
+### AI driven infrastructure configuration & devops
+
+#### V0 Generation: Timeline ~ Q4 23-Q1'
+
+AI driven infrastructure that automates infrastructure config & devops. Generation v0, public access will be strictly limited to early users of Zeus and a small pool of API access will be allocated to those who request access in FIFO basis.
 
 ## Cookbooks ##
 
@@ -198,6 +182,28 @@ Schedule a demo: https://calendly.com/alex-zeus-fyi/zeus-demo
 Request a bearer token, email: alex@zeus.fyi
 
 ![Screenshot 2022-11-17 at 8 09 48 PM](https://user-images.githubusercontent.com/17446735/202614955-2708063e-1547-4dae-9332-f712102c287e.png)
+
+### Infra are modern day handwritten books, introducting the 21st century printing press
+
+By unifying the infra ecosystem tools of today it allows the acceleration of infra development exponentially overtime with each new open source cookbook & system template allowing you to glue sophisticated distributed systems together in zero time, which lets decentralized solo & small team builders compete directly against large incumbents at the edge of technology by erasing the need for large investment in infra & devops departments that are needed now to even get started.
+
+Lastly, by solving infra configuration, mobility, and orchestration through remote API driven configuration, it allows you to run sophisticated web apps in virtually zero time on far more cost efficient bare metal cloud providers using commoditized managed kubernetes services and simple middleware we provide, which is up to 6x more cost efficient than AWS, GCP, and comparable cloud companies. Take a look for yourself, then ask yourself why you want to make Jeff Bezos richer than he already is?
+
+#### You have alternatives
+
+##### https://www.ibm.com/cloud/kubernetes-service
+##### https://us.ovhcloud.com/public-cloud/kubernetes
+##### https://www.linode.com/products/kubernetes
+##### https://www.digitalocean.com/products/kubernetes
+##### https://www.vultr.com/kubernetes
+
+#### It doesn't take long to figure it out, here's some pricing links to help you out
+
+##### https://www.ovhcloud.com/en/public-cloud/prices/
+##### https://www.ibm.com/cloud/virtual-servers/pricing
+##### https://instances.vantage.sh/
+
+AWS, GCP, Azure, type cloud companies purposely have highly confusing pricing models to mislead you on costs using data transfer bills, among other sales tactics like free initial cloud usage until you're locked into their ecosystem complexity, exactly when you realize the cloud spend is outrageous. The vast majority of enterprise users simply need RAM, CPU, Bandwidth Traffic, and a few disk options like RAID setups, and HDD, SSD, NVMes. All major cloud companies have similar performance & online SLAs. Why would you want to spend 100+ engineering hours figuring out some obscure EC2 instance number that they deprecate in a year anyway? The 0.001% of people that have that need already know what they want.
 
 ### Cluster Topology Class Hierarchy Definitions ###
 
