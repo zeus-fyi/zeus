@@ -4,6 +4,8 @@ Zeus is an evolution of web container orchestration into web system building and
 
 ## Upcoming Features Overview ##
 
+### Event driven signature automation for Ethereum staking
+
 #### Timeline ~ End of January/Early Feb 23'
 
 Event driven signature automation with remote signers using a synthetic beacon. Making it possible to become a solo staker with only a remote signer that you'll be able to operate without anyone having access to your signing keys, and also allowing for flexible 1-click setups with cloud options that import your keys into a cloud signer you can host with a 1-click style deploy. 
