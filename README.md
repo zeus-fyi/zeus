@@ -8,7 +8,9 @@ Zeus is an evolution of web container orchestration into web system building and
 
 Event driven signature automation with remote signers using a synthetic beacon. Making it possible to become a solo staker with only a remote signer that you'll be able to operate without anyone having access to your signing keys, and also allowing for flexible 1-click setups with cloud options that import your keys into a cloud signer you can host with a 1-click style deploy. 
 
-$10/mo solo or large scale enterprise staking for Ethereum per validator, all inclusive, no extra fees and scalable to all of mainnet.
+$10/mo solo or large scale enterprise staking for Ethereum per validator, all inclusive, no extra fees
+
+Scalable to all of mainnet. Yes, you read that right.
 
 #### Timeline ~ Early January 23'
 
