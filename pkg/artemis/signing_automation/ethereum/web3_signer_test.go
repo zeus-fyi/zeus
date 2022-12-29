@@ -5,6 +5,7 @@ import (
 
 	"github.com/stretchr/testify/suite"
 	artemis_client "github.com/zeus-fyi/zeus/pkg/artemis/client"
+	bls_signer "github.com/zeus-fyi/zeus/pkg/crypto/bls"
 	"github.com/zeus-fyi/zeus/pkg/crypto/ecdsa"
 	"github.com/zeus-fyi/zeus/test/configs"
 	"github.com/zeus-fyi/zeus/test/test_suites"
@@ -14,6 +15,7 @@ type Web3SignerClientTestSuite struct {
 	test_suites.BaseTestSuite
 	Web3SignerClientTestClient Web3SignerClient
 	ArtemisTestClient          artemis_client.ArtemisClient
+	TestBLSAccount             bls_signer.Account
 	TestAccount1               ecdsa.Account
 	TestAccount2               ecdsa.Account
 	NodeURL                    string
@@ -29,6 +31,7 @@ func (t *Web3SignerClientTestSuite) SetupTest() {
 	pkHexString2 := tc.LocalEcsdaTestPkey2
 	t.TestAccount2 = ecdsa.NewAccount(pkHexString2)
 	t.Web3SignerClientTestClient = NewWeb3Client(tc.EphemeralNodeURL, t.TestAccount1.Account)
+	t.TestBLSAccount = bls_signer.NewSignerBLSFromExistingKey(tc.LocalBlsTestPkey)
 }
 
 func TestWeb3SignerClientTestSuite(t *testing.T) {

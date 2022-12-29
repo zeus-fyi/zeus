@@ -2,9 +2,9 @@ package signing_automation_ethereum
 
 import (
 	"context"
+	"encoding/hex"
+	"strings"
 
-	artemis_client "github.com/zeus-fyi/zeus/pkg/artemis/client"
-	artemis_req_types "github.com/zeus-fyi/zeus/pkg/artemis/client/req_types"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 	strings_filter "github.com/zeus-fyi/zeus/pkg/utils/strings"
 	test_base "github.com/zeus-fyi/zeus/test"
@@ -39,19 +39,19 @@ func (t *Web3SignerClientTestSuite) TestSignedValidatorDepositTxPayload() {
 	t.Require().Nil(err)
 	t.Require().NotEmpty(bal)
 
-	for i, k := range ks {
-		params := k.ValidatorDepositParams
-		signedTx, signErr := t.Web3SignerClientTestClient.SignValidatorDeposit(ctx, params)
-		t.Require().Nil(signErr)
-		t.Require().NotNil(signedTx)
-
-		if i == 0 {
-			payload := artemis_req_types.SignedTxPayload{Transaction: *signedTx}
-			resp, aerr := t.ArtemisTestClient.SendSignedTx(ctx, &payload, artemis_client.ArtemisEthereumEphemeral)
-			t.Require().Nil(aerr)
-			t.Require().NotNil(resp)
-		}
-	}
+	//for i, k := range ks {
+	//	params := k.ValidatorDepositParams
+	//	signedTx, signErr := t.Web3SignerClientTestClient.SignValidatorDeposit(ctx, params)
+	//	t.Require().Nil(signErr)
+	//	t.Require().NotNil(signedTx)
+	//
+	//	if i == 0 {
+	//		payload := artemis_req_types.SignedTxPayload{Transaction: *signedTx}
+	//		resp, aerr := t.ArtemisTestClient.SendSignedTx(ctx, &payload, artemis_client.ArtemisEthereumEphemeral)
+	//		t.Require().Nil(aerr)
+	//		t.Require().NotNil(resp)
+	//	}
+	//}
 }
 
 func (t *Web3SignerClientTestSuite) TestValidatorABI() {
@@ -67,4 +67,15 @@ func (t *Web3SignerClientTestSuite) TestValidatorABI() {
 		}
 	}
 	t.Require().True(depositExists)
+}
+
+func (t *Web3SignerClientTestSuite) TestFetchEphemeralForkVersion() {
+	versionByteArr, err := GetEphemeralForkVersion()
+	t.Require().Nil(err)
+	t.Require().NotEmpty(versionByteArr)
+	forkVersion, err := hex.DecodeString(strings.TrimPrefix("0x1000101b", "0x"))
+	t.Require().Nil(err)
+	t.Assert().Equal(forkVersion, []byte{0x10, 0x00, 0x10, 0x1b})
+	t.Assert().Equal(versionByteArr, []byte{0x10, 0x00, 0x10, 0x1b})
+
 }
