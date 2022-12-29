@@ -9,7 +9,12 @@ import (
 	"github.com/zeus-fyi/zeus/pkg/crypto/ssz"
 )
 
-func GenerateEphemeralDepositData(blsSigner bls_signer.Account, withdrawalAddress []byte) (*spec.DepositData, error) {
+type DepositDataParams struct {
+	*spec.DepositData
+	DepositDataRoot [32]byte
+}
+
+func GenerateEphemeralDepositData(blsSigner bls_signer.Account, withdrawalAddress []byte) (*DepositDataParams, error) {
 	fv, err := GetEphemeralForkVersion()
 	if err != nil {
 		log.Err(err)
@@ -18,7 +23,8 @@ func GenerateEphemeralDepositData(blsSigner bls_signer.Account, withdrawalAddres
 	return GenerateDepositData(blsSigner, withdrawalAddress, fv)
 }
 
-func GenerateDepositData(blsSigner bls_signer.Account, withdrawalAddress []byte, forkVersion *spec.Version) (*spec.DepositData, error) {
+func GenerateDepositData(blsSigner bls_signer.Account, withdrawalAddress []byte, forkVersion *spec.Version) (*DepositDataParams, error) {
+	dp := &DepositDataParams{}
 	var pubKey spec.BLSPubKey
 	copy(pubKey[:], blsSigner.PublicKey.Serialize())
 	depositMessage := &spec.DepositMessage{
@@ -47,16 +53,18 @@ func GenerateDepositData(blsSigner bls_signer.Account, withdrawalAddress []byte,
 		log.Err(err)
 		return nil, errors.Wrap(err, "failed to generate hash tree root")
 	}
+	dp.DepositDataRoot = signingRoot
 	var blsFormatted spec.BLSSignature
 	sig := blsSigner.Sign(signingRoot[:])
 	copy(blsFormatted[:], sig.Serialize())
 	depositData := &spec.DepositData{
 		PublicKey:             pubKey,
 		WithdrawalCredentials: withdrawalAddress,
-		Amount:                spec.Gwei(ValidatorDeposit32Eth.Uint64()),
+		Amount:                spec.Gwei(ValidatorDeposit32EthInGweiUnits.Uint64()),
 		Signature:             blsFormatted,
 	}
-	return depositData, err
+	dp.DepositData = depositData
+	return dp, err
 }
 
 func generateDepositDomain(forkVersion *spec.Version) (*spec.Domain, error) {

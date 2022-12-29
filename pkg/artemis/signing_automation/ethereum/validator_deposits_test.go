@@ -3,6 +3,7 @@ package signing_automation_ethereum
 import (
 	"context"
 	"encoding/hex"
+	"fmt"
 	"strings"
 
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
@@ -12,7 +13,21 @@ import (
 
 var ctx = context.Background()
 
+// TestSignedValidatorDepositTxPayload uses the ephemeral network
 func (t *Web3SignerClientTestSuite) TestSignedValidatorDepositTxPayload() {
+	wc, err := ValidateAndReturnEcdsaPubkeyBytes(t.TestAccount1.PublicKey())
+	t.Require().Nil(err)
+	dd, err := GenerateEphemeralDepositData(t.TestBLSAccount, wc)
+	t.Require().Nil(err)
+	tx, err := t.Web3SignerClientTestClient.SignValidatorDepositTxToBroadcast(ctx, dd)
+	t.Require().Nil(err)
+	t.Require().NotNil(tx)
+	fmt.Println(tx)
+	fmt.Println(tx.Cost().Uint64())
+
+}
+
+func (t *Web3SignerClientTestSuite) TestSignedValidatorDepositTxPayloadFromStakingLaunchpadFormat() {
 	keystorePath := filepaths.Path{
 		PackageName: "",
 		DirIn:       "./mocks/validator_keys",
