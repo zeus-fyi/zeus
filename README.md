@@ -22,6 +22,43 @@ Lastly, by solving infra configuration, mobility, and orchestration through remo
 
 AWS, GCP, Azure, type cloud companies purposely have highly confusing pricing models to mislead you on costs using data transfer bills, among other sales tactics like free initial cloud usage until you're locked into their ecosystem complexity, exactly when you realize the cloud spend is outrageous. The vast majority of enterprise users simply need RAM, CPU, Bandwidth Traffic, and a few disk options like RAID setups, and HDD, SSD, NVMes. All major cloud companies have similar performance & online SLAs. Why would you want to spend 100+ engineering hours figuring out some obscure EC2 instance number that they deprecate in a year anyway? The 0.001% of people that have that need already know what they want.
 
+## Upcoming Features Overview ##
+
+#### Timeline ~ End of January 23-Early Feb'
+
+Event driven signature automation with remote signers using a synthetic beacon. Making it possible to become a solo staker with only a remote signer that you'll be able to operate without anyone having access to your signing keys, and also allowing for flexible 1-click setups with cloud options that import your keys into a cloud signer you can host with a 1-click style deploy. 
+
+$10/mo solo staking for Ethereum per validator, all inclusive, no extra fees.
+
+#### Timeline ~ Early January 23'
+
+### Automated web3 interactions and orchestrations 
+ 
+```
+IN: Params(Contract ABI, Address, Network, UsersAddresses)
+
+OUT: Array(Funcs, Params to Tune/Approve)
+```
+Set up an orchestrated highly reliable web3 action such as creating a validator, withdrawing from a smart contract,  or
+sending transactions or notifications based on event triggers such as smart contract state changes. 
+
+
+#### Timeline ~ Early January 23'
+
+### Automated web3 infrastructure setup
+
+Completely orchestrated and automated web3 infra. Sets up infrastructure on demand, automates run books, sets up mev-boost, web3signer, adds snapshot chain download integration, automates devops that's done by hand today, automates interactions for seeding and withdrawing validators, automates upgrades, automates configuration setup and verification, automates notifications and rewards info. Enables web3 staking infrastructure to be portable across cloud, and for vendor switching on demand. Starting with Ethereum.
+
+#### Timeline ~ Q1/Q2 23'
+
+### Automated web3 network setup for large scale private network testing
+
+Create network from scratch that can replicate the size of mainnet, starting with Ethereum.
+
+```
+Runs Genesis -> Seeds Validators -> Deploys Validator Infra -> Metrics/Data
+```
+
 ## Cookbooks ##
 
 Contains common web2 & web3 building components like ethereum infra setups with customization driven through code, blurring the line between infra configuration and app development, and contains microservice designs & patterns like api servers and injectable choreography, their setups in kubernetes, golang, docker, and startup commands, and useful tools for debugging, interacting, and automating actions.
@@ -200,35 +237,4 @@ An abstract atomic configuration base that needs an Infrastructure Base and Skel
 
 ### Skeleton Base ###
 An abstract atomic component base that needs additional pieces to create deployable infrastructure like config map, docker image links, etc. Needs an Infrastructure and Configuration Base to create a Base Topology
-
-## Upcoming Features Overview ##
-
-#### Timeline ~ Early January 23'
-
-### Automated web3 infrastructure setup
-
-Completely orchestrated and automated web3 infra. Sets up infrastructure on demand, automates run books, sets up mev-boost, web3signer, adds snapshot chain download integration, automates devops that's done by hand today, automates interactions for seeding and withdrawing validators, automates upgrades, automates configuration setup and verification, automates notifications and rewards info. Enables web3 staking infrastructure to be portable across cloud, and for vendor switching on demand. Starting with Ethereum.
-
-#### Timeline ~ Early January 23'
-
-### Automated web3 interactions and orchestrations 
- 
-```
-IN: Params(Contract ABI, Address, Network, UsersAddresses)
-
-OUT: Array(Funcs, Params to Tune/Approve)
-```
-Set up an orchestrated highly reliable web3 action such as creating a validator, withdrawing from a smart contract,  or
-sending transactions or notifications based on event triggers such as smart contract state changes. 
-
-#### Timeline ~ Q1/Q2 23'
-
-### Automated web3 network setup for large scale private network testing
-
-Create network from scratch that can replicate the size of mainnet, starting with Ethereum.
-
-```
-Runs Genesis -> Seeds Validators -> Deploys Validator Infra -> Metrics/Data
-```
-
 
