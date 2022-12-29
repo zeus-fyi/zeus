@@ -25,6 +25,9 @@ func (t *Web3SignerClientTestSuite) TestSignedValidatorDepositTxPayload() {
 	fmt.Println(tx)
 	fmt.Println(tx.Cost().Uint64())
 
+	rx, err := t.Web3SignerClientTestClient.SubmitSignedTxAndReturnTxData(ctx, tx)
+	t.Require().Nil(err)
+	t.Require().NotNil(rx)
 }
 
 func (t *Web3SignerClientTestSuite) TestSignedValidatorDepositTxPayloadFromStakingLaunchpadFormat() {
