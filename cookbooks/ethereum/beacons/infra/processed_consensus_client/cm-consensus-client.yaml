@@ -64,5 +64,5 @@ kind: ConfigMap
 metadata:
   creationTimestamp: null
   labels:
-    version: version-1672293116697409660
+    version: version-1672294144919039831
   name: cm-consensus-client

@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/instance: zeus-consensus-client
     app.kubernetes.io/managed-by: zeus
     app.kubernetes.io/name: zeus-consensus-client
-    version: version-1672293116697276117
+    version: version-1672294144918954450
   name: zeus-consensus-client
 spec:
   podManagementPolicy: OrderedReady
@@ -22,7 +22,7 @@ spec:
       labels:
         app.kubernetes.io/instance: zeus-consensus-client
         app.kubernetes.io/name: zeus-consensus-client
-        version: version-1672293116697390399
+        version: version-1672294144919024090
     spec:
       containers:
       - args:
@@ -45,16 +45,16 @@ spec:
         name: zeus-consensus-client
         ports:
         - containerPort: 9000
-          name: p2p-tcp
+          name: p2p-udp
+          protocol: TCP
+        - containerPort: 5052
+          name: http-api
           protocol: TCP
         - containerPort: 5054
           name: metrics
           protocol: TCP
         - containerPort: 9000
-          name: p2p-udp
-          protocol: TCP
-        - containerPort: 5052
-          name: http-api
+          name: p2p-tcp
           protocol: TCP
         readinessProbe:
           initialDelaySeconds: 10
