@@ -14,9 +14,9 @@ $10/mo solo or large scale enterprise staking for Ethereum per validator, all in
 
 Scalable to all of mainnet. Yes, you read that right.
 
-#### Timeline ~ Early January 23'
-
 ### Automated web3 interactions and orchestrations 
+ 
+ #### Timeline ~ Early January 23'
  
 ```
 IN: Params(Contract ABI, Address, Network, UsersAddresses)
@@ -26,18 +26,17 @@ OUT: Array(Funcs, Params to Tune/Approve)
 Set up an orchestrated highly reliable web3 action such as creating a validator, withdrawing from a smart contract,  or
 sending transactions or notifications based on event triggers such as smart contract state changes. 
 
+### Automated web3 infrastructure setup
 
 #### Timeline ~ Late January 23'
-
-### Automated web3 infrastructure setup
 
 Completely orchestrated and automated web3 infra. Sets up infrastructure on demand, automates run books, sets up mev-boost, web3signer, adds snapshot chain download integration, automates devops that's done by hand today, automates interactions for seeding and withdrawing validators, automates upgrades, automates configuration setup and verification, automates notifications and rewards info. Enables web3 staking infrastructure to be portable across cloud, and for vendor switching on demand. Starting with Ethereum.
 
 Enables web3 staking infrastructure to be portable across cloud, and for vendor switching on demand. Starting with Ethereum.
 
-#### Timeline ~ Q1/Q2 23'
-
 ### Automated web3 network setup for large scale private network testing
+
+#### Timeline ~ Q1/Q2 23'
 
 Create network from scratch that can replicate the size of mainnet, starting with Ethereum.
 ```
