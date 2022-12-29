@@ -28,7 +28,7 @@ AWS, GCP, Azure, type cloud companies purposely have highly confusing pricing mo
 
 Event driven signature automation with remote signers using a synthetic beacon. Making it possible to become a solo staker with only a remote signer that you'll be able to operate without anyone having access to your signing keys, and also allowing for flexible 1-click setups with cloud options that import your keys into a cloud signer you can host with a 1-click style deploy. 
 
-$10/mo solo staking for Ethereum per validator, all inclusive, no extra fees.
+$10/mo solo or large scale enterprise staking for Ethereum per validator, all inclusive, no extra fees and scalable to all of mainnet.
 
 #### Timeline ~ Early January 23'
 
