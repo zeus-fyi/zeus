@@ -43,7 +43,7 @@ Set up an orchestrated highly reliable web3 action such as creating a validator,
 sending transactions or notifications based on event triggers such as smart contract state changes. 
 
 
-#### Timeline ~ Early January 23'
+#### Timeline ~ Late January 23'
 
 ### Automated web3 infrastructure setup
 
