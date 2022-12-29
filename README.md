@@ -31,6 +31,8 @@ sending transactions or notifications based on event triggers such as smart cont
 
 Completely orchestrated and automated web3 infra. Sets up infrastructure on demand, automates run books, sets up mev-boost, web3signer, adds snapshot chain download integration, automates devops that's done by hand today, automates interactions for seeding and withdrawing validators, automates upgrades, automates configuration setup and verification, automates notifications and rewards info. Enables web3 staking infrastructure to be portable across cloud, and for vendor switching on demand. Starting with Ethereum.
 
+Enables web3 staking infrastructure to be portable across cloud, and for vendor switching on demand. Starting with Ethereum.
+
 #### Timeline ~ Q1/Q2 23'
 
 ### Automated web3 network setup for large scale private network testing
@@ -42,9 +44,12 @@ Runs Genesis -> Seeds Validators -> Deploys Validator Infra -> Metrics/Data
 ### AI driven infrastructure configuration & devops
 
 #### V0 Generation: Timeline ~ Q4 23-Q1'
-#### V0 Generation: Timeline ~ Q4 24-Q1'
 
-AI driven infrastructure that automates infrastructure config customization & handles devops via log ingestion. Generation v0, public access will be strictly limited to early users of Zeus and a small pool of API access will be allocated to those who request access in FIFO basis. The next generation afterwards will be able to read helm charts & configure infrastructure automatically for medium size complexity applications.
+AI driven infrastructure that automates infrastructure config customization & handles devops via log ingestion. Generation v0, public access will be strictly limited to early users of Zeus and a small pool of API access will be allocated to those who request access in FIFO basis.
+
+#### V1 Generation: Timeline ~ Q4 24-Q1'
+
+The next generation will be able to read helm charts & configure infrastructure automatically for medium size complexity applications, and small networks of related applications.
 
 ## Cookbooks ##
 
