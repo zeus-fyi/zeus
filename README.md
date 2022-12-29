@@ -24,7 +24,7 @@ AWS, GCP, Azure, type cloud companies purposely have highly confusing pricing mo
 
 ## Upcoming Features Overview ##
 
-#### Timeline ~ End of January 23-Early Feb'
+#### Timeline ~ End of January/Early Feb 23'
 
 Event driven signature automation with remote signers using a synthetic beacon. Making it possible to become a solo staker with only a remote signer that you'll be able to operate without anyone having access to your signing keys, and also allowing for flexible 1-click setups with cloud options that import your keys into a cloud signer you can host with a 1-click style deploy. 
 
