@@ -40,8 +40,9 @@ Runs Genesis -> Seeds Validators -> Deploys Validator Infra -> Metrics/Data
 ### AI driven infrastructure configuration & devops
 
 #### V0 Generation: Timeline ~ Q4 23-Q1'
+#### V0 Generation: Timeline ~ Q4 24-Q1'
 
-AI driven infrastructure that automates infrastructure config & devops. Generation v0, public access will be strictly limited to early users of Zeus and a small pool of API access will be allocated to those who request access in FIFO basis.
+AI driven infrastructure that automates infrastructure config customization & handles devops via log ingestion. Generation v0, public access will be strictly limited to early users of Zeus and a small pool of API access will be allocated to those who request access in FIFO basis. The next generation afterwards will be able to read helm charts & configure infrastructure automatically for medium size complexity applications.
 
 ## Cookbooks ##
 
