@@ -8,11 +8,14 @@ import (
 )
 
 func (t *ArtemisClientTestSuite) TestSignedTxEndpoints() {
+	mainnetSendSignedTxEndpoint := artemis_endpoints.EthereumMainnetSendSignedTxOrchestrationV1BetaPath
+	t.Assert().Equal(mainnetSendSignedTxEndpoint, getSendSignedTxEndpoint(ArtemisEthereumMainnet))
+
 	goerliSendSignedTxEndpoint := artemis_endpoints.EthereumGoerliSendSignedTxOrchestrationV1BetaPath
 	t.Assert().Equal(goerliSendSignedTxEndpoint, getSendSignedTxEndpoint(ArtemisEthereumGoerli))
 
-	mainnetSendSignedTxEndpoint := artemis_endpoints.EthereumMainnetSendSignedTxOrchestrationV1BetaPath
-	t.Assert().Equal(mainnetSendSignedTxEndpoint, getSendSignedTxEndpoint(ArtemisEthereumMainnet))
+	ephemerySendSignedTxEndpoint := artemis_endpoints.EthereumEphemeralSendSignedTxOrchestrationV1BetaPath
+	t.Assert().Equal(ephemerySendSignedTxEndpoint, getSendSignedTxEndpoint(ArtemisEthereumEphemeral))
 }
 
 const LinkGoerliContractAddr = "0x326C977E6efc84E512bB9C30f76E30c160eD06FB"

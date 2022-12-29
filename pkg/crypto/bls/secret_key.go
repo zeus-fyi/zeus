@@ -16,6 +16,10 @@ func (k *SecretKey) Serialize() []byte {
 	return privKeyBytes
 }
 
+func (k *SecretKey) String() string {
+	return ConvertBytesToString(k.Serialize())
+}
+
 func SecretKeyFromBytes(b []byte) SecretKey {
 	secKey := new(blst.SecretKey).Deserialize(b)
 	return SecretKey{s: secKey}

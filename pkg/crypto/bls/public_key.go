@@ -16,6 +16,10 @@ func (k *PublicKey) Serialize() []byte {
 	return pubKeyBytes
 }
 
+func (k *PublicKey) String() string {
+	return ConvertBytesToString(k.Serialize())
+}
+
 func PublicKeyFromBytes(b []byte) PublicKey {
 	pubKey := new(blst.P1Affine).Deserialize(b)
 	return PublicKey{p: *pubKey}

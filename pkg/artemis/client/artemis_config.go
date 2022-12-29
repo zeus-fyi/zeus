@@ -10,16 +10,16 @@ type ArtemisConfig struct {
 type ArtemisConfigs []*ArtemisConfig
 
 const (
-	Mainnet   = "mainnet"
-	Goerli    = "goerli"
-	Ephemeral = "ephemeral"
-	Ethereum  = "ethereum"
+	Mainnet  = "mainnet"
+	Goerli   = "goerli"
+	Ephemery = "ephemery"
+	Ethereum = "ethereum"
 )
 
 var (
 	ArtemisEthereumMainnet   = NewArtemisConfig(Ethereum, Mainnet)
 	ArtemisEthereumGoerli    = NewArtemisConfig(Ethereum, Goerli)
-	ArtemisEthereumEphemeral = NewArtemisConfig(Ethereum, Ephemeral)
+	ArtemisEthereumEphemeral = NewArtemisConfig(Ethereum, Ephemery)
 	GlobalArtemisConfigs     = []*ArtemisConfig{&ArtemisEthereumMainnet, &ArtemisEthereumGoerli, &ArtemisEthereumEphemeral}
 )
 

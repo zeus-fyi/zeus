@@ -5,6 +5,8 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/suite"
+	signing_automation_ethereum "github.com/zeus-fyi/zeus/pkg/artemis/signing_automation/ethereum"
+	bls_signer "github.com/zeus-fyi/zeus/pkg/crypto/bls"
 	"github.com/zeus-fyi/zeus/pkg/crypto/ecdsa"
 	"github.com/zeus-fyi/zeus/test/configs"
 	"github.com/zeus-fyi/zeus/test/test_suites"
@@ -14,11 +16,13 @@ var ctx = context.Background()
 
 type ArtemisClientTestSuite struct {
 	test_suites.BaseTestSuite
-	ArtemisTestClient ArtemisClient
+	ArtemisTestClient          ArtemisClient
+	Web3SignerClientTestClient signing_automation_ethereum.Web3SignerClient
 
-	TestAccount1 ecdsa.Account
-	TestAccount2 ecdsa.Account
-	NodeURL      string
+	TestBLSAccount bls_signer.Account
+	TestAccount1   ecdsa.Account
+	TestAccount2   ecdsa.Account
+	NodeURL        string
 }
 
 func (t *ArtemisClientTestSuite) SetupTest() {
@@ -35,6 +39,9 @@ func (t *ArtemisClientTestSuite) SetupTest() {
 
 	pkHexString2 := tc.LocalEcsdaTestPkey2
 	t.TestAccount2 = ecdsa.NewAccount(pkHexString2)
+
+	t.Web3SignerClientTestClient = signing_automation_ethereum.NewWeb3Client(tc.EphemeralNodeURL, t.TestAccount1.Account)
+	t.TestBLSAccount = bls_signer.NewSignerBLSFromExistingKey(tc.LocalBLSTestPkey)
 }
 
 func TestArtemisClientTestSuite(t *testing.T) {

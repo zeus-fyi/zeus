@@ -4,9 +4,12 @@ import "math/big"
 
 var (
 	Gwei   = big.NewInt(1e9)
+	Szabo  = big.NewInt(1e12)
 	Finney = big.NewInt(1e15)
 	Ether  = big.NewInt(1e18)
 
-	ThirtyTwo             = big.NewInt(32)
-	ValidatorDeposit32Eth = big.NewInt(1).Mul(Ether, ThirtyTwo)
+	OneHundred                       = big.NewInt(100)
+	ThirtyTwo                        = big.NewInt(32)
+	ValidatorDeposit32Eth            = big.NewInt(1).Mul(Ether, ThirtyTwo)
+	ValidatorDeposit32EthInGweiUnits = big.NewInt(1).Mul(Gwei, ThirtyTwo)
 )

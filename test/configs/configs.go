@@ -13,6 +13,8 @@ type TestContainer struct {
 	NodeURL            string
 	EphemeralNodeURL   string
 
+	LocalBLSTestPkey string
+
 	LocalEcsdaTestPkey  string
 	LocalEcsdaTestPkey2 string
 }
@@ -30,5 +32,6 @@ func InitLocalTestConfigs() TestContainer {
 	testCont.EphemeralNodeURL = viper.GetString("EPHEMERAL_NODE_URL")
 	testCont.LocalEcsdaTestPkey = viper.GetString("LOCAL_TESTING_ECDSA_PKEY")
 	testCont.LocalEcsdaTestPkey2 = viper.GetString("LOCAL_TESTING_ECDSA_PKEY_2")
+	testCont.LocalBLSTestPkey = viper.GetString("LOCAL_TESTING_BLS_SECRET_KEY")
 	return testCont
 }
