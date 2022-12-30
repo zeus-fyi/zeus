@@ -23,6 +23,9 @@ func (t *Web3SignerClientTestSuite) TestValidatorDepositPayloadGasEstimate() {
 	t.Require().Nil(err)
 	t.Require().NotNil(est)
 	fmt.Println(est.Uint64())
+
+	thirtyTwoEthInGwei := uint64(32000000000)
+	t.Require().Equal(ValidatorDeposit32EthInGweiUnits.Uint64(), thirtyTwoEthInGwei)
 }
 
 func (t *Web3SignerClientTestSuite) TestValidatorDeposit() {

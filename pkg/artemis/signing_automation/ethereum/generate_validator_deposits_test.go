@@ -25,7 +25,6 @@ func (t *Web3SignerClientTestSuite) TestEphemeralDepositGenerator() {
 	dd, err := GenerateEphemeralDepositData(s, wd)
 	t.Require().Nil(err)
 	t.Assert().NotEmpty(dd)
-
 	depositDataPath.FnOut = fmt.Sprintf("deposit_data-ephemeral-%d.json", time.Now().Unix())
 	dd.PrintJSON(depositDataPath)
 }

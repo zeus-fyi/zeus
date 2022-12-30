@@ -5,7 +5,6 @@ import (
 	"encoding/hex"
 	"strings"
 
-	"github.com/gochain/gochain/v4/common"
 	"github.com/gochain/gochain/v4/core/types"
 	"github.com/rs/zerolog/log"
 	"github.com/zeus-fyi/gochain/web3/web3_actions"
@@ -70,12 +69,10 @@ func getValidatorDepositPayload(ctx context.Context, depositParams *DepositDataP
 		MethodName:        validatorDepositMethodName,
 		SendEtherPayload: web3_actions.SendEtherPayload{
 			TransferArgs: web3_actions.TransferArgs{
-				Amount:    ValidatorDeposit32EthInGweiUnits,
-				ToAddress: common.Address{},
+				Amount: ValidatorDeposit32Eth,
 			},
 			GasPriceLimits: web3_actions.GasPriceLimits{},
 		},
-
 		Params: []interface{}{pubkey, depositParams.WithdrawalCredentials, sig, depositParams.DepositDataRoot},
 	}
 	return params, err

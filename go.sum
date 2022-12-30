@@ -456,6 +456,8 @@ github.com/wealdtech/go-eth2-types/v2 v2.8.0 h1:Cts9J78ryXVp8jwotdSSVU75S+QWJrgV
 github.com/wealdtech/go-eth2-types/v2 v2.8.0/go.mod h1:tJazo9o28kdQs3V/U4VafQ4neG+/sL3OBozQ8J3CWmo=
 github.com/wealdtech/go-eth2-util v1.8.0 h1:hhs3h2y3Ldty18lppFdpe46nZpdDAMbY7QqiHO5BvE0=
 github.com/wealdtech/go-eth2-util v1.8.0/go.mod h1:rSuE0v5zX+uyZrqW/iUmXOxeDpB7lTvhcZvAVh0KlMU=
+github.com/wealdtech/go-string2eth v1.2.0 h1:C0E5p78tecZTsGccJc9r/kreFah4EfDs5uUPnS6XXMs=
+github.com/wealdtech/go-string2eth v1.2.0/go.mod h1:RUzsLjJtbZaJ/3UKn9kY19a/vCCUHtEWoUW3uiK6yGU=
 github.com/yuin/goldmark v1.1.25/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
 github.com/yuin/goldmark v1.1.27/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
 github.com/yuin/goldmark v1.1.32/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=

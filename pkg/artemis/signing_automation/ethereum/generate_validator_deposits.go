@@ -87,10 +87,10 @@ func GenerateDepositData(blsSigner bls_signer.Account, withdrawalAddress []byte,
 		log.Err(err)
 		return nil, errors.Wrap(err, "failed to generate hash tree root")
 	}
-	dp.DepositDataRoot = signingRoot
 	var blsFormatted spec.BLSSignature
 	sig := blsSigner.Sign(signingRoot[:])
 	copy(blsFormatted[:], sig.Serialize())
+
 	depositData := &spec.DepositData{
 		PublicKey:             pubKey,
 		WithdrawalCredentials: withdrawalAddress,
@@ -98,6 +98,12 @@ func GenerateDepositData(blsSigner bls_signer.Account, withdrawalAddress []byte,
 		Signature:             blsFormatted,
 	}
 	dp.DepositData = depositData
+	ht, err := depositData.HashTreeRoot()
+	if err != nil {
+		log.Err(err)
+		return nil, errors.Wrap(err, "failed to generate hash tree root")
+	}
+	dp.DepositDataRoot = ht
 	return dp, err
 }
 
