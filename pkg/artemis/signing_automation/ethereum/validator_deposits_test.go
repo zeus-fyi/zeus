@@ -13,8 +13,12 @@ import (
 
 var ctx = context.Background()
 
+// TDepositContract: reconstructed DepositData does not match supplied deposit_data_root
+
 // TestSignedValidatorDepositTxPayload uses the ephemeral network
 func (t *Web3SignerClientTestSuite) TestSignedValidatorDepositTxPayload() {
+	t.Web3SignerClientTestClient.Dial()
+	defer t.Web3SignerClientTestClient.Close()
 	wc, err := ValidateAndReturnEcdsaPubkeyBytes(t.TestAccount1.PublicKey())
 	t.Require().Nil(err)
 	dd, err := GenerateEphemeralDepositData(t.TestBLSAccount, wc)
@@ -28,6 +32,7 @@ func (t *Web3SignerClientTestSuite) TestSignedValidatorDepositTxPayload() {
 	rx, err := t.Web3SignerClientTestClient.SubmitSignedTxAndReturnTxData(ctx, tx)
 	t.Require().Nil(err)
 	t.Require().NotNil(rx)
+	fmt.Println(rx.BlockHash.String())
 }
 
 func (t *Web3SignerClientTestSuite) TestSignedValidatorDepositTxPayloadFromStakingLaunchpadFormat() {

@@ -15,7 +15,7 @@ type Web3SignerClientTestSuite struct {
 	test_suites.BaseTestSuite
 	Web3SignerClientTestClient Web3SignerClient
 	ArtemisTestClient          artemis_client.ArtemisClient
-	TestBLSAccount             bls_signer.Account
+	TestBLSAccount             bls_signer.EthBLSAccount
 	TestAccount1               ecdsa.Account
 	TestAccount2               ecdsa.Account
 	NodeURL                    string
@@ -30,8 +30,8 @@ func (t *Web3SignerClientTestSuite) SetupTest() {
 	t.TestAccount1 = ecdsa.NewAccount(pkHexString)
 	pkHexString2 := tc.LocalEcsdaTestPkey2
 	t.TestAccount2 = ecdsa.NewAccount(pkHexString2)
-	t.Web3SignerClientTestClient = NewWeb3Client(tc.EphemeralNodeURL, t.TestAccount1.Account)
-	t.TestBLSAccount = bls_signer.NewSignerBLSFromExistingKey(tc.LocalBLSTestPkey)
+	t.Web3SignerClientTestClient = NewWeb3Client(t.NodeURL, t.TestAccount1.Account)
+	t.TestBLSAccount = bls_signer.NewEthSignerBLSFromExistingKey(tc.LocalBLSTestPkey)
 }
 
 func TestWeb3SignerClientTestSuite(t *testing.T) {

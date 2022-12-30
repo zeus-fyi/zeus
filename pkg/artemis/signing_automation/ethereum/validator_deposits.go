@@ -5,7 +5,6 @@ import (
 	"encoding/hex"
 	"strings"
 
-	"github.com/gochain/gochain/v4/common"
 	"github.com/gochain/gochain/v4/core/types"
 	"github.com/rs/zerolog/log"
 	"github.com/zeus-fyi/gochain/web3/web3_actions"
@@ -21,12 +20,38 @@ const (
 )
 
 func (w *Web3SignerClient) SignValidatorDepositTxToBroadcast(ctx context.Context, depositParams *DepositDataParams) (*types.Transaction, error) {
-	ForceDirToEthSigningDirLocation()
+	w.Dial()
+	defer w.Close()
+	params, err := getValidatorDepositPayload(ctx, depositParams)
+	if err != nil {
+		log.Ctx(ctx).Err(err).Msg("Web3SignerClient: SignValidatorDepositTxToBroadcast")
+		return nil, err
+	}
+	from := w.Address()
+	txPayload, err := extractCallMsgFromSendContractTxPayload(&from, params)
+	if err != nil {
+		panic(err)
+	}
+	est, err := w.GetGasPriceEstimateForTx(ctx, txPayload)
+	if err != nil {
+		panic(err)
+	}
+	params.GasPrice = est
+	params.GasLimit = 100000
+	signedTx, err := w.GetSignedTxToCallFunctionWithArgs(ctx, &params)
+	if err != nil {
+		log.Ctx(ctx).Err(err).Msg("Web3SignerClient: SignValidatorDepositTxToBroadcast")
+		return nil, err
+	}
+	return signedTx, err
+}
 
+func getValidatorDepositPayload(ctx context.Context, depositParams *DepositDataParams) (web3_actions.SendContractTxPayload, error) {
+	ForceDirToEthSigningDirLocation()
 	abiFile, err := ABIOpenFile(validatorAbiFileLocation)
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("Web3SignerClient: SignValidatorDeposit: ABIOpenFile")
-		return nil, err
+		return web3_actions.SendContractTxPayload{}, err
 	}
 
 	pubkey, err := hex.DecodeString(strings.TrimPrefix(depositParams.PublicKey.String(), "0x"))
@@ -44,17 +69,11 @@ func (w *Web3SignerClient) SignValidatorDepositTxToBroadcast(ctx context.Context
 		MethodName:        validatorDepositMethodName,
 		SendEtherPayload: web3_actions.SendEtherPayload{
 			TransferArgs: web3_actions.TransferArgs{
-				Amount:    ValidatorDeposit32EthInGweiUnits,
-				ToAddress: common.Address{},
+				Amount: ValidatorDeposit32Eth,
 			},
 			GasPriceLimits: web3_actions.GasPriceLimits{},
 		},
-
 		Params: []interface{}{pubkey, depositParams.WithdrawalCredentials, sig, depositParams.DepositDataRoot},
 	}
-	signedTx, err := w.GetSignedTxToCallFunctionWithArgs(ctx, &params)
-	if err != nil {
-		log.Ctx(ctx).Err(err).Msg("Web3SignerClient: SignValidatorDeposit")
-	}
-	return signedTx, err
+	return params, err
 }
