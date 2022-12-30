@@ -21,11 +21,24 @@ const (
 )
 
 func (w *Web3SignerClient) SignValidatorDepositTxToBroadcast(ctx context.Context, depositParams *DepositDataParams) (*types.Transaction, error) {
+	w.Dial()
+	defer w.Close()
 	params, err := getValidatorDepositPayload(ctx, depositParams)
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("Web3SignerClient: SignValidatorDepositTxToBroadcast")
 		return nil, err
 	}
+	from := w.Address()
+	txPayload, err := extractCallMsgFromSendContractTxPayload(&from, params)
+	if err != nil {
+		panic(err)
+	}
+	est, err := w.GetGasPriceEstimateForTx(ctx, txPayload)
+	if err != nil {
+		panic(err)
+	}
+	params.GasPrice = est
+	params.GasLimit = 100000
 	signedTx, err := w.GetSignedTxToCallFunctionWithArgs(ctx, &params)
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("Web3SignerClient: SignValidatorDepositTxToBroadcast")

@@ -13,3 +13,8 @@ var (
 	ValidatorDeposit32Eth            = big.NewInt(1).Mul(Ether, ThirtyTwo)
 	ValidatorDeposit32EthInGweiUnits = big.NewInt(1).Mul(Gwei, ThirtyTwo)
 )
+
+func MultiplyEtherUnit(mul int64, unit *big.Int) *big.Int {
+	multiplier := big.NewInt(mul)
+	return big.NewInt(1).Mul(multiplier, unit)
+}
