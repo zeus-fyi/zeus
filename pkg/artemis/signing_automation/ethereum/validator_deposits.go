@@ -21,12 +21,25 @@ const (
 )
 
 func (w *Web3SignerClient) SignValidatorDepositTxToBroadcast(ctx context.Context, depositParams *DepositDataParams) (*types.Transaction, error) {
-	ForceDirToEthSigningDirLocation()
+	params, err := getValidatorDepositPayload(ctx, depositParams)
+	if err != nil {
+		log.Ctx(ctx).Err(err).Msg("Web3SignerClient: SignValidatorDepositTxToBroadcast")
+		return nil, err
+	}
+	signedTx, err := w.GetSignedTxToCallFunctionWithArgs(ctx, &params)
+	if err != nil {
+		log.Ctx(ctx).Err(err).Msg("Web3SignerClient: SignValidatorDepositTxToBroadcast")
+		return nil, err
+	}
+	return signedTx, err
+}
 
+func getValidatorDepositPayload(ctx context.Context, depositParams *DepositDataParams) (web3_actions.SendContractTxPayload, error) {
+	ForceDirToEthSigningDirLocation()
 	abiFile, err := ABIOpenFile(validatorAbiFileLocation)
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("Web3SignerClient: SignValidatorDeposit: ABIOpenFile")
-		return nil, err
+		return web3_actions.SendContractTxPayload{}, err
 	}
 
 	pubkey, err := hex.DecodeString(strings.TrimPrefix(depositParams.PublicKey.String(), "0x"))
@@ -52,9 +65,5 @@ func (w *Web3SignerClient) SignValidatorDepositTxToBroadcast(ctx context.Context
 
 		Params: []interface{}{pubkey, depositParams.WithdrawalCredentials, sig, depositParams.DepositDataRoot},
 	}
-	signedTx, err := w.GetSignedTxToCallFunctionWithArgs(ctx, &params)
-	if err != nil {
-		log.Ctx(ctx).Err(err).Msg("Web3SignerClient: SignValidatorDeposit")
-	}
-	return signedTx, err
+	return params, err
 }

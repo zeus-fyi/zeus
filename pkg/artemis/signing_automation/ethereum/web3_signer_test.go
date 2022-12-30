@@ -30,7 +30,7 @@ func (t *Web3SignerClientTestSuite) SetupTest() {
 	t.TestAccount1 = ecdsa.NewAccount(pkHexString)
 	pkHexString2 := tc.LocalEcsdaTestPkey2
 	t.TestAccount2 = ecdsa.NewAccount(pkHexString2)
-	t.Web3SignerClientTestClient = NewWeb3Client(tc.EphemeralNodeURL, t.TestAccount1.Account)
+	t.Web3SignerClientTestClient = NewWeb3Client(t.NodeURL, t.TestAccount1.Account)
 	t.TestBLSAccount = bls_signer.NewSignerBLSFromExistingKey(tc.LocalBLSTestPkey)
 }
 

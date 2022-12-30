@@ -15,6 +15,8 @@ var ctx = context.Background()
 
 // TestSignedValidatorDepositTxPayload uses the ephemeral network
 func (t *Web3SignerClientTestSuite) TestSignedValidatorDepositTxPayload() {
+	t.Web3SignerClientTestClient.Dial()
+	defer t.Web3SignerClientTestClient.Close()
 	wc, err := ValidateAndReturnEcdsaPubkeyBytes(t.TestAccount1.PublicKey())
 	t.Require().Nil(err)
 	dd, err := GenerateEphemeralDepositData(t.TestBLSAccount, wc)
