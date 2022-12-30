@@ -72,7 +72,6 @@ func (t *Web3SignerClientTestSuite) TestSendEtherGasEstimates() {
 func (t *Web3SignerClientTestSuite) TestSendEther() {
 	t.Web3SignerClientTestClient.Dial()
 	defer t.Web3SignerClientTestClient.Close()
-
 	sendEthTx := web3_actions.SendEtherPayload{
 		TransferArgs: web3_actions.TransferArgs{
 			Amount:    Finney,
@@ -85,11 +84,8 @@ func (t *Web3SignerClientTestSuite) TestSendEther() {
 	est, err := t.Web3SignerClientTestClient.GetGasPriceEstimateForTx(ctx, msg)
 	t.Require().Nil(err)
 	sendEthTx.GasPrice = est
-
 	rx, err := t.Web3SignerClientTestClient.Send(ctx, sendEthTx)
 	t.Require().Nil(err)
 	t.Require().NotNil(rx)
-
 	fmt.Println(rx)
-
 }

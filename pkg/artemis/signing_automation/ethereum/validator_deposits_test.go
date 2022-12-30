@@ -32,9 +32,7 @@ func (t *Web3SignerClientTestSuite) TestSignedValidatorDepositTxPayload() {
 	rx, err := t.Web3SignerClientTestClient.SubmitSignedTxAndReturnTxData(ctx, tx)
 	t.Require().Nil(err)
 	t.Require().NotNil(rx)
-
 	fmt.Println(rx.BlockHash.String())
-
 }
 
 func (t *Web3SignerClientTestSuite) TestSignedValidatorDepositTxPayloadFromStakingLaunchpadFormat() {

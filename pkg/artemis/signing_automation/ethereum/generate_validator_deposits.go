@@ -24,7 +24,6 @@ func (dd *DepositDataParams) PrintJSON(p filepaths.Path) {
 	if dd.DepositData == nil || dd.ForkVersion == nil {
 		panic(errors.New("deposit params are empty"))
 	}
-
 	pubkey := strings.TrimPrefix(fmt.Sprintf("%#x", dd.PublicKey), "0x")
 	wc := strings.TrimPrefix(fmt.Sprintf("%#x", dd.WithdrawalCredentials), "0x")
 	sig := strings.TrimPrefix(fmt.Sprintf("%#x", dd.PublicKey), "0x")
@@ -47,7 +46,7 @@ func (dd *DepositDataParams) PrintJSON(p filepaths.Path) {
 	}
 }
 
-func GenerateEphemeralDepositData(blsSigner bls_signer.Account, withdrawalAddress []byte) (*DepositDataParams, error) {
+func GenerateEphemeralDepositData(blsSigner bls_signer.EthBLSAccount, withdrawalAddress []byte) (*DepositDataParams, error) {
 	fv, err := GetEphemeralForkVersion()
 	if err != nil {
 		log.Err(err)
@@ -56,14 +55,14 @@ func GenerateEphemeralDepositData(blsSigner bls_signer.Account, withdrawalAddres
 	return GenerateDepositData(blsSigner, withdrawalAddress, fv)
 }
 
-func GenerateDepositData(blsSigner bls_signer.Account, withdrawalAddress []byte, forkVersion *spec.Version) (*DepositDataParams, error) {
+func GenerateDepositData(blsSigner bls_signer.EthBLSAccount, withdrawalAddress []byte, forkVersion *spec.Version) (*DepositDataParams, error) {
 	dp := &DepositDataParams{ForkVersion: forkVersion}
 	var pubKey spec.BLSPubKey
-	copy(pubKey[:], blsSigner.PublicKey.Serialize())
+	copy(pubKey[:], blsSigner.PublicKey().Marshal())
 	depositMessage := &spec.DepositMessage{
 		PublicKey:             pubKey,
 		WithdrawalCredentials: withdrawalAddress,
-		Amount:                spec.Gwei(ValidatorDeposit32Eth.Uint64()),
+		Amount:                spec.Gwei(ValidatorDeposit32EthInGweiUnits.Uint64()),
 	}
 	root, err := depositMessage.HashTreeRoot()
 	if err != nil {
@@ -89,7 +88,7 @@ func GenerateDepositData(blsSigner bls_signer.Account, withdrawalAddress []byte,
 	}
 	var blsFormatted spec.BLSSignature
 	sig := blsSigner.Sign(signingRoot[:])
-	copy(blsFormatted[:], sig.Serialize())
+	copy(blsFormatted[:], sig.Marshal())
 
 	depositData := &spec.DepositData{
 		PublicKey:             pubKey,
