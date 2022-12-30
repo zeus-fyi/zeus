@@ -28,6 +28,10 @@ func NewEthBLSAccount() EthBLSAccount {
 }
 
 func NewEthBLSKey() *e2types.BLSPrivateKey {
+	err := InitEthBLS()
+	if err != nil {
+		panic(err)
+	}
 	key, err := e2types.GenerateBLSPrivateKey()
 	if err != nil {
 		panic(err)
