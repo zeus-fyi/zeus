@@ -12,9 +12,9 @@ import (
 	"github.com/zeus-fyi/zeus/test/test_suites"
 )
 
-func (t *Web3SignerCookbookTestSuite) TestCreateClusterValidatorBase() {
+func (t *Web3SignerCookbookTestSuite) TestCreateClusterWeb3SignerBase() {
 	ctx := context.Background()
-	basesInsert := []string{web3SignerComponentBaseName}
+	basesInsert := []string{web3SignerComponentBaseName, choreographySkeletonBase}
 	cc := zeus_req_types.TopologyCreateOrAddComponentBasesToClassesRequest{
 		ClusterClassName:   EphemeryWeb3SignerClusterClassName,
 		ComponentBaseNames: basesInsert,
@@ -23,7 +23,7 @@ func (t *Web3SignerCookbookTestSuite) TestCreateClusterValidatorBase() {
 	t.Require().Nil(err)
 }
 
-func (t *Web3SignerCookbookTestSuite) TestCreateClusterValidatorSkeletonBase() {
+func (t *Web3SignerCookbookTestSuite) TestCreateClusterWeb3SignerSkeletonBase() {
 	ctx := context.Background()
 	cc := zeus_req_types.TopologyCreateOrAddSkeletonBasesToClassesRequest{
 		ClusterClassName:  EphemeryWeb3SignerClusterClassName,
@@ -31,6 +31,14 @@ func (t *Web3SignerCookbookTestSuite) TestCreateClusterValidatorSkeletonBase() {
 		SkeletonBaseNames: []string{web3SignerSkeletonBaseName},
 	}
 	_, err := t.ZeusTestClient.AddSkeletonBasesToClass(ctx, cc)
+	t.Require().Nil(err)
+
+	cc = zeus_req_types.TopologyCreateOrAddSkeletonBasesToClassesRequest{
+		ClusterClassName:  EphemeryWeb3SignerClusterClassName,
+		ComponentBaseName: choreographySkeletonBase,
+		SkeletonBaseNames: []string{choreographySkeletonBase},
+	}
+	_, err = t.ZeusTestClient.AddSkeletonBasesToClass(ctx, cc)
 	t.Require().Nil(err)
 }
 

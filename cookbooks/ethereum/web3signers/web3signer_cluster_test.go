@@ -23,7 +23,7 @@ func (t *Web3SignerCookbookTestSuite) TestClusterDestroy() {
 
 func (t *Web3SignerCookbookTestSuite) TestCreateClusterBase() {
 	ctx := context.Background()
-	basesInsert := []string{"executionClient", "consensusClient", web3SignerComponentBaseName, choreographySkeletonBase}
+	basesInsert := []string{web3SignerComponentBaseName}
 	cc := zeus_req_types.TopologyCreateOrAddComponentBasesToClassesRequest{
 		ClusterClassName:   EphemeryWeb3SignerClusterClassName,
 		ComponentBaseNames: basesInsert,
