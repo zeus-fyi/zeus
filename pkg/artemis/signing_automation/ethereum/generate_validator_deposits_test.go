@@ -55,6 +55,9 @@ func (t *Web3SignerClientTestSuite) TestEphemeralDepositsFromMnemonicInEth2Keyst
 
 		enc, err := ks.Encrypt(sk.Marshal(), t.TestHDWalletPassword)
 		t.Require().Nil(err)
+		enc["path"] = path
+		enc["pubkey"] = bls_signer.ConvertBytesToString(sk.PublicKey().Marshal())
+		enc["version"] = "4"
 
 		b, err := json.Marshal(enc)
 		t.Require().Nil(err)
@@ -62,7 +65,7 @@ func (t *Web3SignerClientTestSuite) TestEphemeralDepositsFromMnemonicInEth2Keyst
 		slashSplit := strings.Split(path, "/")
 		underScoreStr := strings.Join(slashSplit, "_")
 
-		depositDataPath.FnOut = fmt.Sprintf("keystore-ephemeral_%s.json", underScoreStr)
+		depositDataPath.FnOut = fmt.Sprintf("keystore-ephemery-%s.json", underScoreStr)
 		err = depositDataPath.WriteToFileOutPath(b)
 		t.Require().Nil(err)
 	}
