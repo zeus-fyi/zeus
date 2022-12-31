@@ -49,8 +49,8 @@ var web3SignerChart = zeus_req_types.TopologyCreateRequest{
 
 var web3SignerChartPath = filepaths.Path{
 	PackageName: "",
-	DirIn:       "./ethereum/web3signer/infra/consensys_web3signer",
-	DirOut:      "./ethereum/web3signer/infra/processed_consensys_web3signer",
+	DirIn:       "./ethereum/web3signers/infra/consensys_web3signer",
+	DirOut:      "./ethereum/web3signers/infra/processed_consensys_web3signer",
 	FnIn:        web3SignerSkeletonBaseName, // filename for your gzip workload
 	FnOut:       "",
 	Env:         "",

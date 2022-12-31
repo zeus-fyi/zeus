@@ -45,9 +45,8 @@ func (t *Web3SignerCookbookTestSuite) TestCreateClusterSkeletonBases() {
 	t.Require().Nil(err)
 
 }
-func (t *Web3SignerCookbookTestSuite) TestUploadValidatorClientCharts() {
+func (t *Web3SignerCookbookTestSuite) TestUploadWeb3SignerChart() {
 	ctx := context.Background()
-	// Consensus
 	resp, err := t.ZeusTestClient.UploadChart(ctx, web3SignerChartPath, web3SignerChart)
 	t.Require().Nil(err)
 	t.Assert().NotZero(resp.TopologyID)
