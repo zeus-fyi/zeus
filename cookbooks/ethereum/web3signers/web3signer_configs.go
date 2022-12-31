@@ -17,9 +17,15 @@ var (
 )
 
 var cd = zeus_req_types.ClusterTopologyDeployRequest{
-	ClusterClassName:    validator_cookbooks.EphemeryValidatorClusterClassName,
-	SkeletonBaseOptions: []string{web3SignerSkeletonBaseName},
-	CloudCtxNs:          Web3SignerCloudCtxNs,
+	ClusterClassName: validator_cookbooks.EphemeryValidatorClusterClassName,
+	SkeletonBaseOptions: []string{
+		validator_cookbooks.ExecSkeletonBase,
+		validator_cookbooks.ConsensusSkeletonBase,
+		validator_cookbooks.ValidatorSkeletonBaseName,
+		validator_cookbooks.ChoreographySkeletonBase,
+		web3SignerSkeletonBaseName,
+	},
+	CloudCtxNs: Web3SignerCloudCtxNs,
 }
 
 var DeployWeb3SignerKnsReq = zeus_req_types.TopologyDeployRequest{

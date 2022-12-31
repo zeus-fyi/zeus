@@ -28,7 +28,7 @@ func (t *ValidatorCookbookTestSuite) TestCreateClusterValidatorSkeletonBase() {
 	cc := zeus_req_types.TopologyCreateOrAddSkeletonBasesToClassesRequest{
 		ClusterClassName:  EphemeryValidatorClusterClassName,
 		ComponentBaseName: consensusValidatorClientComponentBaseName,
-		SkeletonBaseNames: []string{validatorSkeletonBaseName},
+		SkeletonBaseNames: []string{ValidatorSkeletonBaseName},
 	}
 	_, err := t.ZeusTestClient.AddSkeletonBasesToClass(ctx, cc)
 	t.Require().Nil(err)

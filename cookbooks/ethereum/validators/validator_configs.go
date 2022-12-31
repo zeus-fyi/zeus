@@ -15,16 +15,16 @@ import (
 var (
 	EphemeryValidatorClusterClassName         = "ethereumEphemeralValidatorCluster"
 	consensusValidatorClientComponentBaseName = "consensusValidatorClients"
-	validatorSkeletonBaseName                 = "lighthouseHerculesValidatorClient"
+	ValidatorSkeletonBaseName                 = "lighthouseHerculesValidatorClient"
 
-	execSkeletonBase         = "gethHercules"
-	consensusSkeletonBase    = "lighthouseHercules"
-	choreographySkeletonBase = "choreography"
+	ExecSkeletonBase         = "gethHercules"
+	ConsensusSkeletonBase    = "lighthouseHercules"
+	ChoreographySkeletonBase = "choreography"
 )
 
 var cd = zeus_req_types.ClusterTopologyDeployRequest{
 	ClusterClassName:    EphemeryValidatorClusterClassName,
-	SkeletonBaseOptions: []string{execSkeletonBase, consensusSkeletonBase, validatorSkeletonBaseName, choreographySkeletonBase},
+	SkeletonBaseOptions: []string{ExecSkeletonBase, ConsensusSkeletonBase, ValidatorSkeletonBaseName, ChoreographySkeletonBase},
 	CloudCtxNs:          ValidatorCloudCtxNs,
 }
 
@@ -43,11 +43,11 @@ var ValidatorCloudCtxNs = zeus_common_types.CloudCtxNs{
 
 // chart workload metadata
 var validatorsChart = zeus_req_types.TopologyCreateRequest{
-	TopologyName:      validatorSkeletonBaseName,
-	ChartName:         validatorSkeletonBaseName,
-	ChartDescription:  validatorSkeletonBaseName,
+	TopologyName:      ValidatorSkeletonBaseName,
+	ChartName:         ValidatorSkeletonBaseName,
+	ChartDescription:  ValidatorSkeletonBaseName,
 	Version:           fmt.Sprintf("validatorBase-v.0.%d", time.Now().Unix()),
-	SkeletonBaseName:  validatorSkeletonBaseName,
+	SkeletonBaseName:  ValidatorSkeletonBaseName,
 	ComponentBaseName: consensusValidatorClientComponentBaseName,
 	ClusterClassName:  EphemeryValidatorClusterClassName,
 	Tag:               "latest",
@@ -57,7 +57,7 @@ var validatorsChartPath = filepaths.Path{
 	PackageName: "",
 	DirIn:       "./ethereum/validators/infra/validators",
 	DirOut:      "./ethereum/validators/infra/processed_validators",
-	FnIn:        validatorSkeletonBaseName, // filename for your gzip workload
+	FnIn:        ValidatorSkeletonBaseName, // filename for your gzip workload
 	FnOut:       "",
 	Env:         "",
 	FilterFiles: strings_filter.FilterOpts{},
