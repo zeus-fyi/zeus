@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/attestantio/go-eth2-client/spec/phase0"
+	"github.com/google/uuid"
 	"github.com/pkg/errors"
 	"github.com/wealdtech/go-ed25519hd"
 	e2types "github.com/wealdtech/go-eth2-types/v2"
@@ -53,8 +54,12 @@ func (t *Web3SignerClientTestSuite) TestEphemeralDepositsFromMnemonicInEth2Keyst
 		sk, err := util.PrivateKeyFromSeedAndPath(seed, path)
 		t.Require().Nil(err)
 
+		uuidVal, err := uuid.NewUUID()
+		t.Require().Nil(err)
+
 		enc, err := ks.Encrypt(sk.Marshal(), t.TestHDWalletPassword)
 		t.Require().Nil(err)
+		enc["uuid"] = uuidVal.String()
 		enc["path"] = path
 		enc["pubkey"] = bls_signer.ConvertBytesToString(sk.PublicKey().Marshal())
 		enc["version"] = "4"
