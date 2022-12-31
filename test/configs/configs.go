@@ -14,7 +14,8 @@ type TestContainer struct {
 	GoerliNodeURL      string
 	EphemeralNodeURL   string
 
-	LocalBLSTestPkey string
+	LocalMnemonic24Words string
+	LocalBLSTestPkey     string
 
 	LocalEcsdaTestPkey  string
 	LocalEcsdaTestPkey2 string
@@ -35,5 +36,6 @@ func InitLocalTestConfigs() TestContainer {
 	testCont.LocalEcsdaTestPkey = viper.GetString("LOCAL_TESTING_ECDSA_PKEY")
 	testCont.LocalEcsdaTestPkey2 = viper.GetString("LOCAL_TESTING_ECDSA_PKEY_2")
 	testCont.LocalBLSTestPkey = viper.GetString("LOCAL_TESTING_BLS_SECRET_KEY")
+	testCont.LocalMnemonic24Words = viper.GetString("MNEMONIC_24_WORDS")
 	return testCont
 }

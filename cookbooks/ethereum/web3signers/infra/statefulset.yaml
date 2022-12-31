@@ -1,0 +1,81 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: zeus-validators
+  labels:
+    app.kubernetes.io/name: zeus-validators
+    app.kubernetes.io/instance: zeus-validators
+    app.kubernetes.io/managed-by: zeus
+  annotations:
+    {}
+spec:
+  podManagementPolicy: OrderedReady
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: zeus-validators
+      app.kubernetes.io/instance: zeus-validators
+  serviceName: zeus-validators
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: zeus-validators
+        app.kubernetes.io/instance: zeus-validators
+    spec:
+      containers:
+        - name: zeus-web3signer
+          image: "consensys/web3signer:22.11"
+          imagePullPolicy: IfNotPresent
+          command: [ "/bin/sh" ]
+          args: [ "-c","/scripts/start.sh" ]
+          volumeMounts:
+            - name: cm-web3signer
+              mountPath: "/scripts"
+            - name: web3signer-storage
+              mountPath: "/data"
+          ports:
+            - name: metrics
+              containerPort: 5054
+          livenessProbe:
+            initialDelaySeconds: 60
+            periodSeconds: 120
+            tcpSocket:
+              port: metrics
+          readinessProbe:
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            tcpSocket:
+              port: metrics
+          resources:
+            {}
+          env:
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+      nodeSelector:
+        {}
+      affinity:
+        {}
+      tolerations:
+        []
+      volumes:
+        - name: cm-web3signer
+          configMap:
+            name: cm-web3signer
+            defaultMode: 0744
+  volumeClaimTemplates:
+    - metadata:
+        name: web3signer-storage
+        annotations:
+          {}
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: "100Mi"
+
+

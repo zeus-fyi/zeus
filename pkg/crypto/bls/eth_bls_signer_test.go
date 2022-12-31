@@ -17,7 +17,6 @@ func (s *BLSTestSuite) TestEthBLSKeyGenSignAndVerify() {
 
 	privKey := k.PrivateKeyString()
 	fmt.Println(privKey)
-
 }
 
 func (s *BLSTestSuite) TestEthBLSAccountRestoredFromStringKey() {
@@ -29,5 +28,4 @@ func (s *BLSTestSuite) TestEthBLSAccountRestoredFromStringKey() {
 	s.Require().Nil(err)
 	s.Assert().Len(data, 48)
 	s.Assert().Equal(expKey, a.PublicKeyString())
-
 }
