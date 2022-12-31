@@ -13,8 +13,6 @@ import (
 
 var ctx = context.Background()
 
-// TDepositContract: reconstructed DepositData does not match supplied deposit_data_root
-
 // TestSignedValidatorDepositTxPayload uses the ephemeral network
 func (t *Web3SignerClientTestSuite) TestSignedValidatorDepositTxPayload() {
 	t.Web3SignerClientTestClient.Dial()
