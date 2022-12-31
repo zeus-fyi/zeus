@@ -3,6 +3,7 @@ package web3signer_cookbooks
 import (
 	"context"
 
+	validator_cookbooks "github.com/zeus-fyi/zeus/cookbooks/ethereum/validators"
 	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_req_types"
 )
 
@@ -25,13 +26,25 @@ func (t *Web3SignerCookbookTestSuite) TestCreateClusterBase() {
 	ctx := context.Background()
 	basesInsert := []string{web3SignerComponentBaseName}
 	cc := zeus_req_types.TopologyCreateOrAddComponentBasesToClassesRequest{
-		ClusterClassName:   EphemeryWeb3SignerClusterClassName,
+		ClusterClassName:   validator_cookbooks.EphemeryValidatorClusterClassName,
 		ComponentBaseNames: basesInsert,
 	}
 	_, err := t.ZeusTestClient.AddComponentBasesToClass(ctx, cc)
 	t.Require().Nil(err)
 }
 
+func (t *Web3SignerCookbookTestSuite) TestCreateClusterSkeletonBases() {
+	ctx := context.Background()
+
+	cc := zeus_req_types.TopologyCreateOrAddSkeletonBasesToClassesRequest{
+		ClusterClassName:  validator_cookbooks.EphemeryValidatorClusterClassName,
+		ComponentBaseName: web3SignerComponentBaseName,
+		SkeletonBaseNames: []string{web3SignerSkeletonBaseName},
+	}
+	_, err := t.ZeusTestClient.AddSkeletonBasesToClass(ctx, cc)
+	t.Require().Nil(err)
+
+}
 func (t *Web3SignerCookbookTestSuite) TestUploadValidatorClientCharts() {
 	ctx := context.Background()
 	// Consensus

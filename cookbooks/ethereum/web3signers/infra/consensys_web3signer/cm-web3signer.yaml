@@ -12,4 +12,5 @@ data:
     --http-listen-host=0.0.0.0 \
     --slashing-protection-db-url="${POSTGRES_DB}" \
     --slashing-protection-db-username="${POSTGRES_USERNAME}" \
-    --slashing-protection-db-password="${POSTGRES_AUTH}" 
+    --slashing-protection-db-password="${POSTGRES_AUTH}" \
+    --slashing-protection-pruning-enabled=true
