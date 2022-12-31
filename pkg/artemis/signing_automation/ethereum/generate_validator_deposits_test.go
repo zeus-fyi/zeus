@@ -65,7 +65,7 @@ func (t *Web3SignerClientTestSuite) TestEphemeralDepositsFromMnemonicInEth2Keyst
 		slashSplit := strings.Split(path, "/")
 		underScoreStr := strings.Join(slashSplit, "_")
 
-		depositDataPath.FnOut = fmt.Sprintf("keystore-ephemeral-%s.json", underScoreStr)
+		depositDataPath.FnOut = fmt.Sprintf("keystore-ephemery-%s.json", underScoreStr)
 		err = depositDataPath.WriteToFileOutPath(b)
 		t.Require().Nil(err)
 	}
