@@ -21,6 +21,8 @@ type TestContainer struct {
 	LocalEcsdaTestPkey2 string
 
 	HDWalletPassword string
+
+	Web3SignerDockerImage string
 }
 
 func InitLocalTestConfigs() TestContainer {
@@ -40,5 +42,6 @@ func InitLocalTestConfigs() TestContainer {
 	testCont.LocalBLSTestPkey = viper.GetString("LOCAL_TESTING_BLS_SECRET_KEY")
 	testCont.LocalMnemonic24Words = viper.GetString("MNEMONIC_24_WORDS")
 	testCont.HDWalletPassword = viper.GetString("HD_WALLET_PASSWORD")
+	testCont.Web3SignerDockerImage = viper.GetString("WEB3SIGNER_DOCKER_IMG")
 	return testCont
 }

@@ -7,7 +7,6 @@ import (
 	validator_cookbooks "github.com/zeus-fyi/zeus/cookbooks/ethereum/validators"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 	strings_filter "github.com/zeus-fyi/zeus/pkg/utils/strings"
-	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_common_types"
 	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_req_types"
 )
 
@@ -25,20 +24,12 @@ var cd = zeus_req_types.ClusterTopologyDeployRequest{
 		validator_cookbooks.ChoreographySkeletonBase,
 		web3SignerSkeletonBaseName,
 	},
-	CloudCtxNs: Web3SignerCloudCtxNs,
+	CloudCtxNs: validator_cookbooks.ValidatorCloudCtxNs,
 }
 
 var DeployWeb3SignerKnsReq = zeus_req_types.TopologyDeployRequest{
 	TopologyID: 0,
-	CloudCtxNs: Web3SignerCloudCtxNs,
-}
-
-var Web3SignerCloudCtxNs = zeus_common_types.CloudCtxNs{
-	CloudProvider: "do",
-	Region:        "sfo3",
-	Context:       "do-sfo3-dev-do-sfo3-zeus",
-	Namespace:     "ephemery-staking", // set with your own namespace
-	Env:           "production",
+	CloudCtxNs: validator_cookbooks.ValidatorCloudCtxNs,
 }
 
 // chart workload metadata

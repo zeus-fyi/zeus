@@ -5,6 +5,7 @@ import (
 
 	validator_cookbooks "github.com/zeus-fyi/zeus/cookbooks/ethereum/validators"
 	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_req_types"
+	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_resp_types/topology_workloads"
 )
 
 func (t *Web3SignerCookbookTestSuite) TestClusterDeploy() {
@@ -47,6 +48,13 @@ func (t *Web3SignerCookbookTestSuite) TestCreateClusterSkeletonBases() {
 }
 func (t *Web3SignerCookbookTestSuite) TestUploadWeb3SignerChart() {
 	ctx := context.Background()
+
+	inf := topology_workloads.NewTopologyBaseInfraWorkload()
+	err := web3SignerChartPath.WalkAndApplyFuncToFileType(".yaml", inf.DecodeK8sWorkload)
+	t.Require().Nil(err)
+
+	EphemeralWeb3SignerConfig(inf, t.CustomWeb3SignerImage)
+
 	resp, err := t.ZeusTestClient.UploadChart(ctx, web3SignerChartPath, web3SignerChart)
 	t.Require().Nil(err)
 	t.Assert().NotZero(resp.TopologyID)
