@@ -36,18 +36,18 @@ spec:
             - name: web3signer-storage
               mountPath: "/data"
           ports:
-            - name: upcheck
+            - name: http
               containerPort: 9000
           livenessProbe:
             initialDelaySeconds: 60
             periodSeconds: 120
             tcpSocket:
-              port: upcheck
+              port: http
           readinessProbe:
             initialDelaySeconds: 10
             periodSeconds: 10
             tcpSocket:
-              port: upcheck
+              port: http
           resources:
             {}
           env:
