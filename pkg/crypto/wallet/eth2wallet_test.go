@@ -24,12 +24,11 @@ func (s *WalletTestSuite) TestHDWalletCreation() {
 	m, err := aegis_random.GenerateMnemonic()
 	s.Require().Nil(err)
 	s.Assert().Len(strings.Fields(m), 24)
+	password := "ssdfsdfasdfgdasfrd"
 
-	seed, err := ed25519hd.SeedFromMnemonic(m, "alkjdkl35klksmgkolds")
+	seed, err := ed25519hd.SeedFromMnemonic(m, password)
 	s.Require().Nil(err)
 	s.Assert().Len(seed, 64)
-
-	password := "ssdfsdfasdfgdasfrd"
 
 	// for a real application you can use this style store to replace the test item: scratch.New()
 	// store := filesystem.New(filesystem.WithPassphrase([]byte(password)), filesystem.WithLocation(p.DirOut))
