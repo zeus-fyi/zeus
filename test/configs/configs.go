@@ -19,6 +19,8 @@ type TestContainer struct {
 
 	LocalEcsdaTestPkey  string
 	LocalEcsdaTestPkey2 string
+
+	HDWalletPassword string
 }
 
 func InitLocalTestConfigs() TestContainer {
@@ -37,5 +39,6 @@ func InitLocalTestConfigs() TestContainer {
 	testCont.LocalEcsdaTestPkey2 = viper.GetString("LOCAL_TESTING_ECDSA_PKEY_2")
 	testCont.LocalBLSTestPkey = viper.GetString("LOCAL_TESTING_BLS_SECRET_KEY")
 	testCont.LocalMnemonic24Words = viper.GetString("MNEMONIC_24_WORDS")
+	testCont.HDWalletPassword = viper.GetString("HD_WALLET_PASSWORD")
 	return testCont
 }

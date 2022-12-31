@@ -15,14 +15,22 @@ type Web3SignerClientTestSuite struct {
 	test_suites.BaseTestSuite
 	Web3SignerClientTestClient Web3SignerClient
 	ArtemisTestClient          artemis_client.ArtemisClient
-	TestBLSAccount             bls_signer.EthBLSAccount
-	TestAccount1               ecdsa.Account
-	TestAccount2               ecdsa.Account
-	NodeURL                    string
+
+	TestBLSAccount bls_signer.EthBLSAccount
+
+	TestHDWalletPassword string
+	TestMnemonic         string
+
+	TestAccount1 ecdsa.Account
+	TestAccount2 ecdsa.Account
+	NodeURL      string
 }
 
 func (t *Web3SignerClientTestSuite) SetupTest() {
 	tc := configs.InitLocalTestConfigs()
+	err := bls_signer.InitEthBLS()
+	t.Require().Nil(err)
+
 	t.NodeURL = tc.EphemeralNodeURL
 	t.ArtemisTestClient = artemis_client.NewDefaultArtemisClient(tc.Bearer)
 
@@ -32,6 +40,8 @@ func (t *Web3SignerClientTestSuite) SetupTest() {
 	t.TestAccount2 = ecdsa.NewAccount(pkHexString2)
 	t.Web3SignerClientTestClient = NewWeb3Client(t.NodeURL, t.TestAccount1.Account)
 	t.TestBLSAccount = bls_signer.NewEthSignerBLSFromExistingKey(tc.LocalBLSTestPkey)
+	t.TestMnemonic = tc.LocalMnemonic24Words
+	t.TestHDWalletPassword = tc.HDWalletPassword
 }
 
 func TestWeb3SignerClientTestSuite(t *testing.T) {

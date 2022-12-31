@@ -3,16 +3,21 @@ package signing_automation_ethereum
 import (
 	"bytes"
 	"encoding/hex"
+	"encoding/json"
 	"fmt"
 	"strings"
 	"time"
 
 	"github.com/attestantio/go-eth2-client/spec/phase0"
 	"github.com/pkg/errors"
+	"github.com/wealdtech/go-ed25519hd"
 	e2types "github.com/wealdtech/go-eth2-types/v2"
+	util "github.com/wealdtech/go-eth2-util"
+	keystorev4 "github.com/wealdtech/go-eth2-wallet-encryptor-keystorev4"
 	bls_signer "github.com/zeus-fyi/zeus/pkg/crypto/bls"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 	strings_filter "github.com/zeus-fyi/zeus/pkg/utils/strings"
+	"github.com/zeus-fyi/zeus/test/configs"
 )
 
 var depositDataPath = filepaths.Path{
@@ -22,6 +27,45 @@ var depositDataPath = filepaths.Path{
 	FnOut:       "",
 	Env:         "",
 	FilterFiles: strings_filter.FilterOpts{},
+}
+
+/*
+EIP-2334 defines derivation path indices for withdrawal and validator keys.
+For a given index i the keys will be at the following paths:
+
+withdrawal key: m/12381/3600/i/0
+validator key: m/12381/3600/i/0/0
+*/
+
+// TestEphemeralDepositsFromMnemonicInEth2KeystoreFormat is useful for generating deposits for testing using
+// the config file to provide your mnemonic
+
+func (t *Web3SignerClientTestSuite) TestEphemeralDepositsFromMnemonicInEth2KeystoreFormat() {
+	configs.ForceDirToConfigLocation()
+	seed, serr := ed25519hd.SeedFromMnemonic(t.TestMnemonic, t.TestHDWalletPassword)
+	t.Require().Nil(serr)
+	ks := keystorev4.New()
+
+	numKeys := 3
+	for i := 0; i < numKeys; i++ {
+		path := fmt.Sprintf("m/12381/3600/%d/0/0", i)
+
+		sk, err := util.PrivateKeyFromSeedAndPath(seed, path)
+		t.Require().Nil(err)
+
+		enc, err := ks.Encrypt(sk.Marshal(), t.TestHDWalletPassword)
+		t.Require().Nil(err)
+
+		b, err := json.Marshal(enc)
+		t.Require().Nil(err)
+
+		slashSplit := strings.Split(path, "/")
+		underScoreStr := strings.Join(slashSplit, "_")
+
+		depositDataPath.FnOut = fmt.Sprintf("keystore-ephemeral_%s.json", underScoreStr)
+		err = depositDataPath.WriteToFileOutPath(b)
+		t.Require().Nil(err)
+	}
 }
 
 func (t *Web3SignerClientTestSuite) TestEphemeralDepositGenerator() {
