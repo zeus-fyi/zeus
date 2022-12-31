@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: zeus-validators
+  name: zeus-web3signer
   labels:
-    app.kubernetes.io/name: zeus-validators
-    app.kubernetes.io/instance: zeus-validators
-    app.kubernetes.io/managed-by: zeus-validators
+    app.kubernetes.io/name: zeus-web3signer
+    app.kubernetes.io/instance: zeus-web3signer
+    app.kubernetes.io/managed-by: zeus-web3signer
 spec:
   type: ClusterIP
   ports:
@@ -14,5 +14,5 @@ spec:
       protocol: TCP
       name: http
   selector:
-    app.kubernetes.io/name: zeus-validators
-    app.kubernetes.io/instance: zeus-validators
+    app.kubernetes.io/name: zeus-web3signer
+    app.kubernetes.io/instance: zeus-web3signer

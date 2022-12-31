@@ -5,4 +5,11 @@ metadata:
 data:
   start.sh: |-
     #!/bin/sh
-    exec web3signer --http-listen-port=9000 --http-listen-host=0.0.0.0 --key-store-path=/data
+    exec web3signer \
+    --key-store-path=/data eth2 \
+    --network="${NETWORK}" \
+    --http-listen-port=9000 \
+    --http-listen-host=0.0.0.0 \
+    --slashing-protection-db-url="${POSTGRES_DB}" \
+    --slashing-protection-db-username="${POSTGRES_USERNAME}" \
+    --slashing-protection-db-password="${POSTGRES_AUTH}" 

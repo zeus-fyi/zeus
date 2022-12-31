@@ -12,7 +12,7 @@ import (
 	"github.com/zeus-fyi/zeus/test/test_suites"
 )
 
-func (t *ValidatorCookbookTestSuite) TestCreateClusterValidatorBase() {
+func (t *Web3SignerCookbookTestSuite) TestCreateClusterValidatorBase() {
 	ctx := context.Background()
 	basesInsert := []string{web3SignerComponentBaseName}
 	cc := zeus_req_types.TopologyCreateOrAddComponentBasesToClassesRequest{
@@ -23,7 +23,7 @@ func (t *ValidatorCookbookTestSuite) TestCreateClusterValidatorBase() {
 	t.Require().Nil(err)
 }
 
-func (t *ValidatorCookbookTestSuite) TestCreateClusterValidatorSkeletonBase() {
+func (t *Web3SignerCookbookTestSuite) TestCreateClusterValidatorSkeletonBase() {
 	ctx := context.Background()
 	cc := zeus_req_types.TopologyCreateOrAddSkeletonBasesToClassesRequest{
 		ClusterClassName:  EphemeryWeb3SignerClusterClassName,
@@ -34,12 +34,12 @@ func (t *ValidatorCookbookTestSuite) TestCreateClusterValidatorSkeletonBase() {
 	t.Require().Nil(err)
 }
 
-type ValidatorCookbookTestSuite struct {
+type Web3SignerCookbookTestSuite struct {
 	test_suites.BaseTestSuite
 	ZeusTestClient zeus_client.ZeusClient
 }
 
-func (t *ValidatorCookbookTestSuite) SetupTest() {
+func (t *Web3SignerCookbookTestSuite) SetupTest() {
 	// points dir to test/configs
 	tc := configs.InitLocalTestConfigs()
 
@@ -49,6 +49,6 @@ func (t *ValidatorCookbookTestSuite) SetupTest() {
 	cookbooks.ChangeToCookbookDir()
 }
 
-func TestValidatorCookbookTestSuite(t *testing.T) {
-	suite.Run(t, new(ValidatorCookbookTestSuite))
+func TestWeb3SignerCookbookTestSuite(t *testing.T) {
+	suite.Run(t, new(Web3SignerCookbookTestSuite))
 }

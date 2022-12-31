@@ -13,23 +13,23 @@ import (
 var (
 	EphemeryWeb3SignerClusterClassName = "ephemeryWeb3SignerCluster"
 
-	web3SignerComponentBaseName = "web3signer"
-	web3SignerSkeletonBaseName  = "web3signer"
+	web3SignerComponentBaseName = "web3Signer"
+	web3SignerSkeletonBaseName  = "web3Signer"
 	choreographySkeletonBase    = "choreography"
 )
 
 var cd = zeus_req_types.ClusterTopologyDeployRequest{
 	ClusterClassName:    EphemeryWeb3SignerClusterClassName,
 	SkeletonBaseOptions: []string{web3SignerSkeletonBaseName, choreographySkeletonBase},
-	CloudCtxNs:          ValidatorCloudCtxNs,
+	CloudCtxNs:          Web3SignerCloudCtxNs,
 }
 
-var DeployConsensusValidatorClientKnsReq = zeus_req_types.TopologyDeployRequest{
+var DeployWeb3SignerKnsReq = zeus_req_types.TopologyDeployRequest{
 	TopologyID: 0,
-	CloudCtxNs: ValidatorCloudCtxNs,
+	CloudCtxNs: Web3SignerCloudCtxNs,
 }
 
-var ValidatorCloudCtxNs = zeus_common_types.CloudCtxNs{
+var Web3SignerCloudCtxNs = zeus_common_types.CloudCtxNs{
 	CloudProvider: "do",
 	Region:        "sfo3",
 	Context:       "do-sfo3-dev-do-sfo3-zeus",
@@ -38,18 +38,18 @@ var ValidatorCloudCtxNs = zeus_common_types.CloudCtxNs{
 }
 
 // chart workload metadata
-var validatorsChart = zeus_req_types.TopologyCreateRequest{
+var web3SignerChart = zeus_req_types.TopologyCreateRequest{
 	TopologyName:      web3SignerSkeletonBaseName,
 	ChartName:         web3SignerSkeletonBaseName,
 	ChartDescription:  web3SignerSkeletonBaseName,
-	Version:           fmt.Sprintf("web3signerBase-v.0.%d", time.Now().Unix()),
+	Version:           fmt.Sprintf("web3SignerBase-v.0.%d", time.Now().Unix()),
 	SkeletonBaseName:  web3SignerSkeletonBaseName,
 	ComponentBaseName: web3SignerComponentBaseName,
 	ClusterClassName:  EphemeryWeb3SignerClusterClassName,
 	Tag:               "latest",
 }
 
-var validatorsChartPath = filepaths.Path{
+var web3SignerChartPath = filepaths.Path{
 	PackageName: "",
 	DirIn:       "./ethereum/web3signer/infra",
 	DirOut:      "./ethereum/validators/infra/processed_web3signers",
