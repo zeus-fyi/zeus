@@ -28,7 +28,7 @@ func (w *Web3SignerClient) SignValidatorDepositTxToBroadcast(ctx context.Context
 		return nil, err
 	}
 	from := w.Address()
-	txPayload, err := extractCallMsgFromSendContractTxPayload(&from, params)
+	txPayload, err := extractCallMsgFromSendContractTxPayload(ctx, &from, params)
 	if err != nil {
 		panic(err)
 	}
@@ -48,7 +48,7 @@ func (w *Web3SignerClient) SignValidatorDepositTxToBroadcast(ctx context.Context
 
 func getValidatorDepositPayload(ctx context.Context, depositParams *DepositDataParams) (web3_actions.SendContractTxPayload, error) {
 	ForceDirToEthSigningDirLocation()
-	abiFile, err := ABIOpenFile(validatorAbiFileLocation)
+	abiFile, err := ABIOpenFile(ctx, validatorAbiFileLocation)
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("Web3SignerClient: SignValidatorDeposit: ABIOpenFile")
 		return web3_actions.SendContractTxPayload{}, err

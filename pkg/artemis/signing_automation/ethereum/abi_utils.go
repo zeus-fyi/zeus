@@ -1,6 +1,7 @@
 package signing_automation_ethereum
 
 import (
+	"context"
 	"io"
 	"os"
 	"path"
@@ -10,19 +11,19 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-func ABIOpenFile(abiFile string) (*abi.ABI, error) {
+func ABIOpenFile(ctx context.Context, abiFile string) (*abi.ABI, error) {
 	jsonReader, err := os.Open(abiFile)
 	if err != nil {
-		log.Err(err).Msg("GetABI: ABIOpenFile")
+		log.Ctx(ctx).Err(err).Msg("GetABI: ABIOpenFile")
 		return nil, err
 	}
-	return readAbi(jsonReader)
+	return readAbi(ctx, jsonReader)
 }
 
-func readAbi(reader io.Reader) (*abi.ABI, error) {
+func readAbi(ctx context.Context, reader io.Reader) (*abi.ABI, error) {
 	abiIn, err := abi.JSON(reader)
 	if err != nil {
-		log.Err(err).Msg("readAbi:  abi.JSON")
+		log.Ctx(ctx).Err(err).Msg("readAbi:  abi.JSON")
 		return nil, err
 	}
 	return &abiIn, nil

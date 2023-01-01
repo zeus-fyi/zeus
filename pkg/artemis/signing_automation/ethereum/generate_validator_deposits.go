@@ -1,6 +1,7 @@
 package signing_automation_ethereum
 
 import (
+	"context"
 	"fmt"
 	"strings"
 
@@ -46,16 +47,16 @@ func (dd *DepositDataParams) PrintJSON(p filepaths.Path) {
 	}
 }
 
-func GenerateEphemeralDepositData(blsSigner bls_signer.EthBLSAccount, withdrawalAddress []byte) (*DepositDataParams, error) {
-	fv, err := GetEphemeralForkVersion()
+func GenerateEphemeralDepositData(ctx context.Context, blsSigner bls_signer.EthBLSAccount, withdrawalAddress []byte) (*DepositDataParams, error) {
+	fv, err := GetEphemeralForkVersion(ctx)
 	if err != nil {
 		log.Err(err)
 		return nil, err
 	}
-	return GenerateDepositData(blsSigner, withdrawalAddress, fv)
+	return GenerateDepositData(ctx, blsSigner, withdrawalAddress, fv)
 }
 
-func GenerateDepositData(blsSigner bls_signer.EthBLSAccount, withdrawalAddress []byte, forkVersion *spec.Version) (*DepositDataParams, error) {
+func GenerateDepositData(ctx context.Context, blsSigner bls_signer.EthBLSAccount, withdrawalAddress []byte, forkVersion *spec.Version) (*DepositDataParams, error) {
 	dp := &DepositDataParams{ForkVersion: forkVersion}
 	var pubKey spec.BLSPubKey
 	copy(pubKey[:], blsSigner.PublicKey().Marshal())
@@ -66,15 +67,15 @@ func GenerateDepositData(blsSigner bls_signer.EthBLSAccount, withdrawalAddress [
 	}
 	root, err := depositMessage.HashTreeRoot()
 	if err != nil {
-		log.Err(err)
+		log.Ctx(ctx).Err(err)
 		return nil, errors.Wrap(err, "failed to generate deposit message root")
 	}
 	var depositMessageRoot spec.Root
 	copy(depositMessageRoot[:], root[:])
 	dp.DepositMessageRoot = depositMessageRoot
-	domain, err := generateDepositDomain(forkVersion)
+	domain, err := generateDepositDomain(ctx, forkVersion)
 	if err != nil {
-		log.Err(err)
+		log.Ctx(ctx).Err(err)
 		return nil, errors.Wrap(err, "failed to generate deposit domain")
 	}
 	container := &ssz.Container{
@@ -83,7 +84,7 @@ func GenerateDepositData(blsSigner bls_signer.EthBLSAccount, withdrawalAddress [
 	}
 	signingRoot, err := container.HashTreeRoot()
 	if err != nil {
-		log.Err(err)
+		log.Ctx(ctx).Err(err)
 		return nil, errors.Wrap(err, "failed to generate hash tree root")
 	}
 	var blsFormatted spec.BLSSignature
@@ -99,17 +100,18 @@ func GenerateDepositData(blsSigner bls_signer.EthBLSAccount, withdrawalAddress [
 	dp.DepositData = depositData
 	ht, err := depositData.HashTreeRoot()
 	if err != nil {
-		log.Err(err)
+		log.Ctx(ctx).Err(err)
 		return nil, errors.Wrap(err, "failed to generate hash tree root")
 	}
 	dp.DepositDataRoot = ht
 	return dp, err
 }
 
-func generateDepositDomain(forkVersion *spec.Version) (*spec.Domain, error) {
+func generateDepositDomain(ctx context.Context, forkVersion *spec.Version) (*spec.Domain, error) {
 	domainData := &spec.Domain{}
 	res, err := e2types.ComputeDomain(e2types.DomainDeposit, forkVersion[:], e2types.ZeroGenesisValidatorsRoot)
 	if err != nil {
+		log.Ctx(ctx).Err(err)
 		return nil, errors.Wrap(err, "failed to generate domain value")
 	}
 	copy(domainData[:], res)

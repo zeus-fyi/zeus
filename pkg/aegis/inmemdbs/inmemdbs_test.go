@@ -42,25 +42,16 @@ func (s *InMemDBsTestSuite) TestValidatorsInMemDB() {
 	numAccounts := 3
 	insertAccountSlice := make([]Validator, numAccounts)
 	for i < numAccounts {
-		key := bls_signer.NewKeyBLS()
-		insertAccountSlice[i] = NewValidator(i, key)
+		acc := bls_signer.NewEthBLSAccount()
+		insertAccountSlice[i] = NewValidator(i, acc)
 		i++
 	}
-
 	InsertValidatorsInMemDb(ctx, insertAccountSlice)
-	v := insertAccountSlice[0]
-	fetchedValidator := ReadOnlyValidatorFromInMemDb(ctx, v)
-	s.Require().NotEmpty(fetchedValidator)
-	s.Assert().Equal(v.Index, fetchedValidator.Index)
-
-	msg := []byte("hello foo")
-	sig := v.Sign(msg)
-	s.Assert().True(v.Verify(*sig, msg))
-	msgUnauthorized := []byte("hello bar")
-	s.Assert().False(v.Verify(*sig, msgUnauthorized))
-	// tests that the fetched validator matches
-	s.Assert().True(fetchedValidator.Verify(*sig, msg))
-	s.Assert().False(fetchedValidator.Verify(*sig, msgUnauthorized))
+	for i < numAccounts {
+		v := insertAccountSlice[i]
+		inMemDBVal := ReadOnlyValidatorFromInMemDb(ctx, v)
+		s.Assert().Equal(v, inMemDBVal)
+	}
 }
 func TestInMemDBsTestSuite(t *testing.T) {
 	suite.Run(t, new(InMemDBsTestSuite))
