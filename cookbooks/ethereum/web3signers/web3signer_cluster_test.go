@@ -9,6 +9,7 @@ import (
 )
 
 func (t *Web3SignerCookbookTestSuite) TestClusterDeploy() {
+	t.TestUploadWeb3SignerChart()
 	ctx := context.Background()
 	resp, err := t.ZeusTestClient.DeployCluster(ctx, cd)
 	t.Require().Nil(err)
