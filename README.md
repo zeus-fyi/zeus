@@ -1,10 +1,10 @@
 ## Zeus ##
 
-Zeus is an evolution of web container orchestration into web system building and orchestration. It changes the paradigm into one that unifies configuration with the underlying orchestrator, instead of decoupling them into confusing messes like helm, terraform, and GitOps, while also reducing the operational complexity of building with kubernetes now into something a single mid-level IC without an infra background could operate for a medium sized technology business within a week. It's designed to solve complex infra configuration, operation, and building bottlenecks as dramatically as those the printing press solved for the book industry, and is capable of building systems at the scale and complexity of AWS by unifying multi-network kubernetes node pools with SQL driven relationship building & querying.
+Zeus is an evolution of web container orchestration into web system building and orchestration. It changes the paradigm into one that unifies configuration with the underlying orchestrator, instead of decoupling them into confusing messes like helm, terraform, and GitOps, while also reducing the operational complexity of building with kubernetes significantly and is capable of building systems at the scale and complexity of AWS by unifying multi-network kubernetes node pools with SQL driven relationship building & querying.
 
 ## Upcoming Features Overview ##
 
-### Event driven signature automation for Ethereum staking
+### Event driven signature automation for Ethereum staking, and web3 dapp interactions
 
 #### Timeline ~ End of January/Early Feb 23'
 
