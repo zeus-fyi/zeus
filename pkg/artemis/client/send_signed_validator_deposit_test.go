@@ -7,11 +7,18 @@ import (
 
 // TestSendSignedValidatorDepositTxPayload uses ephemery network for this test
 func (t *ArtemisClientTestSuite) TestSendSignedValidatorDepositTxPayload() {
-	wc, err := signing_automation_ethereum.ValidateAndReturnEcdsaPubkeyBytes(t.TestAccount1.PublicKey())
+	vdg := signing_automation_ethereum.ValidatorDepositGenerationParams{
+		Mnemonic:             t.Tc.LocalMnemonic24Words,
+		Pw:                   t.Tc.HDWalletPassword,
+		ValidatorIndexOffset: 0,
+		NumValidators:        1,
+	}
+	dp, err := t.Web3SignerClientTestClient.GenerateEphemeryDepositDataWithDefaultWd(ctx, vdg)
 	t.Require().Nil(err)
-	dd, err := signing_automation_ethereum.GenerateEphemeralDepositData(t.TestBLSAccount, wc)
+
+	t.Require().Len(dp, 1)
 	t.Require().Nil(err)
-	signedTx, err := t.Web3SignerClientTestClient.SignValidatorDepositTxToBroadcast(ctx, dd)
+	signedTx, err := t.Web3SignerClientTestClient.SignValidatorDepositTxToBroadcast(ctx, dp[0])
 	t.Require().Nil(err)
 	t.Require().NotNil(signedTx)
 	payload := artemis_req_types.SignedTxPayload{Transaction: *signedTx}

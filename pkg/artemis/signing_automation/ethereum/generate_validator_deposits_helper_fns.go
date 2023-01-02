@@ -81,7 +81,7 @@ func (vd *ValidatorDepositGenerationParams) GenerateAndEncryptValidatorKeysFromS
 	for i := vd.ValidatorIndexOffset; i < vd.NumValidators; i++ {
 		path := fmt.Sprintf("m/12381/3600/%d/0/0", i)
 		enc, err := vd.EthDepositEncryptionAndAddMetadata(ctx, path)
-		b, err := json.Marshal(enc)
+		b, err := json.MarshalIndent(enc, "", "\t")
 		if err != nil {
 			log.Ctx(ctx).Err(err)
 			return err

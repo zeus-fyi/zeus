@@ -15,7 +15,6 @@ import (
 
 var ctx = context.Background()
 
-// you can place your own deposit data values here to check your gen vs your own cli deposit values
 var depositDataPath = filepaths.Path{
 	PackageName: "",
 	DirIn:       "./ethereum/automation/validator_keys/ephemery",
