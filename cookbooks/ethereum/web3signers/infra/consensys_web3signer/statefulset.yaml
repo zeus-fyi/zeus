@@ -51,7 +51,7 @@ spec:
           image: "consensys/web3signer:22.11"
           imagePullPolicy: IfNotPresent
           command: [ "/bin/sh" ]
-          args: [ "-ac"," /opt/web3signer/bin/web3signer eth2 --slashing-protection-db-url=${WEB3SIGNER_SLASHING_PROTECTION_DB_URL} --slashing-protection-db-password=${WEB3SIGNER_SLASHING_PROTECTION_DB_PASSWORD} --slashing-protection-db-username=${WEB3SIGNER_SLASHING_PROTECTION_DB_USERNAME} --network=${WEB3SIGNER_NETWORK}"]
+          args: [ "-ac"," /opt/web3signer/bin/web3signer eth2 --key-manager-api-enabled=true --slashing-protection-db-url=${WEB3SIGNER_SLASHING_PROTECTION_DB_URL} --slashing-protection-db-password=${WEB3SIGNER_SLASHING_PROTECTION_DB_PASSWORD} --slashing-protection-db-username=${WEB3SIGNER_SLASHING_PROTECTION_DB_USERNAME} --network=${WEB3SIGNER_NETWORK}"]
           volumeMounts:
             - name: cm-web3signer
               mountPath: "/configs"
