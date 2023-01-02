@@ -14,17 +14,17 @@ type Web3SignerKeystores struct {
 	SlashingProtection string   `json:"slashing_protection,omitempty"`
 }
 
+type Pubkeys []string
+
 func (k *Web3SignerKeystores) ReadKeystoreDirAndAppendPw(ctx context.Context, p filepaths.Path, pw string) {
 	f := strings_filter.FilterOpts{
 		StartsWithThese: []string{"keystore"},
 	}
-	p.FilterFiles = f
-	//func (p *Path) WalkAndApplyFuncToFileType(ext string, f func(p string) error) error {
+	p.FilterFiles = &f
 	err := p.WalkAndApplyFuncToFileType(".json", k.ReadKeystoreAndAppend)
 	if err != nil {
 		return
 	}
-
 	k.Passwords = make([]string, len(k.Keystores))
 	for i, _ := range k.Keystores {
 		k.Passwords[i] = pw

@@ -12,17 +12,6 @@ import (
 	zeus_pods_resp "github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_resp_types/pods"
 )
 
-type LighthouseWeb3SignerRequest struct {
-	Enable                bool   `json:"enable"`
-	Description           string `json:"description"`
-	SuggestedFeeRecipient string `json:"suggested_fee_recipient"`
-	VotingPublicKey       string `json:"voting_public_key"`
-	Graffiti              string `json:"graffiti,omitempty"`
-	Url                   string `json:"url,omitempty"`
-	RootCertificatePath   string `json:"root_certificate_path,omitempty"`
-	RequestTimeoutMs      int    `json:"request_timeout_ms,omitempty"`
-}
-
 func (w *Web3SignerActionsClient) EnableWeb3SignerLighthouse(ctx context.Context, kns zeus_common_types.CloudCtxNs, w3req []LighthouseWeb3SignerRequest) (zeus_pods_resp.ClientResp, error) {
 	cliReq := zeus_pods_reqs.ClientRequest{
 		MethodHTTP: "POST",
@@ -30,7 +19,7 @@ func (w *Web3SignerActionsClient) EnableWeb3SignerLighthouse(ctx context.Context
 		Ports:      client_consts.LighthouseValidatorClientPorts,
 		Payload:    w3req,
 	}
-	filter := strings_filter.FilterOpts{Contains: "consensus-client"}
+	filter := strings_filter.FilterOpts{Contains: "validators"}
 	par := zeus_pods_reqs.PodActionRequest{
 		TopologyDeployRequest: zeus_req_types.TopologyDeployRequest{
 			CloudCtxNs: kns,

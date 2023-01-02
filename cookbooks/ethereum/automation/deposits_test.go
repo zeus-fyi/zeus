@@ -4,12 +4,12 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/gochain/gochain/v4/core/types"
 	"github.com/wealdtech/go-ed25519hd"
 	util "github.com/wealdtech/go-eth2-util"
 	signing_automation_ethereum "github.com/zeus-fyi/zeus/pkg/artemis/signing_automation/ethereum"
 	bls_signer "github.com/zeus-fyi/zeus/pkg/crypto/bls"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
-	strings_filter "github.com/zeus-fyi/zeus/pkg/utils/strings"
 )
 
 var ctx = context.Background()
@@ -21,10 +21,24 @@ var depositDataPath = filepaths.Path{
 	FnIn:        "",
 	FnOut:       "",
 	Env:         "",
-	FilterFiles: strings_filter.FilterOpts{},
 }
 
 func (t *EthereumAutomationCookbookTestSuite) TestFullDepositAutomation() {
+	dpSlice := t.TestDepositGenerationAutomation()
+
+	txToBroadcast := make([]*types.Transaction, len(dpSlice))
+	for i, d := range dpSlice {
+		signedTx, serr := t.Web3SignerClientTestClient.SignValidatorDepositTxToBroadcast(ctx, d)
+		t.Require().Nil(serr)
+		txToBroadcast[i] = signedTx
+
+		rx, serr := t.Web3SignerClientTestClient.SubmitSignedTxAndReturnTxData(ctx, signedTx)
+		t.Require().Nil(serr)
+		t.Assert().NotEmpty(rx)
+	}
+}
+
+func (t *EthereumAutomationCookbookTestSuite) TestDepositGenerationAutomation() []*signing_automation_ethereum.DepositDataParams {
 	offset := 0
 	numKeys := 3
 
@@ -35,24 +49,15 @@ func (t *EthereumAutomationCookbookTestSuite) TestFullDepositAutomation() {
 		ValidatorIndexOffset: offset,
 		NumValidators:        numKeys,
 	}
-	err := vdg.GenerateAndEncryptValidatorKeysFromSeedAndPath(ctx, "ephemery")
+	n := "ephemery"
+	err := vdg.GenerateAndEncryptValidatorKeysFromSeedAndPath(ctx, n)
 	t.Require().Nil(err)
 
 	dpSlice, err := t.Web3SignerClientTestClient.GenerateEphemeryDepositDataWithDefaultWd(ctx, vdg)
 	t.Require().Nil(err)
 
-	signing_automation_ethereum.PrintJSONSlice(depositDataPath, dpSlice)
-
-	//txToBroadcast := make([]*types.Transaction, len(dpSlice))
-	//for i, d := range dpSlice {
-	//	signedTx, serr := t.Web3SignerClientTestClient.SignValidatorDepositTxToBroadcast(ctx, d)
-	//	t.Require().Nil(serr)
-	//	txToBroadcast[i] = signedTx
-	//
-	//	rx, serr := t.Web3SignerClientTestClient.SubmitSignedTxAndReturnTxData(ctx, signedTx)
-	//	t.Require().Nil(serr)
-	//	t.Assert().NotEmpty(rx)
-	//}
+	signing_automation_ethereum.PrintJSONSlice(depositDataPath, dpSlice, n)
+	return dpSlice
 }
 
 func (t *EthereumAutomationCookbookTestSuite) TestDepositGenVsEthStakingCliDeposit() {
@@ -104,15 +109,15 @@ func (t *EthereumAutomationCookbookTestSuite) TestDepositGenVsEthStakingCliDepos
 	t.Assert().Equal(expDepositRoot, sv.DepositDataRoot)
 }
 
-func (t *EthereumAutomationCookbookTestSuite) getFirstDepositValue() signing_automation_ethereum.Keystore {
+func (t *EthereumAutomationCookbookTestSuite) getFirstDepositValue() signing_automation_ethereum.ExtendedDepositParams {
 	exp := depositDataPath
 	exp.DirIn = "./ethereum/automation/validator_keys"
-	ks, err := signing_automation_ethereum.ParseKeystoreJSON(ctx, exp)
+	ks, err := signing_automation_ethereum.ParseValidatorDepositSliceJSON(ctx, exp)
 	t.Require().Nil(err)
 	for _, k := range ks {
 		return k
 	}
-	return signing_automation_ethereum.Keystore{}
+	return signing_automation_ethereum.ExtendedDepositParams{}
 }
 
 /*
