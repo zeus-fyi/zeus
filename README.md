@@ -32,8 +32,6 @@ sending transactions or notifications based on event triggers such as smart cont
 
 Completely orchestrated and automated web3 infra. Sets up infrastructure on demand, automates run books, sets up mev-boost, web3signer, adds snapshot chain download integration, automates devops that's done by hand today, automates interactions for seeding and withdrawing validators, automates upgrades, automates configuration setup and verification, automates notifications and rewards info. Enables web3 staking infrastructure to be portable across cloud, and for vendor switching on demand. Starting with Ethereum.
 
-Enables web3 staking infrastructure to be portable across cloud, and for vendor switching on demand. Starting with Ethereum.
-
 ### Automated web3 network setup for large scale private network testing
 
 #### Timeline ~ Q1/Q2 23'
