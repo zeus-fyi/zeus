@@ -49,3 +49,5 @@ Thumbs.db
 /test/mocks/validator_keys/
 /test/mocks/outputs/hera/openai.txt
 /cookbooks/ethereum/outputs/validator_keys/
+/cookbooks/ethereum/automation/validator_keys/
+/cookbooks/ethereum/automation/deposit_generated/

@@ -5,12 +5,10 @@ import (
 	"encoding/hex"
 	"fmt"
 	"strings"
-	"time"
 
 	"github.com/attestantio/go-eth2-client/spec/phase0"
 	"github.com/pkg/errors"
 	e2types "github.com/wealdtech/go-eth2-types/v2"
-	bls_signer "github.com/zeus-fyi/zeus/pkg/crypto/bls"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 	strings_filter "github.com/zeus-fyi/zeus/pkg/utils/strings"
 	"github.com/zeus-fyi/zeus/test/configs"
@@ -48,19 +46,8 @@ func (t *Web3SignerClientTestSuite) TestEphemeralDepositsFromMnemonicInEth2Keyst
 		ValidatorIndexOffset: offset,
 		NumValidators:        numKeys,
 	}
-	err := vdg.GenerateAndEncryptValidatorKeysFromSeedAndPath(ctx)
+	err := vdg.GenerateAndEncryptValidatorKeysFromSeedAndPath(ctx, "ephemery")
 	t.Require().Nil(err)
-}
-
-func (t *Web3SignerClientTestSuite) TestEphemeralDepositGenerator() {
-	s := bls_signer.NewEthBLSAccount()
-	wd, err := ValidateAndReturnEcdsaPubkeyBytes(t.TestAccount1.PublicKey())
-	t.Require().Nil(err)
-	dd, err := GenerateEphemeralDepositData(ctx, s, wd)
-	t.Require().Nil(err)
-	t.Assert().NotEmpty(dd)
-	depositDataPath.FnOut = fmt.Sprintf("deposit_data-ephemeral-%d.json", time.Now().Unix())
-	dd.PrintJSON(depositDataPath)
 }
 
 type DepositInfo struct {
