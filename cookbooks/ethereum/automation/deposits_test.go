@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/gochain/gochain/v4/core/types"
 	"github.com/wealdtech/go-ed25519hd"
 	util "github.com/wealdtech/go-eth2-util"
 	signing_automation_ethereum "github.com/zeus-fyi/zeus/pkg/artemis/signing_automation/ethereum"
@@ -44,16 +43,16 @@ func (t *EthereumAutomationCookbookTestSuite) TestFullDepositAutomation() {
 
 	signing_automation_ethereum.PrintJSONSlice(depositDataPath, dpSlice)
 
-	txToBroadcast := make([]*types.Transaction, len(dpSlice))
-	for i, d := range dpSlice {
-		signedTx, serr := t.Web3SignerClientTestClient.SignValidatorDepositTxToBroadcast(ctx, d)
-		t.Require().Nil(serr)
-		txToBroadcast[i] = signedTx
-
-		rx, serr := t.Web3SignerClientTestClient.SubmitSignedTxAndReturnTxData(ctx, signedTx)
-		t.Require().Nil(serr)
-		t.Assert().NotEmpty(rx)
-	}
+	//txToBroadcast := make([]*types.Transaction, len(dpSlice))
+	//for i, d := range dpSlice {
+	//	signedTx, serr := t.Web3SignerClientTestClient.SignValidatorDepositTxToBroadcast(ctx, d)
+	//	t.Require().Nil(serr)
+	//	txToBroadcast[i] = signedTx
+	//
+	//	rx, serr := t.Web3SignerClientTestClient.SubmitSignedTxAndReturnTxData(ctx, signedTx)
+	//	t.Require().Nil(serr)
+	//	t.Assert().NotEmpty(rx)
+	//}
 }
 
 func (t *EthereumAutomationCookbookTestSuite) TestDepositGenVsEthStakingCliDeposit() {

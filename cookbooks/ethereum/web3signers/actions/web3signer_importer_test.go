@@ -15,7 +15,7 @@ var keystorePath = filepaths.Path{
 	PackageName: "",
 	DirIn:       "./ethereum/automation/validator_keys/ephemery",
 	DirOut:      "./ethereum/automation/validator_keys/ephemery",
-	FnIn:        "keystore-ephemery-m_12381_3600_0_0_0.json",
+	FnIn:        "keystore-ephemery-m_12381_3600_2_0_0.json",
 	FnOut:       "",
 	Env:         "",
 	FilterFiles: strings_filter.FilterOpts{},

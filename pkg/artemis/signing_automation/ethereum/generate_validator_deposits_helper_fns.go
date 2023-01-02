@@ -119,15 +119,17 @@ func (vd *ValidatorDepositGenerationParams) EthDepositEncryptionAndAddMetadata(c
 		log.Ctx(ctx).Err(err)
 		return nil, err
 	}
+	m := make(map[string]interface{})
 	ks := keystorev4.New()
 	enc, err := ks.Encrypt(sk.Marshal(), vd.Pw)
 	if err != nil {
 		log.Ctx(ctx).Err(err)
 		return enc, err
 	}
-	enc["uuid"] = uuidVal.String()
-	enc["path"] = path
-	enc["pubkey"] = bls_signer.ConvertBytesToString(sk.PublicKey().Marshal())
-	enc["version"] = "4"
-	return enc, err
+	m["crypto"] = enc
+	m["uuid"] = uuidVal.String()
+	m["path"] = path
+	m["pubkey"] = bls_signer.ConvertBytesToString(sk.PublicKey().Marshal())
+	m["version"] = "4"
+	return m, err
 }
