@@ -7,7 +7,11 @@ const (
 	Teku       = "teku"
 )
 
-var LighthouseBeaconPorts = []string{"5052:5052"}
+var (
+	LighthouseBeaconPorts           = []string{"5052:5052"}
+	LighthouseValidatorClientPorts  = []string{"5062:5062"}
+	LighthouseWeb3SignerAPIEndpoint = "/lighthouse/validators/web3signer"
+)
 
 func GetClientBeaconPortsHTTP(clientName string) []string {
 	switch clientName {
