@@ -1,4 +1,5 @@
-import sys, transformers
+import sys
+import transformers
 
 # Load the GPT-2 tokenizer
 tokenizer = transformers.OpenAIGPTTokenizer.from_pretrained('openai-gpt')

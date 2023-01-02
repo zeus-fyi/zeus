@@ -27,7 +27,7 @@ type DepositDataJSON struct {
 	Pubkey                string `json:"pubkey"`
 	WithdrawalCredentials string `json:"withdrawal_credentials"`
 	Signature             string `json:"signature"`
-	Amount                string `json:"amount"`
+	Amount                int    `json:"amount"`
 	DepositDataRoot       string `json:"deposit_data_root"`
 	DepositMessageRoot    string `json:"deposit_message_root"`
 	ForkVersion           string `json:"fork_version"`
@@ -42,8 +42,8 @@ func (dd *DepositDataParams) GetValidatorDepositParamsStringValues() ValidatorDe
 	}
 }
 
-func PrintJSONSlice(p filepaths.Path, dpParamSlice []*DepositDataParams) {
-	p.FnOut = fmt.Sprintf("deposit_data-%d.json", time.Now().UTC().Unix())
+func PrintJSONSlice(p filepaths.Path, dpParamSlice []*DepositDataParams, network string) {
+	p.FnOut = fmt.Sprintf("deposit_data-%s-%d.json", network, time.Now().UTC().Unix())
 
 	dpJSON := make([]DepositDataJSON, len(dpParamSlice))
 
@@ -76,7 +76,7 @@ func (dd *DepositDataParams) FormatJSON() DepositDataJSON {
 		Pubkey:                pubkey,
 		WithdrawalCredentials: wc,
 		Signature:             sig,
-		Amount:                fmt.Sprintf("%d", dd.Amount),
+		Amount:                int(dd.Amount),
 		DepositDataRoot:       ddRoot,
 		DepositMessageRoot:    ddMsgRoot,
 		ForkVersion:           fv,

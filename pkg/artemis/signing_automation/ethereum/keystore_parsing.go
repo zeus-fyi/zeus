@@ -15,22 +15,28 @@ type ValidatorDepositParams struct {
 	DepositDataRoot       string `json:"deposit_data_root"`
 }
 
-type Keystore struct {
+type ExtendedDepositParams struct {
 	ValidatorDepositParams
-	Amount             int64  `json:"amount"`
+	Amount             int    `json:"amount"`
 	DepositMessageRoot string `json:"deposit_message_root"`
 	ForkVersion        string `json:"fork_version"`
-	NetworkName        string `json:"network_name"`
-	DepositCliVersion  string `json:"deposit_cli_version"`
+	NetworkName        string `json:"network_name,omitempty"`
+	DepositCliVersion  string `json:"deposit_cli_version,omitempty"`
 }
 
-func ParseKeystoreJSON(ctx context.Context, p filepaths.Path) ([]Keystore, error) {
-	b := p.ReadFileInPath()
-	var keystoreSlice []Keystore
-	err := json.Unmarshal(b, &keystoreSlice)
+type ValidatorDepositSlice []ExtendedDepositParams
+
+func ParseValidatorDepositSliceJSON(ctx context.Context, p filepaths.Path) (ValidatorDepositSlice, error) {
+	var dpSlice ValidatorDepositSlice
+	b, err := p.ReadFirstFileInPathWithFilter()
 	if err != nil {
-		log.Ctx(ctx).Err(err).Msg("ParseKeystoreJSON")
-		return keystoreSlice, err
+		log.Ctx(ctx).Err(err).Msg("ParseValidatorDepositSliceJSON")
+		return dpSlice, err
 	}
-	return keystoreSlice, err
+	err = json.Unmarshal(b, &dpSlice)
+	if err != nil {
+		log.Ctx(ctx).Err(err).Msg("ParseValidatorDepositSliceJSON")
+		return dpSlice, err
+	}
+	return dpSlice, err
 }

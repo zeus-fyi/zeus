@@ -19,7 +19,7 @@ func (s *FilePathsTestSuite) TestFilePathExists() {
 		FnIn:        "filepath_check.go",
 		FnOut:       "",
 		Env:         "",
-		FilterFiles: strings_filter.FilterOpts{},
+		FilterFiles: &strings_filter.FilterOpts{},
 	}
 	s.Assert().True(p.FileInPathExists())
 	p.FnIn = "nofile.go"

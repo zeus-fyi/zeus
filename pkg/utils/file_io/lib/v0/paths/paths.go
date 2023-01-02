@@ -15,7 +15,7 @@ type Path struct {
 	FnIn        string
 	FnOut       string
 	Env         string
-	FilterFiles strings_filter.FilterOpts
+	FilterFiles *strings_filter.FilterOpts
 }
 
 type Paths struct {

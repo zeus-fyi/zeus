@@ -54,7 +54,7 @@ var demoChartPath = filepaths.Path{
 	FnIn:        "demo", // filename for your gzip workload
 	FnOut:       "",
 	Env:         "",
-	FilterFiles: strings_filter.FilterOpts{},
+	FilterFiles: &strings_filter.FilterOpts{},
 }
 
 func (t *ZeusClientTestSuite) SetupTest() {
