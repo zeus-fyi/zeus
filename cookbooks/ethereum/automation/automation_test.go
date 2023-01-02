@@ -8,6 +8,7 @@ import (
 )
 
 type EthereumAutomationCookbookTestSuite struct {
+	//
 	ethereum_cookbook_test_suite.EthereumCookbookTestSuite
 }
 
