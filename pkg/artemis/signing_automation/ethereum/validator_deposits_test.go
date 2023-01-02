@@ -19,7 +19,7 @@ func (t *Web3SignerClientTestSuite) TestSignedValidatorDepositTxPayload() {
 	defer t.Web3SignerClientTestClient.Close()
 	wc, err := ValidateAndReturnEcdsaPubkeyBytes(t.TestAccount1.PublicKey())
 	t.Require().Nil(err)
-	dd, err := GenerateEphemeralDepositData(t.TestBLSAccount, wc)
+	dd, err := GenerateEphemeralDepositData(ctx, t.TestBLSAccount, wc)
 	t.Require().Nil(err)
 	tx, err := t.Web3SignerClientTestClient.SignValidatorDepositTxToBroadcast(ctx, dd)
 	t.Require().Nil(err)
@@ -77,7 +77,7 @@ func (t *Web3SignerClientTestSuite) TestSignedValidatorDepositTxPayloadFromStaki
 
 func (t *Web3SignerClientTestSuite) TestValidatorABI() {
 	ForceDirToEthSigningDirLocation()
-	f, err := ABIOpenFile(validatorAbiFileLocation)
+	f, err := ABIOpenFile(ctx, validatorAbiFileLocation)
 	t.Require().Nil(err)
 	t.Require().NotEmpty(f)
 
@@ -91,12 +91,11 @@ func (t *Web3SignerClientTestSuite) TestValidatorABI() {
 }
 
 func (t *Web3SignerClientTestSuite) TestFetchEphemeralForkVersion() {
-	versionByteArr, err := GetEphemeralForkVersion()
+	versionByteArr, err := GetEphemeralForkVersion(ctx)
 	t.Require().Nil(err)
 	t.Require().NotEmpty(versionByteArr)
 	forkVersion, err := hex.DecodeString(strings.TrimPrefix("0x1000101b", "0x"))
 	t.Require().Nil(err)
 	t.Assert().Equal(forkVersion, []byte{0x10, 0x00, 0x10, 0x1b})
 	t.Assert().Equal(versionByteArr, []byte{0x10, 0x00, 0x10, 0x1b})
-
 }

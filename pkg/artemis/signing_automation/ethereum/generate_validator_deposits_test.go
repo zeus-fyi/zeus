@@ -3,19 +3,12 @@ package signing_automation_ethereum
 import (
 	"bytes"
 	"encoding/hex"
-	"encoding/json"
 	"fmt"
 	"strings"
-	"time"
 
 	"github.com/attestantio/go-eth2-client/spec/phase0"
-	"github.com/google/uuid"
 	"github.com/pkg/errors"
-	"github.com/wealdtech/go-ed25519hd"
 	e2types "github.com/wealdtech/go-eth2-types/v2"
-	util "github.com/wealdtech/go-eth2-util"
-	keystorev4 "github.com/wealdtech/go-eth2-wallet-encryptor-keystorev4"
-	bls_signer "github.com/zeus-fyi/zeus/pkg/crypto/bls"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 	strings_filter "github.com/zeus-fyi/zeus/pkg/utils/strings"
 	"github.com/zeus-fyi/zeus/test/configs"
@@ -43,48 +36,18 @@ validator key: m/12381/3600/i/0/0
 
 func (t *Web3SignerClientTestSuite) TestEphemeralDepositsFromMnemonicInEth2KeystoreFormat() {
 	configs.ForceDirToConfigLocation()
-	seed, serr := ed25519hd.SeedFromMnemonic(t.TestMnemonic, t.TestHDWalletPassword)
-	t.Require().Nil(serr)
-	ks := keystorev4.New()
-
+	offset := 0
 	numKeys := 3
-	for i := 0; i < numKeys; i++ {
-		path := fmt.Sprintf("m/12381/3600/%d/0/0", i)
 
-		sk, err := util.PrivateKeyFromSeedAndPath(seed, path)
-		t.Require().Nil(err)
-
-		uuidVal, err := uuid.NewUUID()
-		t.Require().Nil(err)
-
-		enc, err := ks.Encrypt(sk.Marshal(), t.TestHDWalletPassword)
-		t.Require().Nil(err)
-		enc["uuid"] = uuidVal.String()
-		enc["path"] = path
-		enc["pubkey"] = bls_signer.ConvertBytesToString(sk.PublicKey().Marshal())
-		enc["version"] = "4"
-
-		b, err := json.Marshal(enc)
-		t.Require().Nil(err)
-
-		slashSplit := strings.Split(path, "/")
-		underScoreStr := strings.Join(slashSplit, "_")
-
-		depositDataPath.FnOut = fmt.Sprintf("keystore-ephemery-%s.json", underScoreStr)
-		err = depositDataPath.WriteToFileOutPath(b)
-		t.Require().Nil(err)
+	vdg := ValidatorDepositGenerationParams{
+		Fp:                   depositDataPath,
+		Mnemonic:             t.TestMnemonic,
+		Pw:                   t.TestHDWalletPassword,
+		ValidatorIndexOffset: offset,
+		NumValidators:        numKeys,
 	}
-}
-
-func (t *Web3SignerClientTestSuite) TestEphemeralDepositGenerator() {
-	s := bls_signer.NewEthBLSAccount()
-	wd, err := ValidateAndReturnEcdsaPubkeyBytes(t.TestAccount1.PublicKey())
+	err := vdg.GenerateAndEncryptValidatorKeysFromSeedAndPath(ctx, "ephemery")
 	t.Require().Nil(err)
-	dd, err := GenerateEphemeralDepositData(s, wd)
-	t.Require().Nil(err)
-	t.Assert().NotEmpty(dd)
-	depositDataPath.FnOut = fmt.Sprintf("deposit_data-ephemeral-%d.json", time.Now().Unix())
-	dd.PrintJSON(depositDataPath)
 }
 
 type DepositInfo struct {

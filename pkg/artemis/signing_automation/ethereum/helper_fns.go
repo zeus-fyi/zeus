@@ -1,6 +1,7 @@
 package signing_automation_ethereum
 
 import (
+	"context"
 	"encoding/hex"
 	"fmt"
 	"strings"
@@ -21,11 +22,11 @@ type GenesisData struct {
 	} `json:"data"`
 }
 
-func GetEphemeralForkVersion() (*spec.Version, error) {
-	return GetForkVersion(EphemeralBeacon)
+func GetEphemeralForkVersion(ctx context.Context) (*spec.Version, error) {
+	return GetForkVersion(ctx, EphemeralBeacon)
 }
 
-func GetForkVersion(beacon string) (*spec.Version, error) {
+func GetForkVersion(ctx context.Context, beacon string) (*spec.Version, error) {
 	ver := &spec.Version{}
 	resp := GenesisData{}
 	r := resty.New()
@@ -34,12 +35,12 @@ func GetForkVersion(beacon string) (*spec.Version, error) {
 		SetResult(&resp).
 		Get(BeaconGenesisPath)
 	if err != nil {
-		log.Err(err)
+		log.Ctx(ctx).Err(err)
 		return ver, err
 	}
 	forkVersion, err := hex.DecodeString(strings.TrimPrefix(resp.Data.GenesisForkVersion, "0x"))
 	if err != nil {
-		log.Err(err)
+		log.Ctx(ctx).Err(err)
 		return ver, err
 	}
 
