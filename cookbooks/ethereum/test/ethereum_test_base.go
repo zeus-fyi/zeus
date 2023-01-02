@@ -30,6 +30,7 @@ func (t *EthereumCookbookTestSuite) SetupTest() {
 	t.CustomWeb3SignerImage = t.Tc.Web3SignerDockerImage
 	// uses the bearer token from test/configs/config.yaml
 	t.ZeusTestClient = zeus_client.NewDefaultZeusClient(t.Tc.Bearer)
+
 	//t.ZeusTestClient = zeus_client.NewZeusClient("http://localhost:9001", tc.Bearer)
 	cookbooks.ChangeToCookbookDir()
 
