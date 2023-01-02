@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cm-web3signer
+data:
+  config.yaml: |
+    --key-store-path=/data \
+    --network=${WEB3SIGNER_NETWORK}" \
+    --http-listen-port=9000 \
+    --http-listen-host=0.0.0.0 \
+    --slashing-protection-db-url="${WEB3SIGNER_SLASHING_PROTECTION_DB_URL}" \
+    --slashing-protection-db-username="${WEB3SIGNER_SLASHING_PROTECTION_DB_USERNAME}" \
+    --slashing-protection-db-password="${WEB3SIGNER_SLASHING_PROTECTION_DB_PASSWORD}" \
+    --slashing-protection-pruning-enabled=true

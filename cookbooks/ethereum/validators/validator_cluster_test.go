@@ -23,7 +23,7 @@ func (t *ValidatorCookbookTestSuite) TestClusterDestroy() {
 
 func (t *ValidatorCookbookTestSuite) TestCreateClusterBase() {
 	ctx := context.Background()
-	basesInsert := []string{"executionClient", "consensusClient", consensusValidatorClientComponentBaseName, choreographySkeletonBase}
+	basesInsert := []string{"executionClient", "consensusClient", consensusValidatorClientComponentBaseName, ChoreographySkeletonBase}
 	cc := zeus_req_types.TopologyCreateOrAddComponentBasesToClassesRequest{
 		ClusterClassName:   EphemeryValidatorClusterClassName,
 		ComponentBaseNames: basesInsert,

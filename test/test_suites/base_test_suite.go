@@ -9,10 +9,12 @@ import (
 )
 
 type BaseTestSuite struct {
+	Tc configs.TestContainer
 	suite.Suite
 }
 
 func (s *BaseTestSuite) ChangeToTestDir() {
+	s.Tc = configs.InitLocalTestConfigs()
 	test_base.ForceDirToTestDirLocation()
 }
 

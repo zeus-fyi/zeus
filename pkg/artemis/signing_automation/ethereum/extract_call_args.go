@@ -1,17 +1,21 @@
 package signing_automation_ethereum
 
 import (
+	"context"
+
 	"github.com/gochain/gochain/v4/common"
+	"github.com/rs/zerolog/log"
 	web3_types "github.com/zeus-fyi/gochain/web3/types"
 	"github.com/zeus-fyi/gochain/web3/web3_actions"
 )
 
-func extractCallMsgFromSendContractTxPayload(from *common.Address, sendContractTxPayload web3_actions.SendContractTxPayload) (web3_types.CallMsg, error) {
+func extractCallMsgFromSendContractTxPayload(ctx context.Context, from *common.Address, sendContractTxPayload web3_actions.SendContractTxPayload) (web3_types.CallMsg, error) {
 	msg := extractCallMsgFromSendEtherPayload(from, sendContractTxPayload.SendEtherPayload)
 	if sendContractTxPayload.ContractABI != nil {
 		b, err := sendContractTxPayload.ContractABI.Pack(sendContractTxPayload.MethodName,
 			sendContractTxPayload.Params...)
 		if err != nil {
+			log.Ctx(ctx).Err(err)
 			return web3_types.CallMsg{}, err
 		}
 		msg.Data = b

@@ -1,0 +1,1 @@
+FROM consensys/web3signer:22.11 as consensys_web3signer

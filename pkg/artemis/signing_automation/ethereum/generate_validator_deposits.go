@@ -1,8 +1,11 @@
 package signing_automation_ethereum
 
 import (
+	"context"
+	"encoding/json"
 	"fmt"
 	"strings"
+	"time"
 
 	spec "github.com/attestantio/go-eth2-client/spec/phase0"
 	"github.com/pkg/errors"
@@ -20,42 +23,116 @@ type DepositDataParams struct {
 	ForkVersion        *spec.Version
 }
 
-func (dd *DepositDataParams) PrintJSON(p filepaths.Path) {
-	if dd.DepositData == nil || dd.ForkVersion == nil {
-		panic(errors.New("deposit params are empty"))
-	}
-	pubkey := strings.TrimPrefix(fmt.Sprintf("%#x", dd.PublicKey), "0x")
-	wc := strings.TrimPrefix(fmt.Sprintf("%#x", dd.WithdrawalCredentials), "0x")
-	sig := strings.TrimPrefix(fmt.Sprintf("%#x", dd.PublicKey), "0x")
-	ddRoot := strings.TrimPrefix(fmt.Sprintf("%#x", dd.DepositDataRoot), "0x")
-	ddMsgRoot := strings.TrimPrefix(fmt.Sprintf("%#x", dd.DepositMessageRoot), "0x")
-	fv := strings.TrimPrefix(fmt.Sprintf("%#x", *dd.ForkVersion), "0x")
+type DepositDataJSON struct {
+	Pubkey                string `json:"pubkey"`
+	WithdrawalCredentials string `json:"withdrawal_credentials"`
+	Signature             string `json:"signature"`
+	Amount                string `json:"amount"`
+	DepositDataRoot       string `json:"deposit_data_root"`
+	DepositMessageRoot    string `json:"deposit_message_root"`
+	ForkVersion           string `json:"fork_version"`
+}
 
-	output := fmt.Sprintf(`{"pubkey":"%s","withdrawal_credentials":"%s","signature":"%s","amount":%d,"deposit_data_root":"%s","deposit_message_root":"%s","fork_version":"%s"}`,
-		pubkey,
-		wc,
-		sig,
-		dd.Amount,
-		ddRoot,
-		ddMsgRoot,
-		fv,
-	)
-	err := p.WriteToFileOutPath([]byte(output))
+func (dd *DepositDataParams) GetValidatorDepositParamsStringValues() ValidatorDepositParams {
+	return ValidatorDepositParams{
+		Pubkey:                strings.TrimPrefix(fmt.Sprintf("%#x", dd.PublicKey), "0x"),
+		WithdrawalCredentials: strings.TrimPrefix(fmt.Sprintf("%#x", dd.WithdrawalCredentials), "0x"),
+		Signature:             strings.TrimPrefix(fmt.Sprintf("%#x", dd.Signature), "0x"),
+		DepositDataRoot:       strings.TrimPrefix(fmt.Sprintf("%#x", dd.DepositDataRoot), "0x"),
+	}
+}
+
+func PrintJSONSlice(p filepaths.Path, dpParamSlice []*DepositDataParams) {
+	p.FnOut = fmt.Sprintf("deposit_data-%d.json", time.Now().UTC().Unix())
+
+	dpJSON := make([]DepositDataJSON, len(dpParamSlice))
+
+	for i, val := range dpParamSlice {
+		dpJSON[i] = val.FormatJSON()
+	}
+	b, err := json.MarshalIndent(dpJSON, "", "\t")
+	if err != nil {
+		panic(err)
+	}
+	err = p.WriteToFileOutPath(b)
 	if err != nil {
 		panic(err)
 	}
 }
 
-func GenerateEphemeralDepositData(blsSigner bls_signer.EthBLSAccount, withdrawalAddress []byte) (*DepositDataParams, error) {
-	fv, err := GetEphemeralForkVersion()
+func (dd *DepositDataParams) FormatJSON() DepositDataJSON {
+	if dd.DepositData == nil || dd.ForkVersion == nil {
+		panic(errors.New("deposit params are empty"))
+	}
+	vpStrValues := dd.GetValidatorDepositParamsStringValues()
+	pubkey := vpStrValues.Pubkey
+	wc := vpStrValues.WithdrawalCredentials
+	sig := vpStrValues.Signature
+	ddRoot := vpStrValues.DepositDataRoot
+	ddMsgRoot := strings.TrimPrefix(fmt.Sprintf("%#x", dd.DepositMessageRoot), "0x")
+	fv := strings.TrimPrefix(fmt.Sprintf("%#x", *dd.ForkVersion), "0x")
+
+	djson := DepositDataJSON{
+		Pubkey:                pubkey,
+		WithdrawalCredentials: wc,
+		Signature:             sig,
+		Amount:                fmt.Sprintf("%d", dd.Amount),
+		DepositDataRoot:       ddRoot,
+		DepositMessageRoot:    ddMsgRoot,
+		ForkVersion:           fv,
+	}
+	return djson
+}
+
+func (w *Web3SignerClient) GenerateEphemeryDepositDataWithDefaultWd(ctx context.Context, vdg ValidatorDepositGenerationParams) ([]*DepositDataParams, error) {
+	w.Dial()
+	defer w.Close()
+	fv, err := GetEphemeralForkVersion(ctx)
 	if err != nil {
 		log.Err(err)
 		return nil, err
 	}
-	return GenerateDepositData(blsSigner, withdrawalAddress, fv)
+	return w.GenerateDepositDataWithDefaultWd(ctx, vdg, fv)
 }
 
-func GenerateDepositData(blsSigner bls_signer.EthBLSAccount, withdrawalAddress []byte, forkVersion *spec.Version) (*DepositDataParams, error) {
+func (w *Web3SignerClient) GenerateDepositDataWithDefaultWd(ctx context.Context, vdg ValidatorDepositGenerationParams, fv *spec.Version) ([]*DepositDataParams, error) {
+	w.Dial()
+	defer w.Close()
+	depositSlice := make([]*DepositDataParams, vdg.NumValidators-vdg.WithdrawalKeyIndexOffset)
+	initErr := bls_signer.InitEthBLS()
+	if initErr != nil {
+		log.Ctx(ctx).Err(initErr)
+		return depositSlice, initErr
+	}
+	wc, werr := vdg.GeneratePaddedBytesDefaultDerivedBLSWithdrawalKey(ctx)
+	if initErr != nil {
+		log.Ctx(ctx).Err(werr)
+		return depositSlice, werr
+	}
+
+	count := 0
+	for i := vdg.ValidatorIndexOffset; i < vdg.NumValidators; i++ {
+		path := fmt.Sprintf("m/12381/3600/%d/0/0", i)
+
+		sk, err := vdg.DerivedKey(ctx, path)
+		if err != nil {
+			panic(err)
+		}
+
+		acc := bls_signer.NewEthSignerBLSFromExistingKey(bls_signer.ConvertBytesToString(sk.Marshal()))
+		dd, err := w.GenerateDepositData(ctx, acc, wc, fv)
+		if err != nil {
+			panic(err)
+		}
+		depositSlice[count] = dd
+		count++
+	}
+	return depositSlice, nil
+}
+
+func (w *Web3SignerClient) GenerateDepositData(ctx context.Context, blsSigner bls_signer.EthBLSAccount, withdrawalAddress []byte, forkVersion *spec.Version) (*DepositDataParams, error) {
+	w.Dial()
+	defer w.Close()
 	dp := &DepositDataParams{ForkVersion: forkVersion}
 	var pubKey spec.BLSPubKey
 	copy(pubKey[:], blsSigner.PublicKey().Marshal())
@@ -66,15 +143,15 @@ func GenerateDepositData(blsSigner bls_signer.EthBLSAccount, withdrawalAddress [
 	}
 	root, err := depositMessage.HashTreeRoot()
 	if err != nil {
-		log.Err(err)
+		log.Ctx(ctx).Err(err)
 		return nil, errors.Wrap(err, "failed to generate deposit message root")
 	}
 	var depositMessageRoot spec.Root
 	copy(depositMessageRoot[:], root[:])
 	dp.DepositMessageRoot = depositMessageRoot
-	domain, err := generateDepositDomain(forkVersion)
+	domain, err := generateDepositDomain(ctx, forkVersion)
 	if err != nil {
-		log.Err(err)
+		log.Ctx(ctx).Err(err)
 		return nil, errors.Wrap(err, "failed to generate deposit domain")
 	}
 	container := &ssz.Container{
@@ -83,7 +160,7 @@ func GenerateDepositData(blsSigner bls_signer.EthBLSAccount, withdrawalAddress [
 	}
 	signingRoot, err := container.HashTreeRoot()
 	if err != nil {
-		log.Err(err)
+		log.Ctx(ctx).Err(err)
 		return nil, errors.Wrap(err, "failed to generate hash tree root")
 	}
 	var blsFormatted spec.BLSSignature
@@ -99,17 +176,18 @@ func GenerateDepositData(blsSigner bls_signer.EthBLSAccount, withdrawalAddress [
 	dp.DepositData = depositData
 	ht, err := depositData.HashTreeRoot()
 	if err != nil {
-		log.Err(err)
+		log.Ctx(ctx).Err(err)
 		return nil, errors.Wrap(err, "failed to generate hash tree root")
 	}
 	dp.DepositDataRoot = ht
 	return dp, err
 }
 
-func generateDepositDomain(forkVersion *spec.Version) (*spec.Domain, error) {
+func generateDepositDomain(ctx context.Context, forkVersion *spec.Version) (*spec.Domain, error) {
 	domainData := &spec.Domain{}
 	res, err := e2types.ComputeDomain(e2types.DomainDeposit, forkVersion[:], e2types.ZeroGenesisValidatorsRoot)
 	if err != nil {
+		log.Ctx(ctx).Err(err)
 		return nil, errors.Wrap(err, "failed to generate domain value")
 	}
 	copy(domainData[:], res)

@@ -11,13 +11,16 @@ func (t *Web3SignerClientTestSuite) TestValidatorDepositPayloadGasEstimate() {
 	defer t.Web3SignerClientTestClient.Close()
 	wc, err := ValidateAndReturnEcdsaPubkeyBytes(t.TestAccount1.PublicKey())
 	t.Require().Nil(err)
-	dd, err := GenerateEphemeralDepositData(t.TestBLSAccount, wc)
+	fv, err := GetEphemeralForkVersion(ctx)
+	t.Require().Nil(err)
+
+	dd, err := t.Web3SignerClientTestClient.GenerateDepositData(ctx, t.TestBLSAccount, wc, fv)
 	t.Require().Nil(err)
 	payload, err := getValidatorDepositPayload(ctx, dd)
 	t.Require().Nil(err)
 
 	from := t.TestAccount1.Address()
-	txPayload, err := extractCallMsgFromSendContractTxPayload(&from, payload)
+	txPayload, err := extractCallMsgFromSendContractTxPayload(ctx, &from, payload)
 	t.Require().Nil(err)
 	est, err := t.Web3SignerClientTestClient.GetGasPriceEstimateForTx(ctx, txPayload)
 	t.Require().Nil(err)
@@ -31,12 +34,18 @@ func (t *Web3SignerClientTestSuite) TestValidatorDepositPayloadGasEstimate() {
 func (t *Web3SignerClientTestSuite) TestValidatorDeposit() {
 	t.Web3SignerClientTestClient.Dial()
 	defer t.Web3SignerClientTestClient.Close()
-	wc, err := ValidateAndReturnEcdsaPubkeyBytes(t.TestAccount1.PublicKey())
-	t.Require().Nil(err)
-	dd, err := GenerateEphemeralDepositData(t.TestBLSAccount, wc)
+	vdg := ValidatorDepositGenerationParams{
+		Fp:                   depositDataPath,
+		Mnemonic:             t.Tc.LocalMnemonic24Words,
+		Pw:                   t.Tc.HDWalletPassword,
+		ValidatorIndexOffset: 0,
+		NumValidators:        1,
+	}
+	dd, err := t.Web3SignerClientTestClient.GenerateEphemeryDepositDataWithDefaultWd(ctx, vdg)
 	t.Require().Nil(err)
 
-	broadcast, err := t.Web3SignerClientTestClient.SignValidatorDepositTxToBroadcast(ctx, dd)
+	t.Require().Len(dd, 1)
+	broadcast, err := t.Web3SignerClientTestClient.SignValidatorDepositTxToBroadcast(ctx, dd[0])
 	t.Require().Nil(err)
 	t.Require().NotNil(broadcast)
 

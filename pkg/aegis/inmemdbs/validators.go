@@ -12,7 +12,7 @@ var ValidatorInMemDB *memdb.MemDB
 
 type Validator struct {
 	Index int
-	bls_signer.KeyBLS
+	bls_signer.EthBLSAccount
 }
 
 const ValidatorsTable = "validators"
@@ -23,10 +23,10 @@ type inMemValidator struct {
 	SecretKey []byte
 }
 
-func NewValidator(index int, blsKey bls_signer.KeyBLS) Validator {
+func NewValidator(index int, blsKey bls_signer.EthBLSAccount) Validator {
 	v := Validator{
-		Index:  index,
-		KeyBLS: blsKey,
+		Index:         index,
+		EthBLSAccount: blsKey,
 	}
 	return v
 }
@@ -36,8 +36,8 @@ func InsertValidatorsInMemDb(ctx context.Context, vs []Validator) {
 	for _, v := range vs {
 		insertV := inMemValidator{
 			Index:     v.Index,
-			PublicKey: v.PublicKey.Serialize(),
-			SecretKey: v.SecretKey.Serialize(),
+			PublicKey: v.PublicKey().Marshal(),
+			SecretKey: v.BLSPrivateKey.Marshal(),
 		}
 		if err := txn.Insert("validators", insertV); err != nil {
 			log.Ctx(ctx).Panic().Err(err).Interface("v.Index", v.Index).Msg("InsertValidatorsInMemDb")
@@ -56,17 +56,7 @@ func ReadOnlyValidatorFromInMemDb(ctx context.Context, v Validator) Validator {
 		panic(err)
 	}
 	txn.Commit()
-	return convertInMemValidatorToValidator(ctx, raw.(inMemValidator))
-}
-
-func convertInMemValidatorToValidator(ctx context.Context, v inMemValidator) Validator {
-	return Validator{
-		Index: v.Index,
-		KeyBLS: bls_signer.KeyBLS{
-			PublicKey: bls_signer.PublicKeyFromBytes(v.PublicKey),
-			SecretKey: bls_signer.SecretKeyFromBytes(v.SecretKey),
-		},
-	}
+	return raw.(Validator)
 }
 
 func InitValidatorDB() {
