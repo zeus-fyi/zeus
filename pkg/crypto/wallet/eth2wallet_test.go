@@ -29,7 +29,7 @@ var depositDataPath = filepaths.Path{
 	DirOut:      "../mocks/validator_keys",
 	FnOut:       "",
 	Env:         "",
-	FilterFiles: strings_filter.FilterOpts{},
+	FilterFiles: &strings_filter.FilterOpts{},
 }
 
 func (s *WalletTestSuite) TestHDWalletCreation() {

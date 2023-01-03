@@ -26,9 +26,9 @@ type KeystoreImportResp struct {
 	} `json:"data"`
 }
 
-func (w *Web3SignerActionsClient) ImportKeystores(ctx context.Context, kns zeus_common_types.CloudCtxNs, p filepaths.Path) ([]KeystoreImportResp, error) {
+func (w *Web3SignerActionsClient) ImportKeystores(ctx context.Context, kns zeus_common_types.CloudCtxNs, p filepaths.Path, pw string) ([]KeystoreImportResp, error) {
 	ks := Web3SignerKeystores{}
-	ks.ReadKeystore(ctx, p)
+	ks.ReadKeystoreDirAndAppendPw(ctx, p, pw)
 	cliReq := zeus_pods_reqs.ClientRequest{
 		MethodHTTP: "POST",
 		Endpoint:   "eth/v1/keystores",

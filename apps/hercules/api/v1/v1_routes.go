@@ -3,6 +3,7 @@ package v1_hercules
 import (
 	"github.com/labstack/echo/v4"
 	"github.com/zeus-fyi/hercules/api/v1/common/aegis"
+	hercules_ethereum "github.com/zeus-fyi/hercules/api/v1/common/ethereum"
 	host "github.com/zeus-fyi/hercules/api/v1/common/host_info"
 	hercules_jwt_route "github.com/zeus-fyi/hercules/api/v1/common/jwt"
 	hercules_routines "github.com/zeus-fyi/hercules/api/v1/common/routines"
@@ -21,5 +22,7 @@ func CommonRoutes(e *echo.Group) *echo.Group {
 	e.GET("/host/memory", host.GetMemStatsHandler)
 
 	e.POST("/import/validators", aegis.ImportValidatorsHandler)
+
+	e.GET("/ethereum/lighthouse/validator/auth", hercules_ethereum.LighthouseValidatorHandler)
 	return e
 }

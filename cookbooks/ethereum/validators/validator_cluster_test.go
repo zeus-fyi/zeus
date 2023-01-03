@@ -7,6 +7,7 @@ import (
 )
 
 func (t *ValidatorCookbookTestSuite) TestClusterDeploy() {
+	t.TestUploadValidatorClientCharts()
 	ctx := context.Background()
 	resp, err := t.ZeusTestClient.DeployCluster(ctx, cd)
 	t.Require().Nil(err)

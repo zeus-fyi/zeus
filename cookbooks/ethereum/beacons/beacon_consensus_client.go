@@ -5,7 +5,6 @@ import (
 	"time"
 
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
-	strings_filter "github.com/zeus-fyi/zeus/pkg/utils/strings"
 	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_req_types"
 )
 
@@ -35,5 +34,4 @@ var beaconConsensusClientChartPath = filepaths.Path{
 	FnIn:        "lighthouseHercules", // filename for your gzip workload
 	FnOut:       "",
 	Env:         "",
-	FilterFiles: strings_filter.FilterOpts{},
 }

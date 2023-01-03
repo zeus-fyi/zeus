@@ -6,7 +6,6 @@ import (
 
 	validator_cookbooks "github.com/zeus-fyi/zeus/cookbooks/ethereum/validators"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
-	strings_filter "github.com/zeus-fyi/zeus/pkg/utils/strings"
 	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_req_types"
 )
 
@@ -51,5 +50,4 @@ var web3SignerChartPath = filepaths.Path{
 	FnIn:        web3SignerSkeletonBaseName, // filename for your gzip workload
 	FnOut:       "",
 	Env:         "",
-	FilterFiles: strings_filter.FilterOpts{},
 }

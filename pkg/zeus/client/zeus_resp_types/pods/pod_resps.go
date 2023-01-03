@@ -10,6 +10,13 @@ type ClientResp struct {
 	ReplyBodies map[string][]byte
 }
 
+func (c *ClientResp) GetAnyValue() []byte {
+	for _, v := range c.ReplyBodies {
+		return v
+	}
+	return nil
+}
+
 type PodsSummary struct {
 	Pods map[string]PodSummary `json:"pods"`
 }

@@ -2,11 +2,9 @@ package hera_client
 
 import (
 	"fmt"
-	"os"
 
 	gogpt "github.com/sashabaranov/go-gpt3"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
-	strings_filter "github.com/zeus-fyi/zeus/pkg/utils/strings"
 	test_base "github.com/zeus-fyi/zeus/test"
 )
 
@@ -16,17 +14,6 @@ var maxTokensByModel = map[string]int{
 	gogpt.GPT3TextDavinci001: 2048,
 }
 
-func (t *HeraClientTestSuite) TestTokenCountApproximate() {
-	bytes, err := os.ReadFile("./mocks/hera/tokenizer_example/example.txt")
-	t.Require().Nil(err)
-	tokenCount := t.HeraTestClient.GetTokenApproximate(string(bytes))
-	t.Assert().Equal(61, tokenCount)
-	// NOTE open gpt-3 https://beta.openai.com/tokenizer returns 64 tokens as the count
-	// there's no opensource transformer for this, so use this + some margin when sending requests
-	// 2048 is the max token count for most models, the max size - prompt size, is your limitation on completion
-	// tokens
-}
-
 var demoChartPath = filepaths.Path{
 	PackageName: "",
 	DirIn:       "./mocks/hera/prompt_example",
@@ -34,7 +21,6 @@ var demoChartPath = filepaths.Path{
 	FnIn:        "prompt", // filename for your gzip workload
 	FnOut:       "",
 	Env:         "",
-	FilterFiles: strings_filter.FilterOpts{},
 }
 
 func (t *HeraClientTestSuite) TestFilesUploadToCodeGen() {

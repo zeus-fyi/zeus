@@ -27,7 +27,7 @@ func (c *CompressionTestSuite) TestTarGzip() {
 		DirOut:      "./outputs/compression/gzip",
 		FnIn:        "demo",
 		Env:         "",
-		FilterFiles: strings_filter.FilterOpts{},
+		FilterFiles: &strings_filter.FilterOpts{},
 	}
 
 	err := c.Comp.GzipCompressDir(&p)
@@ -42,7 +42,7 @@ func (c *CompressionTestSuite) TestUnGzip() {
 		FnIn:        "demo.tar.gz",
 		FnOut:       "",
 		Env:         "",
-		FilterFiles: strings_filter.FilterOpts{},
+		FilterFiles: &strings_filter.FilterOpts{},
 	}
 	err := c.Comp.UnGzip(&p)
 	c.Require().Nil(err)
@@ -56,7 +56,7 @@ func (c *CompressionTestSuite) TestLz4Dec() {
 		FnIn:        "geth.tar.lz4",
 		FnOut:       "",
 		Env:         "",
-		FilterFiles: strings_filter.FilterOpts{},
+		FilterFiles: &strings_filter.FilterOpts{},
 	}
 	err := c.Comp.Lz4Decompress(&p)
 	c.Require().Nil(err)

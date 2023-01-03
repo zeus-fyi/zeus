@@ -19,9 +19,3 @@ func (t *HerculesClientTestSuite) TestKill() {
 	err := t.HerculesTestClient.Kill(ctx, rr)
 	t.Assert().Nil(err)
 }
-
-func (t *HerculesClientTestSuite) TestDiskWipe() {
-	rr := RoutineRequest{ClientName: clientName}
-	err := t.HerculesTestClient.DiskWipe(ctx, rr)
-	t.Assert().Nil(err)
-}

@@ -13,14 +13,14 @@ func (t *Web3SignerClientTestSuite) TestKeystoreParse() {
 		PackageName: "",
 		DirIn:       "./mocks/validator_keys",
 		DirOut:      "",
-		FnIn:        "deposit_data-1671500394.json",
+		FnIn:        "",
 		FnOut:       "",
 		Env:         "",
-		FilterFiles: strings_filter.FilterOpts{},
+		FilterFiles: &strings_filter.FilterOpts{StartsWith: "deposit_data-ephemery"},
 	}
 	// points working dir to inside /test
 	test_base.ForceDirToTestDirLocation()
-	k, err := ParseKeystoreJSON(context.Background(), keystorePath)
+	k, err := ParseValidatorDepositSliceJSON(context.Background(), keystorePath)
 	t.Require().Nil(err)
 	t.Assert().NotEmpty(k)
 }
