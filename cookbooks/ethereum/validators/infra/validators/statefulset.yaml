@@ -58,7 +58,7 @@ spec:
             tcpSocket:
               port: hercules
         - name: zeus-validators
-          image: "sigp/lighthouse:v3.2.1-modern"
+          image: "sigp/lighthouse:v3.3.0-modern"
           imagePullPolicy: IfNotPresent
           command: [ "/bin/sh" ]
           args: [ "-c","/scripts/start.sh" ]
@@ -69,17 +69,7 @@ spec:
               mountPath: "/data"
           ports:
             - name: metrics
-              containerPort: 5054
-          livenessProbe:
-            initialDelaySeconds: 60
-            periodSeconds: 120
-            tcpSocket:
-              port: metrics
-          readinessProbe:
-            initialDelaySeconds: 10
-            periodSeconds: 10
-            tcpSocket:
-              port: metrics
+              containerPort: 5064
           resources:
             {}
           env:

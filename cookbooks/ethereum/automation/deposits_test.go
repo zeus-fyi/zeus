@@ -39,8 +39,8 @@ func (t *EthereumAutomationCookbookTestSuite) TestFullDepositAutomation() {
 }
 
 func (t *EthereumAutomationCookbookTestSuite) TestDepositGenerationAutomation() []*signing_automation_ethereum.DepositDataParams {
-	offset := 0
-	numKeys := 3
+	offset := 3
+	numKeys := 997
 
 	vdg := signing_automation_ethereum.ValidatorDepositGenerationParams{
 		Fp:                   depositDataPath,

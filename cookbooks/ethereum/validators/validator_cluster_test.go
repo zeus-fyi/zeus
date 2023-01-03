@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_req_types"
+	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_resp_types/topology_workloads"
 )
 
 func (t *ValidatorCookbookTestSuite) TestClusterDeploy() {
@@ -36,6 +37,12 @@ func (t *ValidatorCookbookTestSuite) TestCreateClusterBase() {
 func (t *ValidatorCookbookTestSuite) TestUploadValidatorClientCharts() {
 	ctx := context.Background()
 	// Consensus
+
+	inf := topology_workloads.NewTopologyBaseInfraWorkload()
+	err := validatorsChartPath.WalkAndApplyFuncToFileType(".yaml", inf.DecodeK8sWorkload)
+	t.Require().Nil(err)
+	EphemeralValidatorClientLighthouseConfig(inf)
+
 	resp, err := t.ZeusTestClient.UploadChart(ctx, validatorsChartPath, validatorsChart)
 	t.Require().Nil(err)
 	t.Assert().NotZero(resp.TopologyID)
