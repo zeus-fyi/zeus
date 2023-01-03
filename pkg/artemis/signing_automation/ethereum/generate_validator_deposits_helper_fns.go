@@ -57,9 +57,9 @@ func (vd *ValidatorDepositGenerationParams) GeneratePaddedBytesDefaultDerivedBLS
 }
 
 func (vd *ValidatorDepositGenerationParams) GenerateDerivedWithdrawalKeys(ctx context.Context) ([]string, error) {
-	wdPubkey := make([]string, vd.NumWithdrawalKeys-vd.WithdrawalKeyIndexOffset)
+	wdPubkey := make([]string, vd.NumWithdrawalKeys)
 	count := 0
-	for i := vd.ValidatorIndexOffset; i < vd.NumWithdrawalKeys-vd.WithdrawalKeyIndexOffset; i++ {
+	for i := vd.WithdrawalKeyIndexOffset; i < vd.NumWithdrawalKeys+vd.WithdrawalKeyIndexOffset; i++ {
 		path := fmt.Sprintf("m/12381/3600/0/%d", i)
 		sk, err := vd.DerivedKey(ctx, path)
 		if err != nil {
@@ -78,7 +78,7 @@ func (vd *ValidatorDepositGenerationParams) GenerateAndEncryptValidatorKeysFromS
 		log.Ctx(ctx).Err(initErr)
 		return initErr
 	}
-	for i := vd.ValidatorIndexOffset; i < vd.NumValidators; i++ {
+	for i := vd.ValidatorIndexOffset; i < vd.NumValidators+vd.ValidatorIndexOffset; i++ {
 		path := fmt.Sprintf("m/12381/3600/%d/0/0", i)
 		enc, err := vd.EthDepositEncryptionAndAddMetadata(ctx, path)
 		b, err := json.MarshalIndent(enc, "", "\t")

@@ -13,7 +13,7 @@ spec:
       targetPort: hercules
       protocol: TCP
       name: hercules
-    - port: 5054
+    - port: 5064
       targetPort: metrics
       protocol: TCP
       name: metrics

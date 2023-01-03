@@ -98,7 +98,7 @@ func (w *Web3SignerClient) GenerateEphemeryDepositDataWithDefaultWd(ctx context.
 func (w *Web3SignerClient) GenerateDepositDataWithDefaultWd(ctx context.Context, vdg ValidatorDepositGenerationParams, fv *spec.Version) ([]*DepositDataParams, error) {
 	w.Dial()
 	defer w.Close()
-	depositSlice := make([]*DepositDataParams, vdg.NumValidators-vdg.WithdrawalKeyIndexOffset)
+	depositSlice := make([]*DepositDataParams, vdg.NumValidators)
 	initErr := bls_signer.InitEthBLS()
 	if initErr != nil {
 		log.Ctx(ctx).Err(initErr)
@@ -111,7 +111,7 @@ func (w *Web3SignerClient) GenerateDepositDataWithDefaultWd(ctx context.Context,
 	}
 
 	count := 0
-	for i := vdg.ValidatorIndexOffset; i < vdg.NumValidators; i++ {
+	for i := vdg.ValidatorIndexOffset; i < vdg.NumValidators+vdg.ValidatorIndexOffset; i++ {
 		path := fmt.Sprintf("m/12381/3600/%d/0/0", i)
 
 		sk, err := vdg.DerivedKey(ctx, path)

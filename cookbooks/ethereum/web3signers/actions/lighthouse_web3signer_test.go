@@ -3,6 +3,7 @@ package ethereum_web3signer_actions
 import (
 	"context"
 	"fmt"
+	"time"
 
 	validator_cookbooks "github.com/zeus-fyi/zeus/cookbooks/ethereum/validators"
 	signing_automation_ethereum "github.com/zeus-fyi/zeus/pkg/artemis/signing_automation/ethereum"
@@ -38,7 +39,28 @@ func (t *EthereumWeb3SignerCookbookTestSuite) TestLighthouseImportWeb3SignerAPI(
 	lh.Enable = true
 	lh.FeeAddr = t.TestAccount1.PublicKey()
 	lh.ReadDepositParamsAndExtractToEnableKeysOnWeb3Signer(ctx, k)
+
 	resp, err = w3.EnableWeb3SignerLighthouse(ctx, kns, lh.Slice, string(token))
+	t.Require().Nil(err)
+	t.Assert().NotEmpty(resp)
+	fmt.Println(resp)
+	tmp := LighthouseWeb3SignerRequests{
+		Web3SignerURL: "http://zeus-web3signer:9000",
+		Enable:        true,
+		FeeAddr:       t.TestAccount1.PublicKey(),
+		Slice:         []LighthouseWeb3SignerRequest{},
+	}
+
+	for _, v := range lh.Slice {
+		tmp.Slice = []LighthouseWeb3SignerRequest{v}
+		resp, err = w3.EnableWeb3SignerLighthouse(ctx, kns, tmp.Slice, string(token))
+		t.Require().Nil(err)
+		t.Assert().NotEmpty(resp)
+		fmt.Println(resp)
+		time.Sleep(1 * time.Second)
+	}
+
+	resp, err = w3.EnableWeb3SignerLighthouse(ctx, kns, tmp.Slice, string(token))
 	t.Require().Nil(err)
 	t.Assert().NotEmpty(resp)
 	fmt.Println(resp)

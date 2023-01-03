@@ -6,12 +6,12 @@ metadata:
     app.kubernetes.io/instance: zeus-validators
     app.kubernetes.io/managed-by: zeus-validators
     app.kubernetes.io/name: zeus-validators
-    version: version-1672701705081154716
+    version: version-1672723824829396275
   name: zeus-validators
 spec:
   ports:
   - name: metrics
-    port: 5054
+    port: 5064
     protocol: TCP
     targetPort: metrics
   - name: hercules

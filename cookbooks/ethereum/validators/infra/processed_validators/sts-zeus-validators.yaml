@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/instance: zeus-validators
     app.kubernetes.io/managed-by: zeus
     app.kubernetes.io/name: zeus-validators
-    version: version-1672701705081102321
+    version: version-1672723824829336623
   name: zeus-validators
 spec:
   podManagementPolicy: OrderedReady
@@ -22,7 +22,7 @@ spec:
       labels:
         app.kubernetes.io/instance: zeus-validators
         app.kubernetes.io/name: zeus-validators
-        version: version-1672701705081152047
+        version: version-1672723824829393701
     spec:
       containers:
       - args:
@@ -35,23 +35,13 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: status.podIP
-        image: sigp/lighthouse:v3.2.1-modern
+        image: sigp/lighthouse:v3.3.0-modern
         imagePullPolicy: IfNotPresent
-        livenessProbe:
-          initialDelaySeconds: 60
-          periodSeconds: 120
-          tcpSocket:
-            port: metrics
         name: zeus-validators
         ports:
-        - containerPort: 5054
+        - containerPort: 5064
           name: metrics
           protocol: TCP
-        readinessProbe:
-          initialDelaySeconds: 10
-          periodSeconds: 10
-          tcpSocket:
-            port: metrics
         resources: {}
         volumeMounts:
         - mountPath: /scripts
@@ -77,10 +67,10 @@ spec:
           protocol: TCP
         resources: {}
         volumeMounts:
-        - mountPath: /data
-          name: validator-client-storage
         - mountPath: /scripts
           name: cm-validator-client
+        - mountPath: /data
+          name: validator-client-storage
       initContainers:
       - args:
         - -c

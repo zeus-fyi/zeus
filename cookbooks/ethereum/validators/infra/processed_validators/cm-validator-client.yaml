@@ -8,17 +8,17 @@ data:
   lighthouseEphemeral.sh: "#!/bin/sh\nexec lighthouse vc \\\n          --testnet-dir=/data/testnet
     \\\n          --log-format=JSON \\\n          --datadir=/data \\\n    \t  --init-slashing-protection
     \\\n          --unencrypted-http-transport \\\n          --http \\\n          --http-address=0.0.0.0
-    \\\n          --http-port=5062 \\\n          --beacon-nodes=\"http://zeus-consensus-client:5052\""
+    \\\n          --http-port=5062 \\\n          --metrics \\\n          --beacon-nodes=\"http://zeus-consensus-client:5052\""
   pause.sh: |-
     #!/bin/sh
     exec sleep 100000000000000000
   start.sh: "#!/bin/sh\nexec lighthouse vc \\\n          --testnet-dir=/data/testnet
     \\\n          --log-format=JSON \\\n          --datadir=/data \\\n          --unencrypted-http-transport
     \\\n\t      --init-slashing-protection \\\n          --http \\\n          --http-address=0.0.0.0
-    \\\n          --http-port=5062 \\\n          --beacon-nodes=\"http://zeus-consensus-client:5052\""
+    \\\n          --http-port=5062 \\\n          --metrics \\\n          --beacon-nodes=\"http://zeus-consensus-client:5052\""
 kind: ConfigMap
 metadata:
   creationTimestamp: null
   labels:
-    version: version-1672701705081160262
+    version: version-1672723824829400938
   name: cm-validator-client

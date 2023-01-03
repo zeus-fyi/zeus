@@ -8,8 +8,10 @@ const (
 )
 
 var (
-	LighthouseBeaconPorts           = []string{"5052:5052"}
-	LighthouseValidatorClientPorts  = []string{"5062:5062"}
+	LighthouseBeaconPorts          = []string{"5052:5052"}
+	LighthouseValidatorClientPorts = []string{"5062:5062"}
+	// LighthouseValidatorMetricsPorts = []string{"5064:5064"}
+
 	LighthouseWeb3SignerAPIEndpoint = "/lighthouse/validators/web3signer"
 
 	HerculesPorts                       = []string{"9003:9003"}
