@@ -9,7 +9,7 @@ import (
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 )
 
-var lhAuthTokenPath = filepaths.Path{DirIn: "/validators/validators", FnIn: "api-token.txt"}
+var lhAuthTokenPath = filepaths.Path{DirIn: "/data/validators", FnIn: "api-token.txt"}
 
 func LighthouseValidatorHandler(c echo.Context) error {
 	request := new(LighthouseValidatorRequest)
@@ -29,5 +29,5 @@ func (l *LighthouseValidatorRequest) GetAuthToken(c echo.Context) error {
 		log.Ctx(ctx).Err(err).Msg("Start: GetDiskStats Script")
 		return c.JSON(http.StatusInternalServerError, err)
 	}
-	return c.JSON(http.StatusOK, a)
+	return c.JSON(http.StatusOK, string(a))
 }
