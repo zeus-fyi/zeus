@@ -2,8 +2,8 @@ version: '3.8'
 
 services:
   postgres:
-    container_name: postgres_local
-    image: "postgres:13.4-bullseye"
+    container_name: postgres_local_web3signer
+    image: "postgres:15.1-bullseye"
     environment:
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "postgres"
