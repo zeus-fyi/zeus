@@ -6,7 +6,7 @@ import (
 )
 
 func (t *BeaconCookbookTestSuite) TestExecClientBeaconConfigDriver() {
-	p := beaconExecClientChartPath
+	p := BeaconExecClientChartPath
 	inf := topology_workloads.NewTopologyBaseInfraWorkload()
 	err := p.WalkAndApplyFuncToFileType(".yaml", inf.DecodeK8sWorkload)
 	t.Require().Nil(err)

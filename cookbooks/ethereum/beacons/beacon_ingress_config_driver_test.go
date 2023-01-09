@@ -5,7 +5,7 @@ import (
 )
 
 func (t *BeaconCookbookTestSuite) TestBeaconIngressConfigDriver() {
-	p := ingressChartPath
+	p := IngressChartPath
 	inf := topology_workloads.NewTopologyBaseInfraWorkload()
 	err := p.WalkAndApplyFuncToFileType(".yaml", inf.DecodeK8sWorkload)
 	t.Require().Nil(err)

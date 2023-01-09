@@ -10,18 +10,18 @@ import (
 )
 
 var (
-	web3SignerComponentBaseName = "web3Signer"
-	web3SignerSkeletonBaseName  = "web3Signer"
+	Web3SignerComponentBaseName = "web3Signer"
+	Web3SignerSkeletonBaseName  = "web3Signer"
 )
 
-var cd = zeus_req_types.ClusterTopologyDeployRequest{
+var Web3SignerClusterDefinition = zeus_req_types.ClusterTopologyDeployRequest{
 	ClusterClassName: validator_cookbooks.EphemeryValidatorClusterClassName,
 	SkeletonBaseOptions: []string{
 		validator_cookbooks.ExecSkeletonBase,
 		validator_cookbooks.ConsensusSkeletonBase,
 		validator_cookbooks.ValidatorSkeletonBaseName,
 		validator_cookbooks.ChoreographySkeletonBase,
-		web3SignerSkeletonBaseName,
+		Web3SignerSkeletonBaseName,
 	},
 	CloudCtxNs: validator_cookbooks.ValidatorCloudCtxNs,
 }
@@ -31,23 +31,22 @@ var DeployWeb3SignerKnsReq = zeus_req_types.TopologyDeployRequest{
 	CloudCtxNs: validator_cookbooks.ValidatorCloudCtxNs,
 }
 
-// chart workload metadata
-var web3SignerChart = zeus_req_types.TopologyCreateRequest{
-	TopologyName:      web3SignerSkeletonBaseName,
-	ChartName:         web3SignerSkeletonBaseName,
-	ChartDescription:  web3SignerSkeletonBaseName,
+var Web3SignerChart = zeus_req_types.TopologyCreateRequest{
+	TopologyName:      Web3SignerSkeletonBaseName,
+	ChartName:         Web3SignerSkeletonBaseName,
+	ChartDescription:  Web3SignerSkeletonBaseName,
 	Version:           fmt.Sprintf("web3SignerBase-v.0.%d", time.Now().Unix()),
-	SkeletonBaseName:  web3SignerSkeletonBaseName,
-	ComponentBaseName: web3SignerComponentBaseName,
+	SkeletonBaseName:  Web3SignerSkeletonBaseName,
+	ComponentBaseName: Web3SignerComponentBaseName,
 	ClusterClassName:  validator_cookbooks.EphemeryValidatorClusterClassName,
 	Tag:               "latest",
 }
 
-var web3SignerChartPath = filepaths.Path{
+var Web3SignerChartPath = filepaths.Path{
 	PackageName: "",
 	DirIn:       "./ethereum/web3signers/infra/consensys_web3signer",
 	DirOut:      "./ethereum/web3signers/infra/processed_consensys_web3signer",
-	FnIn:        web3SignerSkeletonBaseName, // filename for your gzip workload
+	FnIn:        Web3SignerSkeletonBaseName, // filename for your gzip workload
 	FnOut:       "",
 	Env:         "",
 }

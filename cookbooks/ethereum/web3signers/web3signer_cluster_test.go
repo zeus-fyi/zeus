@@ -11,7 +11,7 @@ import (
 func (t *Web3SignerCookbookTestSuite) TestClusterDeploy() {
 	t.TestUploadWeb3SignerChart()
 	ctx := context.Background()
-	resp, err := t.ZeusTestClient.DeployCluster(ctx, cd)
+	resp, err := t.ZeusTestClient.DeployCluster(ctx, Web3SignerClusterDefinition)
 	t.Require().Nil(err)
 	t.Assert().NotEmpty(resp)
 }
@@ -26,7 +26,7 @@ func (t *Web3SignerCookbookTestSuite) TestClusterDestroy() {
 
 func (t *Web3SignerCookbookTestSuite) TestCreateClusterBase() {
 	ctx := context.Background()
-	basesInsert := []string{web3SignerComponentBaseName}
+	basesInsert := []string{Web3SignerComponentBaseName}
 	cc := zeus_req_types.TopologyCreateOrAddComponentBasesToClassesRequest{
 		ClusterClassName:   validator_cookbooks.EphemeryValidatorClusterClassName,
 		ComponentBaseNames: basesInsert,
@@ -40,8 +40,8 @@ func (t *Web3SignerCookbookTestSuite) TestCreateClusterSkeletonBases() {
 
 	cc := zeus_req_types.TopologyCreateOrAddSkeletonBasesToClassesRequest{
 		ClusterClassName:  validator_cookbooks.EphemeryValidatorClusterClassName,
-		ComponentBaseName: web3SignerComponentBaseName,
-		SkeletonBaseNames: []string{web3SignerSkeletonBaseName},
+		ComponentBaseName: Web3SignerComponentBaseName,
+		SkeletonBaseNames: []string{Web3SignerSkeletonBaseName},
 	}
 	_, err := t.ZeusTestClient.AddSkeletonBasesToClass(ctx, cc)
 	t.Require().Nil(err)
@@ -51,12 +51,12 @@ func (t *Web3SignerCookbookTestSuite) TestUploadWeb3SignerChart() {
 	ctx := context.Background()
 
 	inf := topology_workloads.NewTopologyBaseInfraWorkload()
-	err := web3SignerChartPath.WalkAndApplyFuncToFileType(".yaml", inf.DecodeK8sWorkload)
+	err := Web3SignerChartPath.WalkAndApplyFuncToFileType(".yaml", inf.DecodeK8sWorkload)
 	t.Require().Nil(err)
 
 	EphemeralWeb3SignerConfig(inf, t.CustomWeb3SignerImage)
 
-	resp, err := t.ZeusTestClient.UploadChart(ctx, web3SignerChartPath, web3SignerChart)
+	resp, err := t.ZeusTestClient.UploadChart(ctx, Web3SignerChartPath, Web3SignerChart)
 	t.Require().Nil(err)
 	t.Assert().NotZero(resp.TopologyID)
 
@@ -66,6 +66,6 @@ func (t *Web3SignerCookbookTestSuite) TestUploadWeb3SignerChart() {
 	t.Require().Nil(err)
 	t.Assert().NotEmpty(chartResp)
 
-	err = chartResp.PrintWorkload(web3SignerChartPath)
+	err = chartResp.PrintWorkload(Web3SignerChartPath)
 	t.Require().Nil(err)
 }

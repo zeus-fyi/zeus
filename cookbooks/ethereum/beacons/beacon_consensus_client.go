@@ -14,8 +14,7 @@ var DeployConsensusClientKnsReq = zeus_req_types.TopologyDeployRequest{
 	CloudCtxNs: BeaconCloudCtxNs,
 }
 
-// chart workload metadata
-var consensusClientChart = zeus_req_types.TopologyCreateRequest{
+var ConsensusClientChart = zeus_req_types.TopologyCreateRequest{
 	TopologyName:      "lighthouseHercules",
 	ChartName:         "lighthouseHercules",
 	ChartDescription:  "lighthouseHercules",
@@ -26,8 +25,7 @@ var consensusClientChart = zeus_req_types.TopologyCreateRequest{
 	Tag:               "latest",
 }
 
-// DirOut is where it will write a copy of the chart you uploaded, which helps verify the workload is correct
-var beaconConsensusClientChartPath = filepaths.Path{
+var BeaconConsensusClientChartPath = filepaths.Path{
 	PackageName: "",
 	DirIn:       "./ethereum/beacons/infra/consensus_client",
 	DirOut:      "./ethereum/outputs",

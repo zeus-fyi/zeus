@@ -22,8 +22,7 @@ var BeaconCloudCtxNs = zeus_common_types.CloudCtxNs{
 	Env:           "production",
 }
 
-// chart workload metadata
-var ingressChart = zeus_req_types.TopologyCreateRequest{
+var IngressChart = zeus_req_types.TopologyCreateRequest{
 	TopologyName:      "beaconIngress",
 	ChartName:         "beaconIngress",
 	ChartDescription:  "beaconIngress",
@@ -34,7 +33,7 @@ var ingressChart = zeus_req_types.TopologyCreateRequest{
 	Tag:               "latest",
 }
 
-var ingressChartPath = filepaths.Path{
+var IngressChartPath = filepaths.Path{
 	PackageName: "",
 	DirIn:       "./ethereum/beacons/infra/ingress",
 	DirOut:      "./ethereum/beacons/infra/processed_beacon_ingress",

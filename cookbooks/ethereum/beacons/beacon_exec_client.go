@@ -14,8 +14,7 @@ var DeployExecClientKnsReq = zeus_req_types.TopologyDeployRequest{
 	CloudCtxNs: BeaconCloudCtxNs,
 }
 
-// chart workload metadata
-var execClientChart = zeus_req_types.TopologyCreateRequest{
+var ExecClientChart = zeus_req_types.TopologyCreateRequest{
 	TopologyName:      "gethHercules",
 	ChartName:         "gethHercules",
 	ChartDescription:  "gethHercules",
@@ -26,7 +25,7 @@ var execClientChart = zeus_req_types.TopologyCreateRequest{
 	Tag:               "latest",
 }
 
-var beaconExecClientChartPath = filepaths.Path{
+var BeaconExecClientChartPath = filepaths.Path{
 	PackageName: "",
 	DirIn:       "./ethereum/beacons/infra/exec_client",
 	DirOut:      "./ethereum/outputs",

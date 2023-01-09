@@ -21,7 +21,7 @@ var (
 	ChoreographySkeletonBase = "choreography"
 )
 
-var cd = zeus_req_types.ClusterTopologyDeployRequest{
+var ValidatorClusterDefinition = zeus_req_types.ClusterTopologyDeployRequest{
 	ClusterClassName:    EphemeryValidatorClusterClassName,
 	SkeletonBaseOptions: []string{ExecSkeletonBase, ConsensusSkeletonBase, ValidatorSkeletonBaseName, ChoreographySkeletonBase},
 	CloudCtxNs:          ValidatorCloudCtxNs,
@@ -40,8 +40,7 @@ var ValidatorCloudCtxNs = zeus_common_types.CloudCtxNs{
 	Env:           "production",
 }
 
-// chart workload metadata
-var validatorsChart = zeus_req_types.TopologyCreateRequest{
+var ValidatorsChart = zeus_req_types.TopologyCreateRequest{
 	TopologyName:      ValidatorSkeletonBaseName,
 	ChartName:         ValidatorSkeletonBaseName,
 	ChartDescription:  ValidatorSkeletonBaseName,
@@ -52,7 +51,7 @@ var validatorsChart = zeus_req_types.TopologyCreateRequest{
 	Tag:               "latest",
 }
 
-var validatorsChartPath = filepaths.Path{
+var ValidatorsChartPath = filepaths.Path{
 	PackageName: "",
 	DirIn:       "./ethereum/validators/infra/validators",
 	DirOut:      "./ethereum/validators/infra/processed_validators",

@@ -10,7 +10,7 @@ import (
 func (t *ValidatorCookbookTestSuite) TestClusterDeploy() {
 	t.TestUploadValidatorClientCharts()
 	ctx := context.Background()
-	resp, err := t.ZeusTestClient.DeployCluster(ctx, cd)
+	resp, err := t.ZeusTestClient.DeployCluster(ctx, ValidatorClusterDefinition)
 	t.Require().Nil(err)
 	t.Assert().NotEmpty(resp)
 }
@@ -39,11 +39,11 @@ func (t *ValidatorCookbookTestSuite) TestUploadValidatorClientCharts() {
 	// Consensus
 
 	inf := topology_workloads.NewTopologyBaseInfraWorkload()
-	err := validatorsChartPath.WalkAndApplyFuncToFileType(".yaml", inf.DecodeK8sWorkload)
+	err := ValidatorsChartPath.WalkAndApplyFuncToFileType(".yaml", inf.DecodeK8sWorkload)
 	t.Require().Nil(err)
 	EphemeralValidatorClientLighthouseConfig(inf)
 
-	resp, err := t.ZeusTestClient.UploadChart(ctx, validatorsChartPath, validatorsChart)
+	resp, err := t.ZeusTestClient.UploadChart(ctx, ValidatorsChartPath, ValidatorsChart)
 	t.Require().Nil(err)
 	t.Assert().NotZero(resp.TopologyID)
 
@@ -53,6 +53,6 @@ func (t *ValidatorCookbookTestSuite) TestUploadValidatorClientCharts() {
 	t.Require().Nil(err)
 	t.Assert().NotEmpty(chartResp)
 
-	err = chartResp.PrintWorkload(validatorsChartPath)
+	err = chartResp.PrintWorkload(ValidatorsChartPath)
 	t.Require().Nil(err)
 }

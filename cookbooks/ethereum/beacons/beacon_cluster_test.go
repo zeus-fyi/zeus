@@ -22,13 +22,13 @@ func (t *BeaconCookbookTestSuite) TestClusterDeploy() {
 	ctx := context.Background()
 	switch clusterClassName {
 	case "ethereumEphemeralBeacons":
-		cd.ClusterClassName = clusterClassName
-		cd.Namespace = "ephemeral"
+		Cd.ClusterClassName = clusterClassName
+		Cd.Namespace = "ephemeral"
 		// choreography is a reserved skeleton base keyword that will always deploy a choreography secret to support actions
-		cd.SkeletonBaseOptions = append(cd.SkeletonBaseOptions, choreography_cookbooks.GenericChoreographyChart.SkeletonBaseName)
-		cd.SkeletonBaseOptions = append(cd.SkeletonBaseOptions, ingressBaseName...)
+		Cd.SkeletonBaseOptions = append(Cd.SkeletonBaseOptions, choreography_cookbooks.GenericChoreographyChart.SkeletonBaseName)
+		Cd.SkeletonBaseOptions = append(Cd.SkeletonBaseOptions, ingressBaseName...)
 	}
-	resp, err := t.ZeusTestClient.DeployCluster(ctx, cd)
+	resp, err := t.ZeusTestClient.DeployCluster(ctx, Cd)
 	t.Require().Nil(err)
 	t.Assert().NotEmpty(resp)
 }
@@ -39,10 +39,10 @@ func (t *BeaconCookbookTestSuite) TestClusterDestroy() {
 	knsReq := DeployConsensusClientKnsReq
 	switch clusterClassName {
 	case "ethereumEphemeralBeacons":
-		cd.ClusterClassName = clusterClassName
+		Cd.ClusterClassName = clusterClassName
 		knsReq.Namespace = "ephemeral"
 	case "ethereumEphemeralValidatorCluster":
-		cd.ClusterClassName = clusterClassName
+		Cd.ClusterClassName = clusterClassName
 		knsReq.Namespace = "ephemeral-staking"
 	}
 	resp, err := t.ZeusTestClient.DestroyDeploy(ctx, knsReq)
@@ -51,7 +51,7 @@ func (t *BeaconCookbookTestSuite) TestClusterDestroy() {
 }
 
 // Follow this order of commands to create a beacon class with infra, then use the above ^ to deploy it
-// cd is the cluster definition
+// Cd is the cluster definition
 
 func (t *BeaconCookbookTestSuite) TestEndToEnd() {
 	t.TestCreateClusterClass()
@@ -62,12 +62,12 @@ func (t *BeaconCookbookTestSuite) TestEndToEnd() {
 	case "ethereumBeacons":
 		t.TestUploadStandardBeaconCharts()
 	case "ethereumEphemeralValidatorCluster":
-		consensusClientChart.ClusterClassName = clusterClassName
-		execClientChart.ClusterClassName = clusterClassName
+		ConsensusClientChart.ClusterClassName = clusterClassName
+		ExecClientChart.ClusterClassName = clusterClassName
 		t.TestUploadEphemeralBeaconConfig(false)
 	case "ethereumEphemeralBeacons":
-		consensusClientChart.ClusterClassName = clusterClassName
-		execClientChart.ClusterClassName = clusterClassName
+		ConsensusClientChart.ClusterClassName = clusterClassName
+		ExecClientChart.ClusterClassName = clusterClassName
 		t.TestUploadEphemeralBeaconConfig(true)
 	}
 }
@@ -134,7 +134,7 @@ func (t *BeaconCookbookTestSuite) TestCreateClusterSkeletonBases() {
 func (t *BeaconCookbookTestSuite) TestUploadBeaconCharts(consensusChartPath, execChartPath, ingChartPath filepaths.Path, withIngress bool) {
 	ctx := context.Background()
 	// Consensus
-	resp, err := t.ZeusTestClient.UploadChart(ctx, consensusChartPath, consensusClientChart)
+	resp, err := t.ZeusTestClient.UploadChart(ctx, consensusChartPath, ConsensusClientChart)
 	t.Require().Nil(err)
 	t.Assert().NotZero(resp.TopologyID)
 
@@ -148,7 +148,7 @@ func (t *BeaconCookbookTestSuite) TestUploadBeaconCharts(consensusChartPath, exe
 	t.Require().Nil(err)
 
 	// Exec
-	resp, err = t.ZeusTestClient.UploadChart(ctx, execChartPath, execClientChart)
+	resp, err = t.ZeusTestClient.UploadChart(ctx, execChartPath, ExecClientChart)
 	t.Require().Nil(err)
 	t.Assert().NotZero(resp.TopologyID)
 
@@ -163,7 +163,7 @@ func (t *BeaconCookbookTestSuite) TestUploadBeaconCharts(consensusChartPath, exe
 
 	if withIngress {
 		// Ingress
-		resp, err = t.ZeusTestClient.UploadChart(ctx, ingChartPath, ingressChart)
+		resp, err = t.ZeusTestClient.UploadChart(ctx, ingChartPath, IngressChart)
 		t.Require().Nil(err)
 		t.Assert().NotZero(resp.TopologyID)
 
@@ -179,7 +179,7 @@ func (t *BeaconCookbookTestSuite) TestUploadBeaconCharts(consensusChartPath, exe
 }
 
 func (t *BeaconCookbookTestSuite) TestUploadStandardBeaconCharts() {
-	t.TestUploadBeaconCharts(beaconConsensusClientChartPath, beaconExecClientChartPath, ingressChartPath, true)
+	t.TestUploadBeaconCharts(BeaconConsensusClientChartPath, BeaconExecClientChartPath, IngressChartPath, true)
 }
 
 func (t *BeaconCookbookTestSuite) TestUploadEphemeralBeaconStakingConfig() {
@@ -192,17 +192,17 @@ func (t *BeaconCookbookTestSuite) TestUploadEphemeralStandardBeaconConfig() {
 }
 
 func (t *BeaconCookbookTestSuite) TestUploadEphemeralBeaconConfig(withIngress bool) {
-	consensusClientChart.ClusterClassName = clusterClassName
-	execClientChart.ClusterClassName = clusterClassName
-	ingressChart.ClusterClassName = clusterClassName
+	ConsensusClientChart.ClusterClassName = clusterClassName
+	ExecClientChart.ClusterClassName = clusterClassName
+	IngressChart.ClusterClassName = clusterClassName
 
-	cp := beaconConsensusClientChartPath
+	cp := BeaconConsensusClientChartPath
 	cp.DirOut = "./ethereum/beacons/infra/processed_consensus_client"
 
-	ep := beaconExecClientChartPath
+	ep := BeaconExecClientChartPath
 	ep.DirOut = "./ethereum/beacons/infra/processed_exec_client"
 
-	ing := ingressChartPath
+	ing := IngressChartPath
 	ing.DirOut = "./ethereum/beacons/infra/processed_beacon_ingress"
 
 	ConfigEphemeralLighthouseGethBeacon(cp, ep, ing, withIngress)
