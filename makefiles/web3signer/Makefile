@@ -14,7 +14,6 @@ docker.pubbuildx:
 
 FOLDER_NAME=web3signer
 VOLUME_NAME=${FOLDER_NAME}_postgres
-CONTAINER_NAME=postgres
 ROOT_PATH=../../
 
 pg.fresh:
