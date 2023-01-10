@@ -15,12 +15,14 @@ type Web3SignerCookbookTestSuite struct {
 	ZeusTestClient zeus_client.ZeusClient
 
 	CustomWeb3SignerImage string
+	AuthURL               string
 }
 
 func (t *Web3SignerCookbookTestSuite) SetupTest() {
 	// points dir to test/configs
 	tc := configs.InitLocalTestConfigs()
 	t.CustomWeb3SignerImage = tc.Web3SignerDockerImage
+	t.AuthURL = tc.Web3SignerAuthURL
 	// uses the bearer token from test/configs/config.yaml
 	t.ZeusTestClient = zeus_client.NewDefaultZeusClient(tc.Bearer)
 	//t.ZeusTestClient = zeus_client.NewZeusClient("http://localhost:9001", tc.Bearer)

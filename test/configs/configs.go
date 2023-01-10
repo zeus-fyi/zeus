@@ -24,6 +24,7 @@ type TestContainer struct {
 	HDWalletPassword string
 
 	Web3SignerDockerImage string
+	Web3SignerAuthURL     string
 }
 
 func InitLocalTestConfigs() TestContainer {
@@ -45,5 +46,6 @@ func InitLocalTestConfigs() TestContainer {
 	testCont.LocalMnemonic24Words = viper.GetString("MNEMONIC_24_WORDS")
 	testCont.HDWalletPassword = viper.GetString("HD_WALLET_PASSWORD")
 	testCont.Web3SignerDockerImage = viper.GetString("WEB3SIGNER_DOCKER_IMG")
+	testCont.Web3SignerAuthURL = viper.GetString("WEB3SIGNER_AUTH_URL")
 	return testCont
 }
