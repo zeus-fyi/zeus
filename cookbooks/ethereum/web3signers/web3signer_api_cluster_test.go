@@ -62,13 +62,14 @@ func (t *Web3SignerCookbookTestSuite) TestUploadWeb3SignerAPIChart() {
 
 	infCfg := zeus_topology_config_drivers.IngressDriver{NginxAuthURL: t.AuthURL}
 	stsCfg := GetWeb3SignerAPIStatefulSetConfig(t.CustomWeb3SignerImage)
+	svcCfg := GetWeb3SignerAPIServiceConfig()
 	tc := zeus_topology_config_drivers.TopologyConfigDriver{
 		IngressDriver:     &infCfg,
 		StatefulSetDriver: &stsCfg,
+		ServiceDriver:     &svcCfg,
 	}
 
 	tc.SetCustomConfig(&inf)
-
 	resp, err := t.ZeusTestClient.UploadChart(ctx, Web3SignerChartPath, Web3SignerChart)
 	t.Require().Nil(err)
 	t.Assert().NotZero(resp.TopologyID)

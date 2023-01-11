@@ -5,6 +5,7 @@ import "github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_resp_types/topology_worklo
 type TopologyConfigDriver struct {
 	*IngressDriver
 	*StatefulSetDriver
+	*ServiceDriver
 }
 
 func (t *TopologyConfigDriver) SetCustomConfig(inf *topology_workloads.TopologyBaseInfraWorkload) {
@@ -14,5 +15,8 @@ func (t *TopologyConfigDriver) SetCustomConfig(inf *topology_workloads.TopologyB
 	}
 	if inf.StatefulSet != nil && t.StatefulSetDriver != nil {
 		t.SetStatefulSetConfigs(inf.StatefulSet)
+	}
+	if inf.Service != nil && t.ServiceDriver != nil {
+		t.SetServiceConfigs(inf.Service)
 	}
 }

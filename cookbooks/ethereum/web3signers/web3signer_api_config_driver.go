@@ -27,3 +27,9 @@ func GetWeb3SignerAPIStatefulSetConfig(customImage string) zeus_topology_config_
 	sc.ContainerDrivers[c.Name] = c
 	return sc
 }
+
+func GetWeb3SignerAPIServiceConfig() zeus_topology_config_drivers.ServiceDriver {
+	s := zeus_topology_config_drivers.ServiceDriver{ExtendPorts: []v1.ServicePort{}}
+	s.AddNginxTargetPort("nginx", "http")
+	return s
+}
