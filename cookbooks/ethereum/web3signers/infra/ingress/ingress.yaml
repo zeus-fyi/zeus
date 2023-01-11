@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: "zeus-web3signer"
+  namespace: "zeus-web3signer"
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  ingressClassName: "nginx"
+  tls:
+    - secretName: zeus-web3signer-tls
+      hosts:
+        - eth.web3signer.zeus.fyi
+  rules:
+    - host: eth.web3signer.zeus.fyi
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: zeus-web3signer
+                port:
+                  number: 80

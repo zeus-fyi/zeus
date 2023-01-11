@@ -3,6 +3,7 @@
 TODO.txt
 SCRATCH_PAD.txt
 
+test/mocks/hera/prompt_example/prompt.txt
 test/mocks/hera/custom_make/prompt.txt
 *scratch_pad.go
 *scratch_pad_test.go
