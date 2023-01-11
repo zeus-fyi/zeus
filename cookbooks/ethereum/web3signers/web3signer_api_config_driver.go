@@ -1,34 +1,29 @@
 package web3signer_cookbooks
 
 import (
-	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_resp_types/topology_workloads"
+	web3signer_cmds_ai_generated "github.com/zeus-fyi/zeus/cookbooks/ethereum/web3signers/web3signer_cmds/ai_generated"
+	zeus_topology_config_drivers "github.com/zeus-fyi/zeus/pkg/zeus/config_drivers"
 	v1 "k8s.io/api/core/v1"
 )
 
-type Web3SignerStatefulSetConfig struct {
-	Web3SignerContainerCfg
-}
-
-// TODO add ports, cmd & args to config driver
-
-type Web3SignerContainerCfg struct {
-	CustomImage string
-	EnvVars     []v1.EnvVar
-}
-
-func Web3SignerAPIConfigDriver(inf topology_workloads.TopologyBaseInfraWorkload, stsCfg Web3SignerStatefulSetConfig) {
-	if inf.StatefulSet != nil {
-		for i, c := range inf.StatefulSet.Spec.Template.Spec.Containers {
-			if c.Name == web3SignerClient {
-				if len(stsCfg.CustomImage) > 0 {
-					inf.StatefulSet.Spec.Template.Spec.Containers[i].Image = stsCfg.CustomImage
-				} else {
-					inf.StatefulSet.Spec.Template.Spec.Containers[i].Image = web3signerDockerImage
-				}
-				if stsCfg.EnvVars != nil {
-					c.Env = stsCfg.EnvVars
-				}
-			}
-		}
+func GetWeb3SignerAPIStatefulSetConfig(customImage string) zeus_topology_config_drivers.StatefulSetDriver {
+	args, _ := web3signer_cmds_ai_generated.Web3SignerAPICmd.CreateFieldsForCLI("eth2")
+	port := v1.ContainerPort{
+		Name:          "http",
+		ContainerPort: 9000,
 	}
+	c := v1.Container{
+		Name:      web3SignerClient,
+		Image:     customImage,
+		Command:   []string{"/bin/sh"},
+		Args:      args,
+		Ports:     []v1.ContainerPort{port},
+		Env:       []v1.EnvVar{},
+		Resources: v1.ResourceRequirements{},
+	}
+
+	sc := zeus_topology_config_drivers.StatefulSetDriver{}
+	sc.ContainerDrivers = make(map[string]v1.Container)
+	sc.ContainerDrivers[c.Name] = c
+	return sc
 }

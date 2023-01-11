@@ -5,7 +5,7 @@ import (
 
 	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_req_types"
 	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_resp_types/topology_workloads"
-	v1 "k8s.io/api/core/v1"
+	zeus_topology_config_drivers "github.com/zeus-fyi/zeus/pkg/zeus/config_drivers"
 )
 
 func (t *Web3SignerCookbookTestSuite) TestClusterAPIDeploy() {
@@ -54,12 +54,20 @@ func (t *Web3SignerCookbookTestSuite) TestUploadWeb3SignerAPIChart() {
 	err := Web3SignerChartPath.WalkAndApplyFuncToFileType(".yaml", inf.DecodeK8sWorkload)
 	t.Require().Nil(err)
 
-	stsCfg := Web3SignerStatefulSetConfig{Web3SignerContainerCfg{
-		CustomImage: t.CustomWeb3SignerImage,
-		EnvVars:     []v1.EnvVar{},
-	}}
+	ingr := topology_workloads.NewTopologyBaseInfraWorkload()
+	err = Web3SignerIngressChartPath.WalkAndApplyFuncToFileType(".yaml", ingr.DecodeK8sWorkload)
+	t.Require().Nil(err)
 
-	Web3SignerAPIConfigDriver(inf, stsCfg)
+	inf.Ingress = ingr.Ingress
+
+	infCfg := zeus_topology_config_drivers.IngressDriver{NginxAuthURL: t.AuthURL}
+	stsCfg := GetWeb3SignerAPIStatefulSetConfig(t.CustomWeb3SignerImage)
+	tc := zeus_topology_config_drivers.TopologyConfigDriver{
+		IngressDriver:     &infCfg,
+		StatefulSetDriver: &stsCfg,
+	}
+
+	tc.SetCustomConfig(&inf)
 
 	resp, err := t.ZeusTestClient.UploadChart(ctx, Web3SignerChartPath, Web3SignerChart)
 	t.Require().Nil(err)
@@ -73,13 +81,6 @@ func (t *Web3SignerCookbookTestSuite) TestUploadWeb3SignerAPIChart() {
 
 	err = chartResp.PrintWorkload(Web3SignerChartPath)
 	t.Require().Nil(err)
-
-	ingr := topology_workloads.NewTopologyBaseInfraWorkload()
-	err = Web3SignerIngressChartPath.WalkAndApplyFuncToFileType(".yaml", ingr.DecodeK8sWorkload)
-	t.Require().Nil(err)
-
-	cfg := Web3SignerIngressConfig{t.AuthURL}
-	Web3SignerIngressConfigDriver(ingr, cfg)
 
 	resp, err = t.ZeusTestClient.UploadChart(ctx, Web3SignerIngressChartPath, Web3SignerIngressChart)
 	t.Require().Nil(err)
