@@ -28,8 +28,8 @@ var Web3SignerExternalAPIClusterDefinition = zeus_req_types.ClusterTopologyDeplo
 
 var Web3SignerExternalAPICloudCtxNs = zeus_common_types.CloudCtxNs{
 	CloudProvider: "do",
-	Region:        "sfo3",
-	Context:       "do-sfo3-dev-do-sfo3-zeus",
+	Region:        "nyc1",
+	Context:       "do-nyc1-do-nyc1-zeus-demo",
 	Namespace:     "web3signer",
 	Env:           "dev",
 }
@@ -37,6 +37,26 @@ var Web3SignerExternalAPICloudCtxNs = zeus_common_types.CloudCtxNs{
 var DeployWeb3SignerExternalAPIKnsReq = zeus_req_types.TopologyDeployRequest{
 	TopologyID: 0,
 	CloudCtxNs: Web3SignerExternalAPICloudCtxNs,
+}
+
+var Web3SignerAPIChart = zeus_req_types.TopologyCreateRequest{
+	TopologyName:      Web3SignerExternalAPIClusterClassName,
+	ChartName:         Web3SignerExternalAPIClusterClassName,
+	ChartDescription:  Web3SignerExternalAPIClusterClassName,
+	Version:           fmt.Sprintf("web3SignerAPI-v.0.%d", time.Now().Unix()),
+	SkeletonBaseName:  Web3SignerExternalAPIClusterSkeletonBaseName,
+	ComponentBaseName: Web3SignerExternalAPIClusterBaseName,
+	ClusterClassName:  Web3SignerExternalAPIClusterClassName,
+	Tag:               "latest",
+}
+
+var Web3SignerAPIChartChartPath = filepaths.Path{
+	PackageName: "",
+	DirIn:       "./ethereum/web3signers/infra/consensys_web3signer_custom_config",
+	DirOut:      "./ethereum/web3signers/infra/processed_consensys_web3signer",
+	FnIn:        Web3SignerExternalAPIClusterClassName, // filename for your gzip workload
+	FnOut:       "",
+	Env:         "",
 }
 
 var Web3SignerIngressChart = zeus_req_types.TopologyCreateRequest{

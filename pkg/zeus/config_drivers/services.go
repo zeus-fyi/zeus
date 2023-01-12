@@ -29,6 +29,6 @@ func (s *ServiceDriver) AddNginxTargetPort(portName, targetPortName string) {
 		Name:       portName,
 		Protocol:   "TCP",
 		Port:       80,
-		TargetPort: intstr.IntOrString{StrVal: targetPortName},
+		TargetPort: intstr.IntOrString{Type: intstr.String, StrVal: targetPortName},
 	})
 }

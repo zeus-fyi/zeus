@@ -45,32 +45,37 @@ func (t *Web3SignerCookbookTestSuite) TestCreateAPIClusterSkeletonBases() {
 	}
 	_, err := t.ZeusTestClient.AddSkeletonBasesToClass(ctx, cc)
 	t.Require().Nil(err)
-
 }
+
+// TODO split this into ingress, and core workfload
 func (t *Web3SignerCookbookTestSuite) TestUploadWeb3SignerAPIChart() {
 	ctx := context.Background()
 
-	inf := topology_workloads.NewTopologyBaseInfraWorkload()
-	err := Web3SignerChartPath.WalkAndApplyFuncToFileType(".yaml", inf.DecodeK8sWorkload)
+	ingr := topology_workloads.NewTopologyBaseInfraWorkload()
+	err := Web3SignerIngressChartPath.WalkAndApplyFuncToFileType(".yaml", ingr.DecodeK8sWorkload)
 	t.Require().Nil(err)
 
-	ingr := topology_workloads.NewTopologyBaseInfraWorkload()
+	// sets the custom ingress config
+	infCfg := zeus_topology_config_drivers.IngressDriver{NginxAuthURL: t.AuthURL}
+	customIngTc := zeus_topology_config_drivers.TopologyConfigDriver{
+		IngressDriver: &infCfg,
+	}
+	customIngTc.SetCustomConfig(&ingr)
+	// prints the new customized workload, and then uploads this new customized version
+	// switches the print path, since it defaults to the DirOut path
+	// TODO use function to do this custom config path switching and refactor
+	tmp := Web3SignerIngressChartPath.DirOut
+	Web3SignerIngressChartPath.DirOut = "./ethereum/web3signers/infra/custom_ingress"
+	err = ingr.PrintWorkload(Web3SignerIngressChartPath)
+	t.Require().Nil(err)
+	Web3SignerIngressChartPath.DirOut = tmp
+
+	// read the new config ingress
+	Web3SignerIngressChartPath.DirIn = "./ethereum/web3signers/infra/custom_ingress"
 	err = Web3SignerIngressChartPath.WalkAndApplyFuncToFileType(".yaml", ingr.DecodeK8sWorkload)
 	t.Require().Nil(err)
 
-	inf.Ingress = ingr.Ingress
-
-	infCfg := zeus_topology_config_drivers.IngressDriver{NginxAuthURL: t.AuthURL}
-	stsCfg := GetWeb3SignerAPIStatefulSetConfig(t.CustomWeb3SignerImage)
-	svcCfg := GetWeb3SignerAPIServiceConfig()
-	tc := zeus_topology_config_drivers.TopologyConfigDriver{
-		IngressDriver:     &infCfg,
-		StatefulSetDriver: &stsCfg,
-		ServiceDriver:     &svcCfg,
-	}
-
-	tc.SetCustomConfig(&inf)
-	resp, err := t.ZeusTestClient.UploadChart(ctx, Web3SignerChartPath, Web3SignerChart)
+	resp, err := t.ZeusTestClient.UploadChart(ctx, Web3SignerIngressChartPath, Web3SignerIngressChart)
 	t.Require().Nil(err)
 	t.Assert().NotZero(resp.TopologyID)
 
@@ -80,10 +85,36 @@ func (t *Web3SignerCookbookTestSuite) TestUploadWeb3SignerAPIChart() {
 	t.Require().Nil(err)
 	t.Assert().NotEmpty(chartResp)
 
-	err = chartResp.PrintWorkload(Web3SignerChartPath)
+	err = chartResp.PrintWorkload(Web3SignerIngressChartPath)
 	t.Require().Nil(err)
 
-	resp, err = t.ZeusTestClient.UploadChart(ctx, Web3SignerIngressChartPath, Web3SignerIngressChart)
+	// part2, core workload \\
+
+	// gets base chart Web3SignerChartPath, then processes it and dumps to the custom config folder
+	inf := topology_workloads.NewTopologyBaseInfraWorkload()
+	err = Web3SignerChartPath.WalkAndApplyFuncToFileType(".yaml", inf.DecodeK8sWorkload)
+	t.Require().Nil(err)
+
+	// don't need configmap, so remove
+	inf.ConfigMap = nil
+
+	stsCfg := GetWeb3SignerAPIStatefulSetConfig(t.CustomWeb3SignerImage)
+	svcCfg := GetWeb3SignerAPIServiceConfig()
+	tc := zeus_topology_config_drivers.TopologyConfigDriver{
+		StatefulSetDriver: &stsCfg,
+		ServiceDriver:     &svcCfg,
+	}
+
+	// prints the new customized workload, and then uploads this new customized version
+	// switches the print path, since it defaults to the DirOut path
+	tmp = Web3SignerAPIChartChartPath.DirOut
+	Web3SignerAPIChartChartPath.DirOut = Web3SignerAPIChartChartPath.DirIn
+	tc.SetCustomConfig(&inf)
+	err = inf.PrintWorkload(Web3SignerAPIChartChartPath)
+	t.Require().Nil(err)
+	Web3SignerAPIChartChartPath.DirOut = tmp
+
+	resp, err = t.ZeusTestClient.UploadChart(ctx, Web3SignerAPIChartChartPath, Web3SignerAPIChart)
 	t.Require().Nil(err)
 	t.Assert().NotZero(resp.TopologyID)
 
@@ -93,6 +124,6 @@ func (t *Web3SignerCookbookTestSuite) TestUploadWeb3SignerAPIChart() {
 	t.Require().Nil(err)
 	t.Assert().NotEmpty(chartResp)
 
-	err = chartResp.PrintWorkload(Web3SignerIngressChartPath)
+	err = chartResp.PrintWorkload(Web3SignerAPIChartChartPath)
 	t.Require().Nil(err)
 }
