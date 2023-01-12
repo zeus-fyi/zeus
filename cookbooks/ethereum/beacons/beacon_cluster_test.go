@@ -219,5 +219,4 @@ func (t *BeaconCookbookTestSuite) TestUploadEphemeralBeaconConfig(withIngress bo
 	resp, err := t.ZeusTestClient.UploadChart(ctx, choreography_cookbooks.GenericDeploymentChartPath, choreography_cookbooks.GenericChoreographyChart)
 	t.Require().Nil(err)
 	t.Assert().NotZero(resp.TopologyID)
-
 }
