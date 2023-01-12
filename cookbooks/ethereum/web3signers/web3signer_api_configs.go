@@ -21,7 +21,7 @@ var (
 var Web3SignerExternalAPIClusterDefinition = zeus_req_types.ClusterTopologyDeployRequest{
 	ClusterClassName: Web3SignerExternalAPIClusterClassName,
 	SkeletonBaseOptions: []string{
-		Web3SignerExternalAPIClusterSkeletonBaseName,
+		Web3SignerExternalAPIClusterSkeletonBaseName, Web3SignerExternalAPIClusterIngressSkeletonBaseName,
 	},
 	CloudCtxNs: Web3SignerExternalAPICloudCtxNs,
 }

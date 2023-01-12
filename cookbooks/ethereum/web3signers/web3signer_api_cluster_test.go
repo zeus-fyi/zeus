@@ -41,9 +41,18 @@ func (t *Web3SignerCookbookTestSuite) TestCreateAPIClusterSkeletonBases() {
 	cc := zeus_req_types.TopologyCreateOrAddSkeletonBasesToClassesRequest{
 		ClusterClassName:  Web3SignerExternalAPIClusterClassName,
 		ComponentBaseName: Web3SignerExternalAPIClusterBaseName,
-		SkeletonBaseNames: []string{Web3SignerExternalAPIClusterSkeletonBaseName, Web3SignerExternalAPIClusterIngressSkeletonBaseName},
+		SkeletonBaseNames: []string{Web3SignerExternalAPIClusterSkeletonBaseName},
 	}
 	_, err := t.ZeusTestClient.AddSkeletonBasesToClass(ctx, cc)
+	t.Require().Nil(err)
+
+	// ingress
+	cc = zeus_req_types.TopologyCreateOrAddSkeletonBasesToClassesRequest{
+		ClusterClassName:  Web3SignerExternalAPIClusterClassName,
+		ComponentBaseName: Web3SignerExternalAPIClusterIngressBaseName,
+		SkeletonBaseNames: []string{Web3SignerExternalAPIClusterIngressSkeletonBaseName},
+	}
+	_, err = t.ZeusTestClient.AddSkeletonBasesToClass(ctx, cc)
 	t.Require().Nil(err)
 }
 
@@ -95,10 +104,7 @@ func (t *Web3SignerCookbookTestSuite) TestUploadWeb3SignerAPIChart() {
 	err = Web3SignerChartPath.WalkAndApplyFuncToFileType(".yaml", inf.DecodeK8sWorkload)
 	t.Require().Nil(err)
 
-	// don't need configmap, so remove
-	inf.ConfigMap = nil
-
-	stsCfg := GetWeb3SignerAPIStatefulSetConfig(t.CustomWeb3SignerImage)
+	stsCfg := GetWeb3SignerAPIStatefulSetConfig(web3signerDockerImage)
 	svcCfg := GetWeb3SignerAPIServiceConfig()
 	tc := zeus_topology_config_drivers.TopologyConfigDriver{
 		StatefulSetDriver: &stsCfg,
