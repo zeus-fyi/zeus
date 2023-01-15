@@ -9,12 +9,12 @@ import (
 
 func (t *EthereumWeb3SignerCookbookTestSuite) TestWriteYamlConfig() {
 	k := Web3SignerKeystores{}
-	k.ReadKeystoreDirAndAppendPw(ctx, keystorePath, t.Tc.HDWalletPassword)
+	k.ReadKeystoreDirAndAppendPw(ctx, KeystorePath, t.Tc.HDWalletPassword)
 	t.Assert().NotEmpty(k.Keystores)
 
 	fl := strings_filter.FilterOpts{StartsWith: "deposit"}
-	keystorePath.FilterFiles = &fl
-	dp, err := signing_automation_ethereum.ParseValidatorDepositSliceJSON(context.Background(), keystorePath)
+	KeystorePath.FilterFiles = &fl
+	dp, err := signing_automation_ethereum.ParseValidatorDepositSliceJSON(context.Background(), KeystorePath)
 	t.Require().Nil(err)
 	lh := LighthouseWeb3SignerRequests{}
 	lh.Web3SignerURL = "http://zeus-web3signer:9000"
@@ -24,7 +24,7 @@ func (t *EthereumWeb3SignerCookbookTestSuite) TestWriteYamlConfig() {
 
 	od := "./ethereum/automation/lighthouse_config_yaml"
 
-	keystorePath.DirOut = od
-	err = lh.WriteYamlConfig(keystorePath)
+	KeystorePath.DirOut = od
+	err = lh.WriteYamlConfig(KeystorePath)
 	t.Require().Nil(err)
 }

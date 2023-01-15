@@ -31,8 +31,8 @@ func (t *EthereumWeb3SignerCookbookTestSuite) TestLighthouseImportWeb3SignerAPI(
 
 	token := resp.GetAnyValue()
 	fl := strings_filter.FilterOpts{StartsWith: "deposit"}
-	keystorePath.FilterFiles = &fl
-	k, err := signing_automation_ethereum.ParseValidatorDepositSliceJSON(context.Background(), keystorePath)
+	KeystorePath.FilterFiles = &fl
+	k, err := signing_automation_ethereum.ParseValidatorDepositSliceJSON(context.Background(), KeystorePath)
 	t.Require().Nil(err)
 	lh := LighthouseWeb3SignerRequests{}
 	lh.Web3SignerURL = "http://zeus-web3signer:9000"
