@@ -11,7 +11,7 @@ import (
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 )
 
-var keystorePath = filepaths.Path{
+var KeystorePath = filepaths.Path{
 	PackageName: "",
 	DirIn:       "./ethereum/automation/validator_keys/ephemery",
 	DirOut:      "./ethereum/automation/validator_keys/ephemery",
@@ -25,7 +25,7 @@ var ctx = context.Background()
 func (t *EthereumWeb3SignerCookbookTestSuite) TestImportWeb3SignerKeysViaKeystoreAPI() {
 	kns := validator_cookbooks.ValidatorCloudCtxNs
 	w3 := Web3SignerActionsClient{t.ZeusTestClient}
-	resp, err := w3.ImportKeystores(ctx, kns, keystorePath, t.Tc.HDWalletPassword)
+	resp, err := w3.ImportKeystores(ctx, kns, KeystorePath, t.Tc.HDWalletPassword)
 	t.Require().Nil(err)
 	t.Assert().NotEmpty(resp)
 	fmt.Println(resp)
@@ -33,7 +33,7 @@ func (t *EthereumWeb3SignerCookbookTestSuite) TestImportWeb3SignerKeysViaKeystor
 
 func (t *EthereumWeb3SignerCookbookTestSuite) TestReadKeystoreFile() {
 	k := Web3SignerKeystores{}
-	k.ReadKeystoreDirAndAppendPw(ctx, keystorePath, t.Tc.HDWalletPassword)
+	k.ReadKeystoreDirAndAppendPw(ctx, KeystorePath, t.Tc.HDWalletPassword)
 	t.Assert().NotEmpty(k.Keystores)
 }
 
