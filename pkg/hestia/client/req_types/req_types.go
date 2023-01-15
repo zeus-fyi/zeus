@@ -15,7 +15,6 @@ type ValidatorServiceOrgGroupSlice []ValidatorServiceOrgGroup
 
 type ValidatorServiceOrgGroup struct {
 	GroupName         string `json:"groupName"`
-	OrgID             int    `json:"orgID"`
 	Pubkey            string `json:"pubkey"`
 	ProtocolNetworkID int    `json:"protocolNetworkID"`
 	FeeRecipient      string `json:"feeRecipient"`
@@ -28,8 +27,6 @@ type ServiceRequestWrapper struct {
 	FeeRecipient      string `json:"feeRecipient"`
 	Enabled           bool   `json:"enabled"`
 }
-
-// OrgID is populated for you from your auth key sent via your request
 
 func (vsr *CreateValidatorServiceRequest) CreateValidatorServiceRequest(dp signing_automation_ethereum.ValidatorDepositSlice, srw ServiceRequestWrapper) {
 	vsr.ValidatorServiceOrgGroupSlice = make([]ValidatorServiceOrgGroup, len(dp))

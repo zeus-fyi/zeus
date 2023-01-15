@@ -25,7 +25,8 @@ func (t *HestiaClientTestSuite) SetupTest() {
 	t.HestiaTestClient = NewDefaultHestiaClient(tc.Bearer)
 	// t.HestiaTestClient = NewLocalHestiaClient(tc.Bearer)
 	// points working dir to inside /test
-	t.TestAccount1 = ecdsa.NewAccount(t.Tc.LocalEcsdaTestPkey)
+	pkHexString := tc.LocalEcsdaTestPkey
+	t.TestAccount1 = ecdsa.NewAccount(pkHexString)
 }
 
 func TestHestiaClientTestSuite(t *testing.T) {

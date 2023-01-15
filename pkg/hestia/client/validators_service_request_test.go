@@ -10,6 +10,7 @@ import (
 func (t *HestiaClientTestSuite) TestValidatorServiceRequest() {
 	hs := hestia_req_types.CreateValidatorServiceRequest{}
 	cookbooks.ChangeToCookbookDir()
+
 	dp, err := signing_automation_ethereum.ParseValidatorDepositSliceJSON(ctx, ethereum_automation_cookbook.KeystorePath)
 	t.Require().Nil(err)
 	t.Assert().NotEmpty(dp)
