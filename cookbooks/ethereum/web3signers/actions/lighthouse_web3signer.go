@@ -18,7 +18,6 @@ func (w *Web3SignerActionsClient) EnableWeb3SignerLighthouse(ctx context.Context
 	authToken = strings.TrimPrefix(authToken, "\"")
 	authToken = strings.TrimSuffix(authToken, "\"\n")
 	h["Authorization"] = authToken
-
 	cliReq := zeus_pods_reqs.ClientRequest{
 		MethodHTTP:      "POST",
 		Endpoint:        client_consts.LighthouseWeb3SignerAPIEndpoint,

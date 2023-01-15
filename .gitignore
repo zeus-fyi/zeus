@@ -55,3 +55,4 @@ Thumbs.db
 /cookbooks/ethereum/web3signers/infra/processed_consensys_web3signer/
 /cookbooks/ethereum/web3signers/infra/consensys_web3signer_custom_config/
 /cookbooks/ethereum/web3signers/infra/custom_ingress/
+/cookbooks/ethereum/automation/lighthouse_config_yaml/
