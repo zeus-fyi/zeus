@@ -1,6 +1,9 @@
 package hestia_req_types
 
-import signing_automation_ethereum "github.com/zeus-fyi/zeus/pkg/artemis/signing_automation/ethereum"
+import (
+	signing_automation_ethereum "github.com/zeus-fyi/zeus/pkg/artemis/signing_automation/ethereum"
+	strings_filter "github.com/zeus-fyi/zeus/pkg/utils/strings"
+)
 
 const (
 	EthereumMainnetProtocolNetworkID  = 1
@@ -35,6 +38,6 @@ func (vsr *CreateValidatorServiceRequest) CreateValidatorServiceRequest(dp signi
 		vsr.ValidatorServiceOrgGroupSlice[i].FeeRecipient = srw.FeeRecipient
 		vsr.ValidatorServiceOrgGroupSlice[i].Enabled = srw.Enabled
 		vsr.ValidatorServiceOrgGroupSlice[i].ProtocolNetworkID = srw.ProtocolNetworkID
-		vsr.ValidatorServiceOrgGroupSlice[i].Pubkey = k.Pubkey
+		vsr.ValidatorServiceOrgGroupSlice[i].Pubkey = strings_filter.AddHexPrefix(k.Pubkey)
 	}
 }
