@@ -6,7 +6,7 @@ import (
 
 	"github.com/stretchr/testify/suite"
 	"github.com/zeus-fyi/zeus/cookbooks"
-	ethereum_beacon_cookbooks "github.com/zeus-fyi/zeus/cookbooks/ethereum/beacons"
+	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 	zeus_client "github.com/zeus-fyi/zeus/pkg/zeus/client"
 	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_common_types"
 	zeus_topology_config_drivers "github.com/zeus-fyi/zeus/pkg/zeus/workload_config_drivers"
@@ -17,6 +17,33 @@ import (
 type ClusterConfigTestSuite struct {
 	test_suites.BaseTestSuite
 	ZeusTestClient zeus_client.ZeusClient
+}
+
+var BeaconExecClientChartPath = filepaths.Path{
+	PackageName: "",
+	DirIn:       "./ethereum/beacons/infra/exec_client",
+	DirOut:      "./ethereum/outputs",
+	FnIn:        "gethHercules", // filename for your gzip workload
+	FnOut:       "",
+	Env:         "",
+}
+
+var BeaconConsensusClientChartPath = filepaths.Path{
+	PackageName: "",
+	DirIn:       "./ethereum/beacons/infra/consensus_client",
+	DirOut:      "./ethereum/outputs",
+	FnIn:        "lighthouseHercules", // filename for your gzip workload
+	FnOut:       "",
+	Env:         "",
+}
+
+var IngressChartPath = filepaths.Path{
+	PackageName: "",
+	DirIn:       "./ethereum/beacons/infra/ingress",
+	DirOut:      "./ethereum/beacons/infra/processed_beacon_ingress",
+	FnIn:        "beaconIngress", // filename for your gzip workload
+	FnOut:       "",
+	Env:         "",
 }
 
 func (t *ClusterConfigTestSuite) TestClusterCreation() {
@@ -34,11 +61,11 @@ func (t *ClusterConfigTestSuite) TestClusterCreation() {
 
 	cd.ComponentBases["executionClient"] = ComponentBaseDefinition{SkeletonBases: make(map[string]ClusterSkeletonBaseDefinition)}
 	cd.ComponentBases["executionClient"].SkeletonBases["gethHercules"] = ClusterSkeletonBaseDefinition{
-		SkeletonBaseNameChartPath: ethereum_beacon_cookbooks.BeaconExecClientChartPath,
+		SkeletonBaseNameChartPath: BeaconExecClientChartPath,
 	}
 	cd.ComponentBases["consensusClient"] = ComponentBaseDefinition{SkeletonBases: make(map[string]ClusterSkeletonBaseDefinition)}
 	cd.ComponentBases["consensusClient"].SkeletonBases["lighthouseHercules"] = ClusterSkeletonBaseDefinition{
-		SkeletonBaseNameChartPath: ethereum_beacon_cookbooks.BeaconConsensusClientChartPath,
+		SkeletonBaseNameChartPath: BeaconConsensusClientChartPath,
 	}
 
 	gcd := cd.BuildClusterDefinitions()
@@ -67,7 +94,7 @@ func (t *ClusterConfigTestSuite) TestClusterCreation() {
 
 	cd.ComponentBases["ingress"] = ComponentBaseDefinition{SkeletonBases: make(map[string]ClusterSkeletonBaseDefinition)}
 	cd.ComponentBases["ingress"].SkeletonBases["ingress"] = ClusterSkeletonBaseDefinition{
-		SkeletonBaseNameChartPath: ethereum_beacon_cookbooks.IngressChartPath,
+		SkeletonBaseNameChartPath: IngressChartPath,
 		TopologyConfigDriver:      &customIngTc,
 	}
 

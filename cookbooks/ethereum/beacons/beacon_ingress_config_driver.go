@@ -1,7 +1,13 @@
 package ethereum_beacon_cookbooks
 
 import (
+	"fmt"
+	"time"
+
+	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
+	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_req_types"
 	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_resp_types/topology_workloads"
+	zeus_cluster_config_drivers "github.com/zeus-fyi/zeus/pkg/zeus/cluster_config_drivers"
 )
 
 const (
@@ -10,6 +16,31 @@ const (
 	host               = "eth.ephemeral.zeus.fyi"
 	ephemeralNamespace = "ephemeral"
 )
+
+var BeaconIngressSkeletonBaseConfig = zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
+	SkeletonBaseChart:         zeus_req_types.TopologyCreateRequest{},
+	SkeletonBaseNameChartPath: BeaconConsensusClientChartPath,
+}
+
+var IngressChart = zeus_req_types.TopologyCreateRequest{
+	TopologyName:      "beaconIngress",
+	ChartName:         "beaconIngress",
+	ChartDescription:  "beaconIngress",
+	Version:           fmt.Sprintf("beaconIngress-v.0.%d", time.Now().Unix()),
+	SkeletonBaseName:  "beaconIngress",
+	ComponentBaseName: "beaconIngress",
+	ClusterClassName:  "ethereumBeacon",
+	Tag:               "latest",
+}
+
+var IngressChartPath = filepaths.Path{
+	PackageName: "",
+	DirIn:       "./ethereum/beacons/infra/ingress",
+	DirOut:      "./ethereum/beacons/infra/processed_beacon_ingress",
+	FnIn:        "beaconIngress", // filename for your gzip workload
+	FnOut:       "",
+	Env:         "",
+}
 
 func EphemeralIngressConfig(inf topology_workloads.TopologyBaseInfraWorkload) {
 	if inf.Ingress != nil {

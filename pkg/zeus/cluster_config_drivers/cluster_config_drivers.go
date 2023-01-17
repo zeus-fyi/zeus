@@ -60,9 +60,9 @@ func (c *ClusterDefinition) GenerateSkeletonBaseCharts() ([]ClusterSkeletonBaseD
 			if sb.TopologyConfigDriver != nil {
 				sb.TopologyConfigDriver.SetCustomConfig(&inf)
 				tmp := sb.SkeletonBaseNameChartPath.DirOut
-				dir, file := filepath.Split(sb.SkeletonBaseNameChartPath.DirIn)
+				dir, _ := filepath.Split(sb.SkeletonBaseNameChartPath.DirIn)
 				lastDir := strings.Split(dir, "/")[len(strings.Split(dir, "/"))-1]
-				newPath := fmt.Sprintf("%s/custom_%s/%s", dir[:len(dir)-len(lastDir)], lastDir, file)
+				newPath := fmt.Sprintf("%s/custom_%s", dir[:len(dir)-len(lastDir)], sbName)
 				sb.SkeletonBaseNameChartPath.DirOut = newPath
 				err = inf.PrintWorkload(sb.SkeletonBaseNameChartPath)
 				if err != nil {

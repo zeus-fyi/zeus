@@ -7,6 +7,8 @@ import (
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_common_types"
 	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_req_types"
+	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_resp_types/topology_workloads"
+	zeus_cluster_config_drivers "github.com/zeus-fyi/zeus/pkg/zeus/cluster_config_drivers"
 )
 
 var ChoreographyKnsReq = zeus_req_types.TopologyDeployRequest{
@@ -14,6 +16,15 @@ var ChoreographyKnsReq = zeus_req_types.TopologyDeployRequest{
 	CloudCtxNs: GenericChoreographyCloudCtxNs,
 }
 
+var ChoreographyComponentBase = zeus_cluster_config_drivers.ComponentBaseDefinition{
+	SkeletonBases: map[string]zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
+		"choreography": {
+			SkeletonBaseNameChartPath: GenericDeploymentChartPath,
+			Workload:                  topology_workloads.TopologyBaseInfraWorkload{},
+			TopologyConfigDriver:      nil,
+		},
+	},
+}
 var GenericChoreographyCloudCtxNs = zeus_common_types.CloudCtxNs{
 	CloudProvider: "do",
 	Region:        "sfo3",
