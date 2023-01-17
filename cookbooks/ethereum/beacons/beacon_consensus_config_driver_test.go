@@ -1,4 +1,4 @@
-package beacon_cookbooks
+package ethereum_beacon_cookbooks
 
 import (
 	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_resp_types/topology_workloads"

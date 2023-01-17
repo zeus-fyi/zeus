@@ -5,7 +5,7 @@ import (
 
 	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_req_types"
 	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_resp_types/topology_workloads"
-	zeus_topology_config_drivers "github.com/zeus-fyi/zeus/pkg/zeus/config_drivers"
+	zeus_topology_config_drivers "github.com/zeus-fyi/zeus/pkg/zeus/workload_config_drivers"
 )
 
 func (t *Web3SignerCookbookTestSuite) TestClusterAPIDeploy() {

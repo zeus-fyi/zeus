@@ -2,7 +2,7 @@ package web3signer_cookbooks
 
 import (
 	web3signer_cmds_ai_generated "github.com/zeus-fyi/zeus/cookbooks/ethereum/web3signers/web3signer_cmds/ai_generated"
-	zeus_topology_config_drivers "github.com/zeus-fyi/zeus/pkg/zeus/config_drivers"
+	zeus_topology_config_drivers "github.com/zeus-fyi/zeus/pkg/zeus/workload_config_drivers"
 	v1 "k8s.io/api/core/v1"
 )
 
