@@ -13,19 +13,7 @@ Event driven signature automation with remote signers using a synthetic beacon. 
 $10/mo solo or large scale enterprise staking for Ethereum per validator, all inclusive, no extra fees
 
 Scalable to all of mainnet. Yes, you read that right.
-
-### Automated web3 interactions and orchestrations 
  
- #### Timeline ~ Early January 23'
- 
-```
-IN: Params(Contract ABI, Address, Network, UsersAddresses)
-
-OUT: Array(Funcs, Params to Tune/Approve)
-```
-Set up an orchestrated highly reliable web3 action such as creating a validator, withdrawing from a smart contract,  or
-sending transactions or notifications based on event triggers such as smart contract state changes. 
-
 ### Automated web3 infrastructure setup
 
 #### Timeline ~ Late January 23'
@@ -144,9 +132,7 @@ Hades is used to interact with kubernetes workloads via API, and can apply saved
 
 ### Beacon API ###
 
-Users with bearer tokens are able to access our common mainnet Ethereum beacon API at https://eth.zeus.fyi, which supports both consensus client & exec client requests.
-
-The ephemeral beacon is open to anyone, no auth is requried. Large Eth quantities for testing is available on request.
+Our ephemeral ethereum testnet beacon is open to anyone, no auth is requried. Large Eth quantities for testing is available on request.
 
 ### https://eth.ephemeral.zeus.fyi
 
