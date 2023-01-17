@@ -228,8 +228,6 @@ Request a bearer token, email: alex@zeus.fyi
 
 ### Cluster Topology Class Hierarchy Definitions ###
 
-Network class creation coming soon for better organziation and easier management of more complex ecosystem configurations, here's an overview of how the hierarchy system will work.
-
 ### Highest to Lowest Level ###
 
 ### Deployable Topologies ###
