@@ -7,13 +7,13 @@ import (
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_common_types"
 	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_req_types"
+	zeus_topology_config_drivers "github.com/zeus-fyi/zeus/pkg/zeus/workload_config_drivers"
 )
 
 type ClusterDefinition struct {
 	ClusterClassName string
 	CloudCtxNs       zeus_common_types.CloudCtxNs
 	ComponentBases   map[string]ComponentBaseDefinition
-	BasePath         filepaths.Path
 }
 
 type ComponentBaseDefinition struct {
@@ -23,6 +23,7 @@ type ComponentBaseDefinition struct {
 type ClusterSkeletonBaseDefinition struct {
 	SkeletonBaseChart         zeus_req_types.TopologyCreateRequest
 	SkeletonBaseNameChartPath filepaths.Path
+	TopologyConfigDriver      *zeus_topology_config_drivers.TopologyConfigDriver
 }
 
 func (c *ClusterDefinition) GenerateDeploymentRequest() zeus_req_types.ClusterTopologyDeployRequest {

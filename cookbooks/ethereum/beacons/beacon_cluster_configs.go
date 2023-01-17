@@ -1,4 +1,4 @@
-package beacon_cookbooks
+package ethereum_beacon_cookbooks
 
 import (
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"

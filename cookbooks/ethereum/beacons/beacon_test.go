@@ -1,4 +1,4 @@
-package beacon_cookbooks
+package ethereum_beacon_cookbooks
 
 import (
 	"context"
