@@ -1,4 +1,4 @@
-package validator_cookbooks
+package ethereum_validator_cookbooks
 
 import (
 	"fmt"

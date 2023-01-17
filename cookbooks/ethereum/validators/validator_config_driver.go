@@ -1,4 +1,4 @@
-package validator_cookbooks
+package ethereum_validator_cookbooks
 
 import (
 	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_resp_types/topology_workloads"
