@@ -218,7 +218,7 @@ AWS, GCP, Azure, type cloud companies purposely have highly confusing pricing mo
 3. PortforwardReqToPods
 4. DeletePods
 
-Not every possible field type is supported in the MVP version, but the most common ones are.
+Not every possible field type is supported, but the most common ones are, and even a decent amount of the uncommon ones.
 
 See demos section for api calls, you'll need to get a bearer token from us first. More documentation to come.
 Schedule a demo: https://calendly.com/alex-zeus-fyi/zeus-demo
