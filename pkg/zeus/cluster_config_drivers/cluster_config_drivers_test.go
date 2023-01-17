@@ -9,6 +9,7 @@ import (
 	ethereum_beacon_cookbooks "github.com/zeus-fyi/zeus/cookbooks/ethereum/beacons"
 	zeus_client "github.com/zeus-fyi/zeus/pkg/zeus/client"
 	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_common_types"
+	zeus_topology_config_drivers "github.com/zeus-fyi/zeus/pkg/zeus/workload_config_drivers"
 	"github.com/zeus-fyi/zeus/test/configs"
 	"github.com/zeus-fyi/zeus/test/test_suites"
 )
@@ -58,8 +59,34 @@ func (t *ClusterConfigTestSuite) TestClusterCreation() {
 	t.Assert().Equal(11, count)
 	fmt.Println(gdr)
 
-	sbDefs := cd.GenerateSkeletonBaseCharts()
+	fakeURL := "https://test.zeus.fyi"
+	infCfg := zeus_topology_config_drivers.IngressDriver{NginxAuthURL: fakeURL}
+	customIngTc := zeus_topology_config_drivers.TopologyConfigDriver{
+		IngressDriver: &infCfg,
+	}
+
+	cd.ComponentBases["ingress"] = ComponentBaseDefinition{SkeletonBases: make(map[string]ClusterSkeletonBaseDefinition)}
+	cd.ComponentBases["ingress"].SkeletonBases["ingress"] = ClusterSkeletonBaseDefinition{
+		SkeletonBaseNameChartPath: ethereum_beacon_cookbooks.IngressChartPath,
+		TopologyConfigDriver:      &customIngTc,
+	}
+
+	sbDefs, err := cd.GenerateSkeletonBaseCharts()
+	t.Require().Nil(err)
 	t.Assert().NotEmpty(sbDefs)
+
+	seen := false
+	for _, w := range sbDefs {
+		t.Require().NotEmpty(w.Workload)
+		if w.Workload.Ingress != nil {
+			seen = true
+			t.Require().NotEmpty(w.Workload.Ingress.Annotations)
+			v, ok := w.Workload.Ingress.Annotations["nginx.ingress.kubernetes.io/auth-url"]
+			t.Require().True(ok)
+			t.Assert().Equal(fakeURL, v)
+		}
+	}
+	t.Assert().True(seen)
 }
 
 func (t *ClusterConfigTestSuite) SetupTest() {
