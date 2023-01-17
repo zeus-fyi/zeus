@@ -12,10 +12,10 @@ Event driven signature automation for Ethereum staking using our synthetic staki
 
 Both options come with powerful tx orchestration capabilites for smart contract & dapp interactions, allowing for truly native web2 experiences for dapp interactions, and it allows developers to build contract automation flows for users that interact with their wallets behind the scenes, unlike the clunky browser extension setups used today that are entirely too frustrating to use.
 
-$10/mo solo or large scale enterprise staking for Ethereum per validator, all inclusive, no extra fees. 
+Our system is scalably to all of mainnet and can go much higher than that. Our design philosophy is to build cost efficient, state of the art distributed systems technology, that is the best in class all around. Which is just the way technology should be when you do it right. 
 
-Scalable to all of mainnet. Yes, you read that right.
- 
+$10/mo solo or large scale enterprise staking for Ethereum per validator, all inclusive, and unlike everyone else in the industry, we're not taking a cut of your staking yield, or locking you in to any contracts, smart contracts, or anything else. We'd rather give you a better experience in web3, one that is fun to interact with, helps you build communities, explore technology, and we're betting that is worth a lot more than extracting as much money as we can from our users.
+
 ### Automated web3 infrastructure setup
 
 #### Timeline ~ Late January 23'
