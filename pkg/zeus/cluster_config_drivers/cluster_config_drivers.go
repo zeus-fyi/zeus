@@ -40,27 +40,28 @@ func (c *ClusterDefinition) GenerateDeploymentRequest() zeus_req_types.ClusterTo
 	}
 }
 
-func (c *ClusterDefinition) GenerateSkeletonBaseChart(clusterClassName, componentBaseName, skeletonBaseName string) ClusterSkeletonBaseDefinition {
-	componentBase, ok := c.ComponentBases[componentBaseName]
-	if !ok {
-		return ClusterSkeletonBaseDefinition{}
+func (c *ClusterDefinition) GenerateSkeletonBaseCharts() []ClusterSkeletonBaseDefinition {
+	sbDefinitons := []ClusterSkeletonBaseDefinition{}
+	for cbName, cb := range c.ComponentBases {
+		for sbName, sb := range cb.SkeletonBases {
+			sbDef := ClusterSkeletonBaseDefinition{
+				SkeletonBaseChart: zeus_req_types.TopologyCreateRequest{
+					TopologyName:      c.ClusterClassName,
+					ClusterClassName:  c.ClusterClassName,
+					ComponentBaseName: cbName,
+					ChartName:         cbName,
+					ChartDescription:  fmt.Sprintf("%s-%s-%s", c.ClusterClassName, cbName, sbName),
+					SkeletonBaseName:  sbName,
+					Tag:               "latest",
+					Version:           fmt.Sprintf("v0.0.%d", time.Now().Unix()),
+				}, SkeletonBaseNameChartPath: sb.SkeletonBaseNameChartPath,
+			}
+			if sb.TopologyConfigDriver != nil {
+				// Customize Config
+				// TODO, parse files & apply custom config, and generate new outputs
+			}
+			sbDefinitons = append(sbDefinitons, sbDef)
+		}
 	}
-	skeletonBase, ok := componentBase.SkeletonBases[skeletonBaseName]
-	if !ok {
-		return ClusterSkeletonBaseDefinition{}
-	}
-	cp := skeletonBase.SkeletonBaseNameChartPath
-	cp.FnIn = skeletonBaseName
-	return ClusterSkeletonBaseDefinition{
-		SkeletonBaseChart: zeus_req_types.TopologyCreateRequest{
-			TopologyName:      clusterClassName,
-			ClusterClassName:  clusterClassName,
-			ComponentBaseName: componentBaseName,
-			ChartName:         componentBaseName,
-			ChartDescription:  fmt.Sprintf("%s-%s-%s", clusterClassName, componentBaseName, skeletonBaseName),
-			SkeletonBaseName:  skeletonBaseName,
-			Tag:               "latest",
-			Version:           fmt.Sprintf("v0.0.%d", time.Now().Unix()),
-		}, SkeletonBaseNameChartPath: skeletonBase.SkeletonBaseNameChartPath,
-	}
+	return sbDefinitons
 }

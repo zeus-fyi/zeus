@@ -57,6 +57,9 @@ func (t *ClusterConfigTestSuite) TestClusterCreation() {
 	}
 	t.Assert().Equal(11, count)
 	fmt.Println(gdr)
+
+	sbDefs := cd.GenerateSkeletonBaseCharts()
+	t.Assert().NotEmpty(sbDefs)
 }
 
 func (t *ClusterConfigTestSuite) SetupTest() {
