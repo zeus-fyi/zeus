@@ -8,13 +8,23 @@ Zeus is an evolution of web container orchestration into web ecosystems orchestr
 
 #### Timeline ~ End of January/Early Feb 23'
 
-Event driven signature automation for Ethereum staking using our synthetic staking beacon, an in-house technology invention that dramatically lowers the infrastucture costs of traditional enterprise architectures by 100x+ and bundles middleware like slashing protection and mev into the service. Which also comes with the added benefit of letting you stake from your wallet without anyone having access to your signing or withdrawal keys and without any infrastructure setup, with only a few lines of code. For those who do want hosted cloud signers, you'll have flexible 1-click style deployable hosted signers. 
+Event driven signature automation for Ethereum staking using our synthetic staking beacon, an in-house technology invention that dramatically lowers the infrastucture costs of traditional enterprise architectures by 100x+ and bundles middleware like slashing protection and mev into the service. Which also comes with the added benefit of letting you stake from your wallet without anyone having access to your signing or withdrawal keys and without any infrastructure setup, with only a few lines of code. For those who do want hosted cloud signers, you'll have flexible 1-click style deployable hosted signers.
 
-Both options come with powerful tx orchestration capabilites for smart contract & dapp interactions, allowing for truly native web2 experiences for dapp interactions, and it allows developers to build contract automation flows for users that interact with their wallets behind the scenes, unlike the clunky browser extension setups used today that are entirely too frustrating to use.
+#### How much will staking services cost for Ethereum?
 
-Our system is scalably to all of mainnet and can go much higher than that. Our design philosophy is to build cost efficient, state of the art distributed systems technology, that is the best in class all around. Which is just the way technology should be when you do it right. 
+$10/mo solo or large scale enterprise staking for Ethereum per validator, all inclusive, and unlike everyone else in the industry, we're not taking a cut of your staking yield, or locking you in to any contracts, smart contracts, or anything else. We'd rather give you a better experience in web3, one that is fun to interact with, helps you build communities, helps attracts new users to the web3 ecosystem, simply by making it user-friendly, and we're betting that is worth a lot more than extracting as much money as we can from our users.
 
-$10/mo solo or large scale enterprise staking for Ethereum per validator, all inclusive, and unlike everyone else in the industry, we're not taking a cut of your staking yield, or locking you in to any contracts, smart contracts, or anything else. We'd rather give you a better experience in web3, one that is fun to interact with, helps you build communities, explore technology, and we're betting that is worth a lot more than extracting as much money as we can from our users.
+#### Do you have any limits on how many validators you can support, are you also supporting direct to consumer?
+
+Our system can comfortably scale to all of mainnet and far beyond, the cost difference for cloud, devops, etc costs to us between even 50k->100k->200k or more validators may as well be virtually zero to help illustrate how efficient it is. We're starting with wallet custodians, and B2B partners first since we don't have large enough CX support for large request volumes at this moment, but targeting direct to consumer before end of Q2, possibly much sooner. We'll setup an email signup list soon for you all to get notified over the next 1-2 months.
+
+#### What if this results in centralization of staking through this platform?
+
+Great question, and since that was a concern we've had on our minds early on, we've already come up with a with a few feasible designs that could turn this entire synthetic staking beacon technology into a fully decentralized synthetic beacon service. We'll advance our tech to that stage if it starts trending that way, we're a long ways from that though at this stage.
+
+#### Can you share more about the native web2 interactions?
+
+Both signer options come with powerful tx orchestration capabilites for smart contract & dapp interactions, allowing for truly native web2 experiences for dapp interactions for the first time (2fa, email login linked to your wallet, QR scanning, and more slated to follow this release, timelines and additional details to be announced in Feb). It will also allow developers to build smart contract automation flows for users that interact with their wallets behind the scenes, unlike the clunky browser extension setups used today that are entirely too frustrating to use.
 
 ### Automated web3 infrastructure setup
 
@@ -48,32 +58,33 @@ Contains common web2 & web3 building components like ethereum infra setups with 
 
 #### ```protocol/components```
 
-Cookbook items listed by protocol & component class. Eg. Ethereum has a beacon component group. 
+Contains smart contract automation kits. This testcase shows a full end-end seed, create, and deposits validators on the Ethereum ephemery testnet.
+
+#### ```../automation```
+#### ```zeus/cookbooks/ethereum/automation/deposits_test.go ```
+
+Cookbook items listed by protocol & component class. Eg. Ethereum has a beacon component group. Contains Kubernetes config setup templates
 
 #### ```../../infra```
-
-Contains Kubernetes config setup templates
-
 #### ```../../constants```
 #### ```../../actions```
 #### ```../../logs```
 
-Contains smart contract automation kits. This testcase shows a full end-end seed, create, and deposits validators on the Ethereum ephemery testnet.
-
-### ```zeus/cookbooks/ethereum/automation/deposits_test.go ```
-
-
 Example actions do log dumps, pod restarts, configuration changes on demand for k8s applications, and more.
 
-### ```zeus/cookbooks/ethereum/beacons/beacon_cluster_test.go ```
-### ```zeus/cookbooks/ethereum/validators/validator_cluster_test.go ```
-### ```zeus/cookbooks/ethereum/web3signers/web3signer_cluster_test.go ```
+#### ```zeus/cookbooks/ethereum/beacons/beacon_cluster_test.go ```
+#### ```zeus/cookbooks/ethereum/validators/validator_cluster_test.go ```
+#### ```zeus/cookbooks/ethereum/web3signers/web3signer_cluster_test.go ```
 
-See this test case to see how a beacon cluster class was created, and then extended to support choreography to reset configs on a scheduled interval for the ephemery testnet, and then added validator clients, and then again to add web3signing integration.
+See this test case to see how a beacon cluster class was created, and then extended to support choreography to reset configs on a scheduled interval for the Ephemery testnet, and then added validator clients, and then again to add web3signing integration.
 
 #### Ethereum ####
 
 Contains full kubernetes infra setup for a lighthouse-geth beacon with snapshot download capability, and common interactions for developing & debugging an ethereum beacon. 
+
+#### Microservices ###
+
+Contains full kubernetes infra setup templates for microservices, injectable choreography for clusters, and more continually being added.
 
 ## Zeus Apps & Clients ##
 
