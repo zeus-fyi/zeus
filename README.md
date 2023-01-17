@@ -1,6 +1,6 @@
 ## Zeus ##
 
-Zeus is an evolution of web container orchestration into web system building and orchestration. It changes the paradigm into one that unifies configuration with the underlying orchestrator, instead of decoupling them into confusing messes like helm, terraform, and GitOps, while also reducing the operational complexity of building with kubernetes significantly and is capable of building systems at the scale and complexity of AWS by unifying multi-network kubernetes node pools with SQL driven relationship building & querying.
+Zeus is an evolution of web container orchestration into web ecosystems orchestration. It changes the paradigm into one that unifies configuration with the underlying orchestrator, instead of decoupling them into confusing messes like Helm, Terraform, and GitOps, while also reducing the operational complexity of building with Kubernetes significantly and is capable of building systems at the scale and complexity of AWS by unifying multi-network Kubernetes node pools with SQL driven relationship building & querying.
 
 ## Upcoming Features Overview ##
 
@@ -8,9 +8,11 @@ Zeus is an evolution of web container orchestration into web system building and
 
 #### Timeline ~ End of January/Early Feb 23'
 
-Event driven signature automation with remote signers using a synthetic beacon. Making it possible to become a solo staker with only a remote signer that you'll be able to operate without anyone having access to your signing keys, and also allowing for flexible 1-click setups with cloud options that import your keys into a cloud signer you can host with a 1-click style deploy. 
+Event driven signature automation for Ethereum staking using our synthetic staking beacon, an in-house technology invention that dramatically lowers the infrastucture costs of traditional enterprise architectures by 100x+ and bundles middleware like slashing protection and mev into the service. Which also comes with the added benefit of letting you stake from your wallet without anyone having access to your signing keys and without any infrastructure setup, with only a few lines of code. For those who do want hosted cloud signers, you'll have flexible 1-click style deployable hosted signers. 
 
-$10/mo solo or large scale enterprise staking for Ethereum per validator, all inclusive, no extra fees
+Both options come with powerful tx orchestration capabilites for smart contract & dapp interactions, allowing for truly native web2 experiences for dapp interactions, and it allows developers to build contract automation flows for users that interact with their wallets behind the scenes, unlike the clunky browser extension setups used today that are entirely too frustrating to use.
+
+$10/mo solo or large scale enterprise staking for Ethereum per validator, all inclusive, no extra fees. 
 
 Scalable to all of mainnet. Yes, you read that right.
  
@@ -50,17 +52,24 @@ Cookbook items listed by protocol & component class. Eg. Ethereum has a beacon c
 
 #### ```../../infra```
 
-Contains kubernetes config setup templates
+Contains Kubernetes config setup templates
 
 #### ```../../constants```
 #### ```../../actions```
 #### ```../../logs```
 
+Contains smart contract automation kits. This testcase shows a full end-end seed, create, and deposits validators on the Ethereum ephemery testnet.
+
+### ```zeus/cookbooks/ethereum/automation/deposits_test.go ```
+
+
 Example actions do log dumps, pod restarts, configuration changes on demand for k8s applications, and more.
 
 ### ```zeus/cookbooks/ethereum/beacons/beacon_cluster_test.go ```
+### ```zeus/cookbooks/ethereum/validators/validator_cluster_test.go ```
+### ```zeus/cookbooks/ethereum/web3signers/web3signer_cluster_test.go ```
 
-See this test case to see how a beacon cluster class was created. Use a versioned release tag to ensure consistent stable setups if using any of the examples, the main branch is frequently in flux.
+See this test case to see how a beacon cluster class was created, and then extended to support choreography to reset configs on a scheduled interval for the ephemery testnet, and then added validator clients, and then again to add web3signing integration.
 
 #### Ethereum ####
 
