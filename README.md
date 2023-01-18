@@ -175,7 +175,7 @@ Users with bearer tokens are able to access our common beacon balance & status i
 
 Snapshot download urls for mainnet geth & lighthouse available on request.
 
-## Infra configuration is in the 14th century. Introducting the 21st century printing press
+## Infra configuration is in the 14th century. Introducing the 21st century printing press
 
 By unifying the infra ecosystem tools of today it allows the acceleration of infra development exponentially overtime with each new open source cookbook & system template allowing you to glue sophisticated distributed systems together in zero time, which lets decentralized solo & small team builders compete directly against large incumbents at the edge of technology by erasing the need for large investment in infra & devops departments that are needed now to even get started.
 
