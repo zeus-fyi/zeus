@@ -3,6 +3,7 @@ module github.com/zeus-fyi/zeus
 go 1.19
 
 require (
+	filippo.io/age v1.1.1
 	github.com/attestantio/go-eth2-client v0.15.1
 	github.com/cavaliergopher/grab/v3 v3.0.1
 	github.com/cbergoon/merkletree v0.2.0
@@ -37,7 +38,6 @@ require (
 )
 
 require (
-	filippo.io/age v1.1.1 // indirect
 	github.com/OneOfOne/xxhash v1.2.8 // indirect
 	github.com/PuerkitoBio/purell v1.1.1 // indirect
 	github.com/PuerkitoBio/urlesc v0.0.0-20170810143723-de5bf2ad4578 // indirect
@@ -47,7 +47,7 @@ require (
 	github.com/cespare/xxhash v1.1.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/edsrzf/mmap-go v1.1.0 // indirect
-	github.com/emicklei/go-restful/v3 v3.8.0 // indirect
+	github.com/emicklei/go-restful/v3 v3.10.0 // indirect
 	github.com/fatih/color v1.13.0 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/go-logr/logr v1.2.3 // indirect
