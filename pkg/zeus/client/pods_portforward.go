@@ -2,6 +2,7 @@ package zeus_client
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 
 	"github.com/rs/zerolog/log"
@@ -23,6 +24,9 @@ func (z *ZeusClient) PortForwardReqToPods(ctx context.Context, par zeus_pods_req
 
 	if err != nil || resp.StatusCode() != http.StatusOK {
 		log.Ctx(ctx).Err(err).Msg("ZeusClient: PortForwardReqToPods")
+		if err == nil {
+			err = fmt.Errorf("non-OK status code: %d", resp.StatusCode())
+		}
 		return clientResponses, err
 	}
 	z.PrintRespJson(resp.Body())
