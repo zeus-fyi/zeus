@@ -21,7 +21,7 @@ func (z *ZeusClient) DestroyDeploy(ctx context.Context, tar zeus_req_types.Topol
 		SetBody(tar).
 		Post(zeus_endpoints.DestroyDeployInfraV1Path)
 
-	if err != nil || resp.StatusCode() != http.StatusOK {
+	if err != nil || resp.StatusCode() != http.StatusAccepted {
 		log.Ctx(ctx).Err(err).Msg("ZeusClient: DestroyDeploy")
 		if err == nil {
 			err = fmt.Errorf("non-OK status code: %d", resp.StatusCode())
