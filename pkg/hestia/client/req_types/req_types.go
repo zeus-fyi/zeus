@@ -22,6 +22,7 @@ type ValidatorServiceOrgGroup struct {
 	ProtocolNetworkID int    `json:"protocolNetworkID"`
 	FeeRecipient      string `json:"feeRecipient"`
 	Enabled           bool   `json:"enabled"`
+	ServiceURL        string `json:"serviceURL"`
 }
 
 type ServiceRequestWrapper struct {
@@ -29,6 +30,7 @@ type ServiceRequestWrapper struct {
 	ProtocolNetworkID int    `json:"protocolNetworkID"`
 	FeeRecipient      string `json:"feeRecipient"`
 	Enabled           bool   `json:"enabled"`
+	ServiceURL        string `json:"serviceURL"`
 }
 
 func (vsr *CreateValidatorServiceRequest) CreateValidatorServiceRequest(dp signing_automation_ethereum.ValidatorDepositSlice, srw ServiceRequestWrapper) {
@@ -39,5 +41,11 @@ func (vsr *CreateValidatorServiceRequest) CreateValidatorServiceRequest(dp signi
 		vsr.ValidatorServiceOrgGroupSlice[i].Enabled = srw.Enabled
 		vsr.ValidatorServiceOrgGroupSlice[i].ProtocolNetworkID = srw.ProtocolNetworkID
 		vsr.ValidatorServiceOrgGroupSlice[i].Pubkey = strings_filter.AddHexPrefix(k.Pubkey)
+		vsr.ValidatorServiceOrgGroupSlice[i].ProtocolNetworkID = srw.ProtocolNetworkID
+		if strings_filter.ValidateHttpsURL(srw.ServiceURL) {
+			vsr.ValidatorServiceOrgGroupSlice[i].ServiceURL = srw.ServiceURL
+		} else {
+			panic("you must provide a valid https service link")
+		}
 	}
 }

@@ -22,7 +22,8 @@ func CommonRoutes(e *echo.Group) *echo.Group {
 	e.GET("/host/memory", host.GetMemStatsHandler)
 
 	e.POST("/import/validators", aegis.ImportValidatorsHandler)
-
 	e.GET("/ethereum/lighthouse/validator/auth", hercules_ethereum.LighthouseValidatorHandler)
+
+	e.POST("/v1/ethereum/bls/sign/verify", hercules_ethereum.EthereumBLSKeyVerificationHandler)
 	return e
 }

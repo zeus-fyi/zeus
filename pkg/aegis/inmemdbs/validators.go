@@ -40,19 +40,73 @@ func InsertValidatorsInMemDb(ctx context.Context, vs []Validator) {
 			SecretKey: v.BLSPrivateKey.Marshal(),
 		}
 		if err := txn.Insert("validators", insertV); err != nil {
-			log.Ctx(ctx).Panic().Err(err).Interface("v.Index", v.Index).Msg("InsertValidatorsInMemDb")
+			log.Ctx(ctx).Panic().Err(err).Interface("v.PublicKey", v.PublicKey()).Msg("InsertValidatorsInMemDb")
 			panic(err)
 		}
 	}
 	txn.Commit()
 }
 
-func ReadOnlyValidatorFromInMemDb(ctx context.Context, v Validator) Validator {
+type EthereumBLSKeySignatureRequests struct {
+	Map map[string]EthereumBLSKeySignatureRequest
+}
+
+type EthereumBLSKeySignatureRequest struct {
+	Message string `json:"message"`
+}
+
+type EthereumBLSKeySignatureResponses struct {
+	Map map[string]EthereumBLSKeySignatureResponse
+}
+
+type EthereumBLSKeySignatureResponse struct {
+	Signature string `json:"signature"`
+}
+
+func SignValidatorMessagesFromInMemDb(ctx context.Context, signReqs EthereumBLSKeySignatureRequests) (EthereumBLSKeySignatureResponses, error) {
+	resp := make(map[string]EthereumBLSKeySignatureResponse)
+	batchResp := EthereumBLSKeySignatureResponses{
+		Map: resp,
+	}
+	if len(signReqs.Map) == 0 {
+		return batchResp, nil
+	}
 	txn := ValidatorInMemDB.Txn(false)
 	defer txn.Abort()
-	raw, err := txn.First(ValidatorsTable, "validator_index", v.Index)
+	it, err := txn.Get("validators", "id")
 	if err != nil {
-		log.Ctx(ctx).Panic().Err(err).Interface("v.Index", v.Index).Msg("ReadOnlyValidatorFromInMemDb")
+		log.Ctx(ctx).Err(err).Msg("SignValidatorMessagesFromInMemDb")
+		return batchResp, err
+	}
+
+	tmp := make(map[string]Validator)
+	for obj := it.Next(); obj != nil; obj = it.Next() {
+		inMemDB := obj.(inMemValidator)
+		v := bls_signer.NewEthSignerBLSFromExistingKeyBytes(inMemDB.SecretKey)
+		pubkey := bls_signer.ConvertBytesToString(v.PublicKey().Marshal())
+		tmp[pubkey] = NewValidator(inMemDB.Index, v)
+	}
+	txn.Commit()
+	for _, v := range tmp {
+		pubkey := v.PublicKeyString()
+		msg, ok := signReqs.Map[pubkey]
+		if ok {
+			sig := v.Sign([]byte(msg.Message)).Marshal()
+			batchResp.Map[pubkey] = EthereumBLSKeySignatureResponse{bls_signer.ConvertBytesToString(sig)}
+		}
+	}
+	if len(batchResp.Map) != len(signReqs.Map) {
+		log.Ctx(ctx).Warn().Msg("SignValidatorMessagesFromInMemDb, did not contain all expected validator signatures")
+	}
+	return batchResp, nil
+}
+
+func ReadOnlyValidatorFromInMemDb(ctx context.Context, pubkey string) Validator {
+	txn := ValidatorInMemDB.Txn(false)
+	defer txn.Abort()
+	raw, err := txn.First(ValidatorsTable, "public_key", pubkey)
+	if err != nil {
+		log.Ctx(ctx).Panic().Err(err).Interface("v.public_key", pubkey).Msg("ReadOnlyValidatorFromInMemDb")
 		panic(err)
 	}
 	txn.Commit()
@@ -90,7 +144,6 @@ func InitValidatorDB() {
 			},
 		},
 	}
-
 	// Create a new database
 	db, err := memdb.NewMemDB(schema)
 	if err != nil {
