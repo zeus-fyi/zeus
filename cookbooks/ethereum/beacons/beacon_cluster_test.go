@@ -6,7 +6,6 @@ import (
 	"github.com/zeus-fyi/zeus/cookbooks"
 	choreography_cookbooks "github.com/zeus-fyi/zeus/cookbooks/microservices/choreography"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
-	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_common_types"
 	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_req_types"
 )
 
@@ -29,16 +28,6 @@ func (t *BeaconCookbookTestSuite) TestClusterDeploy() {
 		Cd.SkeletonBaseOptions = append(Cd.SkeletonBaseOptions, choreography_cookbooks.GenericChoreographyChart.SkeletonBaseName)
 		Cd.SkeletonBaseOptions = append(Cd.SkeletonBaseOptions, ingressBaseName...)
 	}
-
-	// REMOVE, JUST FOR DEMO PURPOSES
-	Cd.CloudCtxNs = zeus_common_types.CloudCtxNs{
-		CloudProvider: "do",
-		Region:        "nyc1",
-		Context:       "do-nyc1-do-nyc1-zeus-demo",
-		Namespace:     "demo", // set with your own namespace
-		Env:           "production",
-	}
-
 	resp, err := t.ZeusTestClient.DeployCluster(ctx, Cd)
 	t.Require().Nil(err)
 	t.Assert().NotEmpty(resp)
@@ -56,18 +45,6 @@ func (t *BeaconCookbookTestSuite) TestClusterDestroy() {
 		Cd.ClusterClassName = clusterClassName
 		knsReq.Namespace = "ephemeral-staking"
 	}
-
-	// REMOVE, JUST FOR DEMO PURPOSES
-	Cd.CloudCtxNs = zeus_common_types.CloudCtxNs{
-		CloudProvider: "do",
-		Region:        "nyc1",
-		Context:       "do-nyc1-do-nyc1-zeus-demo",
-		Namespace:     "demo", // set with your own namespace
-		Env:           "production",
-	}
-
-	knsReq.CloudCtxNs = Cd.CloudCtxNs
-	knsReq.Namespace = "demo"
 	resp, err := t.ZeusTestClient.DestroyDeploy(ctx, knsReq)
 	t.Require().Nil(err)
 	t.Assert().NotEmpty(resp)

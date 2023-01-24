@@ -3,22 +3,12 @@ package ethereum_validator_cookbooks
 import (
 	"context"
 
-	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_common_types"
 	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_req_types"
 	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_resp_types/topology_workloads"
 )
 
 func (t *ValidatorCookbookTestSuite) TestClusterDeploy() {
-	//t.TestUploadValidatorClientCharts()
-
-	// REMOVE, JUST FOR DEMO PURPOSES
-	ValidatorClusterDefinition.CloudCtxNs = zeus_common_types.CloudCtxNs{
-		CloudProvider: "do",
-		Region:        "nyc1",
-		Context:       "do-nyc1-do-nyc1-zeus-demo",
-		Namespace:     "demo", // set with your own namespace
-		Env:           "production",
-	}
+	t.TestUploadValidatorClientCharts()
 	ctx := context.Background()
 	resp, err := t.ZeusTestClient.DeployCluster(ctx, ValidatorClusterDefinition)
 	t.Require().Nil(err)
@@ -27,19 +17,7 @@ func (t *ValidatorCookbookTestSuite) TestClusterDeploy() {
 
 func (t *ValidatorCookbookTestSuite) TestClusterDestroy() {
 	ctx := context.Background()
-
-	// REMOVE, JUST FOR DEMO PURPOSES
-	ValidatorClusterDefinition.CloudCtxNs = zeus_common_types.CloudCtxNs{
-		CloudProvider: "do",
-		Region:        "nyc1",
-		Context:       "do-nyc1-do-nyc1-zeus-demo",
-		Namespace:     "demo", // set with your own namespace
-		Env:           "production",
-	}
 	knsReq := DeployConsensusValidatorClientKnsReq
-
-	knsReq.CloudCtxNs = ValidatorClusterDefinition.CloudCtxNs
-	knsReq.Namespace = "demo"
 	resp, err := t.ZeusTestClient.DestroyDeploy(ctx, knsReq)
 	t.Require().Nil(err)
 	t.Assert().NotEmpty(resp)
