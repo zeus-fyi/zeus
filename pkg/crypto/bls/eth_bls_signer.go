@@ -39,12 +39,24 @@ func NewEthBLSKey() *e2types.BLSPrivateKey {
 	return key
 }
 
-func NewEthSignerBLSFromExistingKey(s string) EthBLSAccount {
+func NewEthSignerBLSFromExistingKeyBytes(sk []byte) EthBLSAccount {
 	err := InitEthBLS()
 	if err != nil {
 		panic(err)
 	}
-	data, err := hex.DecodeString(s)
+	k, err := e2types.BLSPrivateKeyFromBytes(sk)
+	if err != nil {
+		panic(err)
+	}
+	return EthBLSAccount{k}
+}
+
+func NewEthSignerBLSFromExistingKey(sk string) EthBLSAccount {
+	err := InitEthBLS()
+	if err != nil {
+		panic(err)
+	}
+	data, err := hex.DecodeString(sk)
 	if err != nil {
 		panic(err)
 	}
