@@ -19,8 +19,8 @@ func (h *Hestia) ValidatorsServiceRequest(ctx context.Context, rr hestia_req_typ
 		SetResult(&respJson).
 		Post(hestia_endpoints.EthereumValidatorsCreateServiceRequestV1Path)
 
-	if err != nil || resp.StatusCode() != http.StatusOK {
-		log.Ctx(ctx).Err(err).Msg("Hestia: ValidatorBalances")
+	if err != nil || resp.StatusCode() != http.StatusAccepted {
+		log.Ctx(ctx).Err(err).Msg("Hestia: ValidatorsServiceRequest")
 		if resp.StatusCode() == http.StatusBadRequest {
 			err = errors.New("bad request")
 		}

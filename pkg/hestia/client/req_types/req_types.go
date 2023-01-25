@@ -11,41 +11,45 @@ const (
 )
 
 type CreateValidatorServiceRequest struct {
+	ServiceRequestWrapper
 	ValidatorServiceOrgGroupSlice
 }
 
 type ValidatorServiceOrgGroupSlice []ValidatorServiceOrgGroup
 
 type ValidatorServiceOrgGroup struct {
-	GroupName         string `json:"groupName"`
-	Pubkey            string `json:"pubkey"`
-	ProtocolNetworkID int    `json:"protocolNetworkID"`
-	FeeRecipient      string `json:"feeRecipient"`
-	Enabled           bool   `json:"enabled"`
-	ServiceURL        string `json:"serviceURL"`
+	Pubkey       string `json:"pubkey"`
+	FeeRecipient string `json:"feeRecipient"`
 }
 
 type ServiceRequestWrapper struct {
 	GroupName         string `json:"groupName"`
 	ProtocolNetworkID int    `json:"protocolNetworkID"`
-	FeeRecipient      string `json:"feeRecipient"`
 	Enabled           bool   `json:"enabled"`
 	ServiceURL        string `json:"serviceURL"`
 }
 
 func (vsr *CreateValidatorServiceRequest) CreateValidatorServiceRequest(dp signing_automation_ethereum.ValidatorDepositSlice, srw ServiceRequestWrapper) {
 	vsr.ValidatorServiceOrgGroupSlice = make([]ValidatorServiceOrgGroup, len(dp))
-	for i, k := range dp {
-		vsr.ValidatorServiceOrgGroupSlice[i].GroupName = srw.GroupName
-		vsr.ValidatorServiceOrgGroupSlice[i].FeeRecipient = srw.FeeRecipient
-		vsr.ValidatorServiceOrgGroupSlice[i].Enabled = srw.Enabled
-		vsr.ValidatorServiceOrgGroupSlice[i].ProtocolNetworkID = srw.ProtocolNetworkID
-		vsr.ValidatorServiceOrgGroupSlice[i].Pubkey = strings_filter.AddHexPrefix(k.Pubkey)
-		vsr.ValidatorServiceOrgGroupSlice[i].ProtocolNetworkID = srw.ProtocolNetworkID
-		if strings_filter.ValidateHttpsURL(srw.ServiceURL) {
-			vsr.ValidatorServiceOrgGroupSlice[i].ServiceURL = srw.ServiceURL
-		} else {
-			panic("you must provide a valid https service link")
+
+	if !strings_filter.ValidateHttpsURL(srw.ServiceURL) {
+		panic("you must provide a valid https service link")
+	}
+
+	if len(vsr.GroupName) == 0 {
+		panic("you must provide a group name")
+	}
+
+	if srw.ProtocolNetworkID != EthereumMainnetProtocolNetworkID && srw.ProtocolNetworkID != EthereumEphemeryProtocolNetworkID {
+		panic("you must provide a supported protocol network identifier")
+	}
+
+	vsr.ServiceRequestWrapper = srw
+	for i, _ := range dp {
+		vsr.ValidatorServiceOrgGroupSlice[i].Pubkey = strings_filter.AddHexPrefix(vsr.ValidatorServiceOrgGroupSlice[i].Pubkey)
+		if len(vsr.ValidatorServiceOrgGroupSlice[i].Pubkey) != 98 {
+			panic("you must provide a valid 0x prefixed bls pubkey value")
 		}
+		vsr.ValidatorServiceOrgGroupSlice[i].FeeRecipient = strings_filter.AddHexPrefix(vsr.ValidatorServiceOrgGroupSlice[i].FeeRecipient)
 	}
 }
