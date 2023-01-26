@@ -15,33 +15,25 @@ func (sr *EthereumBLSKeySignatureResponses) VerifySignatures(ctx context.Context
 	if len(sr.Map) <= 0 {
 		return []string{}, nil
 	}
-
 	verifiedKeys := make([]string, len(sr.Map))
-
 	i := 0
 	for k, sigResp := range sr.Map {
-
 		msgStr, ok := sigRequests.Map[k]
-
 		if !ok {
 			err := errors.New("pubkey not in signature request message")
 			log.Ctx(ctx).Err(err)
 			return []string{}, err
 		}
-
 		sigHexStr, err := hex.DecodeString(sigResp.Signature)
-
 		if err != nil {
 			log.Ctx(ctx).Err(err)
 			return nil, err
 		}
-
 		sig, err := types.BLSSignatureFromBytes(sigHexStr)
 		if err != nil {
 			log.Ctx(ctx).Err(err)
 			return nil, err
 		}
-
 		pubkeyHexStr, err := hex.DecodeString(k)
 		if err != nil {
 			log.Ctx(ctx).Err(err)
