@@ -78,6 +78,10 @@ func (s *InMemDBsTestSuite) TestBatchValidatorsInMemDB() {
 		s.Require().Nil(perr)
 		s.Require().True(sig.Verify([]byte(signReqMessage), pubkey))
 	}
+
+	verifiedKeys, err := resp.VerifySignatures(ctx, batchSignReqs)
+	s.Require().Nil(err)
+	s.Require().Len(batchSignReqs.Map, len(verifiedKeys))
 }
 
 func (s *InMemDBsTestSuite) TestValidatorsInMemDB() {
