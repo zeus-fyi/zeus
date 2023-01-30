@@ -17,7 +17,7 @@ func (a *HerculesClient) VerifyEthSignatureBLS(ctx context.Context, rr hercules_
 	resp, err := a.R().
 		SetBody(rr).
 		SetResult(&respJSON).
-		Post(hercules_endpoints.V1ImportKeystoresEthBLS)
+		Post(hercules_endpoints.V1VerifyEthBLS)
 
 	if err != nil || resp.StatusCode() != http.StatusOK {
 		log.Ctx(ctx).Err(err).Msg("HerculesClient: VerifyEthSignatureBLS")

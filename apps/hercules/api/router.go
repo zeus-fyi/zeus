@@ -13,8 +13,9 @@ func Routes(e *echo.Echo) *echo.Echo {
 	// Routes
 	e.GET("/health", Health)
 
-	e.POST("/hercules/eth/v1/keystores", aegis.ImportValidatorsHandler)
-	e.POST("/hercules/eth/v1/bls/sign/verify", hercules_ethereum.EthereumBLSKeyVerificationHandler)
+	// to match eth keystore syntax styling
+	e.POST("/eth/v1/bls/sign/verify", hercules_ethereum.EthereumBLSKeyVerificationHandler)
+	e.POST("/eth/v1/keystores", aegis.ImportValidatorsHandler)
 
 	eg := e.Group("/v1beta/internal")
 	v1_hercules.CommonRoutes(eg)
