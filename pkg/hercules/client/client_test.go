@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/suite"
+	bls_signer "github.com/zeus-fyi/zeus/pkg/crypto/bls"
 	test_base "github.com/zeus-fyi/zeus/test"
 	"github.com/zeus-fyi/zeus/test/configs"
 
@@ -20,9 +21,9 @@ type HerculesClientTestSuite struct {
 
 func (t *HerculesClientTestSuite) SetupTest() {
 	// points dir to test/configs
-	tc := configs.InitLocalTestConfigs()
-	//t.ZeusTestClient = NewDefaultZeusClient(tc.Bearer)
-	t.HerculesTestClient = NewDefaultHerculesClient(tc.Bearer)
+	_ = bls_signer.InitEthBLS()
+	t.Tc = configs.InitLocalTestConfigs()
+	t.HerculesTestClient = NewLocalHerculesClient(t.Tc.Bearer)
 	// points working dir to inside /test
 	test_base.ForceDirToTestDirLocation()
 }

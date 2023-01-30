@@ -6,7 +6,7 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"github.com/rs/zerolog/log"
-	v1_common_routes "github.com/zeus-fyi/hercules/api/v1/common"
+	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 	"github.com/zeus-fyi/zeus/pkg/utils/host_info"
 )
 
@@ -14,9 +14,9 @@ type InfoRequest struct {
 }
 
 func (h *InfoRequest) GetDiskStats(c echo.Context) error {
-	dd := v1_common_routes.CommonManager
 	ctx := context.Background()
-	diskInfo, err := host_info.GetDiskUsageStats(ctx, dd.DirIn)
+	p := filepaths.Path{DirIn: "/data"}
+	diskInfo, err := host_info.GetDiskUsageStats(ctx, p.DirIn)
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("Start: GetDiskStats Script")
 		return c.JSON(http.StatusInternalServerError, err)
