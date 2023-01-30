@@ -44,7 +44,7 @@ func SignValidatorMessagesFromInMemDb(ctx context.Context, signReqs EthereumBLSK
 		inMemDB := obj.(inMemValidator)
 		v := bls_signer.NewEthSignerBLSFromExistingKeyBytes(inMemDB.SecretKey)
 		pubkey := bls_signer.ConvertBytesToString(v.PublicKey().Marshal())
-		tmp[pubkey] = NewValidator(inMemDB.Index, v)
+		tmp[pubkey] = NewValidator(v)
 	}
 	txn.Commit()
 	for _, v := range tmp {

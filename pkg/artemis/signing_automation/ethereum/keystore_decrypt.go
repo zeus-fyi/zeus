@@ -9,10 +9,10 @@ import (
 	bls_signer "github.com/zeus-fyi/zeus/pkg/crypto/bls"
 )
 
-func DecryptKeystoreCipher(ctx context.Context, cryptoMessage map[string]interface{}, password string) ([]byte, error) {
+func DecryptKeystoreCipher(ctx context.Context, keystoreJSON map[string]interface{}, password string) ([]byte, error) {
 	ks := keystorev4.New()
 
-	cryptoMsg := cryptoMessage["crypto"]
+	cryptoMsg := keystoreJSON["crypto"]
 	b, err := json.Marshal(cryptoMsg)
 	if err != nil {
 		log.Ctx(ctx).Err(err)
@@ -33,8 +33,8 @@ func DecryptKeystoreCipher(ctx context.Context, cryptoMessage map[string]interfa
 	return sk, err
 }
 
-func DecryptKeystoreCipherIntoEthSignerBLS(ctx context.Context, cryptoMessage map[string]interface{}, password string) (bls_signer.EthBLSAccount, error) {
-	sk, err := DecryptKeystoreCipher(ctx, cryptoMessage, password)
+func DecryptKeystoreCipherIntoEthSignerBLS(ctx context.Context, keystoreJSON map[string]interface{}, password string) (bls_signer.EthBLSAccount, error) {
+	sk, err := DecryptKeystoreCipher(ctx, keystoreJSON, password)
 	if err != nil {
 		log.Ctx(ctx).Err(err)
 		return bls_signer.EthBLSAccount{}, err
