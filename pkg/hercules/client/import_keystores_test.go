@@ -24,6 +24,7 @@ func (t *HerculesClientTestSuite) TestImportKeystores() {
 
 	input := make(map[string]interface{})
 	err := json.Unmarshal(f, &input)
+
 	ksImport := aegis.Keystore{
 		KeystoreJSON: input,
 		Password:     t.Tc.HDWalletPassword,

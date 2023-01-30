@@ -5,7 +5,6 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	hercules_router "github.com/zeus-fyi/hercules/api"
-	v1_common_routes "github.com/zeus-fyi/hercules/api/v1/common"
 	aegis_inmemdbs "github.com/zeus-fyi/zeus/pkg/aegis/inmemdbs"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 )
@@ -23,12 +22,8 @@ func Hercules() {
 	srv := NewHerculesServer(cfg)
 	log.Info().Msg("Hercules: server starting")
 
-	// Request a bucket url from us, or use your own source and add here
-	v1_common_routes.CommonManager.Path = dataDir
 	srv.E = hercules_router.Routes(srv.E)
-
 	aegis_inmemdbs.InitValidatorDB()
-
 	StartAndConfigClientNetworkSettings(clientName, network)
 	srv.Start()
 }
