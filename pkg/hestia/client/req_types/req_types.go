@@ -1,7 +1,6 @@
 package hestia_req_types
 
 import (
-	signing_automation_ethereum "github.com/zeus-fyi/zeus/pkg/artemis/signing_automation/ethereum"
 	strings_filter "github.com/zeus-fyi/zeus/pkg/utils/strings"
 )
 
@@ -29,8 +28,7 @@ type ServiceRequestWrapper struct {
 	ServiceURL        string `json:"serviceURL"`
 }
 
-func (vsr *CreateValidatorServiceRequest) CreateValidatorServiceRequest(dp signing_automation_ethereum.ValidatorDepositSlice, srw ServiceRequestWrapper) {
-	vsr.ValidatorServiceOrgGroupSlice = make([]ValidatorServiceOrgGroup, len(dp))
+func (vsr *CreateValidatorServiceRequest) CreateValidatorServiceRequest(vsg ValidatorServiceOrgGroupSlice, srw ServiceRequestWrapper) {
 
 	if !strings_filter.ValidateHttpsURL(srw.ServiceURL) {
 		panic("you must provide a valid https service link")
@@ -45,7 +43,8 @@ func (vsr *CreateValidatorServiceRequest) CreateValidatorServiceRequest(dp signi
 	}
 
 	vsr.ServiceRequestWrapper = srw
-	for i, _ := range dp {
+	vsr.ValidatorServiceOrgGroupSlice = vsg
+	for i, _ := range vsg {
 		vsr.ValidatorServiceOrgGroupSlice[i].Pubkey = strings_filter.AddHexPrefix(vsr.ValidatorServiceOrgGroupSlice[i].Pubkey)
 		if len(vsr.ValidatorServiceOrgGroupSlice[i].Pubkey) != 98 {
 			panic("you must provide a valid 0x prefixed bls pubkey value")
