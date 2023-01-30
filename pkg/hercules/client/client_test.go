@@ -21,8 +21,8 @@ type HerculesClientTestSuite struct {
 func (t *HerculesClientTestSuite) SetupTest() {
 	// points dir to test/configs
 	tc := configs.InitLocalTestConfigs()
-	//t.ZeusTestClient = NewDefaultZeusClient(tc.Bearer)
-	t.HerculesTestClient = NewDefaultHerculesClient(tc.Bearer)
+	t.HerculesTestClient = NewLocalHerculesClient(tc.Bearer)
+	//.HerculesTestClient = NewDefaultHerculesClient(tc.Bearer)
 	// points working dir to inside /test
 	test_base.ForceDirToTestDirLocation()
 }

@@ -16,8 +16,11 @@ func (t *HerculesClientTestSuite) TestVerifySignatureBLS() {
 	tmp.Message = msg
 	rr.SignatureRequests.Map[pubKeyExp] = tmp
 	resp, err := t.HerculesTestClient.VerifyEthSignatureBLS(ctx, rr)
-	t.Assert().Nil(err)
-
+	t.Require().Nil(err)
 	t.Require().NotEmpty(resp)
 
+	sigVerify, err := resp.VerifySignatures(ctx, rr.SignatureRequests)
+	t.Require().Nil(err)
+	t.Require().Len(sigVerify, 1)
+	t.Assert().Equal(pubKeyExp, sigVerify[0])
 }
