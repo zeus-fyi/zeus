@@ -4,22 +4,32 @@ import v1Core "k8s.io/api/core/v1"
 
 type ContainerDriver struct {
 	v1Core.Container
+	AppendEnvVars []v1Core.EnvVar
 }
 
-func (c *ContainerDriver) SetContainerConfigs(cont *v1Core.Container) {
-	if len(c.Image) > 0 {
-		cont.Image = c.Image
+func (cd *ContainerDriver) SetContainerConfigs(cont *v1Core.Container) {
+	if len(cd.Image) > 0 {
+		cont.Image = cd.Image
 	}
-	if c.Env != nil {
-		cont.Env = c.Env
+
+	if cont.Env == nil {
+		cd.Env = []v1Core.EnvVar{}
 	}
-	if c.Ports != nil {
-		cont.Ports = c.Ports
+
+	if cd.Env != nil {
+		cont.Env = cd.Env
 	}
-	if c.Command != nil {
-		cont.Command = c.Command
+	if cd.AppendEnvVars != nil {
+		cont.Env = append(cont.Env, cd.AppendEnvVars...)
 	}
-	if c.Args != nil {
-		cont.Args = c.Args
+
+	if cd.Ports != nil {
+		cont.Ports = cd.Ports
+	}
+	if cd.Command != nil {
+		cont.Command = cd.Command
+	}
+	if cd.Args != nil {
+		cont.Args = cd.Args
 	}
 }

@@ -24,7 +24,6 @@ const (
 
 // CreateFieldsForCLI platformSubcommand should be eth1, eth2, or filecoin
 func (w *Web3SignerCmdArgs) CreateFieldsForCLI(platformSubcommand string) ([]string, error) {
-
 	args := []string{web3signerStartCommand}
 	cargs, err := w.Config.SetArgs()
 	if err != nil {
