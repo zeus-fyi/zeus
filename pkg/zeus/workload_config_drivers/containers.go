@@ -33,3 +33,10 @@ func (cd *ContainerDriver) SetContainerConfigs(cont *v1Core.Container) {
 		cont.Args = cd.Args
 	}
 }
+
+func (cd *ContainerDriver) CreateEnvVarKeyValue(k, v string) v1Core.EnvVar {
+	return v1Core.EnvVar{
+		Name:  k,
+		Value: v,
+	}
+}
