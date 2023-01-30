@@ -9,6 +9,10 @@ metadata:
 spec:
   type: ClusterIP
   ports:
+    - port: 9003
+      targetPort: hercules
+      protocol: TCP
+      name: hercules
     - port: 9000
       targetPort: http
       protocol: TCP

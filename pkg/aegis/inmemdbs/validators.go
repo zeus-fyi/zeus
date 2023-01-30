@@ -11,21 +11,19 @@ import (
 var ValidatorInMemDB *memdb.MemDB
 
 type Validator struct {
-	Index int
 	bls_signer.EthBLSAccount
 }
 
 const ValidatorsTable = "validators"
 
 type inMemValidator struct {
-	Index     int
+	Index     string
 	PublicKey []byte
 	SecretKey []byte
 }
 
-func NewValidator(index int, blsKey bls_signer.EthBLSAccount) Validator {
+func NewValidator(blsKey bls_signer.EthBLSAccount) Validator {
 	v := Validator{
-		Index:         index,
 		EthBLSAccount: blsKey,
 	}
 	return v
@@ -35,7 +33,7 @@ func InsertValidatorsInMemDb(ctx context.Context, vs []Validator) {
 	txn := ValidatorInMemDB.Txn(true)
 	for _, v := range vs {
 		insertV := inMemValidator{
-			Index:     v.Index,
+			Index:     v.PublicKeyString(),
 			PublicKey: v.PublicKey().Marshal(),
 			SecretKey: v.BLSPrivateKey.Marshal(),
 		}
@@ -69,12 +67,7 @@ func InitValidatorDB() {
 					"id": {
 						Name:    "id",
 						Unique:  true,
-						Indexer: &memdb.IntFieldIndex{Field: "Index"},
-					},
-					"validator_index": {
-						Name:    "validator_index",
-						Unique:  true,
-						Indexer: &memdb.IntFieldIndex{Field: "Index"},
+						Indexer: &memdb.StringFieldIndex{Field: "Index"},
 					},
 					"public_key": {
 						Name:    "public_key",

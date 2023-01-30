@@ -49,7 +49,7 @@ func (s *InMemDBsTestSuite) TestBatchValidatorsInMemDB() {
 
 	for i < numAccounts {
 		acc := bls_signer.NewEthBLSAccount()
-		insertAccountSlice[i] = NewValidator(i, acc)
+		insertAccountSlice[i] = NewValidator(acc)
 		batchSignReqs.Map[acc.PublicKeyString()] = EthereumBLSKeySignatureRequest{rand.String(10)}
 		i++
 	}
@@ -90,7 +90,7 @@ func (s *InMemDBsTestSuite) TestValidatorsInMemDB() {
 	insertAccountSlice := make([]Validator, numAccounts)
 	for i < numAccounts {
 		acc := bls_signer.NewEthBLSAccount()
-		insertAccountSlice[i] = NewValidator(i, acc)
+		insertAccountSlice[i] = NewValidator(acc)
 		i++
 	}
 	InsertValidatorsInMemDb(ctx, insertAccountSlice)

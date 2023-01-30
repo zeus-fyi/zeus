@@ -12,3 +12,6 @@ data:
     --slashing-protection-db-username="${WEB3SIGNER_SLASHING_PROTECTION_DB_USERNAME}" \
     --slashing-protection-db-password="${WEB3SIGNER_SLASHING_PROTECTION_DB_PASSWORD}" \
     --slashing-protection-pruning-enabled=true
+  hercules.sh: |-
+    #!/bin/sh 
+    hercules
