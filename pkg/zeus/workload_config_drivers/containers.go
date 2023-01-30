@@ -12,17 +12,16 @@ func (cd *ContainerDriver) SetContainerConfigs(cont *v1Core.Container) {
 		cont.Image = cd.Image
 	}
 
-	if cont.Env == nil {
+	if cd.Env == nil {
 		cd.Env = []v1Core.EnvVar{}
 	}
 
-	if cd.Env != nil {
+	if cont.Env != nil {
 		cont.Env = cd.Env
 	}
 	if cd.AppendEnvVars != nil {
 		cont.Env = append(cont.Env, cd.AppendEnvVars...)
 	}
-
 	if cd.Ports != nil {
 		cont.Ports = cd.Ports
 	}
