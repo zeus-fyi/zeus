@@ -8,6 +8,10 @@ type DeploymentDriver struct {
 	ContainerDrivers map[string]ContainerDriver
 }
 
+func NewDeploymentDriver() DeploymentDriver {
+	return DeploymentDriver{ContainerDrivers: make(map[string]ContainerDriver)}
+}
+
 func (d *DeploymentDriver) SetDeploymentConfigs(sts *v1.Deployment) {
 	if d == nil {
 		return
