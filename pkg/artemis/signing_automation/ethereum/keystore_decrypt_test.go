@@ -8,12 +8,6 @@ import (
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 )
 
-/*
-	encryptor := keystorev4.New()
-	input := make(map[string]interface{})
-	err := json.Unmarshal([]byte(test.input), &input)
-*/
-
 func (t *Web3SignerClientTestSuite) TestKeystoreDecrypt() {
 	ksPath := filepaths.Path{
 		PackageName: "",
