@@ -21,10 +21,12 @@ func GetWeb3SignerAPIStatefulSetConfig(customImage string) zeus_topology_config_
 		Env:       []v1.EnvVar{},
 		Resources: v1.ResourceRequirements{},
 	}
-
+	contDriver := zeus_topology_config_drivers.ContainerDriver{
+		Container: c,
+	}
 	sc := zeus_topology_config_drivers.StatefulSetDriver{}
-	sc.ContainerDrivers = make(map[string]v1.Container)
-	sc.ContainerDrivers[c.Name] = c
+	sc.ContainerDrivers = make(map[string]zeus_topology_config_drivers.ContainerDriver)
+	sc.ContainerDrivers[c.Name] = contDriver
 	return sc
 }
 
