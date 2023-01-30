@@ -47,6 +47,25 @@ spec:
             - name: web3signer-storage
               mountPath: "/data"
       containers:
+        - name: hercules
+          image: "zeusfyi/hercules:latest"
+          imagePullPolicy: Always
+          command: [ "/bin/sh" ]
+          args: [ "-c","/scripts/hercules.sh" ]
+          volumeMounts:
+            - name: cm-web3signer
+              mountPath: "/scripts"
+            - name: web3signer-storage
+              mountPath: "/data"
+          ports:
+            - name: hercules
+              containerPort: 9003
+              protocol: TCP
+          livenessProbe:
+            initialDelaySeconds: 60
+            periodSeconds: 120
+            tcpSocket:
+              port: hercules
         - name: zeus-web3signer
           image: "consensys/web3signer:22.11"
           imagePullPolicy: IfNotPresent
