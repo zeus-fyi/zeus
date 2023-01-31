@@ -32,6 +32,8 @@ type ClusterSkeletonBaseDefinition struct {
 	TopologyConfigDriver *zeus_topology_config_drivers.TopologyConfigDriver
 }
 
+type ClusterSkeletonBaseDefinitions []ClusterSkeletonBaseDefinition
+
 func (c *ClusterDefinition) GenerateDeploymentRequest() zeus_req_types.ClusterTopologyDeployRequest {
 	sbNameSlice := []string{}
 	for _, componentBase := range c.ComponentBases {
@@ -62,7 +64,7 @@ func (c *ClusterDefinition) GenerateSkeletonBaseCharts() ([]ClusterSkeletonBaseD
 				tmp := sb.SkeletonBaseNameChartPath.DirOut
 				dir, _ := filepath.Split(sb.SkeletonBaseNameChartPath.DirIn)
 				lastDir := strings.Split(dir, "/")[len(strings.Split(dir, "/"))-1]
-				newPath := fmt.Sprintf("%s/custom_%s", dir[:len(dir)-len(lastDir)], sbName)
+				newPath := fmt.Sprintf("%scustom_%s", dir[:len(dir)-len(lastDir)], sbName)
 				sb.SkeletonBaseNameChartPath.DirOut = newPath
 				err = inf.PrintWorkload(sb.SkeletonBaseNameChartPath)
 				if err != nil {
@@ -91,6 +93,7 @@ func (c *ClusterDefinition) GenerateSkeletonBaseCharts() ([]ClusterSkeletonBaseD
 				SkeletonBaseNameChartPath: sb.SkeletonBaseNameChartPath,
 				Workload:                  inf,
 			}
+
 			sbDefinitons = append(sbDefinitons, sbDef)
 		}
 	}
