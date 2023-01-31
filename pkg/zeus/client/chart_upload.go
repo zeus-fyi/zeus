@@ -7,6 +7,7 @@ import (
 
 	"github.com/rs/zerolog/log"
 	"github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/compression"
+	zeus_cluster_config_drivers "github.com/zeus-fyi/zeus/pkg/zeus/cluster_config_drivers"
 
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 	zeus_endpoints "github.com/zeus-fyi/zeus/pkg/zeus/client/endpoints"
@@ -45,6 +46,35 @@ func (z *ZeusClient) UploadChart(ctx context.Context, p filepaths.Path, tar zeus
 	}
 	z.PrintRespJson(resp.Body())
 	return respJson, err
+}
+
+func (z *ZeusClient) UploadChartsFromClusterDefinition(ctx context.Context, cdef zeus_cluster_config_drivers.ClusterDefinition, print bool) ([]zeus_resp_types.TopologyCreateResponse, error) {
+	sbs, err := cdef.GenerateSkeletonBaseCharts()
+	if err != nil {
+		log.Ctx(ctx).Err(err)
+		return nil, err
+	}
+	responses := make([]zeus_resp_types.TopologyCreateResponse, len(sbs))
+	for i, sb := range sbs {
+		resp, rerr := z.UploadChart(ctx, sb.SkeletonBaseNameChartPath, sb.SkeletonBaseChart)
+		if rerr != nil {
+			log.Ctx(ctx).Err(err)
+			return responses, rerr
+		}
+		if print {
+			tar := zeus_req_types.TopologyRequest{TopologyID: resp.TopologyID}
+			chartResp, cerr := z.ReadChart(ctx, tar)
+			if cerr != nil {
+				log.Ctx(ctx).Err(cerr)
+			}
+			cerr = chartResp.PrintWorkload(sb.SkeletonBaseNameChartPath)
+			if cerr != nil {
+				log.Ctx(ctx).Err(cerr)
+			}
+		}
+		responses[i] = resp
+	}
+	return responses, err
 }
 
 func (z *ZeusClient) ZipK8sChartToPath(p *filepaths.Path) error {
