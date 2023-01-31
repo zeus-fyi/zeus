@@ -9,7 +9,6 @@ import (
 )
 
 type GeneratedClusterCreationRequests struct {
-	zeus_client.ZeusClient
 	ClusterClassRequest    zeus_req_types.TopologyCreateClusterClassRequest
 	ComponentBasesRequests zeus_req_types.TopologyCreateOrAddComponentBasesToClassesRequest
 	SkeletonBasesRequests  []zeus_req_types.TopologyCreateOrAddSkeletonBasesToClassesRequest
@@ -42,19 +41,19 @@ func (c *ClusterDefinition) BuildClusterDefinitions() GeneratedClusterCreationRe
 	return gcd
 }
 
-func (gcd *GeneratedClusterCreationRequests) CreateClusterClass(ctx context.Context) error {
-	_, err := gcd.CreateClass(ctx, gcd.ClusterClassRequest)
+func (gcd *GeneratedClusterCreationRequests) CreateClusterClassDefinitions(ctx context.Context, z zeus_client.ZeusClient) error {
+	_, err := z.CreateClass(ctx, gcd.ClusterClassRequest)
 	if err != nil {
 		log.Ctx(ctx).Err(err)
 		return err
 	}
-	_, err = gcd.AddComponentBasesToClass(ctx, gcd.ComponentBasesRequests)
+	_, err = z.AddComponentBasesToClass(ctx, gcd.ComponentBasesRequests)
 	if err != nil {
 		log.Ctx(ctx).Err(err)
 		return err
 	}
 	for _, sb := range gcd.SkeletonBasesRequests {
-		_, err = gcd.AddSkeletonBasesToClass(ctx, sb)
+		_, err = z.AddSkeletonBasesToClass(ctx, sb)
 		if err != nil {
 			log.Ctx(ctx).Err(err)
 			return err
