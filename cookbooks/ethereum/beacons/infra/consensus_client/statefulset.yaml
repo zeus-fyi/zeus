@@ -37,7 +37,7 @@ spec:
           volumeMounts:
             - name: consensus-client-storage
               mountPath: "/data"
-        - name: init-snapshot
+        - name: init-snapshots
           image: "zeusfyi/hercules:latest"
           imagePullPolicy: Always
           command: [ "/bin/sh" ]
@@ -103,11 +103,6 @@ spec:
               port: http-api
           resources:
             {}
-          env:
-            - name: POD_IP
-              valueFrom:
-                fieldRef:
-                  fieldPath: status.podIP
       nodeSelector:
         {}
       affinity:
