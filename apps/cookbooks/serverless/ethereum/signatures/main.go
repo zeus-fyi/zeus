@@ -2,13 +2,11 @@ package main
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/aws/aws-lambda-go/lambda"
 )
 
-func HandleRequest(ctx context.Context, event interface{}) (string, error) {
-	fmt.Printf("%v\n", event)
+func HandleRequest(ctx context.Context, secretID string, msg any) (string, error) {
 	return "Hello from Lambda!", nil
 }
 

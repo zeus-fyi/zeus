@@ -1,1 +1,1 @@
-can you write me a go function that calculates a fibonacci sequence using dynamic programming for efficiency
+show me how to retrieve an aws secret in golang using aws-sdk-go-v2 with a fully coded example using static credentials
