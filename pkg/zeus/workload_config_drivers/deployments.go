@@ -16,6 +16,14 @@ func (d *DeploymentDriver) SetDeploymentConfigs(sts *v1.Deployment) {
 	if d == nil {
 		return
 	}
+
+	// init containers
+	for i, c := range sts.Spec.Template.Spec.InitContainers {
+		if v, ok := d.ContainerDrivers[c.Name]; ok {
+			v.SetContainerConfigs(&c)
+			sts.Spec.Template.Spec.InitContainers[i] = c
+		}
+	}
 	for i, c := range sts.Spec.Template.Spec.Containers {
 		if v, ok := d.ContainerDrivers[c.Name]; ok {
 			v.SetContainerConfigs(&c)
