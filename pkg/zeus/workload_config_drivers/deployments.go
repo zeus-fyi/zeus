@@ -17,6 +17,7 @@ func (d *DeploymentDriver) SetDeploymentConfigs(sts *v1.Deployment) {
 		return
 	}
 
+	// TODO refactor into pod template spec config, then share w/sts + here
 	// init containers
 	for i, c := range sts.Spec.Template.Spec.InitContainers {
 		if v, ok := d.ContainerDrivers[c.Name]; ok {
@@ -24,6 +25,7 @@ func (d *DeploymentDriver) SetDeploymentConfigs(sts *v1.Deployment) {
 			sts.Spec.Template.Spec.InitContainers[i] = c
 		}
 	}
+	// containers
 	for i, c := range sts.Spec.Template.Spec.Containers {
 		if v, ok := d.ContainerDrivers[c.Name]; ok {
 			v.SetContainerConfigs(&c)
