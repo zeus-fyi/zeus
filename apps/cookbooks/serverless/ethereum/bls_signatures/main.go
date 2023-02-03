@@ -8,6 +8,7 @@ import (
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/go-resty/resty/v2"
 	"github.com/rs/zerolog/log"
+	aegis_inmemdbs "github.com/zeus-fyi/zeus/pkg/aegis/inmemdbs"
 	bls_signer "github.com/zeus-fyi/zeus/pkg/crypto/bls"
 )
 
@@ -17,26 +18,40 @@ const (
 	SecretsPortHTTP = 2773
 )
 
-func HandleEthSignRequestBLS(ctx context.Context, secretName, keyName, msg string) (string, error) {
+type SignRequestsEvent struct {
+	SecretName string `json:"secretName"`
+	aegis_inmemdbs.EthereumBLSKeySignatureRequests
+}
+
+func HandleEthSignRequestBLS(ctx context.Context, event SignRequestsEvent) (aegis_inmemdbs.EthereumBLSKeySignatureResponses, error) {
+	sigResponsesMap := make(map[string]aegis_inmemdbs.EthereumBLSKeySignatureResponse)
+	batchSigResponses := aegis_inmemdbs.EthereumBLSKeySignatureResponses{
+		Map: sigResponsesMap,
+	}
+
 	headerValue := os.Getenv(SessionToken)
 	r := resty.New()
 	respJSON := make(map[string]any)
 	_, err := r.R().
 		SetHeader(SecretsHeader, headerValue).
 		SetResult(&respJSON).
-		Get(fmt.Sprintf("http://localhost:%d/secretsmanager/get?secretId=%s", SecretsPortHTTP, secretName))
+		Get(fmt.Sprintf("http://localhost:%d/secretsmanager/get?secretId=%s", SecretsPortHTTP, event.SecretName))
 	if err != nil {
 		log.Ctx(ctx).Err(err)
-		return "", err
+		return batchSigResponses, err
 	}
-	sk, ok := respJSON[keyName]
-	if !ok {
-		log.Ctx(ctx).Warn().Interface("key", keyName).Msg("no value found for secret key")
-		return "", err
+
+	for pubkey, msg := range event.Map {
+		sk, ok := respJSON[pubkey]
+		if !ok {
+			log.Ctx(ctx).Warn().Interface("key", pubkey).Msg("no value found for secret key")
+		} else {
+			acc := bls_signer.NewEthSignerBLSFromExistingKey(sk.(string))
+			sig := acc.Sign([]byte(msg.Message)).Marshal()
+			batchSigResponses.Map[pubkey] = aegis_inmemdbs.EthereumBLSKeySignatureResponse{Signature: bls_signer.ConvertBytesToString(sig)}
+		}
 	}
-	acc := bls_signer.NewEthSignerBLSFromExistingKey(sk.(string))
-	sig := acc.Sign([]byte(msg))
-	return bls_signer.ConvertBytesToString(sig.Marshal()), nil
+	return batchSigResponses, nil
 }
 
 func main() {
