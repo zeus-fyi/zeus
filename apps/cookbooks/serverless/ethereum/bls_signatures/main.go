@@ -17,7 +17,7 @@ const (
 	SecretsPortHTTP = 2773
 )
 
-func HandleSignRequestBLS(ctx context.Context, secretName, keyName, msg string) (string, error) {
+func HandleEthSignRequestBLS(ctx context.Context, secretName, keyName, msg string) (string, error) {
 	headerValue := os.Getenv(SessionToken)
 	r := resty.New()
 	respJSON := make(map[string]any)
@@ -40,5 +40,5 @@ func HandleSignRequestBLS(ctx context.Context, secretName, keyName, msg string) 
 }
 
 func main() {
-	lambda.Start(HandleSignRequestBLS)
+	lambda.Start(HandleEthSignRequestBLS)
 }
