@@ -2,6 +2,7 @@ package aws_secrets
 
 import (
 	"context"
+	"encoding/json"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
@@ -15,6 +16,7 @@ type SecretsManagerAuthAWS struct {
 }
 
 type AuthAWS struct {
+	Region    string
 	AccessKey string
 	SecretKey string
 }
@@ -22,6 +24,7 @@ type AuthAWS struct {
 type SecretInfo struct {
 	Region string
 	Name   string
+	Key    string
 }
 
 func InitSecretsManager(ctx context.Context, auth AuthAWS) (SecretsManagerAuthAWS, error) {
@@ -31,6 +34,7 @@ func InitSecretsManager(ctx context.Context, auth AuthAWS) (SecretsManagerAuthAW
 		log.Ctx(ctx).Err(err)
 		return SecretsManagerAuthAWS{}, err
 	}
+	cfg.Region = auth.Region
 	secretsManagerClient := secretsmanager.NewFromConfig(cfg)
 	return SecretsManagerAuthAWS{secretsManagerClient}, err
 }
@@ -51,5 +55,17 @@ func (s *SecretsManagerAuthAWS) GetSecret(ctx context.Context, si SecretInfo) (s
 
 	// Decrypts secret using the associated KMS key.
 	var secretString = *result.SecretString
-	return secretString, nil
+	m := make(map[string]any)
+	err = json.Unmarshal([]byte(secretString), &m)
+	if err != nil {
+		log.Ctx(ctx).Err(err)
+		return "", err
+	}
+
+	secretValue, ok := m[si.Key]
+	if !ok {
+		log.Ctx(ctx).Warn().Interface("key", si.Key).Msg("no value found for secret key")
+		return "", err
+	}
+	return secretValue.(string), nil
 }
