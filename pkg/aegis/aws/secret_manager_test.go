@@ -37,7 +37,6 @@ func (t *AwsSecretManagerTestSuite) TestFetchSecrets() {
 	acc := bls_signer.NewEthSignerBLSFromExistingKey(sk)
 	expPubKey := "8a7addbf2857a72736205d861169c643545283a74a1ccb71c95dd2c9652acb89de226ca26d60248c4ef9591d7e010288"
 	t.Assert().Equal(expPubKey, acc.PublicKeyString())
-
 }
 
 func TestAwsSecretManagerTestSuite(t *testing.T) {

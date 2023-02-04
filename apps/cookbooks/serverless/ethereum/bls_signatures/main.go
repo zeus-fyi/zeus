@@ -9,6 +9,7 @@ import (
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
+	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
 	"github.com/aws/aws-secretsmanager-caching-go/secretcache"
 	"github.com/go-resty/resty/v2"
 	"github.com/rs/zerolog/log"
@@ -33,8 +34,9 @@ type SignRequestsEvent struct {
 	SignatureRequests aegis_inmemdbs.EthereumBLSKeySignatureRequests `json:"signatureRequests"`
 }
 
-func HandleEthSignRequestBLS(ctx context.Context, event events.APIGatewayProxyRequest) events.APIGatewayProxyResponse {
+func HandleEthSignRequestBLS(ctx context.Context, event events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	ApiResponse := events.APIGatewayProxyResponse{}
+
 	// Switch for identifying the HTTP request
 	switch event.HTTPMethod {
 	case "GET":
@@ -44,54 +46,69 @@ func HandleEthSignRequestBLS(ctx context.Context, event events.APIGatewayProxyRe
 		if err != nil {
 			body := "Error: Invalid JSON payload ||| " + fmt.Sprint(err) + " Body Obtained" + "||||" + event.Body
 			ApiResponse = events.APIGatewayProxyResponse{Body: body, StatusCode: 500}
-		} else {
-			resp, serr := SignMessages(ctx, event.Body)
-			if serr != nil {
-				body := "Error: Invalid JSON payload ||| " + fmt.Sprint(serr) + " Body Obtained" + "||||" + event.Body
-				ApiResponse = events.APIGatewayProxyResponse{Body: body, StatusCode: 500}
-				return ApiResponse
-			}
-			ApiResponse = events.APIGatewayProxyResponse{Body: resp, StatusCode: 200}
+			return ApiResponse, err
 		}
-	}
-	return ApiResponse
+		m := make(map[string]any)
 
+		sr := SignRequestsEvent{}
+		err = json.Unmarshal([]byte(event.Body), &m)
+		if err != nil {
+			log.Ctx(ctx).Err(err)
+			ApiResponse = events.APIGatewayProxyResponse{Body: event.Body, StatusCode: 500}
+			return ApiResponse, err
+		}
+		b, err := json.Marshal(m)
+		if err != nil {
+			log.Ctx(ctx).Err(err)
+			ApiResponse = events.APIGatewayProxyResponse{Body: event.Body, StatusCode: 500}
+			return ApiResponse, err
+		}
+		err = json.Unmarshal(b, &sr)
+		if err != nil {
+			log.Ctx(ctx).Err(err)
+			ApiResponse = events.APIGatewayProxyResponse{Body: event.Body, StatusCode: 500}
+			return ApiResponse, err
+		}
+		body, err := SignMessages(ctx, sr)
+		if err != nil {
+			log.Ctx(ctx).Err(err)
+			ApiResponse = events.APIGatewayProxyResponse{Body: event.Body, StatusCode: 500}
+			return ApiResponse, err
+		}
+		ApiResponse = events.APIGatewayProxyResponse{Body: body, StatusCode: 200}
+	default:
+	}
+	return ApiResponse, nil
 }
-func SignMessages(ctx context.Context, body string) (string, error) {
-	b, err := json.Marshal(body)
-	if err != nil {
-		log.Ctx(ctx).Err(err)
-		return "", err
-	}
 
-	sr := SignRequestsEvent{}
-	err = json.Unmarshal(b, &sr)
-	if err != nil {
-		log.Ctx(ctx).Err(err)
-		return "", err
-	}
-
+func SignMessages(ctx context.Context, sr SignRequestsEvent) (string, error) {
 	if len(sr.SecretName) <= 0 {
 		return "", errors.New("no secret name provided")
 	}
 	headerValue := os.Getenv(SessionToken)
 	r := resty.New()
-
-	var respJSON map[string]any
 	url := fmt.Sprintf("http://localhost:%d/secretsmanager/get?secretId=%s", SecretsPortHTTP, sr.SecretName)
-	log.Ctx(ctx).Info().Interface("url", url)
-
-	_, err = r.R().
+	resp, err := r.R().
 		SetHeader(SecretsHeader, headerValue).
-		SetResult(&respJSON).
 		Get(url)
+	svo := &secretsmanager.GetSecretValueOutput{}
+	err = json.Unmarshal(resp.Body(), &svo)
 	if err != nil {
 		log.Ctx(ctx).Err(err)
 		return "", err
 	}
+
+	ss := *svo.SecretString
+	m := make(map[string]any)
+	err = json.Unmarshal([]byte(ss), &m)
+	if err != nil {
+		log.Ctx(ctx).Err(err)
+		return "", err
+	}
+
 	signedResponses := aegis_inmemdbs.EthereumBLSKeySignatureResponses{Map: make(map[string]aegis_inmemdbs.EthereumBLSKeySignatureResponse)}
 	for pubkey, msg := range sr.SignatureRequests.Map {
-		sk, ok := respJSON[pubkey]
+		sk, ok := m[pubkey]
 		if !ok {
 			log.Ctx(ctx).Warn().Interface("key", pubkey).Msg("no value found for secret key")
 		} else {
