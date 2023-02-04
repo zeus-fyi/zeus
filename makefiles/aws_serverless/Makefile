@@ -16,5 +16,5 @@ docker.pub.buildx:
 	@ docker buildx build -t ${SERVERLESS_IMG} -t ${SERVERLESS_LATEST} --build-arg GOMODCACHE=${GOMODCACHE} --build-arg GOCACHE=${GOCACHE} --build-arg GOOS=${GOOS} --build-arg GOARCH=${GOARCH} --platform=${GOOS}/${GOARCH} -f ../../docker/serverless/Dockerfile ../../
 
 docker.debug:
-	docker run -it --entrypoint /bin/bash 480391564655.dkr.ecr.us-west-1.amazonaws.com/ethereumbls:latest
+	docker run -it --entrypoint /bin/bash ${SERVERLESS_REPO}/ethereumbls:latest
 
