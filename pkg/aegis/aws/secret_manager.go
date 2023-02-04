@@ -22,9 +22,9 @@ type AuthAWS struct {
 }
 
 type SecretInfo struct {
-	Region string
-	Name   string
-	Key    string
+	Region string `json:"region,omitempty"`
+	Name   string `json:"name"`
+	Key    string `json:"key,omitempty"`
 }
 
 func InitSecretsManager(ctx context.Context, auth AuthAWS) (SecretsManagerAuthAWS, error) {
@@ -68,4 +68,31 @@ func (s *SecretsManagerAuthAWS) GetSecret(ctx context.Context, si SecretInfo) (s
 		return "", err
 	}
 	return secretValue.(string), nil
+}
+
+func (s *SecretsManagerAuthAWS) GetSecretsJSON(ctx context.Context, si SecretInfo) (map[string]any, error) {
+	m := make(map[string]any)
+
+	input := &secretsmanager.GetSecretValueInput{
+		SecretId:     aws.String(si.Name),
+		VersionStage: aws.String("AWSCURRENT"), // VersionStage defaults to AWSCURRENT if unspecified
+	}
+
+	result, err := s.GetSecretValue(ctx, input)
+	if err != nil {
+		// For a list of exceptions thrown, see
+		// https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html
+		log.Ctx(ctx).Err(err)
+		return m, err
+	}
+
+	// Decrypts secret using the associated KMS key.
+	var secretString = *result.SecretString
+	err = json.Unmarshal([]byte(secretString), &m)
+	if err != nil {
+		log.Ctx(ctx).Err(err)
+		return m, err
+	}
+
+	return m, nil
 }

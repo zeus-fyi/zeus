@@ -8,6 +8,8 @@ import (
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/go-resty/resty/v2"
 	"github.com/rs/zerolog/log"
+
+	"github.com/aws/aws-secretsmanager-caching-go/secretcache"
 	aegis_inmemdbs "github.com/zeus-fyi/zeus/pkg/aegis/inmemdbs"
 	bls_signer "github.com/zeus-fyi/zeus/pkg/crypto/bls"
 )
@@ -16,6 +18,10 @@ const (
 	SessionToken    = "AWS_SESSION_TOKEN"
 	SecretsHeader   = "X-Aws-Parameters-Secrets-Token"
 	SecretsPortHTTP = 2773
+)
+
+var (
+	secretCache, _ = secretcache.New()
 )
 
 type SignRequestsEvent struct {
@@ -28,14 +34,15 @@ func HandleEthSignRequestBLS(ctx context.Context, event SignRequestsEvent) (aegi
 	batchSigResponses := aegis_inmemdbs.EthereumBLSKeySignatureResponses{
 		Map: sigResponsesMap,
 	}
-
 	headerValue := os.Getenv(SessionToken)
 	r := resty.New()
 	respJSON := make(map[string]any)
+
+	url := fmt.Sprintf("http://localhost:%d/secretsmanager/get?secretId=%s", SecretsPortHTTP, event.SecretName)
 	_, err := r.R().
 		SetHeader(SecretsHeader, headerValue).
 		SetResult(&respJSON).
-		Get(fmt.Sprintf("http://localhost:%d/secretsmanager/get?secretId=%s", SecretsPortHTTP, event.SecretName))
+		Get(url)
 	if err != nil {
 		log.Ctx(ctx).Err(err)
 		return batchSigResponses, err
