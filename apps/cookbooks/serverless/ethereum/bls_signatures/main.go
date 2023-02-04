@@ -37,7 +37,6 @@ func HandleEthSignRequestBLS(ctx context.Context, event SignRequestsEvent) (aegi
 	headerValue := os.Getenv(SessionToken)
 	r := resty.New()
 	respJSON := make(map[string]any)
-
 	url := fmt.Sprintf("http://localhost:%d/secretsmanager/get?secretId=%s", SecretsPortHTTP, event.SecretName)
 	_, err := r.R().
 		SetHeader(SecretsHeader, headerValue).
@@ -58,6 +57,7 @@ func HandleEthSignRequestBLS(ctx context.Context, event SignRequestsEvent) (aegi
 			batchSigResponses.Map[pubkey] = aegis_inmemdbs.EthereumBLSKeySignatureResponse{Signature: bls_signer.ConvertBytesToString(sig)}
 		}
 	}
+
 	return batchSigResponses, nil
 }
 
