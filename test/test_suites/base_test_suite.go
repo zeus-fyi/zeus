@@ -13,6 +13,10 @@ type BaseTestSuite struct {
 	suite.Suite
 }
 
+func (s *BaseTestSuite) SetupTest() {
+	s.Tc = configs.InitLocalTestConfigs()
+}
+
 func (s *BaseTestSuite) ChangeToTestDir() {
 	s.Tc = configs.InitLocalTestConfigs()
 	test_base.ForceDirToTestDirLocation()

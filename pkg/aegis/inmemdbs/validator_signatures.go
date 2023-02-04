@@ -8,7 +8,7 @@ import (
 )
 
 type EthereumBLSKeySignatureRequests struct {
-	Map map[string]EthereumBLSKeySignatureRequest
+	Map map[string]EthereumBLSKeySignatureRequest `json:"map"`
 }
 
 type EthereumBLSKeySignatureRequest struct {
@@ -16,7 +16,7 @@ type EthereumBLSKeySignatureRequest struct {
 }
 
 type EthereumBLSKeySignatureResponses struct {
-	Map map[string]EthereumBLSKeySignatureResponse
+	Map map[string]EthereumBLSKeySignatureResponse `json:"responses"`
 }
 
 type EthereumBLSKeySignatureResponse struct {

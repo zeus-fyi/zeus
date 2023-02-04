@@ -25,6 +25,9 @@ type TestContainer struct {
 
 	Web3SignerDockerImage string
 	Web3SignerAuthURL     string
+
+	AccessKeyAWS string
+	SecretKeyAWS string
 }
 
 func InitLocalTestConfigs() TestContainer {
@@ -47,5 +50,8 @@ func InitLocalTestConfigs() TestContainer {
 	testCont.HDWalletPassword = viper.GetString("HD_WALLET_PASSWORD")
 	testCont.Web3SignerDockerImage = viper.GetString("WEB3SIGNER_DOCKER_IMG")
 	testCont.Web3SignerAuthURL = viper.GetString("WEB3SIGNER_AUTH_URL")
+
+	testCont.AccessKeyAWS = viper.GetString("AWS_ACCESS_KEY")
+	testCont.SecretKeyAWS = viper.GetString("AWS_SECRET_KEY")
 	return testCont
 }
