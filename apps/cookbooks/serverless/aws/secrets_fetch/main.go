@@ -33,36 +33,6 @@ type EthereumBLSKeySignatureRequest struct {
 	Message string `json:"message"`
 }
 
-func HandleSecretsRequest(ctx context.Context, event SecretsRequest) ([]string, error) {
-	headerValue := os.Getenv(SessionToken)
-	r := resty.New()
-	url := fmt.Sprintf("http://localhost:%d/secretsmanager/get?secretId=%s", SecretsPortHTTP, event.SecretName)
-	resp, err := r.R().
-		SetHeader(SecretsHeader, headerValue).
-		Get(url)
-	svo := &secretsmanager.GetSecretValueOutput{}
-	err = json.Unmarshal(resp.Body(), &svo)
-	if err != nil {
-		log.Ctx(ctx).Err(err)
-		return nil, err
-	}
-
-	ss := *svo.SecretString
-	m := make(map[string]any)
-	err = json.Unmarshal([]byte(ss), &m)
-	if err != nil {
-		log.Ctx(ctx).Err(err)
-		return nil, err
-	}
-
-	tmp := []string{}
-	for k, _ := range m {
-		tmp = append(tmp, k)
-	}
-
-	return tmp, err
-}
-
 func HandleSecretsRequestAPI(ctx context.Context, event events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	ApiResponse := events.APIGatewayProxyResponse{}
 	m := make(map[string]any)
