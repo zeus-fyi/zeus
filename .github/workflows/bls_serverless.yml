@@ -47,7 +47,7 @@ jobs:
 
     - name: Copy Serverless BLS Signer Docker Binary Into Zip FIle
       run: |
-        docker run -d zeusfyi/ethereumbls:latest sleep 5
+        docker run -d ${{ env.SERVERLESS_LATEST }} sleep 3
         docker cp $(docker container ls | awk 'NR==2 {print $1}'):/usr/bin/ethereumsignbls main
         docker container stop $(docker container ls | awk 'NR==2 {print $1}')
         zip main.zip main
