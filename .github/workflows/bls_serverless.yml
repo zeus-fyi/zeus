@@ -28,6 +28,12 @@ jobs:
         cd apps/external
         git clone https://github.com/zeus-fyi/web3.git --branch master --single-branch
 
+    - name: Cache Go Modules
+      uses: actions/cache@v2
+      with:
+        path: ~/go/pkg/mod
+        key: go-mod-${{ hashFiles('**/go.sum') }}
+
     - name: Build Serverless BLS Signer
       run: |
         docker buildx build -t ${SERVERLESS_IMG} -t ${SERVERLESS_LATEST} --build-arg GOMODCACHE=${GOMODCACHE} --build-arg GOCACHE=${GOCACHE} --build-arg GOOS=${GOOS} --build-arg GOARCH=${GOARCH} --platform=${GOOS}/${GOARCH} -f docker/serverless/Dockerfile .
