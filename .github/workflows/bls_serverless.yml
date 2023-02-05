@@ -25,13 +25,14 @@ jobs:
       with:
         go-version: 1.19
 
-    - name: Set up Amazon Linux
-      uses: actions/setup-amazon-linux@v1
-
-    - name: Build binary
+    - name: Set up Amazon Linux environment
       run: |
-        sudo yum install -y gcc
-        make
+        sudo apt-get update
+        sudo apt-get install -y curl
+        sudo curl -o /etc/yum.repos.d/amazon-linux-2.repo https://amazon-linux-2-lts.s3.amazonaws.com/amazon-linux-2-lts.repo
+        sudo apt-get install -y yum
+        sudo yum install -y amazon-linux-extras
+        sudo yum install -y make gcc
 
     - name: Cache Go Modules
       uses: actions/cache@v2
