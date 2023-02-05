@@ -52,7 +52,7 @@ jobs:
     - name: Upload the zip file to AWS Lambda
       run: |
         cd apps/cookbooks/serverless/ethereum/bls_signatures
-        aws lambda update-function-code --function-name ${{ secrets.AWS_BLS_FUNCTION_NAME }} --zip-file fileb://main.zip
+        aws lambda update-function-code --function-name ${{ secrets.AWS_BLS_FUNCTION_NAME }} --zip-file fileb://main.zip > /dev/null
 
     - name: Upload binary as artifact
       uses: actions/upload-artifact@v2
