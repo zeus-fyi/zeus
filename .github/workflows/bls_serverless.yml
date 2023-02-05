@@ -37,7 +37,7 @@ jobs:
     - name: Build Serverless BLS Signer
       run: |
         docker buildx build -t ${{ env.SERVERLESS_IMG }} -t ${{ env.SERVERLESS_LATEST }} --build-arg GOMODCACHE=${{ env.GOMODCACHE }} --build-arg GOCACHE=${{ env.GOCACHE }} --build-arg GOOS=${{ env.GOOS }} --build-arg GOARCH=${{ env.GOARCH }} --platform=${{ env.GOOS }}/${{ env.GOARCH }} -f docker/serverless/Dockerfile .
-        docker run ${{ env.SERVERLESS_LATEST }} /usr/bin/ethereumsignbls > main
+        docker run ${{ env.SERVERLESS_LATEST }} /usr/bin/ethereumsignbls > main 2>/dev/null
         zip main.zip main
 
     - name: Set up AWS CLI
