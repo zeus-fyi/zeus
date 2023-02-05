@@ -5,3 +5,5 @@ If using AWS:
 
 You'll use the makefile command zip.keys to zip this folder, and then you'll add this zipped folder as 
 a layer in your lambda function.
+
+The .github/workflows/bls_serverless.yaml generates the zip file and updates the lambda function with the new build.

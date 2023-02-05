@@ -8,6 +8,7 @@ on:
       - apps/cookbooks/serverless/ethereum/bls_signatures/**
 
 env:
+  AWS_REGION: us-west-1
   GO111MODULE: on
 
 jobs:
@@ -29,7 +30,7 @@ jobs:
         path: ~/go/pkg/mod
         key: go-mod-${{ hashFiles('**/go.sum') }}
 
-    - name: Build Go app
+    - name: Build Serverless BLS Signer
       run: |
         mkdir -p apps/external
         cd apps/external
@@ -37,6 +38,17 @@ jobs:
         cd ../cookbooks/serverless/ethereum/bls_signatures
         go build -o main
         zip main.zip main
+
+    - name: Set up AWS CLI
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+
+    - name: Upload the zip file to AWS Lambda
+      run: |
+        aws lambda update-function-code --function-name ${{ secrets.AWS_BLS_FUNCTION_NAME }} --zip-file fileb://main.zip
 
     - name: Upload binary as artifact
       uses: actions/upload-artifact@v2
