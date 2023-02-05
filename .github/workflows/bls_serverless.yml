@@ -57,4 +57,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: main.zip
-        path: apps/cookbooks/serverless/ethereum/bls_signatures/main.zip
+        path: main.zip
