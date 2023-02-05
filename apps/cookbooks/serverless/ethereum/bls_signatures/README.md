@@ -1,5 +1,5 @@
 
-Create a folder in the root directory called keystores, and then place your keystore json files in here.
+Create a folder in the root directory called keystores and then place your keystore json files in here.
 
 If using AWS:
 
