@@ -25,6 +25,14 @@ jobs:
       with:
         go-version: 1.19
 
+    - name: Set up Amazon Linux
+      uses: actions/setup-amazon-linux@v1
+
+    - name: Build binary
+      run: |
+        sudo yum install -y gcc
+        make
+
     - name: Cache Go Modules
       uses: actions/cache@v2
       with:
