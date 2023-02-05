@@ -79,7 +79,7 @@ func (dv *DecryptedValidators) ReadValidatorFromKeystoreAndGenerateRawKeyfiles(f
 		DirOut: dv.DecryptPath,
 		FnOut:  strings_filter.AddHexPrefix(acc.PublicKeyString()),
 	}
-	err = p.WriteToFileOutPath(acc.BLSPrivateKey.Marshal())
+	err = p.WriteToFileOutPath([]byte(bls_signer.ConvertBytesToString(acc.BLSPrivateKey.Marshal())))
 	if err != nil {
 		log.Err(err)
 		panic(err)

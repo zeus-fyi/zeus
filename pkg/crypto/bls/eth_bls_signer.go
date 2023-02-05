@@ -2,6 +2,7 @@ package bls_signer
 
 import (
 	"encoding/hex"
+	strings_filter "github.com/zeus-fyi/zeus/pkg/utils/strings"
 
 	"github.com/herumi/bls-eth-go-binary/bls"
 	e2types "github.com/wealdtech/go-eth2-types/v2"
@@ -73,4 +74,8 @@ func (e *EthBLSAccount) PrivateKeyString() string {
 
 func (e *EthBLSAccount) PublicKeyString() string {
 	return ConvertBytesToString(e.PublicKey().Marshal())
+}
+
+func (e *EthBLSAccount) ZeroXPrefixedPublicKeyString() string {
+	return strings_filter.AddHexPrefix(ConvertBytesToString(e.PublicKey().Marshal()))
 }

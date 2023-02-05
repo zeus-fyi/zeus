@@ -21,7 +21,7 @@ type EthereumBLSKeyVerificationRequests struct {
 	SignatureRequests aegis_inmemdbs.EthereumBLSKeySignatureRequests
 }
 
-// SignVerificationMessages requires you to seed your keys into the aegis inmemdb, or replace with another import method
+// SignVerificationMessages requires you to seed your keys into the aegis inmemfs, or replace with another import method
 func (b *EthereumBLSKeyVerificationRequests) SignVerificationMessages(c echo.Context) error {
 	ctx := context.Background()
 	resp, err := aegis_inmemdbs.SignValidatorMessagesFromInMemDb(ctx, b.SignatureRequests)

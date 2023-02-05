@@ -10,6 +10,8 @@ import (
 	"github.com/go-resty/resty/v2"
 	"github.com/rs/zerolog/log"
 	aegis_inmemdbs "github.com/zeus-fyi/zeus/pkg/aegis/inmemdbs"
+	age_encryption "github.com/zeus-fyi/zeus/pkg/crypto/age"
+	serverless_inmemfs "github.com/zeus-fyi/zeus/serverless/ethereum/signatures/inmemfs"
 	"os"
 )
 
@@ -23,8 +25,6 @@ type SecretsRequest struct {
 	SecretName        string                                         `json:"secretName"`
 	SignatureRequests aegis_inmemdbs.EthereumBLSKeySignatureRequests `json:"signatureRequests"`
 }
-
-// TODO decrypt age encrypted secrets
 
 func HandleEthSignRequestBLS(ctx context.Context, event events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	ApiResponse := events.APIGatewayProxyResponse{}
@@ -73,7 +73,18 @@ func HandleEthSignRequestBLS(ctx context.Context, event events.APIGatewayProxyRe
 		return ApiResponse, err
 	}
 
-	signedResponses, err := aegis_inmemdbs.SignValidatorMessagesFromInMemDb(ctx, sr.SignatureRequests)
+	// init inmemfs, m should only have one age key in it
+	for pubkey, privkey := range m {
+		enc := age_encryption.NewAge(privkey.(string), pubkey)
+		err = serverless_inmemfs.ImportIntoInMemFs(ctx, enc)
+		if err != nil {
+			log.Ctx(ctx).Err(err)
+			ApiResponse = events.APIGatewayProxyResponse{Body: event.Body, StatusCode: 500}
+			return ApiResponse, err
+		}
+	}
+
+	signedResponses, err := serverless_inmemfs.SignValidatorMessagesFromInMemFs(ctx, sr.SignatureRequests)
 	b, err = json.Marshal(signedResponses)
 	if err != nil {
 		log.Ctx(ctx).Err(err)

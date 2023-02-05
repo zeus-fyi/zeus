@@ -1,10 +1,7 @@
 package age_encryption
 
 import (
-	"errors"
-	"github.com/rs/zerolog/log"
-	"github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/compression"
-	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
+	"filippo.io/age"
 )
 
 type Age struct {
@@ -20,29 +17,16 @@ func NewAge(privKey, pubKey string) Age {
 	return a
 }
 
-/* GzipAndEncrypt, use this format
-p := filepaths.Path{
-		DirIn:       "./secrets",
-		FnIn:        "secrets",
-	}
-*/
-
-func (a *Age) GzipAndEncrypt(p *filepaths.Path) error {
-	if p == nil {
-		return errors.New("need to include a path")
-	}
-	c := compression.NewCompression()
-
-	err := c.GzipCompressDir(p)
+func GenerateNewAgeCredentials() Age {
+	identity, err := age.GenerateX25519Identity()
 	if err != nil {
-		log.Err(err)
-		return err
+		return Age{}
 	}
 
-	err = a.Encrypt(p)
-	if err != nil {
-		log.Err(err)
-		return err
+	pubkey := identity.Recipient().String()
+	privKey := identity.String()
+	return Age{
+		agePrivateKey: privKey,
+		agePublicKey:  pubkey,
 	}
-	return err
 }

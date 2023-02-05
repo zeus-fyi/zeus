@@ -117,6 +117,7 @@ require (
 	github.com/wealdtech/go-eth2-wallet-store-s3 v1.10.0 // indirect
 	github.com/wealdtech/go-indexer v1.0.0 // indirect
 	github.com/yusufpapurcu/wmi v1.2.2 // indirect
+	github.com/zeus-fyi/memoryfs v0.0.0-20221107215020-c71d8bb73852 // indirect
 	golang.org/x/crypto v0.4.0 // indirect
 	golang.org/x/net v0.3.0 // indirect
 	golang.org/x/oauth2 v0.0.0-20221014153046-6fdb5e3db783 // indirect

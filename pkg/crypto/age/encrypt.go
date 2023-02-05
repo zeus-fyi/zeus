@@ -3,6 +3,7 @@ package age_encryption
 import (
 	"errors"
 	"github.com/rs/zerolog/log"
+	"github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/compression"
 	"io"
 	"os"
 
@@ -50,5 +51,32 @@ func (a *Age) Encrypt(p *filepaths.Path) error {
 		return cerr
 	}
 	p.FnIn = p.FnOut
+	return err
+}
+
+/* GzipAndEncrypt, use this format
+p := filepaths.Path{
+		DirIn:       "./secrets",
+		FnIn:        "secrets",
+	}
+*/
+
+func (a *Age) GzipAndEncrypt(p *filepaths.Path) error {
+	if p == nil {
+		return errors.New("need to include a path")
+	}
+	c := compression.NewCompression()
+
+	err := c.GzipCompressDir(p)
+	if err != nil {
+		log.Err(err)
+		return err
+	}
+
+	err = a.Encrypt(p)
+	if err != nil {
+		log.Err(err)
+		return err
+	}
 	return err
 }
