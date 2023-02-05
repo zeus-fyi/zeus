@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - main
-    paths:
-      - apps/cookbooks/serverless/ethereum/bls_signatures/**
 
 env:
   AWS_REGION: us-west-1
@@ -39,7 +37,7 @@ jobs:
         cd apps/external
         git clone https://github.com/zeus-fyi/web3.git --branch master --single-branch
         cd ../cookbooks/serverless/ethereum/bls_signatures
-        CGO_ENABLED=${{ env.CGO_ENABLED }} GOOS=${{ env.GOOS }} GOARCH=${{ env.GOARCH }} go build -o main
+        CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build -o main apps/cookbooks/serverless/ethereum/bls_signatures/main.go
         zip main.zip main
 
     - name: Set up AWS CLI
