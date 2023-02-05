@@ -15,7 +15,13 @@ type AgeEncryptionTestSuite struct {
 func (s *AgeEncryptionTestSuite) SetupTest() {
 }
 
+func (s *AgeEncryptionTestSuite) TestGenerateNewAge() {
+	a := GenerateNewAgeCredentials()
+	s.Assert().NotEmpty(a)
+}
+
 func (s *AgeEncryptionTestSuite) TestEncryption() {
+	GenerateNewAgeCredentials()
 }
 
 // use age-keygen -o private_key.txt to create a pubkey/private key pair for here

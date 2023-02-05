@@ -24,11 +24,13 @@ func (c *Compression) GzipCompressDir(p *filepaths.Path) error {
 	p.FnOut = p.FnIn + ".tar.gz"
 	err := os.MkdirAll(filepath.Dir(p.FileOutPath()), 0755)
 	if err != nil {
+		log.Err(err)
 		return err
 	}
 
 	out, err := os.Create(p.FileOutPath())
 	if err != nil {
+		log.Err(err)
 		return err
 	}
 	defer out.Close()
@@ -47,6 +49,7 @@ func (c *Compression) GzipCompressDir(p *filepaths.Path) error {
 		if !d.IsDir() && path != p.FnOut {
 			aerr := addToArchive(p, tw, path)
 			if aerr != nil {
+				log.Err(aerr)
 				return aerr
 			}
 		}
