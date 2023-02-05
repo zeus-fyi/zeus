@@ -25,21 +25,11 @@ jobs:
       with:
         go-version: 1.19
 
-    - name: Set up Amazon Linux environment
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y make gcc
-
     - name: Cache Go Modules
       uses: actions/cache@v2
       with:
         path: ~/go/pkg/mod
         key: go-mod-${{ hashFiles('**/go.sum') }}
-
-    - name: Install zip
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y zip
 
     - name: Clone external repos into workspace
       run: |
@@ -49,7 +39,7 @@ jobs:
 
     - name: Build Serverless BLS Signer
       run: |
-        CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build -o main apps/cookbooks/serverless/ethereum/bls_signatures/main.go
+        CGO_ENABLED=${{ env.CGO_ENABLED }} GOOS=${{ env.GOOS }} GOARCH=${{ env.GOARCH }} go build -ldflags="-s -w"  apps/cookbooks/serverless/ethereum/bls_signatures/main.go
         zip main.zip main
 
     - name: Set up AWS CLI
