@@ -23,6 +23,12 @@ jobs:
       with:
         go-version: 1.19
 
+    - name: Cache Go Modules
+      uses: actions/cache@v2
+      with:
+        path: ~/go/pkg/mod
+        key: go-mod-${{ hashFiles('**/go.sum') }}
+
     - name: Build Go app
       run: |
         mkdir -p apps/external
