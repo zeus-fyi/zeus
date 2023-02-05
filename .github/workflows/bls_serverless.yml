@@ -36,7 +36,7 @@ jobs:
         cd apps/external
         git clone https://github.com/zeus-fyi/web3.git --branch master --single-branch
         cd ../cookbooks/serverless/ethereum/bls_signatures
-        go build -o main
+        CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build -o main
         zip main.zip main
 
     - name: Set up AWS CLI
