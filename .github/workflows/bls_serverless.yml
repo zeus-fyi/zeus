@@ -47,7 +47,10 @@ jobs:
 
     - name: Copy Serverless BLS Signer Docker Binary Into Zip FIle
       run: |
-        makefiles/aws_serverless/copy_docker_bin.sh
+        docker run -d zeusfyi/ethereumbls:latest sleep 5
+        docker cp $(docker container ls | awk 'NR==2 {print $1}'):/usr/bin/ethereumsignbls main
+        docker container stop $(docker container ls | awk 'NR==2 {print $1}')
+        zip main.zip main
 
     - name: Set up AWS CLI
       uses: aws-actions/configure-aws-credentials@v1
