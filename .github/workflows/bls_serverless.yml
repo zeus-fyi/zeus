@@ -36,13 +36,12 @@ jobs:
 
     - name: Build Serverless BLS Signer
       run: |
-        docker buildx build -t ${SERVERLESS_IMG} -t ${SERVERLESS_LATEST} --build-arg GOMODCACHE=${GOMODCACHE} --build-arg GOCACHE=${GOCACHE} --build-arg GOOS=${GOOS} --build-arg GOARCH=${GOARCH} --platform=${GOOS}/${GOARCH} -f docker/serverless/Dockerfile .
-        docker run -d ${SERVERLESS_REPO}/ethereumbls:latest
+        docker buildx build -t ${{ env.SERVERLESS_IMG }} -t ${{ env.SERVERLESS_LATEST }} --build-arg GOMODCACHE=${{ env.GOMODCACHE }} --build-arg GOCACHE=${{ env.GOCACHE }} --build-arg GOOS=${{ env.GOOS }} --build-arg GOARCH=${{ env.GOARCH }} --platform=${{ env.GOOS }}/${{ env.GOARCH }} -f docker/serverless/Dockerfile .
+        docker run -d ${{ env.SERVERLESS_REPO }}/ethereumbls:latest
         docker cp $(docker container ls | awk 'NR==2 {print $1}'):/usr/bin/ethereumsignbls .
         docker stop $(docker container ls | awk 'NR==2 {print $1}')
         mv ethereumsignbls main
         zip main.zip main
-      
 
     - name: Set up AWS CLI
       uses: aws-actions/configure-aws-credentials@v1
