@@ -40,6 +40,7 @@ jobs:
     - name: Build Serverless BLS Signer
       run: |
         CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build -o main apps/cookbooks/serverless/ethereum/bls_signatures/main.go
+        zip main.zip main
 
     - name: Set up AWS CLI
       uses: aws-actions/configure-aws-credentials@v1
@@ -50,8 +51,6 @@ jobs:
 
     - name: Upload the zip file to AWS Lambda
       run: |
-        cd apps/cookbooks/serverless/ethereum/bls_signatures
-        zip main.zip main
         aws lambda update-function-code --function-name ${{ secrets.AWS_BLS_FUNCTION_NAME }} --zip-file fileb://main.zip > /dev/null
 
     - name: Upload binary as artifact
