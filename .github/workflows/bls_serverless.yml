@@ -25,6 +25,7 @@ jobs:
 
     - name: Build Go app
       run: |
+        mkdir apps/external
         cd apps/external/ && git clone https://github.com/zeus-fyi/web3.git --branch master --single-branch
         cd apps/cookbooks/serverless/ethereum/bls_signatures
         go build -o main
