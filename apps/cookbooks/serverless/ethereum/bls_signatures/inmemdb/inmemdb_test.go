@@ -22,6 +22,8 @@ func (s *ServerlessInMemDBsTestSuite) TestInMemDBsImportPrep() {
 	// change to actual path
 	KeystorePath.DirIn = s.Tc.EncryptedKeystoresPath
 	vs := aegis_inmemdbs.DecryptedValidators{HDPassword: s.Tc.HDWalletPassword, DecryptPath: s.Tc.UnencryptedKeystoresPath}
+
+	// TODO, this should be encoded, vs the bytes raw storage
 	err := KeystorePath.WalkAndApplyFuncToFileType(".json", vs.ReadValidatorFromKeystoreAndGenerateRawKeyfiles)
 	s.Require().Nil(err)
 }
