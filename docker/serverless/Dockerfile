@@ -7,7 +7,8 @@ ARG GOCACHE
 ARG GOOS
 ARG GOARCH
 # manage dependencies
-COPY . .
+COPY go.mod go.sum ./
+
 RUN --mount=type=cache,target=${GOMODCACHE} go mod download
 COPY . .
 
