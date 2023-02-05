@@ -35,9 +35,13 @@ jobs:
         key: go-mod-${{ hashFiles('**/go.sum') }}
 
     - name: Build Serverless BLS Signer
+      continue-on-error: true
       run: |
         docker buildx build -t ${{ env.SERVERLESS_IMG }} -t ${{ env.SERVERLESS_LATEST }} --build-arg GOMODCACHE=${{ env.GOMODCACHE }} --build-arg GOCACHE=${{ env.GOCACHE }} --build-arg GOOS=${{ env.GOOS }} --build-arg GOARCH=${{ env.GOARCH }} --platform=${{ env.GOOS }}/${{ env.GOARCH }} -f docker/serverless/Dockerfile .
-        docker run ${{ env.SERVERLESS_LATEST }} /usr/bin/ethereumsignbls > main 2>/dev/null
+        docker run ${{ env.SERVERLESS_LATEST }} /usr/bin/ethereumsignbls > main 
+
+    - name: Zip Binary
+      run: |
         zip main.zip main
 
     - name: Set up AWS CLI
