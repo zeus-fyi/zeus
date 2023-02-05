@@ -4,6 +4,8 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"os"
+
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
@@ -12,7 +14,6 @@ import (
 	aegis_inmemdbs "github.com/zeus-fyi/zeus/pkg/aegis/inmemdbs"
 	age_encryption "github.com/zeus-fyi/zeus/pkg/crypto/age"
 	serverless_inmemfs "github.com/zeus-fyi/zeus/serverless/ethereum/signatures/inmemfs"
-	"os"
 )
 
 const (
