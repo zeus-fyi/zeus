@@ -6,6 +6,7 @@ import (
 	"path"
 	"path/filepath"
 
+	"github.com/rs/zerolog/log"
 	strings_filter "github.com/zeus-fyi/zeus/pkg/utils/strings"
 )
 
@@ -44,6 +45,7 @@ func (p *Path) WalkAndApplyFuncToFileType(ext string, f func(p string) error) er
 	fileSystem := os.DirFS(p.DirIn)
 	err := fs.WalkDir(fileSystem, ".", func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
+			log.Err(err)
 			return err
 		}
 		if !d.IsDir() && (filepath.Ext(d.Name()) == ext || ext == "") {
