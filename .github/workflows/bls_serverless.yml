@@ -23,10 +23,14 @@ jobs:
       with:
         go-version: 1.19
 
-    - name: Build Go app
+    - name: Create directory and add dependent referenced external folder
       run: |
-        mkdir apps/external
-        cd apps/external/ && git clone https://github.com/zeus-fyi/web3.git --branch master --single-branch
+        mkdir -p apps/external
+        cd apps/external
+        git clone https://github.com/zeus-fyi/web3.git --branch master --single-branch
+
+    - name: Build serverless bls signer app
+      run: |
         cd apps/cookbooks/serverless/ethereum/bls_signatures
         go build -o main
         zip main.zip main
