@@ -38,13 +38,9 @@ jobs:
       run: |
         docker buildx build -t ${{ env.SERVERLESS_IMG }} -t ${{ env.SERVERLESS_LATEST }} --build-arg GOMODCACHE=${{ env.GOMODCACHE }} --build-arg GOCACHE=${{ env.GOCACHE }} --build-arg GOOS=${{ env.GOOS }} --build-arg GOARCH=${{ env.GOARCH }} --platform=${{ env.GOOS }}/${{ env.GOARCH }} -f docker/serverless/Dockerfile .
 
-    - name: Copy Serverless BLS Signer Docker Binary
+    - name: Copy Serverless BLS Signer Docker Binary Into Zip FIle
       run: |
         makefiles/aws_serverless/copy_docker_bin.sh
-
-    - name: Zip Binary
-      run: |
-        zip main.zip main
 
     - name: Set up AWS CLI
       uses: aws-actions/configure-aws-credentials@v1
