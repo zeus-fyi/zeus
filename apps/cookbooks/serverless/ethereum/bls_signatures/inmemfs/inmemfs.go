@@ -43,6 +43,7 @@ func ImportIntoInMemFs(ctx context.Context, enc age_encryption.Age) error {
 	return nil
 }
 
+// SignValidatorMessagesFromInMemFs returns a 0x prefixed hex string of the signature
 func SignValidatorMessagesFromInMemFs(ctx context.Context, signReqs aegis_inmemdbs.EthereumBLSKeySignatureRequests) (aegis_inmemdbs.EthereumBLSKeySignatureResponses, error) {
 	resp := make(map[string]aegis_inmemdbs.EthereumBLSKeySignatureResponse)
 	batchResp := aegis_inmemdbs.EthereumBLSKeySignatureResponses{
@@ -63,7 +64,7 @@ func SignValidatorMessagesFromInMemFs(ctx context.Context, signReqs aegis_inmemd
 		}
 		acc := bls_signer.NewEthSignerBLSFromExistingKey(string(b))
 		sig := acc.Sign([]byte(req.Message)).Marshal()
-		batchResp.Map[pubkey] = aegis_inmemdbs.EthereumBLSKeySignatureResponse{Signature: bls_signer.ConvertBytesToString(sig)}
+		batchResp.Map[pubkey] = aegis_inmemdbs.EthereumBLSKeySignatureResponse{Signature: "0x" + bls_signer.ConvertBytesToString(sig)}
 	}
 	if len(batchResp.Map) != len(signReqs.Map) {
 		log.Ctx(ctx).Warn().Msg("SignValidatorMessagesFromInMemFs, did not contain all expected validator signatures")

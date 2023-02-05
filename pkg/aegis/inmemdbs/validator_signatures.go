@@ -2,6 +2,7 @@ package aegis_inmemdbs
 
 import (
 	"context"
+	strings_filter "github.com/zeus-fyi/zeus/pkg/utils/strings"
 
 	"github.com/rs/zerolog/log"
 	bls_signer "github.com/zeus-fyi/zeus/pkg/crypto/bls"
@@ -52,7 +53,7 @@ func SignValidatorMessagesFromInMemDb(ctx context.Context, signReqs EthereumBLSK
 		msg, ok := signReqs.Map[pubkey]
 		if ok {
 			sig := v.Sign([]byte(msg.Message)).Marshal()
-			batchResp.Map[pubkey] = EthereumBLSKeySignatureResponse{bls_signer.ConvertBytesToString(sig)}
+			batchResp.Map[pubkey] = EthereumBLSKeySignatureResponse{strings_filter.AddHexPrefix(bls_signer.ConvertBytesToString(sig))}
 		}
 	}
 	if len(batchResp.Map) != len(signReqs.Map) {
