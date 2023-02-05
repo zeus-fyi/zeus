@@ -18,3 +18,15 @@ docker.pub.buildx:
 docker.debug:
 	docker run -it --entrypoint /bin/bash ${SERVERLESS_REPO}/ethereumbls:latest
 
+docker cp $(shell docker container ls | awk 'NR==2 {print $1}') /usr/bin/ethereumsignbls .
+
+
+docker cp 480391564655.dkr.ecr.us-west-1.amazonaws.com/ethereumbls:latest:/usr/bin/ethereumsignbls ~/ethereumsignbls
+
+	docker run -it --entrypoint /bin/bash 480391564655.dkr.ecr.us-west-1.amazonaws.com/ethereumbls:latest
+
+ docker container ls -aqf "name=480391564655.dkr.ecr.us-west-1.amazonaws.com/ethereumbls:latest" | xargs docker inspect --format '{{.Id}}'
+
+docker ps -aqf "name=480391564655.dkr.ecr.us-west-1.amazonaws.com/ethereumbls:latest" | xargs docker inspect --format '{{.Id}}'
+
+docker cp $(docker container ls | awk 'NR==2 {print $1}'):/usr/bin/ethereumsignbls .

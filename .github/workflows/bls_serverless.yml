@@ -11,7 +11,9 @@ env:
   GOOS: linux
   GOARCH: amd64
   CGO_ENABLED: 1
-
+  SERVERLESS_IMG: zeusfyi
+  SERVERLESS_NAME: ethereumbls
+  SERVERLESS_LATEST: zeusfyi/ethereumbls:latest
 jobs:
   build:
     runs-on: ubuntu-22.04
@@ -20,26 +22,12 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Set up Go
-      uses: actions/setup-go@v2
-      with:
-        go-version: 1.19
-
-    - name: Cache Go Modules
-      uses: actions/cache@v2
-      with:
-        path: ~/go/pkg/mod
-        key: go-mod-${{ hashFiles('**/go.sum') }}
-
-    - name: Clone external repos into workspace
-      run: |
-        mkdir -p apps/external
-        cd apps/external
-        git clone https://github.com/zeus-fyi/web3.git --branch master --single-branch
-
     - name: Build Serverless BLS Signer
       run: |
-        CGO_ENABLED=${{ env.CGO_ENABLED }} GOOS=${{ env.GOOS }} GOARCH=${{ env.GOARCH }} go build -ldflags="-s -w"  apps/cookbooks/serverless/ethereum/bls_signatures/main.go
+        docker buildx build -t ${SERVERLESS_IMG} -t ${SERVERLESS_LATEST} --build-arg GOMODCACHE=${GOMODCACHE} --build-arg GOCACHE=${GOCACHE} --build-arg GOOS=${GOOS} --build-arg GOARCH=${GOARCH} --platform=${GOOS}/${GOARCH} -f docker/serverless/Dockerfile .
+        docker run -it --entrypoint /bin/bash ${SERVERLESS_REPO}/ethereumbls:latest
+        docker cp $(docker container ls | awk 'NR==2 {print $1}'):/usr/bin/ethereumsignbls .
+        mv ethereumsignbls main
         zip main.zip main
 
     - name: Set up AWS CLI
