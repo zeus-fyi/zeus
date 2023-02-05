@@ -28,9 +28,7 @@ jobs:
     - name: Set up Amazon Linux environment
       run: |
         sudo apt-get update
-        sudo apt-get install -y yum
-        sudo yum install -y amazon-linux-extras
-        sudo yum install -y make gcc
+        sudo apt-get install -y make gcc
 
     - name: Cache Go Modules
       uses: actions/cache@v2
