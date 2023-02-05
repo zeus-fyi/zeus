@@ -31,13 +31,16 @@ jobs:
         path: ~/go/pkg/mod
         key: go-mod-${{ hashFiles('**/go.sum') }}
 
-    - name: Build Serverless BLS Signer
+    - name: Clone external repos into workspace
       run: |
         mkdir -p apps/external
         cd apps/external
         git clone https://github.com/zeus-fyi/web3.git --branch master --single-branch
-        cd ../cookbooks/serverless/ethereum/bls_signatures
+
+    - name: Build Serverless BLS Signer
+      run: |
         CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build -o main apps/cookbooks/serverless/ethereum/bls_signatures/main.go
+        cd apps/cookbooks/serverless/ethereum/bls_signatures
         zip main.zip main
 
     - name: Set up AWS CLI
