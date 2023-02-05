@@ -9,12 +9,12 @@ import (
 )
 
 var (
-	fl           = strings_filter.FilterOpts{StartsWith: "deposit"}
+	fl           = strings_filter.FilterOpts{StartsWith: "keystore"}
 	KeystorePath = filepaths.Path{
 		PackageName: "",
 		DirIn:       "/opt/keystores",
 		DirOut:      "/opt/keystores",
-		FnIn:        "",
+		FnIn:        "keystore-ephemery-m_12381_3600_0_0_0.json",
 		FnOut:       "",
 		Env:         "",
 		FilterFiles: &fl,
@@ -27,7 +27,7 @@ func ImportIntoInMemDB(ctx context.Context, password string) {
 		aegis_inmemdbs.InitValidatorDB()
 	}
 	vs := aegis_inmemdbs.DecryptedValidators{HDPassword: password}
-	err := KeystorePath.WalkAndApplyFuncToFileType(".json", vs.ReadValidatorFromKeystore)
+	err := KeystorePath.WalkAndApplyFuncToFileType(".json", vs.ReadValidatorsFromKeystores)
 	if err != nil {
 		log.Ctx(ctx).Err(err)
 		panic(err)

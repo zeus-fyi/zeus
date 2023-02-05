@@ -4,15 +4,13 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	serverless_inmemdb "github.com/zeus-fyi/zeus/serverless/ethereum/signatures/inmemdb"
-	"os"
-
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
 	"github.com/go-resty/resty/v2"
 	"github.com/rs/zerolog/log"
 	aegis_inmemdbs "github.com/zeus-fyi/zeus/pkg/aegis/inmemdbs"
+	"os"
 )
 
 const (
@@ -26,8 +24,9 @@ type SecretsRequest struct {
 	SignatureRequests aegis_inmemdbs.EthereumBLSKeySignatureRequests `json:"signatureRequests"`
 }
 
+// TODO decrypt age encrypted secrets
+
 func HandleEthSignRequestBLS(ctx context.Context, event events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-	serverless_inmemdb.ImportIntoInMemDB(ctx, os.Getenv("HD_PASSWORD"))
 	ApiResponse := events.APIGatewayProxyResponse{}
 	m := make(map[string]any)
 

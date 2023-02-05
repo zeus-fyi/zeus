@@ -28,6 +28,12 @@ type TestContainer struct {
 
 	AccessKeyAWS string
 	SecretKeyAWS string
+
+	AgePubKey  string
+	AgePrivKey string
+
+	EncryptedKeystoresPath   string
+	UnencryptedKeystoresPath string
 }
 
 func InitLocalTestConfigs() TestContainer {
@@ -53,5 +59,12 @@ func InitLocalTestConfigs() TestContainer {
 
 	testCont.AccessKeyAWS = viper.GetString("AWS_ACCESS_KEY")
 	testCont.SecretKeyAWS = viper.GetString("AWS_SECRET_KEY")
+
+	testCont.AgePubKey = viper.GetString("AGE_PUBKEY")
+	testCont.AgePrivKey = viper.GetString("AGE_PRIV_KEY")
+
+	testCont.EncryptedKeystoresPath = viper.GetString("ENCRYPTED_KEYSTORES_PATH")
+	testCont.UnencryptedKeystoresPath = viper.GetString("RAW_UNENCRYPTED_KEYSTORES_PATH")
+
 	return testCont
 }

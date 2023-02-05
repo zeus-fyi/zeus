@@ -5,9 +5,7 @@ GOCACHE := $(shell go env GOCACHE)
 GOOS 	:= linux
 GOARCH  := amd64
 
-AWS_REPO := $(shell echo $AWS_REPO)
-
-SERVERLESS_REPO 	:= AWS_REPO
+SERVERLESS_REPO 	:= zeusfyi
 SERVERLESS_NAME 	:= ethereumbls
 SERVERLESS_IMG  	:= ${SERVERLESS_REPO}/${SERVERLESS_NAME}:${GIT_SHA}
 SERVERLESS_LATEST := ${SERVERLESS_REPO}/${SERVERLESS_NAME}:latest
@@ -17,4 +15,3 @@ docker.pub.buildx:
 
 docker.debug:
 	docker run -it --entrypoint /bin/bash ${SERVERLESS_REPO}/ethereumbls:latest
-
