@@ -5,8 +5,8 @@ use (
 
 	./apps/cookbooks/microservices/choreography
 	./apps/cookbooks/microservices/server_template
-	./apps/cookbooks/serverless/ethereum/bls_signatures
 	./apps/cookbooks/serverless/aws/secrets_fetch
+	./apps/cookbooks/serverless/ethereum/bls_signatures
 
 	./apps/external/web3
 

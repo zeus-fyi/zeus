@@ -3,7 +3,6 @@ package signing_automation_ethereum
 import (
 	"context"
 	"encoding/json"
-
 	"github.com/rs/zerolog/log"
 	keystorev4 "github.com/wealdtech/go-eth2-wallet-encryptor-keystorev4"
 	bls_signer "github.com/zeus-fyi/zeus/pkg/crypto/bls"

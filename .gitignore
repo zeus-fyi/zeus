@@ -57,3 +57,4 @@ Thumbs.db
 /cookbooks/ethereum/web3signers/infra/custom_ingress/
 /cookbooks/ethereum/automation/lighthouse_config_yaml/
 /test/mocks/hera/prompt_example/
+/apps/cookbooks/serverless/ethereum/bls_signatures/keystores/ephemery/

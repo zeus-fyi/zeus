@@ -9,7 +9,6 @@ import (
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
-	"github.com/aws/aws-secretsmanager-caching-go/secretcache"
 	"github.com/go-resty/resty/v2"
 	"github.com/rs/zerolog/log"
 	aegis_inmemdbs "github.com/zeus-fyi/zeus/pkg/aegis/inmemdbs"
@@ -22,21 +21,9 @@ const (
 	SecretsPortHTTP = 2773
 )
 
-var (
-	secretCache, _ = secretcache.New()
-)
-
 type SecretsRequest struct {
-	SecretName        string                          `json:"secretName"`
-	SignatureRequests EthereumBLSKeySignatureRequests `json:"signatureRequests"`
-}
-
-type EthereumBLSKeySignatureRequests struct {
-	Map map[string]EthereumBLSKeySignatureRequest `json:"map"`
-}
-
-type EthereumBLSKeySignatureRequest struct {
-	Message string `json:"message"`
+	SecretName        string                                         `json:"secretName"`
+	SignatureRequests aegis_inmemdbs.EthereumBLSKeySignatureRequests `json:"signatureRequests"`
 }
 
 func HandleEthSignRequestBLS(ctx context.Context, event events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
