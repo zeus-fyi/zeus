@@ -4,16 +4,15 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	serverless_inmemdb "github.com/zeus-fyi/zeus/serverless/ethereum/signatures/inmemdb"
 	"os"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
-	"github.com/aws/aws-secretsmanager-caching-go/secretcache"
 	"github.com/go-resty/resty/v2"
 	"github.com/rs/zerolog/log"
 	aegis_inmemdbs "github.com/zeus-fyi/zeus/pkg/aegis/inmemdbs"
-	bls_signer "github.com/zeus-fyi/zeus/pkg/crypto/bls"
 )
 
 const (
@@ -22,24 +21,13 @@ const (
 	SecretsPortHTTP = 2773
 )
 
-var (
-	secretCache, _ = secretcache.New()
-)
-
 type SecretsRequest struct {
-	SecretName        string                          `json:"secretName"`
-	SignatureRequests EthereumBLSKeySignatureRequests `json:"signatureRequests"`
-}
-
-type EthereumBLSKeySignatureRequests struct {
-	Map map[string]EthereumBLSKeySignatureRequest `json:"map"`
-}
-
-type EthereumBLSKeySignatureRequest struct {
-	Message string `json:"message"`
+	SecretName        string                                         `json:"secretName"`
+	SignatureRequests aegis_inmemdbs.EthereumBLSKeySignatureRequests `json:"signatureRequests"`
 }
 
 func HandleEthSignRequestBLS(ctx context.Context, event events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+	serverless_inmemdb.ImportIntoInMemDB(ctx, os.Getenv("HD_PASSWORD"))
 	ApiResponse := events.APIGatewayProxyResponse{}
 	m := make(map[string]any)
 
@@ -86,17 +74,7 @@ func HandleEthSignRequestBLS(ctx context.Context, event events.APIGatewayProxyRe
 		return ApiResponse, err
 	}
 
-	signedResponses := aegis_inmemdbs.EthereumBLSKeySignatureResponses{Map: make(map[string]aegis_inmemdbs.EthereumBLSKeySignatureResponse)}
-	for pubkey, sk := range m {
-		v, ok := sr.SignatureRequests.Map[pubkey]
-		if ok {
-			acc := bls_signer.NewEthSignerBLSFromExistingKey(sk.(string))
-			sig := acc.Sign([]byte(v.Message)).Marshal()
-			tmp := signedResponses.Map[pubkey]
-			tmp.Signature = bls_signer.ConvertBytesToString(sig)
-			signedResponses.Map[pubkey] = tmp
-		}
-	}
+	signedResponses, err := aegis_inmemdbs.SignValidatorMessagesFromInMemDb(ctx, sr.SignatureRequests)
 	b, err = json.Marshal(signedResponses)
 	if err != nil {
 		log.Ctx(ctx).Err(err)

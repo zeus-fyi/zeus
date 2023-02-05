@@ -2,7 +2,6 @@ package aegis_inmemdbs
 
 import (
 	"context"
-
 	"github.com/hashicorp/go-memdb"
 	"github.com/rs/zerolog/log"
 	bls_signer "github.com/zeus-fyi/zeus/pkg/crypto/bls"
@@ -57,7 +56,7 @@ func ReadOnlyValidatorFromInMemDb(ctx context.Context, pubkey string) Validator 
 	return raw.(Validator)
 }
 
-func InitValidatorDB() {
+func InitValidatorDB() *memdb.MemDB {
 	// Create the DB schema
 	schema := &memdb.DBSchema{
 		Tables: map[string]*memdb.TableSchema{
@@ -90,4 +89,5 @@ func InitValidatorDB() {
 		panic(err)
 	}
 	ValidatorInMemDB = db
+	return ValidatorInMemDB
 }
