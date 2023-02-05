@@ -18,7 +18,7 @@ var (
 	KeystorePath = filepaths.Path{
 		PackageName: "",
 		DirIn:       "/opt/keystores",
-		FnIn:        "keystore-ephemery-m_12381_3600_0_0_0.json",
+		FnIn:        "keystores.tar.gz.age",
 		FnOut:       "",
 		Env:         "",
 		FilterFiles: &fl,
