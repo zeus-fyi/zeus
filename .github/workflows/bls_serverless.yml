@@ -34,7 +34,14 @@ jobs:
         path: ~/go/pkg/mod
         key: go-mod-${{ hashFiles('**/go.sum') }}
 
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v1
+      with:
+        username: zeusfyi
+        password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+
     - name: Build Serverless BLS Signer
+      uses: docker/build-push-action@v2
       run: |
         docker buildx build -t ${{ env.SERVERLESS_IMG }} -t ${{ env.SERVERLESS_LATEST }} --build-arg GOMODCACHE=${{ env.GOMODCACHE }} --build-arg GOCACHE=${{ env.GOCACHE }} --build-arg GOOS=${{ env.GOOS }} --build-arg GOARCH=${{ env.GOARCH }} --platform=${{ env.GOOS }}/${{ env.GOARCH }} -f docker/serverless/Dockerfile .
 
