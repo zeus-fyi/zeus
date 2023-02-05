@@ -4,7 +4,8 @@ on:
   push:
     paths:
       - apps/cookbooks/serverless/ethereum/bls_signatures/**
-
+    branches:
+      - main
 env:
   AWS_REGION: us-west-1
   GO111MODULE: on
