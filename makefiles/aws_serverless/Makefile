@@ -15,5 +15,3 @@ docker.pub.buildx:
 
 docker.debug:
 	docker run -it --entrypoint /bin/bash ${SERVERLESS_REPO}/ethereumbls:latest
-
-    docker run zeusfyi/ethereumbls:latest /usr/bin/ethereumsignbls > main
