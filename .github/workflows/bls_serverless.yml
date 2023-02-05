@@ -2,8 +2,8 @@ name: Build Serverless BLS Signer
 
 on:
   push:
-    branches:
-      - main
+    paths:
+      - apps/cookbooks/serverless/ethereum/bls_signatures/**
 
 env:
   AWS_REGION: us-west-1
@@ -21,6 +21,12 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+
+    - name: Clone external repos into workspace
+      run: |
+        mkdir -p apps/external
+        cd apps/external
+        git clone https://github.com/zeus-fyi/web3.git --branch master --single-branch
 
     - name: Build Serverless BLS Signer
       run: |
