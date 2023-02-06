@@ -17,6 +17,8 @@ const (
 	GethEphemeral         = "gethEphemeral"
 	downloadGethEphemeral = "downloadGethEphemeral"
 	gethDockerImage       = "ethereum/client-go:v1.10.26"
+
+	gethDockerImageCapella = "ethpandaops/geth:master"
 )
 
 func EphemeralExecClientGethConfig(inf topology_workloads.TopologyBaseInfraWorkload) {
@@ -48,7 +50,7 @@ func EphemeralExecClientGethConfig(inf topology_workloads.TopologyBaseInfraWorkl
 	if inf.StatefulSet != nil {
 		for i, c := range inf.StatefulSet.Spec.Template.Spec.Containers {
 			if c.Name == execClient {
-				inf.StatefulSet.Spec.Template.Spec.Containers[i].Image = gethDockerImage
+				inf.StatefulSet.Spec.Template.Spec.Containers[i].Image = gethDockerImageCapella
 			}
 		}
 
