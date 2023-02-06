@@ -14,7 +14,9 @@ const (
 
 	LighthouseEphemeral         = "lighthouseEphemeral"
 	downloadLighthouseEphemeral = "downloadLighthouseEphemeral"
-	lighthouseDockerImage       = "sigp/lighthouse:v3.3.0-modern"
+
+	lighthouseDockerImage        = "sigp/lighthouse:v3.3.0-modern"
+	lighthouseDockerImageCapella = "sigp/lighthouse:capella"
 )
 
 func EphemeralConsensusClientLighthouseConfig(inf topology_workloads.TopologyBaseInfraWorkload) {
@@ -46,7 +48,7 @@ func EphemeralConsensusClientLighthouseConfig(inf topology_workloads.TopologyBas
 	if inf.StatefulSet != nil {
 		for i, c := range inf.StatefulSet.Spec.Template.Spec.Containers {
 			if c.Name == consensusClient {
-				inf.StatefulSet.Spec.Template.Spec.Containers[i].Image = lighthouseDockerImage
+				inf.StatefulSet.Spec.Template.Spec.Containers[i].Image = lighthouseDockerImageCapella
 			}
 		}
 		for i, v := range inf.StatefulSet.Spec.VolumeClaimTemplates {
