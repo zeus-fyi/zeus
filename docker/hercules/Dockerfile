@@ -28,7 +28,7 @@ RUN --mount=type=cache,target=${GOMODCACHE} go mod download
 COPY . .
 RUN --mount=type=cache,target=${GOCACHE} CGO_ENABLED=1 GOOS=${GOOS} GOARCH=${GOARCH} go build -ldflags="-s -w" -o snapshots apps/snapshots/main.go
 
-FROM ethereum/client-go:stable as geth
+FROM ethpandaops/geth:master as geth
 WORKDIR /app
 
 FROM ubuntu:22.04
