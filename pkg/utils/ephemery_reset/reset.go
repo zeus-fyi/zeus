@@ -32,13 +32,13 @@ func ExtractAndDecEphemeralTestnetConfig(dataDir filepaths.Path, clientName stri
 	wipeDirPath := dataDir.DirIn
 	switch clientName {
 	case beacon_cookbooks.LighthouseEphemeral, validator_cookbooks.EphemeryValidatorClusterClassName:
+		log.Info().Interface("dataDir", dataDir).Msg("ExtractAndDecEphemeralTestnetConfig: LighthouseEphemeral")
 		dataDir.DirIn = "/data/testnet"
 		dataDir.DirOut = path.Join(dataDir.DirIn)
-		log.Info().Interface("dataDir", dataDir).Msg("ExtractAndDecEphemeralTestnetConfig: LighthouseEphemeral")
 	case beacon_cookbooks.GethEphemeral:
+		log.Info().Interface("dataDir", dataDir).Msg("ExtractAndDecEphemeralTestnetConfig: GethEphemeral")
 		// placing a genesis.json file directly in the datadir path should set the chain to the expected value
 		dataDir.DirOut = dataDir.DirIn
-		log.Info().Interface("dataDir", dataDir).Msg("ExtractAndDecEphemeralTestnetConfig: GethEphemeral")
 	case "test":
 		dataDir.DirIn = "./data"
 		dataDir.DirOut = "./data/testnet"
@@ -51,10 +51,11 @@ func ExtractAndDecEphemeralTestnetConfig(dataDir filepaths.Path, clientName stri
 	if ok {
 		log.Info().Msg("previous genesis artifact for genesis interval found")
 		kt := ExtractResetTime(path.Join(dataDir.DirIn, "/retention.vars"))
-		log.Info().Int64("seconds until next genesis iteration", kt)
+		log.Info().Int64("seconds until next genesis iteration", kt).Msg("ExtractAndDecEphemeralTestnetConfig: retention.vars")
 		if kt <= 0 {
 			log.Info().Interface("wipingDirPath", wipeDirPath).Msg("wiping datadir in path")
 			err := RemoveContents(wipeDirPath)
+			log.Info().Interface("wipingDirPath", wipeDirPath).Msg("wiping datadir in path done")
 			if err != nil {
 				log.Err(err).Msg("ExtractAndDecEphemeralTestnetConfig: RemoveContents")
 				panic(err)
@@ -75,11 +76,13 @@ func ExtractAndDecEphemeralTestnetConfig(dataDir filepaths.Path, clientName stri
 	err := poseidon.DownloadFile(ctx, dataDir.DirIn, url)
 	if err != nil {
 		log.Ctx(ctx).Panic().Err(err).Msg("DownloadFile")
+		panic(err)
 	}
 	dec := compression.NewCompression()
 	err = dec.UnGzip(&dataDir)
 	if err != nil {
 		log.Ctx(ctx).Panic().Err(err).Msg("UnGzip")
+		panic(err)
 	}
 	// cleans up, by deleting the compressed file
 	err = dataDir.RemoveFileInPath()
@@ -92,6 +95,7 @@ func ExtractAndDecEphemeralTestnetConfig(dataDir filepaths.Path, clientName stri
 		err = cmd.Run()
 		if err != nil {
 			log.Ctx(ctx).Panic().Err(err).Msg("setting geth genesis")
+			panic(err)
 		}
 	}
 }
@@ -158,6 +162,7 @@ func ExtractResetTime(path string) int64 {
 		panic(scanner.Err())
 	}
 	killTime := genesisTime + resetInterval - time.Now().Unix()
+	log.Info().Int64("genesisTime", genesisTime).Int64("resetInterval", resetInterval).Int64("killTime", killTime).Msg("ExtractResetTime")
 	return killTime
 }
 
@@ -175,16 +180,19 @@ func Exists(name string) (bool, error) {
 func RemoveContents(dir string) error {
 	d, err := os.Open(dir)
 	if err != nil {
+		log.Err(err).Interface("dir", dir).Msg("RemoveContents: os.Open(dir)")
 		return err
 	}
 	defer d.Close()
 	names, err := d.Readdirnames(-1)
 	if err != nil {
+		log.Err(err).Interface("dir", dir).Msg("RemoveContents: d.Readdirnames(-1)")
 		return err
 	}
 	for _, name := range names {
 		err = os.RemoveAll(filepath.Join(dir, name))
 		if err != nil {
+			log.Err(err).Interface("dir", dir).Interface("name", name).Msg("RemoveContents: os.RemoveAll(filepath.Join(dir, name))")
 			return err
 		}
 	}
