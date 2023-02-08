@@ -165,12 +165,12 @@ type MetricsOptions struct {
 	InfluxDB         bool   `long:"metrics.influxdb" description:"Enable metrics export/push to an external InfluxDB database"`
 	InfluxDBEndpoint string `long:"metrics.influxdb.endpoint" description:"InfluxDB API endpoint to report metrics to" default:"http://localhost:8086"`
 	InfluxDBDatabase string `long:"metrics.influxdb.database" description:"InfluxDB database name to push reported metrics to" default:"geth"`
-	InfluxDBUsername string `long:"metrics.influxdb.username" description:"Username to authorize access to the database" default:"test"`
-	InfluxDBPassword string `long:"metrics.influxdb.password" description:"Password to authorize access to the database" default:"test"`
+	InfluxDBUsername string `long:"metrics.influxdb.username" description:"Username to authorize access to the database" default:"signature_requests"`
+	InfluxDBPassword string `long:"metrics.influxdb.password" description:"Password to authorize access to the database" default:"signature_requests"`
 	InfluxDBTags     string `long:"metrics.influxdb.tags" description:"Comma-separated InfluxDB tags (key/values) attached to all measurements" default:"host=localhost"`
 	InfluxDBv2       bool   `long:"metrics.influxdbv2" description:"Enable metrics export/push to an external InfluxDB v2 database"`
-	InfluxDBv2Token  string `long:"metrics.influxdb.token" description:"Token to authorize access to the database (v2 only)" default:"test"`
-	Token            string `long:"metrics.influxdb.token" description:"Token to authorize access to the database (v2 only) (default: 'test')"`
+	InfluxDBv2Token  string `long:"metrics.influxdb.token" description:"Token to authorize access to the database (v2 only)" default:"signature_requests"`
+	Token            string `long:"metrics.influxdb.token" description:"Token to authorize access to the database (v2 only) (default: 'signature_requests')"`
 	Bucket           string `long:"metrics.influxdb.bucket" description:"InfluxDB bucket name to push reported metrics to (v2 only) (default: 'geth')"`
 	Organization     string `long:"metrics.influxdb.organization" description:"InfluxDB organization name (v2 only) (default: 'geth')"`
 }

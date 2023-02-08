@@ -34,6 +34,9 @@ type TestContainer struct {
 
 	EncryptedKeystoresPath   string
 	UnencryptedKeystoresPath string
+
+	ServerlessSignerFuncBLS        string
+	ServerlessSignerFuncSecretName string
 }
 
 func InitLocalTestConfigs() TestContainer {
@@ -65,6 +68,7 @@ func InitLocalTestConfigs() TestContainer {
 
 	testCont.EncryptedKeystoresPath = viper.GetString("ENCRYPTED_KEYSTORES_PATH")
 	testCont.UnencryptedKeystoresPath = viper.GetString("RAW_UNENCRYPTED_KEYSTORES_PATH")
-
+	testCont.ServerlessSignerFuncBLS = viper.GetString("BLS_SERVERLESS_LAMBA_FUNC_ADDR")
+	testCont.ServerlessSignerFuncSecretName = viper.GetString("BLS_SERVERLESS_LAMBA_FUNC_SECRET_NAME")
 	return testCont
 }
