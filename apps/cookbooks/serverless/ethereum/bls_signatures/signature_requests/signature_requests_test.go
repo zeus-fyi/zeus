@@ -3,6 +3,7 @@ package bls_serverless_signatures
 import (
 	"github.com/go-resty/resty/v2"
 	"github.com/stretchr/testify/suite"
+	bls_serverless_signing "github.com/zeus-fyi/zeus/pkg/aegis/aws/serverless_signing"
 	aegis_inmemdbs "github.com/zeus-fyi/zeus/pkg/aegis/inmemdbs"
 	"github.com/zeus-fyi/zeus/test/test_suites"
 	"testing"
@@ -19,7 +20,7 @@ func (s *ServerlessInMemDBsTestSuite) TestServerlessSigningFunc() {
 	signedEventResponse := aegis_inmemdbs.EthereumBLSKeySignatureResponses{
 		Map: respMsgMap,
 	}
-	sr := SignatureRequests{
+	sr := bls_serverless_signing.SignatureRequests{
 		SecretName:        s.Tc.ServerlessSignerFuncSecretName,
 		SignatureRequests: aegis_inmemdbs.EthereumBLSKeySignatureRequests{Map: make(map[string]aegis_inmemdbs.EthereumBLSKeySignatureRequest)},
 	}

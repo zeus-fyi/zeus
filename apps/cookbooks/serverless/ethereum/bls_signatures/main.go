@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	bls_serverless_signing "github.com/zeus-fyi/zeus/pkg/aegis/aws/serverless_signing"
 	"os"
 
 	"github.com/aws/aws-lambda-go/events"
@@ -13,7 +14,6 @@ import (
 	"github.com/rs/zerolog/log"
 	age_encryption "github.com/zeus-fyi/zeus/pkg/crypto/age"
 	serverless_inmemfs "github.com/zeus-fyi/zeus/serverless/ethereum/signatures/inmemfs"
-	bls_serverless_signatures "github.com/zeus-fyi/zeus/serverless/ethereum/signatures/signature_requests"
 )
 
 const (
@@ -26,7 +26,7 @@ func HandleEthSignRequestBLS(ctx context.Context, event events.APIGatewayProxyRe
 	ApiResponse := events.APIGatewayProxyResponse{}
 	m := make(map[string]any)
 
-	sr := bls_serverless_signatures.SignatureRequests{}
+	sr := bls_serverless_signing.SignatureRequests{}
 	err := json.Unmarshal([]byte(event.Body), &m)
 	if err != nil {
 		log.Ctx(ctx).Err(err)

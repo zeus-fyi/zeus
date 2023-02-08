@@ -1,4 +1,4 @@
-package bls_serverless_signatures
+package bls_serverless_signing
 
 import aegis_inmemdbs "github.com/zeus-fyi/zeus/pkg/aegis/inmemdbs"
 
