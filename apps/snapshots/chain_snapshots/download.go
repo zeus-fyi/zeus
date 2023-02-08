@@ -2,15 +2,24 @@ package hercules_chain_snapshots
 
 import (
 	"fmt"
+	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 	"net/http"
 	"time"
 
 	"github.com/cavaliergopher/grab/v3"
 	"github.com/labstack/echo/v4"
 	"github.com/rs/zerolog/log"
-	v1_common_routes "github.com/zeus-fyi/hercules/api/v1/common"
 	"github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/compression"
 )
+
+// Needs to be set to use
+
+var CommonManager ClientManager
+
+type ClientManager struct {
+	BucketURL string
+	filepaths.Path
+}
 
 type DownloadChainSnapshotRequest struct {
 	BucketRequest
@@ -20,9 +29,9 @@ func (t *DownloadChainSnapshotRequest) Download(c echo.Context) error {
 	// download procedure
 	client := grab.NewClient()
 	// Downloads to your datadir
-	req, err := grab.NewRequest(v1_common_routes.CommonManager.DirIn, v1_common_routes.CommonManager.BucketURL)
+	req, err := grab.NewRequest(CommonManager.DirIn, CommonManager.BucketURL)
 	if err != nil {
-		log.Err(err).Msgf("DownloadChainSnapshotRequest: NewRequest, %s", v1_common_routes.CommonManager.BucketURL)
+		log.Err(err).Msgf("DownloadChainSnapshotRequest: NewRequest, %s", CommonManager.BucketURL)
 		return c.JSON(http.StatusInternalServerError, err)
 	}
 	// start download
@@ -50,16 +59,16 @@ func (t *DownloadChainSnapshotRequest) Download(c echo.Context) error {
 	cmp := compression.NewCompression()
 
 	// choose whatever compression or file naming you want here if you're using your own source
-	v1_common_routes.CommonManager.FnIn = t.ClientName + ".tar.lz4"
-	v1_common_routes.CommonManager.FnOut = t.ClientName
+	CommonManager.FnIn = t.ClientName + ".tar.lz4"
+	CommonManager.FnOut = t.ClientName
 
-	err = cmp.Lz4Decompress(&v1_common_routes.CommonManager.Path)
+	err = cmp.Lz4Decompress(&CommonManager.Path)
 	if err != nil {
 		log.Err(err).Msg("DownloadChainSnapshotRequest: Lz4Decompress")
 		return c.JSON(http.StatusInternalServerError, err)
 	}
 	// removes compressed file
-	err = v1_common_routes.CommonManager.RemoveFileInPath()
+	err = CommonManager.RemoveFileInPath()
 	if err != nil {
 		log.Err(err).Msg("DownloadChainSnapshotRequest: RemoveFileInPath")
 		return c.JSON(http.StatusInternalServerError, err)

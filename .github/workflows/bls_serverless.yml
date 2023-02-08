@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - apps/cookbooks/serverless/ethereum/bls_signatures/**
+      - .github/workflows/bls_serverless.yml
     branches:
       - main
 env:
