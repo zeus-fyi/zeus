@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	bls_serverless_signatures "github.com/zeus-fyi/zeus/serverless/ethereum/signatures/signature_requests"
 	"os"
 
 	"github.com/aws/aws-lambda-go/events"
@@ -14,6 +13,7 @@ import (
 	"github.com/rs/zerolog/log"
 	age_encryption "github.com/zeus-fyi/zeus/pkg/crypto/age"
 	serverless_inmemfs "github.com/zeus-fyi/zeus/serverless/ethereum/signatures/inmemfs"
+	bls_serverless_signatures "github.com/zeus-fyi/zeus/serverless/ethereum/signatures/signature_requests"
 )
 
 const (
