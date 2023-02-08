@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	bls_serverless_signatures "github.com/zeus-fyi/zeus/serverless/ethereum/signatures/signature_requests"
 	"os"
 
 	"github.com/aws/aws-lambda-go/events"
@@ -11,7 +12,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
 	"github.com/go-resty/resty/v2"
 	"github.com/rs/zerolog/log"
-	aegis_inmemdbs "github.com/zeus-fyi/zeus/pkg/aegis/inmemdbs"
 	age_encryption "github.com/zeus-fyi/zeus/pkg/crypto/age"
 	serverless_inmemfs "github.com/zeus-fyi/zeus/serverless/ethereum/signatures/inmemfs"
 )
@@ -22,16 +22,11 @@ const (
 	SecretsPortHTTP = 2773
 )
 
-type SecretsRequest struct {
-	SecretName        string                                         `json:"secretName"`
-	SignatureRequests aegis_inmemdbs.EthereumBLSKeySignatureRequests `json:"signatureRequests"`
-}
-
 func HandleEthSignRequestBLS(ctx context.Context, event events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	ApiResponse := events.APIGatewayProxyResponse{}
 	m := make(map[string]any)
 
-	sr := SecretsRequest{}
+	sr := bls_serverless_signatures.SignatureRequests{}
 	err := json.Unmarshal([]byte(event.Body), &m)
 	if err != nil {
 		log.Ctx(ctx).Err(err)
