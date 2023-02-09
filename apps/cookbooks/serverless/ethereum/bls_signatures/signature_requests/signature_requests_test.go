@@ -9,11 +9,11 @@ import (
 	"testing"
 )
 
-type ServerlessInMemDBsTestSuite struct {
+type ServerlessInMemFSTestSuite struct {
 	test_suites.BaseTestSuite
 }
 
-func (s *ServerlessInMemDBsTestSuite) TestServerlessSigningFunc() {
+func (s *ServerlessInMemFSTestSuite) TestServerlessSigningFunc() {
 	r := resty.New()
 	r.SetBaseURL(s.Tc.ServerlessSignerFuncBLS)
 	respMsgMap := make(map[string]aegis_inmemdbs.EthereumBLSKeySignatureResponse)
@@ -37,6 +37,6 @@ func (s *ServerlessInMemDBsTestSuite) TestServerlessSigningFunc() {
 	s.Assert().Equal(expSig, signedEventResponse.Map[key].Signature)
 }
 
-func TestInMemDBsTestSuite(t *testing.T) {
-	suite.Run(t, new(ServerlessInMemDBsTestSuite))
+func TestServerlessInMemFSTestSuite(t *testing.T) {
+	suite.Run(t, new(ServerlessInMemFSTestSuite))
 }
