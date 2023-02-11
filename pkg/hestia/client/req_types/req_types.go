@@ -8,7 +8,20 @@ import (
 const (
 	EthereumMainnetProtocolNetworkID  = 1
 	EthereumEphemeryProtocolNetworkID = 1673748447294772000
+	Mainnet                           = "mainnet"
+	Ephemery                          = "ephemery"
 )
+
+func ProtocolNetworkIDToString(id int) string {
+	switch id {
+	case EthereumMainnetProtocolNetworkID:
+		return Mainnet
+	case EthereumEphemeryProtocolNetworkID:
+		return Ephemery
+	default:
+		return "unknown"
+	}
+}
 
 type CreateValidatorServiceRequest struct {
 	ServiceRequestWrapper
