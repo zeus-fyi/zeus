@@ -22,11 +22,11 @@ Our system can comfortably scale to all of mainnet and far beyond, the cost diff
 
 #### What if this results in centralization of staking through this platform?
 
-Great question, and since that was a concern we've had on our minds early on, we've already come up with a with a few feasible designs that could turn this entire synthetic staking beacon technology into a fully decentralized synthetic beacon service. We'll advance our tech to that stage if it starts trending that way, we're a long ways from that though at this stage.
+Great question, and since that was a concern we've had on our minds early on, we've already come up with a few feasible designs that could turn this entire synthetic staking beacon technology into a fully decentralized synthetic beacon service. We'll advance our tech to that stage if it starts trending that way, we're a long ways from that though at this stage.
 
 #### Can you share more about the native web2 interactions?
 
-Both signer options come with powerful tx orchestration capabilites for smart contract & dapp interactions, allowing for truly native web2 experiences for dapp interactions for the first time (2fa, email login linked to your wallet, QR scanning, and more slated to follow this release, timelines and additional details to be announced in Feb). It will also allow developers to build smart contract automation flows for users that interact with their wallets behind the scenes, unlike the clunky browser extension setups used today that are entirely too frustrating to use.
+Both signer options come with powerful tx orchestration capabilities for smart contract & dapp interactions, allowing for truly native web2 experiences for dapp interactions for the first time (2fa, email login linked to your wallet, QR scanning, and more slated to follow this release, timelines and additional details to be announced in Feb). It will also allow developers to build smart contract automation flows for users that interact with their wallets behind the scenes, unlike the clunky browser extension setups used today that are entirely too frustrating to use.
 
 ### Automated web3 infrastructure setup
 
@@ -160,7 +160,7 @@ Hades is used to interact with kubernetes workloads via API, and can apply saved
 
 ### Beacon API ###
 
-Our ephemeral ethereum testnet beacon is open to anyone, no auth is requried. Large Eth quantities for testing is available on request.
+Our ephemeral ethereum testnet beacon is open to anyone, no auth is required. Large Eth quantities for testing is available on request.
 
 ### https://eth.ephemeral.zeus.fyi
 
@@ -177,7 +177,7 @@ Snapshot download urls for mainnet geth & lighthouse available on request.
 
 ## Infra configuration is in the 14th century. Introducing the 21st century printing press
 
-By unifying the infra ecosystem tools of today it allows the acceleration of infra development exponentially overtime with each new open source cookbook & system template allowing you to glue sophisticated distributed systems together in zero time, which lets decentralized solo & small team builders compete directly against large incumbents at the edge of technology by erasing the need for large investment in infra & devops departments that are needed now to even get started.
+By unifying the infra ecosystem tools of today it allows the acceleration of infra development exponentially over time with each new open source cookbook & system template allowing you to glue sophisticated distributed systems together in zero time, which lets decentralized solo & small team builders compete directly against large incumbents at the edge of technology by erasing the need for large investment in infra & devops departments that are needed now to even get started.
 
 Lastly, by solving infra configuration, mobility, and orchestration through remote API driven configuration, it allows you to run sophisticated web apps in virtually zero time on far more cost efficient bare metal cloud providers using commoditized managed kubernetes services and simple middleware we provide, which is up to 6x more cost efficient than AWS, GCP, and comparable cloud companies. Take a look for yourself, then ask yourself why you want to make Jeff Bezos richer than he already is?
 
@@ -234,7 +234,7 @@ Request a bearer token, email: alex@zeus.fyi
 
 ### Network Orchestration Topology ###
 
-One or many network matrix system topologies that are combined with orchestration workflows from Artemis, and Zeus, to build complex control flows and/or sequenced network states. This could be an enterprise fleet of infrastructure, a complex devops operation done at scale, or a simulation of a large testnet, or a built-in orchstration flow for automating web3 smart contract interactions for users and sending them notifications and prompts.
+One or many network matrix system topologies that are combined with orchestration workflows from Artemis, and Zeus, to build complex control flows and/or sequenced network states. This could be an enterprise fleet of infrastructure, a complex devops operation done at scale, or a simulation of a large testnet, or a built-in orchestration flow for automating web3 smart contract interactions for users and sending them notifications and prompts.
 
 ### Matrix Topology ###
 
