@@ -59,12 +59,12 @@ func SignValidatorMessagesFromInMemFs(ctx context.Context, signReqs aegis_inmemd
 		b, err := InMemFs.ReadFile(KeystorePath.FileInPath())
 		if err != nil {
 			err = errors.New(fmt.Sprintf("could not read key file %s from inmemfs: "+err.Error(), pubkey))
-			log.Ctx(ctx).Err(err)
-			panic(err)
+			log.Ctx(ctx).Error().Err(err)
+		} else {
+			acc := bls_signer.NewEthSignerBLSFromExistingKey(string(b))
+			sig := acc.Sign([]byte(req.Message)).Marshal()
+			batchResp.Map[pubkey] = aegis_inmemdbs.EthereumBLSKeySignatureResponse{Signature: "0x" + bls_signer.ConvertBytesToString(sig)}
 		}
-		acc := bls_signer.NewEthSignerBLSFromExistingKey(string(b))
-		sig := acc.Sign([]byte(req.Message)).Marshal()
-		batchResp.Map[pubkey] = aegis_inmemdbs.EthereumBLSKeySignatureResponse{Signature: "0x" + bls_signer.ConvertBytesToString(sig)}
 	}
 	if len(batchResp.Map) != len(signReqs.Map) {
 		log.Ctx(ctx).Warn().Msg("SignValidatorMessagesFromInMemFs, did not contain all expected validator signatures")
