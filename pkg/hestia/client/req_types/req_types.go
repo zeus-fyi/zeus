@@ -45,29 +45,33 @@ type AuthLamdbaAWS struct {
 	AccessSecret string `json:"accessSecret"`
 }
 
-func (a *ServiceAuthConfig) Validate() {
+func (a *ServiceAuthConfig) Validate() error {
 	if a.AuthLamdbaAWS == nil {
 		err := fmt.Errorf("you must provide an auth config, only aws lambda auth is supported for now")
-		panic(err)
+		return err
 	}
 	if a.AuthLamdbaAWS != nil {
 		if len(a.AuthLamdbaAWS.SecretName) == 0 {
 			err := fmt.Errorf("you must provide a secret name")
-			panic(err)
+			return err
 		}
 		if len(a.AuthLamdbaAWS.AccessSecret) == 0 {
 			err := fmt.Errorf("you must provide an access secret")
-			panic(err)
+			return err
 		}
 		if len(a.AuthLamdbaAWS.AccessKey) == 0 {
 			err := fmt.Errorf("you must provide an access key")
-			panic(err)
+			return err
 		}
 	}
+	return nil
 }
 
 func (vsr *CreateValidatorServiceRequest) CreateValidatorServiceRequest(vsg ValidatorServiceOrgGroupSlice, srw ServiceRequestWrapper) {
-	srw.ServiceAuth.Validate()
+	err := srw.ServiceAuth.Validate()
+	if err != nil {
+		panic("you must provide a valid service auth config")
+	}
 
 	if !strings_filter.ValidateHttpsURL(srw.ServiceURL) {
 		panic("you must provide a valid https service link")
