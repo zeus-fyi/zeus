@@ -13,7 +13,7 @@ type ArtemisClient struct {
 
 func NewArtemisClient(baseURL, bearer string) ArtemisClient {
 	a := ArtemisClient{}
-	a.Resty = resty_base.GetBaseRestyTestClient(baseURL, bearer)
+	a.Resty = resty_base.GetBaseRestyClient(baseURL, bearer)
 	a.ArtemisConfigs = GlobalArtemisConfigs
 	return a
 }

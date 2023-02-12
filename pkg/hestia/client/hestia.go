@@ -11,7 +11,7 @@ type Hestia struct {
 
 func NewHestia(baseURL, bearer string) Hestia {
 	z := Hestia{}
-	z.Resty = resty_base.GetBaseRestyTestClient(baseURL, bearer)
+	z.Resty = resty_base.GetBaseRestyClient(baseURL, bearer)
 	return z
 }
 

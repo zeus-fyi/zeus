@@ -11,7 +11,7 @@ type Apollo struct {
 
 func NewApollo(baseURL, bearer string) Apollo {
 	z := Apollo{}
-	z.Resty = resty_base.GetBaseRestyTestClient(baseURL, bearer)
+	z.Resty = resty_base.GetBaseRestyClient(baseURL, bearer)
 	return z
 }
 

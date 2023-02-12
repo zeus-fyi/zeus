@@ -10,7 +10,7 @@ type HeraClient struct {
 
 func NewHeraClient(baseURL, bearer string) HeraClient {
 	a := HeraClient{}
-	a.Resty = resty_base.GetBaseRestyTestClient(baseURL, bearer)
+	a.Resty = resty_base.GetBaseRestyClient(baseURL, bearer)
 	return a
 }
 

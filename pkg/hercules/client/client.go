@@ -19,7 +19,7 @@ type HerculesClient struct {
 
 func NewHerculesClient(baseURL, bearer string) HerculesClient {
 	z := HerculesClient{}
-	z.Resty = resty_base.GetBaseRestyTestClient(baseURL, bearer)
+	z.Resty = resty_base.GetBaseRestyClient(baseURL, bearer)
 	return z
 }
 

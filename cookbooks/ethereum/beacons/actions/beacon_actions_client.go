@@ -19,7 +19,7 @@ type BeaconActionsClient struct {
 func NewBeaconActionsClient(baseURL, bearer string, kCtxNs zeus_req_types.TopologyDeployRequest) BeaconActionsClient {
 	z := BeaconActionsClient{}
 	z.BeaconKnsReq = kCtxNs
-	z.Resty = resty_base.GetBaseRestyTestClient(baseURL, bearer)
+	z.Resty = resty_base.GetBaseRestyClient(baseURL, bearer)
 	return z
 }
 
