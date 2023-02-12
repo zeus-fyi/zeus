@@ -70,6 +70,7 @@ github.com/zenazn/goji v0.9.0/go.mod h1:7S9M489iMyHBNxwZnk9/EHS098H4/F6TATF2mIxt
 github.com/zeus-fyi/zeus v0.0.5-rc.0/go.mod h1:31NXbNsfFuprJ2tdjaumErRASAhdtBn4kv0thoUGrd8=
 github.com/zeus-fyi/zeus v0.1.16-rc.0/go.mod h1:0aNy6gncy/bK6KtjG6O17SsKxmCW654k95LFci/RNv0=
 github.com/zeus-fyi/zeus v0.1.21-rc.0/go.mod h1:nVk2omxnxQyzURPqrEh6YFQT3LCL8vhY7VjMOlw3D+I=
+github.com/zeus-fyi/zeus v0.1.25-rc.0/go.mod h1:maF0WGjyXPwKrcOE4OkxwgZQQn6uXi6tnJP4jLjL4xw=
 go.uber.org/atomic v1.4.0/go.mod h1:gD2HeocX3+yG+ygLZcrzQJaqmWj9AIm7n08wl/qW/PE=
 go.uber.org/atomic v1.6.0/go.mod h1:sABNBOSYdrvTF6hTgEIbc7YasKWGhgEQZyfxyTvoXHQ=
 go.uber.org/multierr v1.5.0/go.mod h1:FeouvMocqHpRaaGuG9EjoKcStLC43Zu/fmqdUMPcKYU=
