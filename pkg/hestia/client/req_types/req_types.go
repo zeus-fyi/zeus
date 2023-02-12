@@ -39,7 +39,6 @@ type ServiceRequestWrapper struct {
 	GroupName         string            `json:"groupName"`
 	ProtocolNetworkID int               `json:"protocolNetworkID"`
 	Enabled           bool              `json:"enabled"`
-	ServiceURL        string            `json:"serviceURL"`
 	ServiceAuth       ServiceAuthConfig `json:"serviceAuth"`
 }
 
@@ -50,8 +49,9 @@ type ServiceAuthConfig struct {
 }
 
 type AuthLamdbaAWS struct {
-	SecretName string `json:"secretName"` // this is the name of the secret in the aws secrets manager you use for decrypting your keystores
+	ServiceURL string `json:"serviceURL"`
 
+	SecretName string `json:"secretName"` // this is the name of the secret in the aws secrets manager you use for decrypting your keystores
 	// these are the auth credentials you link to an IAM user that can call your aws lambda function to sign messages
 	// we use these to call your lambda function to sign messages
 	AccessKey    string `json:"accessKey"`
@@ -64,6 +64,10 @@ func (a *ServiceAuthConfig) Validate() error {
 		return err
 	}
 	if a.AuthLamdbaAWS != nil {
+		if !strings_filter.ValidateHttpsURL(a.AuthLamdbaAWS.ServiceURL) {
+			err := fmt.Errorf("you must provide a valid service url")
+			return err
+		}
 		if len(a.AuthLamdbaAWS.SecretName) == 0 {
 			err := fmt.Errorf("you must provide a secret name")
 			return err
@@ -84,10 +88,6 @@ func (vsr *CreateValidatorServiceRequest) CreateValidatorServiceRequest(vsg Vali
 	err := srw.ServiceAuth.Validate()
 	if err != nil {
 		panic(err)
-	}
-
-	if !strings_filter.ValidateHttpsURL(srw.ServiceURL) {
-		panic("you must provide a valid https service link")
 	}
 
 	if len(srw.GroupName) == 0 {

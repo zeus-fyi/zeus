@@ -11,7 +11,7 @@ func (t *HestiaClientTestSuite) TestValidatorServiceRequest() {
 	hs := hestia_req_types.CreateValidatorServiceRequest{}
 	cookbooks.ChangeToCookbookDir()
 
-	// TODO
+	// TODO -> feed into service
 	dp, err := signing_automation_ethereum.ParseValidatorDepositSliceJSON(ctx, ethereum_automation_cookbook.KeystorePath)
 	t.Require().Nil(err)
 	t.Assert().NotEmpty(dp)
@@ -20,9 +20,9 @@ func (t *HestiaClientTestSuite) TestValidatorServiceRequest() {
 		GroupName:         "testGroup",
 		ProtocolNetworkID: hestia_req_types.EthereumEphemeryProtocolNetworkID,
 		Enabled:           true,
-		ServiceURL:        t.Tc.ServerlessSignerFuncBLS,
 		ServiceAuth: hestia_req_types.ServiceAuthConfig{
 			AuthLamdbaAWS: &hestia_req_types.AuthLamdbaAWS{
+				ServiceURL:   t.Tc.ServerlessSignerFuncBLS,
 				SecretName:   t.Tc.ServerlessSignerFuncSecretName,
 				AccessKey:    t.Tc.AwsAccessKeyLambdaInvoke,
 				AccessSecret: t.Tc.AwsSecretKeyLambdaInvoke,
