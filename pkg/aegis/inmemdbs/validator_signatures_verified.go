@@ -24,7 +24,7 @@ func (sr *EthereumBLSKeySignatureResponses) VerifySignatures(ctx context.Context
 			log.Ctx(ctx).Err(err)
 			return []string{}, err
 		}
-		sigHexStr, err := hex.DecodeString(sigResp.Signature)
+		sigHexStr, err := hex.DecodeString(strings_filter.Trim0xPrefix(sigResp.Signature))
 		if err != nil {
 			log.Ctx(ctx).Err(err)
 			return nil, err
@@ -34,7 +34,7 @@ func (sr *EthereumBLSKeySignatureResponses) VerifySignatures(ctx context.Context
 			log.Ctx(ctx).Err(err)
 			return nil, err
 		}
-		pubkeyHexStr, err := hex.DecodeString(k)
+		pubkeyHexStr, err := hex.DecodeString(strings_filter.Trim0xPrefix(k))
 		if err != nil {
 			log.Ctx(ctx).Err(err)
 			return nil, err

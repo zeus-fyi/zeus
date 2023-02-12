@@ -3,6 +3,8 @@ package aegis_inmemdbs
 import (
 	"context"
 	"encoding/hex"
+	strings_filter "github.com/zeus-fyi/zeus/pkg/utils/strings"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/suite"
@@ -65,13 +67,14 @@ func (s *InMemDBsTestSuite) TestBatchValidatorsInMemDB() {
 		signReqMessage := batchSignReqs.Map[k].Message
 		signedResp := v.Signature
 
-		data, derr := hex.DecodeString(signedResp)
+		signedResp = strings.TrimLeft(signedResp, "0x")
+		data, derr := hex.DecodeString(strings_filter.Trim0xPrefix(signedResp))
 		s.Require().Nil(derr)
 
 		sig, serr := types.BLSSignatureFromBytes(data)
 		s.Require().Nil(serr)
 
-		pubkeyHexStr, herr := hex.DecodeString(k)
+		pubkeyHexStr, herr := hex.DecodeString(strings_filter.Trim0xPrefix(k))
 		s.Require().Nil(herr)
 
 		pubkey, perr := types.BLSPublicKeyFromBytes(pubkeyHexStr)

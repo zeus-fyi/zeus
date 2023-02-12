@@ -22,7 +22,7 @@ func (t *HestiaClientTestSuite) SetupTest() {
 	// points dir to test/configs
 	t.Tc = configs.InitLocalTestConfigs()
 	t.HestiaTestClient = NewDefaultHestiaClient(t.Tc.Bearer)
-	//t.HestiaTestClient = NewLocalHestiaClient(t.Tc.Bearer)
+	t.HestiaTestClient = NewLocalHestiaClient(t.Tc.Bearer)
 	// points working dir to inside /test
 	pkHexString := t.Tc.LocalEcsdaTestPkey
 	t.TestAccount1 = ecdsa.NewAccount(pkHexString)
