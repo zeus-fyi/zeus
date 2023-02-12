@@ -83,14 +83,14 @@ func (a *ServiceAuthConfig) Validate() error {
 func (vsr *CreateValidatorServiceRequest) CreateValidatorServiceRequest(vsg ValidatorServiceOrgGroupSlice, srw ServiceRequestWrapper) {
 	err := srw.ServiceAuth.Validate()
 	if err != nil {
-		panic("you must provide a valid service auth config")
+		panic(err)
 	}
 
 	if !strings_filter.ValidateHttpsURL(srw.ServiceURL) {
 		panic("you must provide a valid https service link")
 	}
 
-	if len(vsr.GroupName) == 0 {
+	if len(srw.GroupName) == 0 {
 		panic("you must provide a group name")
 	}
 

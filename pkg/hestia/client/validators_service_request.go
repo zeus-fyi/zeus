@@ -3,6 +3,7 @@ package hestia_client
 import (
 	"context"
 	"errors"
+	hestia_resp_types "github.com/zeus-fyi/zeus/pkg/hestia/client/resp_types"
 	"net/http"
 
 	"github.com/rs/zerolog/log"
@@ -10,10 +11,14 @@ import (
 	hestia_req_types "github.com/zeus-fyi/zeus/pkg/hestia/client/req_types"
 )
 
-func (h *Hestia) ValidatorsServiceRequest(ctx context.Context, rr hestia_req_types.CreateValidatorServiceRequest) (hestia_req_types.ValidatorServiceOrgGroupSlice, error) {
+type Response struct {
+	Message string `json:"message"`
+}
+
+func (h *Hestia) ValidatorsServiceRequest(ctx context.Context, rr hestia_req_types.CreateValidatorServiceRequest) (hestia_resp_types.Response, error) {
 	h.PrintReqJson(rr)
 
-	respJson := hestia_req_types.ValidatorServiceOrgGroupSlice{}
+	respJson := hestia_resp_types.Response{}
 	resp, err := h.R().
 		SetBody(rr).
 		SetResult(&respJson).

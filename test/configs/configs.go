@@ -37,6 +37,9 @@ type TestContainer struct {
 
 	ServerlessSignerFuncBLS        string
 	ServerlessSignerFuncSecretName string
+
+	AwsAccessKeyLambdaInvoke string
+	AwsSecretKeyLambdaInvoke string
 }
 
 func InitLocalTestConfigs() TestContainer {
@@ -70,5 +73,8 @@ func InitLocalTestConfigs() TestContainer {
 	testCont.UnencryptedKeystoresPath = viper.GetString("RAW_UNENCRYPTED_KEYSTORES_PATH")
 	testCont.ServerlessSignerFuncBLS = viper.GetString("BLS_SERVERLESS_LAMBA_FUNC_ADDR")
 	testCont.ServerlessSignerFuncSecretName = viper.GetString("BLS_SERVERLESS_LAMBA_FUNC_SECRET_NAME")
+
+	testCont.AwsAccessKeyLambdaInvoke = viper.GetString("AWS_LAMBDA_INVOKE_ACCESS_KEY")
+	testCont.AwsSecretKeyLambdaInvoke = viper.GetString("AWS_LAMBDA_INVOKE_SECRET_KEY")
 	return testCont
 }

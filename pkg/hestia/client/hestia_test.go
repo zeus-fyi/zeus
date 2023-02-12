@@ -15,17 +15,16 @@ var ctx = context.Background()
 type HestiaClientTestSuite struct {
 	test_suites.BaseTestSuite
 	HestiaTestClient Hestia
-
-	TestAccount1 ecdsa.Account
+	TestAccount1     ecdsa.Account
 }
 
 func (t *HestiaClientTestSuite) SetupTest() {
 	// points dir to test/configs
-	tc := configs.InitLocalTestConfigs()
-	t.HestiaTestClient = NewDefaultHestiaClient(tc.Bearer)
-	//t.HestiaTestClient = NewLocalHestiaClient(tc.Bearer)
+	t.Tc = configs.InitLocalTestConfigs()
+	t.HestiaTestClient = NewDefaultHestiaClient(t.Tc.Bearer)
+	//t.HestiaTestClient = NewLocalHestiaClient(t.Tc.Bearer)
 	// points working dir to inside /test
-	pkHexString := tc.LocalEcsdaTestPkey
+	pkHexString := t.Tc.LocalEcsdaTestPkey
 	t.TestAccount1 = ecdsa.NewAccount(pkHexString)
 }
 
