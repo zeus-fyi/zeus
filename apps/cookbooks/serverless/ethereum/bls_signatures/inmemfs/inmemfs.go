@@ -59,7 +59,7 @@ func SignValidatorMessagesFromInMemFs(ctx context.Context, signReqs aegis_inmemd
 		b, err := InMemFs.ReadFile(KeystorePath.FileInPath())
 		if err != nil {
 			err = errors.New(fmt.Sprintf("could not read key file %s from inmemfs: "+err.Error(), pubkey))
-			log.Ctx(ctx).Error().Err(err)
+			log.Ctx(ctx).Err(err)
 		} else {
 			acc := bls_signer.NewEthSignerBLSFromExistingKey(string(b))
 			sig := acc.Sign([]byte(req.Message)).Marshal()

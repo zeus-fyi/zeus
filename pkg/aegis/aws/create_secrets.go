@@ -9,7 +9,7 @@ import (
 func (s *SecretsManagerAuthAWS) CreateNewSecret(ctx context.Context, si secretsmanager.CreateSecretInput) error {
 	_, err := s.CreateSecret(ctx, &si)
 	if err != nil {
-		log.Ctx(ctx).Error().Err(err).Msg("SecretsManagerAuthAWS: error creating secret")
+		log.Ctx(ctx).Err(err).Msg("SecretsManagerAuthAWS: error creating secret")
 		return err
 	}
 	return err

@@ -9,7 +9,7 @@ import (
 func (s *SecretsManagerAuthAWS) UpdateSecretAWS(ctx context.Context, si secretsmanager.UpdateSecretInput) error {
 	_, err := s.UpdateSecret(ctx, &si)
 	if err != nil {
-		log.Ctx(ctx).Error().Err(err).Msg("SecretsManagerAuthAWS: error updating secret")
+		log.Ctx(ctx).Err(err).Msg("SecretsManagerAuthAWS: error updating secret")
 		return err
 	}
 	return err
