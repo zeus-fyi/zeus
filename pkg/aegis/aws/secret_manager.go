@@ -32,7 +32,7 @@ func InitSecretsManager(ctx context.Context, auth AuthAWS) (SecretsManagerAuthAW
 		return SecretsManagerAuthAWS{}, err
 	}
 	cfg.Region = auth.Region
-	log.Info().Interface("region", auth.Region)
+	log.Ctx(ctx).Info().Interface("region", auth.Region).Msg("InitSecretsManager")
 	secretsManagerClient := secretsmanager.NewFromConfig(cfg)
 	return SecretsManagerAuthAWS{secretsManagerClient}, err
 }
