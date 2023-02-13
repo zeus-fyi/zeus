@@ -12,7 +12,7 @@ import (
 
 // LighthouseWeb3SignerRequest uses 0x prefixed addresses
 type LighthouseWeb3SignerRequest struct {
-	Enable                bool   `json:"enable" yaml:"enable"`
+	Enabled               bool   `json:"enabled" yaml:"enable"`
 	Description           string `json:"description" yaml:"description"`
 	SuggestedFeeRecipient string `json:"suggested_fee_recipient" yaml:"suggested_fee_recipient"`
 	VotingPublicKey       string `json:"voting_public_key" yaml:"voting_public_key"`
@@ -23,7 +23,7 @@ type LighthouseWeb3SignerRequest struct {
 }
 
 type LighthouseWeb3SignerRequests struct {
-	Enable        bool
+	Enabled       bool
 	Web3SignerURL string
 	FeeAddr       string
 	Slice         []LighthouseWeb3SignerRequest
@@ -33,7 +33,7 @@ func (l *LighthouseWeb3SignerRequests) ReadDepositParamsAndExtractToEnableKeysOn
 	l.Slice = make([]LighthouseWeb3SignerRequest, len(dpSlice))
 	for i, param := range dpSlice {
 		l.Slice[i] = LighthouseWeb3SignerRequest{
-			Enable:                l.Enable,
+			Enabled:               l.Enabled,
 			Description:           fmt.Sprintf("network: %s, fork: %s, pubkey: %s", param.NetworkName, param.ForkVersion, param.Pubkey),
 			SuggestedFeeRecipient: strings_filter.AddHexPrefix(l.FeeAddr),
 			VotingPublicKey:       strings_filter.AddHexPrefix(param.Pubkey),

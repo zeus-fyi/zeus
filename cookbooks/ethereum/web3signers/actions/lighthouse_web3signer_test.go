@@ -36,7 +36,7 @@ func (t *EthereumWeb3SignerCookbookTestSuite) TestLighthouseImportWeb3SignerAPI(
 	t.Require().Nil(err)
 	lh := LighthouseWeb3SignerRequests{}
 	lh.Web3SignerURL = "http://zeus-web3signer:9000"
-	lh.Enable = true
+	lh.Enabled = true
 	lh.FeeAddr = t.TestAccount1.PublicKey()
 	lh.ReadDepositParamsAndExtractToEnableKeysOnWeb3Signer(ctx, k)
 
@@ -46,7 +46,7 @@ func (t *EthereumWeb3SignerCookbookTestSuite) TestLighthouseImportWeb3SignerAPI(
 	fmt.Println(resp)
 	tmp := LighthouseWeb3SignerRequests{
 		Web3SignerURL: "http://zeus-web3signer:9000",
-		Enable:        true,
+		Enabled:       true,
 		FeeAddr:       t.TestAccount1.PublicKey(),
 		Slice:         []LighthouseWeb3SignerRequest{},
 	}

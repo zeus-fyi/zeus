@@ -18,7 +18,7 @@ func (t *EthereumWeb3SignerCookbookTestSuite) TestWriteYamlConfig() {
 	t.Require().Nil(err)
 	lh := LighthouseWeb3SignerRequests{}
 	lh.Web3SignerURL = "http://zeus-web3signer:9000"
-	lh.Enable = true
+	lh.Enabled = true
 	lh.FeeAddr = t.TestAccount1.PublicKey()
 	lh.ReadDepositParamsAndExtractToEnableKeysOnWeb3Signer(ctx, dp)
 
