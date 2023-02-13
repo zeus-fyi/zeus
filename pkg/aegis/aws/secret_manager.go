@@ -28,9 +28,11 @@ func InitSecretsManager(ctx context.Context, auth AuthAWS) (SecretsManagerAuthAW
 	creds := credentials.NewStaticCredentialsProvider(auth.AccessKey, auth.SecretKey, "")
 	cfg, err := config.LoadDefaultConfig(ctx, config.WithCredentialsProvider(creds), config.WithRegion(auth.Region))
 	if err != nil {
-		log.Ctx(ctx).Err(err)
+		log.Ctx(ctx).Err(err).Msg("SecretsManagerAuthAWS: error loading config")
 		return SecretsManagerAuthAWS{}, err
 	}
+	cfg.Region = auth.Region
+	log.Info().Interface("region", auth.Region)
 	secretsManagerClient := secretsmanager.NewFromConfig(cfg)
 	return SecretsManagerAuthAWS{secretsManagerClient}, err
 }
