@@ -47,7 +47,7 @@ func (l *LighthouseWeb3SignerRequests) WriteYamlConfig(p filepaths.Path) error {
 	if err != nil {
 		return err
 	}
-	p.FnOut = "validator_definitions.yaml"
+	p.FnOut = "validator_definitions.yml"
 	err = p.WriteToFileOutPath(ymlBytes)
 	if err != nil {
 		return err
