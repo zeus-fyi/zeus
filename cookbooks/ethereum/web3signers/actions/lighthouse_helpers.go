@@ -10,8 +10,11 @@ import (
 	strings_filter "github.com/zeus-fyi/zeus/pkg/utils/strings"
 )
 
+const Web3SignerType = "web3signer"
+
 // LighthouseWeb3SignerRequest uses 0x prefixed addresses
 type LighthouseWeb3SignerRequest struct {
+	Type                  string `json:"type" yaml:"type"`
 	Enabled               bool   `json:"enabled" yaml:"enable"`
 	Description           string `json:"description" yaml:"description"`
 	SuggestedFeeRecipient string `json:"suggested_fee_recipient" yaml:"suggested_fee_recipient"`
@@ -34,6 +37,7 @@ func (l *LighthouseWeb3SignerRequests) ReadDepositParamsAndExtractToEnableKeysOn
 	for i, param := range dpSlice {
 		l.Slice[i] = LighthouseWeb3SignerRequest{
 			Enabled:               l.Enabled,
+			Type:                  Web3SignerType,
 			Description:           fmt.Sprintf("network: %s, fork: %s, pubkey: %s", param.NetworkName, param.ForkVersion, param.Pubkey),
 			SuggestedFeeRecipient: strings_filter.AddHexPrefix(l.FeeAddr),
 			VotingPublicKey:       strings_filter.AddHexPrefix(param.Pubkey),
