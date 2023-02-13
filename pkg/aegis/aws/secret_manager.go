@@ -26,12 +26,11 @@ type SecretInfo struct {
 
 func InitSecretsManager(ctx context.Context, auth AuthAWS) (SecretsManagerAuthAWS, error) {
 	creds := credentials.NewStaticCredentialsProvider(auth.AccessKey, auth.SecretKey, "")
-	cfg, err := config.LoadDefaultConfig(ctx, config.WithCredentialsProvider(creds))
+	cfg, err := config.LoadDefaultConfig(ctx, config.WithCredentialsProvider(creds), config.WithRegion(auth.Region))
 	if err != nil {
 		log.Ctx(ctx).Err(err)
 		return SecretsManagerAuthAWS{}, err
 	}
-	cfg.Region = auth.Region
 	secretsManagerClient := secretsmanager.NewFromConfig(cfg)
 	return SecretsManagerAuthAWS{secretsManagerClient}, err
 }
