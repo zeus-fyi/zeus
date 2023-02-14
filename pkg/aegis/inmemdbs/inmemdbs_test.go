@@ -84,7 +84,7 @@ func (s *InMemDBsTestSuite) TestBatchValidatorsInMemDB() {
 		s.Require().True(sig.Verify([]byte(signReqMessage), pubkey))
 	}
 
-	verifiedKeys, err := resp.VerifySignatures(ctx, batchSignReqs)
+	verifiedKeys, err := resp.VerifySignatures(ctx, batchSignReqs, false)
 	s.Require().Nil(err)
 	s.Require().Len(batchSignReqs.Map, len(verifiedKeys))
 

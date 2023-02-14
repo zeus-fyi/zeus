@@ -13,7 +13,7 @@ import (
 
 // VerifySignatures returns a slice of pubkeys that have been verified with the given signed message, it returns the pubkeys with a 0x prefix string
 // yous should only use this to verify hex payloads, normal strings likely won't work
-func (sr *EthereumBLSKeySignatureResponses) VerifySignatures(ctx context.Context, sigRequests EthereumBLSKeySignatureRequests) ([]string, error) {
+func (sr *EthereumBLSKeySignatureResponses) VerifySignatures(ctx context.Context, sigRequests EthereumBLSKeySignatureRequests, isHexPayload bool) ([]string, error) {
 	if len(sr.Map) <= 0 {
 		return []string{}, nil
 	}
@@ -46,10 +46,24 @@ func (sr *EthereumBLSKeySignatureResponses) VerifySignatures(ctx context.Context
 			log.Ctx(ctx).Err(err)
 			return nil, err
 		}
-		if !sig.Verify([]byte(msgStr.Message), pubkey) {
-			err = errors.New("signature does not map to expected pubkey")
-			log.Ctx(ctx).Err(err)
-			return []string{}, err
+
+		if isHexPayload {
+			b, berr := hex.DecodeString(strings_filter.Trim0xPrefix(msgStr.Message))
+			if berr != nil {
+				log.Ctx(ctx).Err(berr).Msg("failed to decode hex payload")
+				return nil, berr
+			}
+			if !sig.Verify(b, pubkey) {
+				err = errors.New("signature does not map to expected pubkey")
+				log.Ctx(ctx).Err(err)
+				return []string{}, err
+			}
+		} else {
+			if !sig.Verify([]byte(msgStr.Message), pubkey) {
+				err = errors.New("signature does not map to expected pubkey")
+				log.Ctx(ctx).Err(err)
+				return []string{}, err
+			}
 		}
 		verifiedKeys[i] = pubkeySigner
 		i++
