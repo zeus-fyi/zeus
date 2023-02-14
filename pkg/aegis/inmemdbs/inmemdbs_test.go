@@ -3,7 +3,7 @@ package aegis_inmemdbs
 import (
 	"context"
 	"encoding/hex"
-	strings_filter "github.com/zeus-fyi/zeus/pkg/utils/strings"
+	"fmt"
 	"strings"
 	"testing"
 
@@ -12,6 +12,7 @@ import (
 	"github.com/zeus-fyi/gochain/web3/accounts"
 	bls_signer "github.com/zeus-fyi/zeus/pkg/crypto/bls"
 	"github.com/zeus-fyi/zeus/pkg/crypto/ecdsa"
+	strings_filter "github.com/zeus-fyi/zeus/pkg/utils/strings"
 )
 
 type InMemDBsTestSuite struct {
@@ -83,9 +84,11 @@ func (s *InMemDBsTestSuite) TestBatchValidatorsInMemDB() {
 		s.Require().True(sig.Verify([]byte(signReqMessage), pubkey))
 	}
 
-	verifiedKeys, err := resp.VerifySignaturesForHexPayload(ctx, batchSignReqs)
+	verifiedKeys, err := resp.VerifySignatures(ctx, batchSignReqs)
 	s.Require().Nil(err)
 	s.Require().Len(batchSignReqs.Map, len(verifiedKeys))
+
+	fmt.Println(verifiedKeys)
 }
 
 func (s *InMemDBsTestSuite) TestValidatorsInMemDB() {

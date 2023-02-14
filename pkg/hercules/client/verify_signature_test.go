@@ -19,7 +19,7 @@ func (t *HerculesClientTestSuite) TestVerifySignatureBLS() {
 	t.Require().Nil(err)
 	t.Require().NotEmpty(resp)
 
-	sigVerify, err := resp.VerifySignaturesForHexPayload(ctx, rr.SignatureRequests)
+	sigVerify, err := resp.VerifySignatures(ctx, rr.SignatureRequests)
 	t.Require().Nil(err)
 	t.Require().Len(sigVerify, 1)
 	t.Assert().Equal("0x"+pubKeyExp, sigVerify[0])

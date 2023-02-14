@@ -11,32 +11,32 @@ import (
 	strings_filter "github.com/zeus-fyi/zeus/pkg/utils/strings"
 )
 
-// VerifySignaturesForHexPayload returns a slice of pubkeys that have been verified with the given signed message, it returns the pubkeys with a 0x prefix string
+// VerifySignatures returns a slice of pubkeys that have been verified with the given signed message, it returns the pubkeys with a 0x prefix string
 // yous should only use this to verify hex payloads, normal strings likely won't work
-func (sr *EthereumBLSKeySignatureResponses) VerifySignaturesForHexPayload(ctx context.Context, sigRequests EthereumBLSKeySignatureRequests) ([]string, error) {
+func (sr *EthereumBLSKeySignatureResponses) VerifySignatures(ctx context.Context, sigRequests EthereumBLSKeySignatureRequests) ([]string, error) {
 	if len(sr.Map) <= 0 {
 		return []string{}, nil
 	}
 	verifiedKeys := make([]string, len(sr.Map))
 	i := 0
-	for k, sigResp := range sr.Map {
-		msgStr, ok := sigRequests.Map[k]
+	for pubkeySigner, sigResp := range sr.Map {
+		msgStr, ok := sigRequests.Map[pubkeySigner]
 		if !ok {
 			err := errors.New("pubkey not in signature request message")
 			log.Ctx(ctx).Err(err)
 			return []string{}, err
 		}
-		sigHexStr, err := hex.DecodeString(strings_filter.Trim0xPrefix(sigResp.Signature))
+		sigHexDecode, err := hex.DecodeString(strings_filter.Trim0xPrefix(sigResp.Signature))
 		if err != nil {
 			log.Ctx(ctx).Err(err)
 			return nil, err
 		}
-		sig, err := types.BLSSignatureFromBytes(sigHexStr)
+		sig, err := types.BLSSignatureFromBytes(sigHexDecode)
 		if err != nil {
 			log.Ctx(ctx).Err(err)
 			return nil, err
 		}
-		pubkeyHexStr, err := hex.DecodeString(strings_filter.Trim0xPrefix(k))
+		pubkeyHexStr, err := hex.DecodeString(strings_filter.Trim0xPrefix(pubkeySigner))
 		if err != nil {
 			log.Ctx(ctx).Err(err)
 			return nil, err
@@ -51,7 +51,7 @@ func (sr *EthereumBLSKeySignatureResponses) VerifySignaturesForHexPayload(ctx co
 			log.Ctx(ctx).Err(err)
 			return []string{}, err
 		}
-		verifiedKeys[i] = strings_filter.AddHexPrefix(k)
+		verifiedKeys[i] = pubkeySigner
 		i++
 	}
 	return verifiedKeys, nil
