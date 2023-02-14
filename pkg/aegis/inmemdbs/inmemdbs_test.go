@@ -12,7 +12,6 @@ import (
 	"github.com/zeus-fyi/gochain/web3/accounts"
 	bls_signer "github.com/zeus-fyi/zeus/pkg/crypto/bls"
 	"github.com/zeus-fyi/zeus/pkg/crypto/ecdsa"
-	"k8s.io/apimachinery/pkg/util/rand"
 )
 
 type InMemDBsTestSuite struct {
@@ -52,7 +51,9 @@ func (s *InMemDBsTestSuite) TestBatchValidatorsInMemDB() {
 	for i < numAccounts {
 		acc := bls_signer.NewEthBLSAccount()
 		insertAccountSlice[i] = NewValidator(acc)
-		batchSignReqs.Map[acc.PublicKeyString()] = EthereumBLSKeySignatureRequest{rand.String(10)}
+		hexStr, err := RandomHex(10)
+		s.Require().Nil(err)
+		batchSignReqs.Map[acc.PublicKeyString()] = EthereumBLSKeySignatureRequest{hexStr}
 		i++
 	}
 	InsertValidatorsInMemDb(ctx, insertAccountSlice)
@@ -82,7 +83,7 @@ func (s *InMemDBsTestSuite) TestBatchValidatorsInMemDB() {
 		s.Require().True(sig.Verify([]byte(signReqMessage), pubkey))
 	}
 
-	verifiedKeys, err := resp.VerifySignatures(ctx, batchSignReqs)
+	verifiedKeys, err := resp.VerifySignaturesForHexPayload(ctx, batchSignReqs)
 	s.Require().Nil(err)
 	s.Require().Len(batchSignReqs.Map, len(verifiedKeys))
 }

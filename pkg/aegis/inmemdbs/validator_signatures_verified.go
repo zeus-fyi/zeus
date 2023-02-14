@@ -2,6 +2,7 @@ package aegis_inmemdbs
 
 import (
 	"context"
+	"crypto/rand"
 	"encoding/hex"
 	"errors"
 
@@ -10,8 +11,9 @@ import (
 	strings_filter "github.com/zeus-fyi/zeus/pkg/utils/strings"
 )
 
-// VerifySignatures returns a slice of pubkeys that have been verified with the given signed message, it returns the pubkeys with a 0x prefix string
-func (sr *EthereumBLSKeySignatureResponses) VerifySignatures(ctx context.Context, sigRequests EthereumBLSKeySignatureRequests) ([]string, error) {
+// VerifySignaturesForHexPayload returns a slice of pubkeys that have been verified with the given signed message, it returns the pubkeys with a 0x prefix string
+// yous should only use this to verify hex payloads, normal strings likely won't work
+func (sr *EthereumBLSKeySignatureResponses) VerifySignaturesForHexPayload(ctx context.Context, sigRequests EthereumBLSKeySignatureRequests) ([]string, error) {
 	if len(sr.Map) <= 0 {
 		return []string{}, nil
 	}
@@ -53,4 +55,12 @@ func (sr *EthereumBLSKeySignatureResponses) VerifySignatures(ctx context.Context
 		i++
 	}
 	return verifiedKeys, nil
+}
+
+func RandomHex(n int) (string, error) {
+	bytes := make([]byte, n)
+	if _, err := rand.Read(bytes); err != nil {
+		return "", err
+	}
+	return hex.EncodeToString(bytes), nil
 }

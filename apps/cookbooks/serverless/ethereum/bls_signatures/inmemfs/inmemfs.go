@@ -63,6 +63,7 @@ func SignValidatorMessagesFromInMemFs(ctx context.Context, signReqs aegis_inmemd
 		if err != nil {
 			err = errors.New(fmt.Sprintf("could not decode message from provided hex string: "+err.Error(), pubkey))
 			log.Ctx(ctx).Err(err)
+			continue
 		}
 		b, err := InMemFs.ReadFile(KeystorePath.FileInPath())
 		if err != nil {
