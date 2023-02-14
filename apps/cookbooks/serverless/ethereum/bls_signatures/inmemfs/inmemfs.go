@@ -2,9 +2,11 @@ package serverless_inmemdb
 
 import (
 	"context"
+	"encoding/hex"
 	"errors"
 	"fmt"
 	"github.com/rs/zerolog/log"
+
 	aegis_inmemdbs "github.com/zeus-fyi/zeus/pkg/aegis/inmemdbs"
 	age_encryption "github.com/zeus-fyi/zeus/pkg/crypto/age"
 	bls_signer "github.com/zeus-fyi/zeus/pkg/crypto/bls"
@@ -56,13 +58,19 @@ func SignValidatorMessagesFromInMemFs(ctx context.Context, signReqs aegis_inmemd
 	KeystorePath.DirIn = unzipDir
 	for pubkey, req := range signReqs.Map {
 		KeystorePath.FnIn = pubkey
+
+		messageBytes, err := hex.DecodeString(req.Message)
+		if err != nil {
+			err = errors.New(fmt.Sprintf("could not decode message from provided hex string: "+err.Error(), pubkey))
+			log.Ctx(ctx).Err(err)
+		}
 		b, err := InMemFs.ReadFile(KeystorePath.FileInPath())
 		if err != nil {
 			err = errors.New(fmt.Sprintf("could not read key file %s from inmemfs: "+err.Error(), pubkey))
 			log.Ctx(ctx).Err(err)
 		} else {
 			acc := bls_signer.NewEthSignerBLSFromExistingKey(string(b))
-			sig := acc.Sign([]byte(req.Message)).Marshal()
+			sig := acc.Sign(messageBytes).Marshal()
 			batchResp.Map[pubkey] = aegis_inmemdbs.EthereumBLSKeySignatureResponse{Signature: "0x" + bls_signer.ConvertBytesToString(sig)}
 		}
 	}
