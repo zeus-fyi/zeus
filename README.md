@@ -71,13 +71,13 @@ In AWS Secret Manager (us-west-1)
    c. Secret Value: (Your Age private key, starts with AGE-SECRET-KEY-...)
 ```
 
-4. Create the AWS Lambda function. See this google doc for details. You can use the main.zip file pre-built in the below directory or build it yourself.
+6. Create the AWS Lambda function. See this google doc for details. You can use the main.zip file pre-built in the below directory or build it yourself.
 
 The main.zip file is already prebuilt for you here: ```builds/serverless/bls_signatures/main.zip``` 
 
 https://docs.google.com/document/d/1isja3Njqr9ZW43F9GZRwSYhwvTxOb31n8uKpIzdV1-8/edit?usp=sharing
 
-5. Send a validator service request. You'll need a bearer token from us. Send us a message and we'll get you one.
+7. Send a validator service request via an API call. You'll need a bearer token from us. Send us a message and we'll get you one.
 
 See pkg/hestia, which provides a client that calls the API, and shows how you post a request to the endpoint below to service new validators in a test case.
 
