@@ -34,8 +34,9 @@ It will generate a zip file called ```keystores.zip``` with your encrypted age v
 Makefile: Keystore generation
 
 ```make serverless.keygen```
+
 ```make
-    serverless.keygen
+    serverless.keygen:
 	./builds/serverless/bin/serverless --keygen true --num-keys 3
 ```
 Makefile: Deposit submission
