@@ -64,7 +64,7 @@ Here are the full flags for generating keystores & serverless zip file with your
 5. Create a secret that stores your Age public and private key values in AWS secret manager. 
 
 ```
-In AWS Secret Manager 
+In AWS Secret Manager (us-west-1)
 
    a. Secret Name: Choose any name, you'll need this name to send us.
    b. Secret Key: (Your Age public key, starts with age...)
