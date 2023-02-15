@@ -123,7 +123,7 @@ type AuthLamdbaAWS struct {
 
 Here's how you can use the client to post a request to the endpoint above to service new validators.
 ```go
-bearerToken := "YOUR_BEARER_TOEKN"
+bearerToken := "YOUR_BEARER_TOKEN"
 hestiaClient := NewDefaultHestiaClient(bearerToken)
 
 func (h *Hestia) ValidatorsServiceRequest(ctx context.Context, rr hestia_req_types.CreateValidatorServiceRequest) (hestia_resp_types.Response, error) {
