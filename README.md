@@ -31,15 +31,16 @@ your console logs.
 
 It will generate a zip file called ```keystores.zip``` with your encrypted age validator keystores in the ```builds/serverless/bls_signature``` directory.
 
-Makefile (reference)
+Makefile: Keystore generation
 
-Keystore generation
+```make serverless.keygen```
 ```make
     serverless.keygen
-	./builds/serverless/bin/serverless --keygen true --num-keys 3```
+	./builds/serverless/bin/serverless --keygen true --num-keys 3
 ```
+Makefile: Deposit submission
 
-Deposit submission
+```make serverless.submit.deposits```
 ```make
     ETH1_PRIV_KEY := ""
     serverless.submit.deposits:
