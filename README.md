@@ -8,14 +8,6 @@ Here are some early demo videos of infrastructure building and interfacing with 
 
 https://drive.google.com/drive/folders/1tACuTADLbmYT7vS8qBqY_l5buZh_cn__?usp=sharing
 
-### Recent Background Info
-
-* Architected, led, and executed the Ethereum 2 merge, Polygon staking, and MEV projects for Coinbase Cloud. 
-* Pioneered network scale client swaps with restart only downtime. This system facilitated over $1B in Ethereum transfers.
-* Wrote the remote signing protection code that is used by 100% of Coinbase Cloud's Ethereum Validators today.
-
-https://www.linkedin.com/in/alexandersgeorge/
-
 ### Ethereum staking from your wallets & private secret managers.
 
 Event driven signature automation for Ethereum staking using our synthetic staking beacon, an in-house technology invention that dramatically lowers the infrastucture costs of traditional enterprise staking architectures by 100x+ and bundles middleware like slashing protection and mev into the service. Which also comes with the added benefit of letting you stake from your wallet without anyone having access to your signing or withdrawal keys and without any infrastructure setup, with only a few lines of code. For those who do want hosted cloud signers, you'll have flexible 1-click style deployable hosted signers.

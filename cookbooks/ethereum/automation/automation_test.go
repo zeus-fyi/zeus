@@ -1,6 +1,8 @@
 package ethereum_automation_cookbook
 
 import (
+	"fmt"
+	signing_automation_ethereum "github.com/zeus-fyi/zeus/pkg/artemis/signing_automation/ethereum"
 	age_encryption "github.com/zeus-fyi/zeus/pkg/crypto/age"
 	"testing"
 
@@ -16,11 +18,41 @@ type EthereumAutomationCookbookTestSuite struct {
 // written to disk, then encrypt them with age encryption and write the encrypted values to disk
 
 func (t *EthereumAutomationCookbookTestSuite) TestDecryptThenEncryptBatchWithAgeEncryption() {
-	enc := age_encryption.NewAge(t.Tc.AgePrivKey, t.Tc.AgePubKey)
 	keystoresPath := KeystorePath
-	keystoresPath.DirOut = "./ethereum/automation/validator_keys/tmp"
-	keystoresPath.DirIn = "./ethereum/automation/validator_keys/keystores"
-	err := GenerateAgeKeystores(keystoresPath, enc, t.Tc.HDWalletPassword)
+	keystoresPath.DirOut = "./ethereum/automation/validator_keys/keystores"
+	keystoresPath.DirIn = "./ethereum/automation/validator_keys/tmp"
+
+	agePubKey := t.Tc.AgePubKey
+	agePrivKey := t.Tc.AgePrivKey
+	hdWalletPassword := t.Tc.HDWalletPassword
+	network := "ephemery"
+
+	if agePubKey == "" || agePrivKey == "" {
+		agePubKey, agePrivKey = age_encryption.GenerateNewKeyPair()
+		fmt.Println("no credentials provided, generating new age keypair")
+		fmt.Println("agePubKey: ", agePubKey)
+		fmt.Println("agePrivKey: ", agePrivKey)
+	}
+
+	if hdWalletPassword == "" {
+		hdWalletPassword = "password"
+		fmt.Println("no hd wallet password provided, using default password: password")
+	}
+
+	offset := 0
+	numKeys := 10
+
+	vdg := signing_automation_ethereum.ValidatorDepositGenerationParams{
+		Fp:                   keystoresPath,
+		Mnemonic:             t.Tc.LocalMnemonic24Words,
+		Pw:                   t.Tc.HDWalletPassword,
+		ValidatorIndexOffset: offset,
+		NumValidators:        numKeys,
+		Network:              network,
+	}
+
+	enc := age_encryption.NewAge(agePrivKey, agePubKey)
+	err := GenerateValidatorDepositsAndCreateAgeEncryptedKeystores(ctx, t.Web3SignerClientTestClient, vdg, enc, hdWalletPassword)
 	t.Require().Nil(err)
 }
 

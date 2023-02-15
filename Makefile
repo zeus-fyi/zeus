@@ -26,3 +26,30 @@ tag.push:
 
 docker.debug:
 	docker run -it --entrypoint /bin/bash zeusfyi/hercules:latest
+
+# generates new mnemonic, uses default hd password, and creates keystores & zipped age encrypted file for serverless app
+# --keygen true/false will toggle new keygen creation
+serverless.keygen:
+	./builds/serverless/bin/serverless --keygen true --num-keys 5
+
+ETH1_PRIV_KEY := ""
+# you will need an eth1 address and it must have 32 Eth + gas fees to deposit per validator
+serverless.submit.deposits:
+	./builds/serverless/bin/serverless --keygen false --submit-deposits true --eth1-addr-priv-key ${ETH1_PRIV_KEY}
+
+
+# Flags:
+#      --age-private-key string      age private key
+#      --age-public-key string       age public key
+#      --eth1-addr-priv-key string   eth1 address private key for submitting deposits
+#      --hd-offset int               offset to start generating keys from hd wallet
+#      --hd-wallet-pw string         hd wallet password
+#  -h, --help                        help for Web3
+#      --key-gen                     generates full keygen procedure (default true)
+#      --keystores-dir-in string     keystores directory in location (relative to builds dir) (default "./serverless/keystores")
+#      --keystores-dir-out string    keystores directory out location (relative to builds dir) (default "./serverless/keystores")
+#      --mnemonic string             twenty four word mnemonic to generate keystores
+#      --network string              network to run on (mainnet, goerli, ephemery, etc (default "ephemery")
+#      --node-url string             beacon for getting network data for validator deposit generation & submitting deposits (default "https://eth.ephemeral.zeus.fyi")
+#      --num-keys int                number of keys to generate (default 3)
+#      --submit-deposits             submits validator deposits in keystore directory to the network for activation
