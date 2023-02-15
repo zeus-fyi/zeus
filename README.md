@@ -33,12 +33,15 @@ It will generate a zip file called ```keystores.zip``` with your encrypted age v
 
 Makefile (reference)
 
+Keystore generation
 ```make
     serverless.keygen
 	./builds/serverless/bin/serverless --keygen true --num-keys 3```
-	
+```
+
+Deposit submission
+```make
     ETH1_PRIV_KEY := ""
-    
     serverless.submit.deposits:
 	./builds/serverless/bin/serverless --keygen false --submit-deposits true --eth1-addr-priv-key ${ETH1_PRIV_KEY}
 ```
@@ -51,7 +54,7 @@ Here are the full flags for generating keystores & serverless zip file with your
       --hd-offset int               offset to start generating keys from hd wallet
       --hd-wallet-pw string         hd wallet password
   -h, --help                        help for Web3
-      --key-gen                     generates full keygen procedure (default true)
+      --keygen                      generates full keygen procedure (default true)
       --keystores-dir-in string     keystores directory in location (relative to builds dir) (default "./serverless/keystores")
       --keystores-dir-out string    keystores directory out location (relative to builds dir) (default "./serverless/keystores")
       --mnemonic string             twenty four word mnemonic to generate keystores
