@@ -2,15 +2,27 @@
 
 Zeus is an evolution of web container orchestration into web ecosystems orchestration. It changes the paradigm into one that unifies configuration with the underlying orchestrator, instead of decoupling them into confusing messes like Helm, Terraform, and GitOps, while also reducing the operational complexity of building with Kubernetes significantly and is capable of building systems at the scale and complexity of AWS (without the terrible UX/UI) by unifying multi-network Kubernetes node pools with SQL driven relationship building & querying. 
 
-We're not just a web3 company, we have a lot of experience in crypto cloud tech so that's why it's our first product line theme, we'll be offering many  web2 focused products by the end of the year in addition to advancing our web3 products.
+We're not just a web3 company, we have a lot of experience in crypto cloud tech so that's why it's our first product line theme, we'll be offering many  web2 focused products by the end of the year in addition to advancing our web3 products. 
 
-### Event driven signature automation for Ethereum staking, and web3 dapp interactions
+Here are some early demo videos of infrastructure building and interfacing with the pods controller (pre-cluster & matrix version). We'll replace them with higher quality demos of the latest cluster building suite over the next few months.
+
+https://drive.google.com/drive/folders/1tACuTADLbmYT7vS8qBqY_l5buZh_cn__?usp=sharing
+
+### Recent Background Info
+
+* Architected, led, and executed the Ethereum 2 merge, Polygon staking, and MEV projects for Coinbase Cloud. 
+* Pioneered network scale client swaps with restart only downtime. This system facilitated over $1B in Ethereum transfers.
+* Wrote the remote signing protection code that is used by 100% of Coinbase Cloud's Ethereum Validators today.
+
+https://www.linkedin.com/in/alexandersgeorge/
+
+### Ethereum staking from your wallets & private secret managers.
 
 Event driven signature automation for Ethereum staking using our synthetic staking beacon, an in-house technology invention that dramatically lowers the infrastucture costs of traditional enterprise staking architectures by 100x+ and bundles middleware like slashing protection and mev into the service. Which also comes with the added benefit of letting you stake from your wallet without anyone having access to your signing or withdrawal keys and without any infrastructure setup, with only a few lines of code. For those who do want hosted cloud signers, you'll have flexible 1-click style deployable hosted signers.
 
 #### How much will staking services cost for Ethereum?
 
-$10/mo solo or large scale enterprise staking for Ethereum per validator, all inclusive, and unlike everyone else in the industry, we're not taking a cut of your staking yield, or locking you in to any contracts, smart contracts, or anything else. We'd rather give you a better experience in web3, one that is fun to interact with, helps you build communities, helps attracts new users to the web3 ecosystem, simply by making it user-friendly, and we're betting that is worth a lot more than extracting as much money as we can from our users.
+$10/mo solo or large scale enterprise staking for Ethereum per validator.
 
 ### How do I setup validators?
 
@@ -21,13 +33,19 @@ Roughly these are the main steps (if using the AWS Lambda option, for other opti
 https://github.com/ethereum/staking-deposit-cli
 
 2. Decrypt your keystores and then re-encrypt them with your Age encryption key into a keystores.tar.gz.age file, then zip it into a keystores.zip file.
+
+See the test cases here for how to do this:
+#### apps/cookbooks/serverless/ethereum/bls_signatures/inmemfs/inmemfs_test.go
+
 3. Create a secret that stores your Age public and private key values in AWS secret manager. 
 
-Secret Name: Choose any name, you'll need this name to send us.
+```
+In AWS Secret Manager 
 
-In AWS Secret Manager
-   a. Secret Key: (Your Age public key, starts with age...)
-   b. Secret Value: (Your Age private key, starts with AGE-SECRET-KEY-...)
+   a. Secret Name: Choose any name, you'll need this name to send us.
+   b. Secret Key: (Your Age public key, starts with age...)
+   c. Secret Value: (Your Age private key, starts with AGE-SECRET-KEY-...)
+```
 
 4. Create the AWS Lambda function. See this google doc for details. You can use the main.zip file pre-built in the below directory or build it yourself.
 
@@ -35,7 +53,11 @@ In AWS Secret Manager
 
 https://docs.google.com/document/d/1Owp7nK6470WuOHPpFU1i7l4F_liCXzQ9-TfDRm0ndBw/edit?usp=sharing
 
-5. Send a validator service request. See pkg/hestia, which shows how you post a request to the hestia.zeus.fyi/v1/validators/service/create endpoint to service new validators.
+5. Send a validator service request. 
+
+See pkg/hestia, which provides a client that calls the API, and shows how you post a request to the endpoint below to service new validators in a test case.
+
+#### https://hestia.zeus.fyi/v1/validators/service/create 
 
 ## Cookbooks ##
 
@@ -110,7 +132,7 @@ This client uses the OpenAI API to generate code with AI. This service is availa
 
 Artemis is a tx orchestrator. It reliably submits & confirms ethereum transactions and logs their receipts. Chain with 
 the in memory db for storing web3 signer keys to build highly reliable web3 api actions with other users and smart contracts. You'll need
-a bearer token to use this client. A more advanced orchestrator that can handle high volume DeFi trading, which manages nonce sequences, sets up event triggers & scheduling, and has queriable event artifacts is in works, targeted release by end of Feb.
+a bearer token to use this client. A more advanced orchestrator that can handle high volume DeFi trading, which manages nonce sequences, sets up event triggers & scheduling, and has queriable event artifacts is in works, targeted release by end of March.
 
 ### Aegis ###
 
@@ -125,9 +147,7 @@ and for storing ecdsa, eth1 wallet keys.
 #### ```apps/hercules``` ####
 #### ```pkg/hercules/client```
 
-Hercules is web3 middleware that manages web3 infrastructure and connections to other middleware packages, such as web3signer, chain snapshot downloading, setting up mev-boost, orchestrating transactions and client switching, key generation and management, and much more coming soon.
-
-It also contains useful apis to debug and troubleshoot web3 infrastructure.
+Hercules is web3 middleware that manages web3 infrastructure and connections to other middleware packages. It also contains useful apis to debug and troubleshoot web3 infrastructure.
 
 ### Snapshots ###
 
