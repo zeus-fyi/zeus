@@ -75,7 +75,7 @@ In AWS Secret Manager (us-west-1)
 
 The main.zip file is already prebuilt for you here: ```builds/serverless/bls_signatures/main.zip``` 
 
-https://docs.google.com/document/d/1Owp7nK6470WuOHPpFU1i7l4F_liCXzQ9-TfDRm0ndBw/edit?usp=sharing
+https://docs.google.com/document/d/1isja3Njqr9ZW43F9GZRwSYhwvTxOb31n8uKpIzdV1-8/edit?usp=sharing
 
 5. Send a validator service request. 
 
