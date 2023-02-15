@@ -4,7 +4,7 @@ Zeus is an evolution of web container orchestration into web ecosystems orchestr
 
 We're not just a web3 company, we have a lot of experience in crypto cloud tech so that's why it's our first product line theme, we'll be offering many  web2 focused products by the end of the year in addition to advancing our web3 products.
 
-Here are some early demo videos of instrastructure building (pre-cluster & matrix version). We'll replace them with higher quality demos of the latest cluster building suite over the next few months.
+Here are some early demo videos of instrastructure building and interfacing with the pods controller (pre-cluster & matrix version). We'll replace them with higher quality demos of the latest cluster building suite over the next few months.
 
 https://drive.google.com/drive/folders/1tACuTADLbmYT7vS8qBqY_l5buZh_cn__?usp=sharing
 
