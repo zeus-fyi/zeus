@@ -180,8 +180,7 @@ type AuthLamdbaAWS struct {
 }
 
 ```
-
-Here's how you can use the client to post a request to the endpoint above to service new validators.
+Here's how you can use the client to post a request to the endpoint above to service new validators. You can also reuse the test case we have and change them to your own values here: ```pkg/hestia/client/validators_service_request_test.go```
 ```go
 bearerToken := "YOUR_BEARER_TOKEN"
 hestiaClient := NewDefaultHestiaClient(bearerToken)
