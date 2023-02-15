@@ -39,7 +39,11 @@ In AWS Secret Manager
 
 https://docs.google.com/document/d/1Owp7nK6470WuOHPpFU1i7l4F_liCXzQ9-TfDRm0ndBw/edit?usp=sharing
 
-5. Send a validator service request. See pkg/hestia, which shows how you post a request to the hestia.zeus.fyi/v1/validators/service/create endpoint to service new validators.
+5. Send a validator service request. 
+
+See pkg/hestia, which provides a client that calls the API, and shows how you post a request to the endpoint below to service new validators in a test case.
+
+#### https://hestia.zeus.fyi/v1/validators/service/create 
 
 ## Cookbooks ##
 
