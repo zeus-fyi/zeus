@@ -27,11 +27,13 @@ See the test cases here for how to do this:
 
 3. Create a secret that stores your Age public and private key values in AWS secret manager. 
 
-Secret Name: Choose any name, you'll need this name to send us.
+```
+In AWS Secret Manager 
 
-In AWS Secret Manager
-   a. Secret Key: (Your Age public key, starts with age...)
-   b. Secret Value: (Your Age private key, starts with AGE-SECRET-KEY-...)
+   a. Secret Name: Choose any name, you'll need this name to send us.
+   b. Secret Key: (Your Age public key, starts with age...)
+   c. Secret Value: (Your Age private key, starts with AGE-SECRET-KEY-...)
+```
 
 4. Create the AWS Lambda function. See this google doc for details. You can use the main.zip file pre-built in the below directory or build it yourself.
 
