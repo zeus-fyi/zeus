@@ -77,7 +77,7 @@ The main.zip file is already prebuilt for you here: ```builds/serverless/bls_sig
 
 https://docs.google.com/document/d/1isja3Njqr9ZW43F9GZRwSYhwvTxOb31n8uKpIzdV1-8/edit?usp=sharing
 
-5. Send a validator service request. 
+5. Send a validator service request. You'll need a bearer token from us. Send us a message and we'll get you one.
 
 See pkg/hestia, which provides a client that calls the API, and shows how you post a request to the endpoint below to service new validators in a test case.
 
