@@ -21,7 +21,7 @@ $10/mo solo or large scale enterprise staking for Ethereum per validator.
 Roughly these are the main steps (if using the AWS Lambda option, for other options send us a message)
 
 1. You'll need an eth1 wallet private key to submit validator deposits and you'll need 32 Eth + gas fees per validator. You can use metamask, or any other eth1 wallet.
-2. Choose an HD wallet password (any password will do)
+2. Choose an HD wallet password (any password will do), provide an Age public key and private key and hd mnemonic (or use the generated one)
 3. You can use the makefile to generate keystores and serverless zip file with your encrypted age validator keystores. 
 Or you can use the serverless binary directly.
 4. Then submit your validator deposits to the network for activation, you can use the serverless binary directly or the makefile to do this.
