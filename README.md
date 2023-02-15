@@ -26,10 +26,12 @@ https://github.com/ethereum/staking-deposit-cli
 Secret Name: Choose any name, you'll need this name to send us.
 
 In AWS Secret Manager
-##### Secret Key: (Your Age public key, starts with age...)
-##### Secret Value: (Your Age private key, starts with AGE-SECRET-KEY-...)
+   a. Secret Key: (Your Age public key, starts with age...)
+   b. Secret Value: (Your Age private key, starts with AGE-SECRET-KEY-...)
 
-4. Create the AWS Lambda function. See this google doc for details.
+4. Create the AWS Lambda function. See this google doc for details. You can use the main.zip file pre-built in the below directory or build it yourself.
+
+#### build_artifacts/serverless/bls_signatures/main.zip
 
 https://docs.google.com/document/d/1Owp7nK6470WuOHPpFU1i7l4F_liCXzQ9-TfDRm0ndBw/edit?usp=sharing
 
