@@ -12,7 +12,7 @@ https://drive.google.com/drive/folders/1tACuTADLbmYT7vS8qBqY_l5buZh_cn__?usp=sha
 
 Event driven signature automation for Ethereum staking using our synthetic staking beacon, an in-house technology invention that dramatically lowers the infrastucture costs of traditional enterprise staking architectures by 100x+ and bundles middleware like slashing protection and mev into the service. Which also comes with the added benefit of letting you stake from your wallet without anyone having access to your signing or withdrawal keys and without any infrastructure setup, with only a few lines of code. For those who do want hosted cloud signers, you'll have flexible 1-click style deployable hosted signers.
 
-#### How much will staking services cost for Ethereum?
+### How much will staking services cost for Ethereum?
 
 $10/mo solo or large scale enterprise staking for Ethereum per validator.
 
@@ -21,7 +21,7 @@ $10/mo solo or large scale enterprise staking for Ethereum per validator.
 Roughly these are the main steps (if using the AWS Lambda option, for other options send us a message)
 
 1. You'll need an eth1 wallet private key to submit validator deposits and you'll need 32 Eth + gas fees per validator. You can use metamask, or any other eth1 wallet.
-2. Choose an HD wallet password (any password will do)
+2. Choose an HD wallet password (any password will do), provide an Age public key and private key and hd mnemonic (or use the generated ones)
 3. You can use the makefile to generate keystores and serverless zip file with your encrypted age validator keystores. 
 Or you can use the serverless binary directly.
 4. Then submit your validator deposits to the network for activation, you can use the serverless binary directly or the makefile to do this.
@@ -67,20 +67,79 @@ Here are the full flags for generating keystores & serverless zip file with your
 5. Create a secret that stores your Age public and private key values in AWS secret manager. 
 
 ```
-In AWS Secret Manager 
+In AWS Secret Manager (us-west-1)
 
    a. Secret Name: Choose any name, you'll need this name to send us.
    b. Secret Key: (Your Age public key, starts with age...)
    c. Secret Value: (Your Age private key, starts with AGE-SECRET-KEY-...)
 ```
 
-4. Create the AWS Lambda function. See this google doc for details. You can use the main.zip file pre-built in the below directory or build it yourself.
+6. Create the AWS Lambda function. See this google doc for details. You can use the main.zip file pre-built in the below directory or build it yourself.
 
 The main.zip file is already prebuilt for you here: ```builds/serverless/bls_signatures/main.zip``` 
 
-https://docs.google.com/document/d/1Owp7nK6470WuOHPpFU1i7l4F_liCXzQ9-TfDRm0ndBw/edit?usp=sharing
+https://docs.google.com/document/d/1isja3Njqr9ZW43F9GZRwSYhwvTxOb31n8uKpIzdV1-8/edit?usp=sharing
 
-5. Send a validator service request. 
+7. Verify your AWS Lambda function works.
+
+Lambda request and response structures
+
+```go	
+type EthereumBLSKeySignatureRequests struct {
+	Map map[string]EthereumBLSKeySignatureRequest `json:"map"`
+}
+
+type EthereumBLSKeySignatureRequest struct {
+	Message string `json:"message"`
+}
+
+// Response structures
+type EthereumBLSKeySignatureResponses struct {
+	Map map[string]EthereumBLSKeySignatureResponse `json:"responses"`
+}
+
+type EthereumBLSKeySignatureResponse struct {
+	Signature string `json:"signature"`
+}
+```
+Verification code example. You can also use the test case in ```apps/cookbooks/serverless/ethereum/bls_signatures/signature_requests/signature_requests_test.go``` and set to your own values there.
+```go
+// user params
+functionURL := "https://yourfunctionurl.com
+serverlessSecretName := "yourawssecretname" //  From step 5a. -> this Secret Name: 
+key := "0xddbf285..." // choose any public bls validator key you included in your keystores.zip file
+
+// init
+bls_signer.InitEthBLS() // necessary to set crypto values for ethereum specific bls crypto
+r := resty.New()
+r.SetBaseURL(functionURL)
+
+respMsgMap := make(map[string]aegis_inmemdbs.EthereumBLSKeySignatureResponse)
+signedEventResponse := aegis_inmemdbs.EthereumBLSKeySignatureResponses{
+	Map: respMsgMap,
+}
+sr := bls_serverless_signing.SignatureRequests{
+	SecretName:        serverlessSecretName,
+	SignatureRequests: aegis_inmemdbs.EthereumBLSKeySignatureRequests{Map: make(map[string]aegis_inmemdbs.EthereumBLSKeySignatureRequest)},
+}
+
+// use a hex message payload
+hexMessage, _ := aegis_inmemdbs.RandomHex(10)
+signMsg := aegis_inmemdbs.EthereumBLSKeySignatureRequest{Message: hexMessage}
+sr.SignatureRequests.Map[key] = signMsg
+
+// send the request
+resp, _ := r.R().
+	SetResult(&signedEventResponse).
+	SetBody(sr).Post("/")
+
+verified, _ := signedEventResponse.VerifySignatures(ctx, sr.SignatureRequests, true)
+// verify your key is in here
+// eg. len(verified) == 1
+// eg. key == verified[0]
+```
+
+8. Send a validator service request via an API call. You'll need a bearer token from us. Send us a message and we'll get you one.
 
 See pkg/hestia, which provides a client that calls the API, and shows how you post a request to the endpoint below to service new validators in a test case.
 
@@ -122,11 +181,11 @@ type AuthLamdbaAWS struct {
 	AccessKey    string `json:"accessKey"`
 	AccessSecret string `json:"accessSecret"`
 }
-```
 
-Here's how you can use the client to post a request to the endpoint above to service new validators.
+```
+Here's how you can use the client to post a request to the endpoint above to service new validators. You can also reuse the test case we have and change them to your own values here: ```pkg/hestia/client/validators_service_request_test.go```
 ```go
-bearerToken := "YOUR_BEARER_TOEKN"
+bearerToken := "YOUR_BEARER_TOKEN"
 hestiaClient := NewDefaultHestiaClient(bearerToken)
 
 func (h *Hestia) ValidatorsServiceRequest(ctx context.Context, rr hestia_req_types.CreateValidatorServiceRequest) (hestia_resp_types.Response, error) {
