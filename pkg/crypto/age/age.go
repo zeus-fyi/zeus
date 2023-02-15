@@ -17,6 +17,18 @@ func NewAge(privKey, pubKey string) Age {
 	return a
 }
 
+// GenerateNewKeyPair returns publicKey, privateKey (order of returns)
+func GenerateNewKeyPair() (string, string) {
+	identity, err := age.GenerateX25519Identity()
+	if err != nil {
+		panic(err)
+	}
+
+	pubkey := identity.Recipient().String()
+	privKey := identity.String()
+	return pubkey, privKey
+}
+
 func GenerateNewAgeCredentials() Age {
 	identity, err := age.GenerateX25519Identity()
 	if err != nil {

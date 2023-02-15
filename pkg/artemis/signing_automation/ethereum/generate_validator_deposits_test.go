@@ -37,7 +37,8 @@ func (t *Web3SignerClientTestSuite) TestEphemeralDepositsFromMnemonicInEth2Keyst
 		Pw:                   t.TestHDWalletPassword,
 		ValidatorIndexOffset: offset,
 		NumValidators:        numKeys,
+		Network:              "ephemery",
 	}
-	err := vdg.GenerateAndEncryptValidatorKeysFromSeedAndPath(ctx, "ephemery")
+	err := vdg.GenerateAndEncryptValidatorKeysFromSeedAndPath(ctx)
 	t.Require().Nil(err)
 }

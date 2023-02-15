@@ -61,3 +61,5 @@ Thumbs.db
 /apps/cookbooks/serverless/ethereum/bls_signatures/keystores/
 /apps/cookbooks/serverless/ethereum/bls_signatures/keystores.zip
 /apps/cookbooks/serverless/ethereum/bls_signatures/raw_keystores/
+/builds/serverless/keystores/keystores.zip
+/builds/serverless/bls_signatures/keystores.zip

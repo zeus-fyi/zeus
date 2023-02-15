@@ -2,16 +2,18 @@ package ethereum_automation_cookbook
 
 import (
 	"archive/tar"
+	"archive/zip"
 	"bytes"
 	"compress/gzip"
 	"context"
 	"encoding/json"
-	"github.com/rs/zerolog/log"
 	"io"
 	"io/fs"
 	"os"
 	"path/filepath"
 
+	"github.com/rs/zerolog/log"
+	serverless_generation_helper "github.com/zeus-fyi/zeus/builds"
 	signing_automation_ethereum "github.com/zeus-fyi/zeus/pkg/artemis/signing_automation/ethereum"
 	age_encryption "github.com/zeus-fyi/zeus/pkg/crypto/age"
 	bls_signer "github.com/zeus-fyi/zeus/pkg/crypto/bls"
@@ -22,11 +24,22 @@ import (
 
 var InMemFs = memfs.NewMemFs()
 
-func GenerateAgeKeystores(keystoresPath filepaths.Path, age age_encryption.Age, HDPassword string) error {
-	err := decryptToInMemFS(keystoresPath.DirIn, HDPassword)
+func GenerateValidatorDepositsAndCreateAgeEncryptedKeystores(ctx context.Context, w3Client signing_automation_ethereum.Web3SignerClient, vdg signing_automation_ethereum.ValidatorDepositGenerationParams, age age_encryption.Age, HDPassword string) error {
+	err := vdg.GenerateAndEncryptValidatorKeysFromSeedAndPath(ctx)
 	if err != nil {
 		return err
 	}
+	dpSlice, err := w3Client.GenerateEphemeryDepositDataWithDefaultWd(ctx, vdg)
+	if err != nil {
+		return err
+	}
+	signing_automation_ethereum.PrintJSONSlice(vdg.Fp, dpSlice, vdg.Network)
+
+	err = decryptToInMemFS(vdg.Fp.DirOut, HDPassword)
+	if err != nil {
+		return err
+	}
+	// these are the in memfs paths
 	p := filepaths.Path{DirIn: "./keystores", DirOut: "./gzip", FnOut: "keystores.tar.gz"}
 	b, err := gzipDirectoryToMemoryFS(p)
 	if err != nil {
@@ -40,8 +53,15 @@ func GenerateAgeKeystores(keystoresPath filepaths.Path, age age_encryption.Age, 
 
 	p.FnIn = "keystores.tar.gz"
 	p.DirIn = "./gzip"
-	p.DirOut = keystoresPath.DirOut
+	p.DirOut = vdg.Fp.DirIn
 	err = age.EncryptFromInMemFS(InMemFs, &p)
+	if err != nil {
+		return err
+	}
+
+	vdg.Fp.FnIn = p.FnIn
+	vdg.Fp.FnOut = "keystores"
+	err = zipAndDeleteFile(vdg.Fp)
 	if err != nil {
 		return err
 	}
@@ -54,8 +74,14 @@ func decryptToInMemFS(directoryPath, hdPassword string) error {
 		return ferr
 	}
 
+	filter := strings_filter.FilterOpts{
+		DoesNotStartWithThese: []string{".DS_Store"},
+		StartsWithThese:       nil,
+		StartsWith:            "keystore",
+		Contains:              "",
+	}
 	for _, file := range files {
-		if file.IsDir() || file.Name() == ".DS_Store" {
+		if file.IsDir() || !strings_filter.FilterStringWithOpts(file.Name(), &filter) {
 			continue
 		}
 		fp := filepath.Join(directoryPath, file.Name())
@@ -160,4 +186,54 @@ func gzipDirectoryToMemoryFS(p filepaths.Path) ([]byte, error) {
 
 	// Return compressed bytes
 	return gzipBytes.Bytes(), nil
+}
+
+func zipAndDeleteFile(p filepaths.Path) error {
+	// Open the file for reading
+	fileToZip, err := os.Open(p.FileInPath())
+	if err != nil {
+		return err
+	}
+	defer fileToZip.Close()
+
+	// Create the zip file
+	defer os.Remove(p.FileInPath())
+	zipFileName := p.FnOut + ".zip"
+	serverless_generation_helper.ChangeToBuildsDir()
+	generationPath := filepaths.Path{
+		DirOut:      "./serverless/bls_signatures",
+		FnOut:       zipFileName,
+		Env:         "",
+		FilterFiles: nil,
+	}
+	zipFile, err := os.Create(generationPath.FileOutPath())
+	if err != nil {
+		return err
+	}
+	defer zipFile.Close()
+
+	// Create a new zip archive
+	zipWriter := zip.NewWriter(zipFile)
+	defer zipWriter.Close()
+
+	// Add the file to the zip archive
+	fileInfo, err := fileToZip.Stat()
+	if err != nil {
+		return err
+	}
+	header, err := zip.FileInfoHeader(fileInfo)
+	if err != nil {
+		return err
+	}
+	header.Method = zip.Deflate
+	writer, err := zipWriter.CreateHeader(header)
+	if err != nil {
+		return err
+	}
+	_, err = io.Copy(writer, fileToZip)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

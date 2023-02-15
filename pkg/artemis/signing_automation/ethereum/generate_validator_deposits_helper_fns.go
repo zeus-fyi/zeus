@@ -24,6 +24,9 @@ type ValidatorDepositGenerationParams struct {
 
 	// used for looping derivations
 	WithdrawalKeyIndexOffset, NumWithdrawalKeys int
+
+	// used for network selection variables
+	Network string
 }
 
 /*
@@ -72,7 +75,7 @@ func (vd *ValidatorDepositGenerationParams) GenerateDerivedWithdrawalKeys(ctx co
 	return wdPubkey, nil
 }
 
-func (vd *ValidatorDepositGenerationParams) GenerateAndEncryptValidatorKeysFromSeedAndPath(ctx context.Context, network string) error {
+func (vd *ValidatorDepositGenerationParams) GenerateAndEncryptValidatorKeysFromSeedAndPath(ctx context.Context) error {
 	initErr := bls_signer.InitEthBLS()
 	if initErr != nil {
 		log.Ctx(ctx).Err(initErr)
@@ -88,7 +91,7 @@ func (vd *ValidatorDepositGenerationParams) GenerateAndEncryptValidatorKeysFromS
 		}
 		slashSplit := strings.Split(path, "/")
 		underScoreStr := strings.Join(slashSplit, "_")
-		vd.Fp.FnOut = fmt.Sprintf("keystore-%s-%s.json", network, underScoreStr)
+		vd.Fp.FnOut = fmt.Sprintf("keystore-%s-%s.json", vd.Network, underScoreStr)
 		err = vd.Fp.WriteToFileOutPath(b)
 	}
 	return nil

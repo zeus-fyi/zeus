@@ -48,15 +48,15 @@ func (t *EthereumAutomationCookbookTestSuite) TestDepositGenerationAutomation() 
 		Pw:                   t.Tc.HDWalletPassword,
 		ValidatorIndexOffset: offset,
 		NumValidators:        numKeys,
+		Network:              "ephemery",
 	}
-	n := "ephemery"
-	err := vdg.GenerateAndEncryptValidatorKeysFromSeedAndPath(ctx, n)
+	err := vdg.GenerateAndEncryptValidatorKeysFromSeedAndPath(ctx)
 	t.Require().Nil(err)
 
 	dpSlice, err := t.Web3SignerClientTestClient.GenerateEphemeryDepositDataWithDefaultWd(ctx, vdg)
 	t.Require().Nil(err)
 
-	signing_automation_ethereum.PrintJSONSlice(depositDataPath, dpSlice, n)
+	signing_automation_ethereum.PrintJSONSlice(depositDataPath, dpSlice, vdg.Network)
 	return dpSlice
 }
 

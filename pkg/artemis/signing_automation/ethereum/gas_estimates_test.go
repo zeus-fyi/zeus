@@ -16,7 +16,7 @@ func (t *Web3SignerClientTestSuite) TestValidatorDepositPayloadGasEstimate() {
 
 	dd, err := t.Web3SignerClientTestClient.GenerateDepositData(ctx, t.TestBLSAccount, wc, fv)
 	t.Require().Nil(err)
-	payload, err := getValidatorDepositPayload(ctx, dd)
+	payload, err := GetValidatorDepositPayload(ctx, dd)
 	t.Require().Nil(err)
 
 	from := t.TestAccount1.Address()
