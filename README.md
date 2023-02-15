@@ -11,8 +11,8 @@ https://drive.google.com/drive/folders/1tACuTADLbmYT7vS8qBqY_l5buZh_cn__?usp=sha
 ### Recent Background Info
 
 * Architected, led, and executed the Ethereum 2 merge, Polygon staking, and MEV projects for Coinbase Cloud. 
-* Pioneered network scale client swaps with restart only downtime. The system above facilitated over $1B in Ethereum transfers
-* Wrote the remote signing protection code that is used by 100% of Coinbase Cloud's Ethereum Validators today
+* Pioneered network scale client swaps with restart only downtime. This system facilitated over $1B in Ethereum transfers.
+* Wrote the remote signing protection code that is used by 100% of Coinbase Cloud's Ethereum Validators today.
 
 https://www.linkedin.com/in/alexandersgeorge/
 
