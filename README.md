@@ -35,7 +35,7 @@ Makefile (reference)
 
 ```make
     serverless.keygen
-	./builds/serverless/bin/serverless --keygen true --num-keys 3```
+	./builds/serverless/bin/serverless --keygen true --num-keys 3
 	
     ETH1_PRIV_KEY := ""
     
