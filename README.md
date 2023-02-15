@@ -21,6 +21,10 @@ Roughly these are the main steps (if using the AWS Lambda option, for other opti
 https://github.com/ethereum/staking-deposit-cli
 
 2. Decrypt your keystores and then re-encrypt them with your Age encryption key into a keystores.tar.gz.age file, then zip it into a keystores.zip file.
+
+See the test cases here for how to do this:
+#### apps/cookbooks/serverless/ethereum/bls_signatures/inmemfs/inmemfs_test.go
+
 3. Create a secret that stores your Age public and private key values in AWS secret manager. 
 
 Secret Name: Choose any name, you'll need this name to send us.
