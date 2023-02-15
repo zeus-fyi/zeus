@@ -2,11 +2,19 @@
 
 Zeus is an evolution of web container orchestration into web ecosystems orchestration. It changes the paradigm into one that unifies configuration with the underlying orchestrator, instead of decoupling them into confusing messes like Helm, Terraform, and GitOps, while also reducing the operational complexity of building with Kubernetes significantly and is capable of building systems at the scale and complexity of AWS (without the terrible UX/UI) by unifying multi-network Kubernetes node pools with SQL driven relationship building & querying. 
 
-We're not just a web3 company, we have a lot of experience in crypto cloud tech so that's why it's our first product line theme, we'll be offering many  web2 focused products by the end of the year in addition to advancing our web3 products.
+We're not just a web3 company, we have a lot of experience in crypto cloud tech so that's why it's our first product line theme, we'll be offering many  web2 focused products by the end of the year in addition to advancing our web3 products. 
 
 Here are some early demo videos of infrastructure building and interfacing with the pods controller (pre-cluster & matrix version). We'll replace them with higher quality demos of the latest cluster building suite over the next few months.
 
 https://drive.google.com/drive/folders/1tACuTADLbmYT7vS8qBqY_l5buZh_cn__?usp=sharing
+
+### Recent Background Info
+
+* Architected, led, and executed the Ethereum 2 merge, Polygon staking, and MEV projects for Coinbase Cloud. 
+* Pioneered network scale client swaps with restart only downtime. The system above facilitated over $1B in Ethereum transfers
+* Wrote the remote signing protection code that is used by 100% of Coinbase Cloud's Ethereum Validators today
+
+https://www.linkedin.com/in/alexandersgeorge/
 
 ### Ethereum staking from your wallets & private secret managers.
 
