@@ -58,7 +58,7 @@ Here are the full flags for generating keystores & serverless zip file with your
       --network string              network to run on (mainnet, goerli, ephemery, etc (default "ephemery")
       --node-url string             beacon for getting network data for validator deposit generation & submitting deposits (default "https://eth.ephemeral.zeus.fyi")
       --num-keys int                number of keys to generate (default 3)
-      --submit-deposits             submits validator deposits in keystore directory to the network for activation (bool)
+      --submit-deposits bool        submits validator deposits in keystore directory to the network for activation (bool)
 ```
 
 5. Create a secret that stores your Age public and private key values in AWS secret manager. 
