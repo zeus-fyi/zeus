@@ -10,7 +10,7 @@ Event driven signature automation for Ethereum staking using our synthetic staki
 
 #### How much will staking services cost for Ethereum?
 
-$10/mo solo or large scale enterprise staking for Ethereum per validator, all inclusive, and unlike everyone else in the industry, we're not taking a cut of your staking yield, or locking you in to any contracts, smart contracts, or anything else. We'd rather give you a better experience in web3, one that is fun to interact with, helps you build communities, helps attracts new users to the web3 ecosystem, simply by making it user-friendly, and we're betting that is worth a lot more than extracting as much money as we can from our users.
+$10/mo solo or large scale enterprise staking for Ethereum per validator.
 
 ### How do I setup validators?
 
