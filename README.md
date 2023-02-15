@@ -31,9 +31,9 @@ your console logs.
 
 It will generate a zip file called ```keystores.zip``` with your encrypted age validator keystores in the ```builds/serverless/bls_signature``` directory.
 
-```make
-Makefile (excerpt)
+Makefile (reference)
 
+```make
     serverless.keygen
 	./builds/serverless/bin/serverless --keygen true --num-keys 3```
 	
