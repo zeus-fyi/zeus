@@ -118,7 +118,7 @@ This client uses the OpenAI API to generate code with AI. This service is availa
 
 Artemis is a tx orchestrator. It reliably submits & confirms ethereum transactions and logs their receipts. Chain with 
 the in memory db for storing web3 signer keys to build highly reliable web3 api actions with other users and smart contracts. You'll need
-a bearer token to use this client. A more advanced orchestrator that can handle high volume DeFi trading, which manages nonce sequences, sets up event triggers & scheduling, and has queriable event artifacts is in works, targeted release by end of Feb.
+a bearer token to use this client. A more advanced orchestrator that can handle high volume DeFi trading, which manages nonce sequences, sets up event triggers & scheduling, and has queriable event artifacts is in works, targeted release by end of March.
 
 ### Aegis ###
 
@@ -133,9 +133,7 @@ and for storing ecdsa, eth1 wallet keys.
 #### ```apps/hercules``` ####
 #### ```pkg/hercules/client```
 
-Hercules is web3 middleware that manages web3 infrastructure and connections to other middleware packages, such as web3signer, chain snapshot downloading, setting up mev-boost, orchestrating transactions and client switching, key generation and management, and much more coming soon.
-
-It also contains useful apis to debug and troubleshoot web3 infrastructure.
+Hercules is web3 middleware that manages web3 infrastructure and connections to other middleware packages. It also contains useful apis to debug and troubleshoot web3 infrastructure.
 
 ### Snapshots ###
 
