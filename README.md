@@ -20,16 +20,48 @@ $10/mo solo or large scale enterprise staking for Ethereum per validator.
 
 Roughly these are the main steps (if using the AWS Lambda option, for other options send us a message)
 
-1. Generate ethereum keystores & deposit them. See cookbooks/ethereum/automation, or use the Ethereum staking repo below to generate them.
+1. You'll need an eth1 wallet private key to submit validator deposits and you'll need 32 Eth + gas fees per validator. You can use metamask, or any other eth1 wallet.
+2. Choose an HD wallet password (any password will do)
+3. You can use the makefile to generate keystores and serverless zip file with your encrypted age validator keystores. 
+Or you can use the serverless binary directly.
+4. Then submit your validator deposits to the network for activation, you can use the serverless binary directly or the makefile to do this.
 
-https://github.com/ethereum/staking-deposit-cli
+If no age encryption key, mnemonic, or hd wallet password is provided it will generate them for you and you can read their values in
+your console logs.
 
-2. Decrypt your keystores and then re-encrypt them with your Age encryption key into a keystores.tar.gz.age file, then zip it into a keystores.zip file.
+It will generate a zip file called ```keystores.zip``` with your encrypted age validator keystores in the ```builds/serverless/bls_signature``` directory.
 
-See the test cases here for how to do this:
-#### apps/cookbooks/serverless/ethereum/bls_signatures/inmemfs/inmemfs_test.go
+```make
+Makefile (excerpt)
 
-3. Create a secret that stores your Age public and private key values in AWS secret manager. 
+    serverless.keygen
+	./builds/serverless/bin/serverless --keygen true --num-keys 3```
+	
+    ETH1_PRIV_KEY := ""
+    
+    serverless.submit.deposits:
+	./builds/serverless/bin/serverless --keygen false --submit-deposits true --eth1-addr-priv-key ${ETH1_PRIV_KEY}
+```
+Here are the full flags for generating keystores & serverless zip file with your encrypted age validator keystores
+```
+    Flags:
+      --age-private-key string      age private key
+      --age-public-key string       age public key
+      --eth1-addr-priv-key string   eth1 address private key for submitting deposits
+      --hd-offset int               offset to start generating keys from hd wallet
+      --hd-wallet-pw string         hd wallet password
+  -h, --help                        help for Web3
+      --key-gen                     generates full keygen procedure (default true)
+      --keystores-dir-in string     keystores directory in location (relative to builds dir) (default "./serverless/keystores")
+      --keystores-dir-out string    keystores directory out location (relative to builds dir) (default "./serverless/keystores")
+      --mnemonic string             twenty four word mnemonic to generate keystores
+      --network string              network to run on (mainnet, goerli, ephemery, etc (default "ephemery")
+      --node-url string             beacon for getting network data for validator deposit generation & submitting deposits (default "https://eth.ephemeral.zeus.fyi")
+      --num-keys int                number of keys to generate (default 3)
+      --submit-deposits             submits validator deposits in keystore directory to the network for activation (bool)
+```
+
+5. Create a secret that stores your Age public and private key values in AWS secret manager. 
 
 ```
 In AWS Secret Manager 
@@ -41,7 +73,7 @@ In AWS Secret Manager
 
 4. Create the AWS Lambda function. See this google doc for details. You can use the main.zip file pre-built in the below directory or build it yourself.
 
-#### build_artifacts/serverless/bls_signatures/main.zip
+The main.zip file is already prebuilt for you here: ```builds/serverless/bls_signatures/main.zip``` 
 
 https://docs.google.com/document/d/1Owp7nK6470WuOHPpFU1i7l4F_liCXzQ9-TfDRm0ndBw/edit?usp=sharing
 
@@ -49,7 +81,74 @@ https://docs.google.com/document/d/1Owp7nK6470WuOHPpFU1i7l4F_liCXzQ9-TfDRm0ndBw/
 
 See pkg/hestia, which provides a client that calls the API, and shows how you post a request to the endpoint below to service new validators in a test case.
 
-#### https://hestia.zeus.fyi/v1/validators/service/create 
+#### POST: https://hestia.zeus.fyi/v1/validators/service/create 
+
+```go
+// This is the object you'll need to send to the endpoint above to service new validators
+type CreateValidatorServiceRequest struct {
+    ServiceRequestWrapper
+    ValidatorServiceOrgGroupSlice
+}
+
+type ValidatorServiceOrgGroupSlice []ValidatorServiceOrgGroup
+
+type ValidatorServiceOrgGroup struct {
+	Pubkey       string `json:"pubkey"`
+	FeeRecipient string `json:"feeRecipient"`
+}
+
+type ServiceRequestWrapper struct {
+	GroupName         string            `json:"groupName"`
+	ProtocolNetworkID int               `json:"protocolNetworkID"`
+	Enabled           bool              `json:"enabled"`
+	ServiceAuth       ServiceAuthConfig `json:"serviceAuth"`
+}
+
+// ServiceAuthConfig note: only use one auth type per service url
+// only AWS lambda support for now
+type ServiceAuthConfig struct {
+	*AuthLamdbaAWS `json:"awsAuth"`
+}
+
+type AuthLamdbaAWS struct {
+	ServiceURL string `json:"serviceURL"`
+
+	SecretName string `json:"secretName"` // this is the name of the secret in the aws secrets manager you use for decrypting your keystores
+	// these are the auth credentials you link to an IAM user that can call your aws lambda function to sign messages
+	// we use these to call your lambda function to sign messages
+	AccessKey    string `json:"accessKey"`
+	AccessSecret string `json:"accessSecret"`
+}
+```
+
+Here's how you can use the client to post a request to the endpoint above to service new validators.
+```go
+bearerToken := "YOUR_BEARER_TOEKN"
+hestiaClient := NewDefaultHestiaClient(bearerToken)
+
+func (h *Hestia) ValidatorsServiceRequest(ctx context.Context, rr hestia_req_types.CreateValidatorServiceRequest) (hestia_resp_types.Response, error) {
+	h.PrintReqJson(rr)
+
+	respJson := hestia_resp_types.Response{}
+	resp, err := h.R().
+		SetBody(rr).
+		SetResult(&respJson).
+		Post(hestia_endpoints.EthereumValidatorsCreateServiceRequestV1Path)
+
+	if err != nil || resp.StatusCode() != http.StatusAccepted {
+		log.Ctx(ctx).Err(err).Msg("Hestia: ValidatorsServiceRequest")
+		if resp.StatusCode() == http.StatusBadRequest {
+			err = errors.New("bad request")
+		}
+		return respJson, err
+	}
+
+	h.PrintRespJson(resp.Body())
+	return respJson, err
+}
+```
+
+For ephemery network deposits you can check the status of your validator here: https://beaconchain.ephemery.pk910.de/validators/eth1deposits
 
 ## Cookbooks ##
 
