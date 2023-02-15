@@ -77,7 +77,66 @@ The main.zip file is already prebuilt for you here: ```builds/serverless/bls_sig
 
 https://docs.google.com/document/d/1isja3Njqr9ZW43F9GZRwSYhwvTxOb31n8uKpIzdV1-8/edit?usp=sharing
 
-7. Send a validator service request via an API call. You'll need a bearer token from us. Send us a message and we'll get you one.
+7. Verify your AWS Lambda function works.
+
+Lambda request and response structures
+
+```go	
+type EthereumBLSKeySignatureRequests struct {
+	Map map[string]EthereumBLSKeySignatureRequest `json:"map"`
+}
+
+type EthereumBLSKeySignatureRequest struct {
+	Message string `json:"message"`
+}
+
+// Response structures
+type EthereumBLSKeySignatureResponses struct {
+	Map map[string]EthereumBLSKeySignatureResponse `json:"responses"`
+}
+
+type EthereumBLSKeySignatureResponse struct {
+	Signature string `json:"signature"`
+}
+```
+Verification code example. You can also use the test case in ```apps/cookbooks/serverless/ethereum/bls_signatures/signature_requests/signature_requests_test.go``` and set to your own values there.
+```go
+// user params
+functionURL := "https://yourfunctionurl.com
+serverlessSecretName := "yourawssecretname" //  From step 5a. -> this Secret Name: 
+key := "0xddbf285..." // choose any public bls validator key you included in your keystores.zip file
+
+// init
+bls_signer.InitEthBLS() // necessary to set crypto values for ethereum specific bls crypto
+r := resty.New()
+r.SetBaseURL(functionURL)
+
+respMsgMap := make(map[string]aegis_inmemdbs.EthereumBLSKeySignatureResponse)
+signedEventResponse := aegis_inmemdbs.EthereumBLSKeySignatureResponses{
+	Map: respMsgMap,
+}
+sr := bls_serverless_signing.SignatureRequests{
+	SecretName:        serverlessSecretName,
+	SignatureRequests: aegis_inmemdbs.EthereumBLSKeySignatureRequests{Map: make(map[string]aegis_inmemdbs.EthereumBLSKeySignatureRequest)},
+}
+
+// use a hex message payload
+hexMessage, _ := aegis_inmemdbs.RandomHex(10)
+signMsg := aegis_inmemdbs.EthereumBLSKeySignatureRequest{Message: hexMessage}
+sr.SignatureRequests.Map[key] = signMsg
+
+// send the request
+resp, _ := r.R().
+	SetResult(&signedEventResponse).
+	SetBody(sr).Post("/")
+
+verified, _ := signedEventResponse.VerifySignatures(ctx, sr.SignatureRequests, true)
+// verify your key is in here
+// eg. len(verified) == 1
+// eg. key == verified[0]
+```
+
+8. Send a validator service request via an API call. You'll need a bearer token from us. Send us a message and we'll get you one.
 
 See pkg/hestia, which provides a client that calls the API, and shows how you post a request to the endpoint below to service new validators in a test case.
 
@@ -119,6 +178,7 @@ type AuthLamdbaAWS struct {
 	AccessKey    string `json:"accessKey"`
 	AccessSecret string `json:"accessSecret"`
 }
+
 ```
 
 Here's how you can use the client to post a request to the endpoint above to service new validators.
