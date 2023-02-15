@@ -1,6 +1,6 @@
 module github.com/zeus-fyi/zeus
 
-go 1.19
+go 1.20
 
 require (
 	filippo.io/age v1.1.1

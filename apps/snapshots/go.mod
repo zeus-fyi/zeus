@@ -1,6 +1,6 @@
 module github.com/zeus-fyi/snapshots
 
-go 1.19
+go 1.20
 
 require (
 	github.com/cavaliergopher/grab/v3 v3.0.1
