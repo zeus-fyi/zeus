@@ -4,11 +4,7 @@ Zeus is an evolution of web container orchestration into web ecosystems orchestr
 
 We're not just a web3 company, we have a lot of experience in crypto cloud tech so that's why it's our first product line theme, we'll be offering many  web2 focused products by the end of the year in addition to advancing our web3 products.
 
-## Upcoming Features Overview ##
-
 ### Event driven signature automation for Ethereum staking, and web3 dapp interactions
-
-#### Timeline ~ End of January/Early Feb 23'
 
 Event driven signature automation for Ethereum staking using our synthetic staking beacon, an in-house technology invention that dramatically lowers the infrastucture costs of traditional enterprise staking architectures by 100x+ and bundles middleware like slashing protection and mev into the service. Which also comes with the added benefit of letting you stake from your wallet without anyone having access to your signing or withdrawal keys and without any infrastructure setup, with only a few lines of code. For those who do want hosted cloud signers, you'll have flexible 1-click style deployable hosted signers.
 
@@ -16,41 +12,28 @@ Event driven signature automation for Ethereum staking using our synthetic staki
 
 $10/mo solo or large scale enterprise staking for Ethereum per validator, all inclusive, and unlike everyone else in the industry, we're not taking a cut of your staking yield, or locking you in to any contracts, smart contracts, or anything else. We'd rather give you a better experience in web3, one that is fun to interact with, helps you build communities, helps attracts new users to the web3 ecosystem, simply by making it user-friendly, and we're betting that is worth a lot more than extracting as much money as we can from our users.
 
-#### Do you have any limits on how many validators you can support, are you also supporting direct to consumer?
+### How do I setup validators?
 
-Our system can comfortably scale to all of mainnet and far beyond, the cost difference for cloud, devops, etc costs to us between even 50k->100k->200k or more validators may as well be virtually zero to help illustrate how efficient it is. We're starting with wallet custodians, and B2B partners first since we don't have large enough CX support for large request volumes at this moment, but targeting direct to consumer before end of Q2, possibly much sooner. We'll setup an email signup list soon for you all to get notified over the next 1-2 months.
+Roughly these are the main steps (if using the AWS Lambda option, for other options send us a message)
 
-#### What if this results in centralization of staking through this platform?
+1. Generate ethereum keystores & deposit them. See cookbooks/ethereum/automation, or use the Ethereum staking repo below to generate them.
 
-Great question, and since that was a concern we've had on our minds early on, we've already come up with a few feasible designs that could turn this entire synthetic staking beacon technology into a fully decentralized synthetic beacon service. We'll advance our tech to that stage if it starts trending that way, we're a long ways from that though at this stage.
+https://github.com/ethereum/staking-deposit-cli
 
-#### Can you share more about the native web2 interactions?
+2. Decrypt your keystores and then re-encrypt them with your Age encryption key into a keystores.tar.gz.age file, then zip it into a keystores.zip file.
+3. Create a secret that stores your Age public and private key values in AWS secret manager. 
 
-Both signer options come with powerful tx orchestration capabilities for smart contract & dapp interactions, allowing for truly native web2 experiences for dapp interactions for the first time (2fa, email login linked to your wallet, QR scanning, and more slated to follow this release, timelines and additional details to be announced in Feb). It will also allow developers to build smart contract automation flows for users that interact with their wallets behind the scenes, unlike the clunky browser extension setups used today that are entirely too frustrating to use.
+Secret Name: Choose any name, you'll need this name to send us.
 
-### Automated web3 infrastructure setup
+In AWS Secret Manager
+##### Secret Key: (Your Age public key, starts with age...)
+##### Secret Value: (Your Age private key, starts with AGE-SECRET-KEY-...)
 
-#### Timeline ~ Late January 23'
+4. Create the AWS Lambda function. See this google doc for details.
 
-Completely orchestrated and automated web3 infra. Sets up infrastructure on demand, automates run books, sets up mev-boost, web3signer, adds snapshot chain download integration, automates devops that's done by hand today, automates interactions for seeding and withdrawing validators, automates upgrades, automates configuration setup and verification, automates notifications and rewards info. Enables web3 staking infrastructure to be portable across cloud, and for vendor switching on demand. Starting with Ethereum.
+https://docs.google.com/document/d/1Owp7nK6470WuOHPpFU1i7l4F_liCXzQ9-TfDRm0ndBw/edit?usp=sharing
 
-### Automated web3 network setup for large scale private network testing
-
-#### Timeline ~ Q1/Q2 23'
-
-Create network from scratch that can replicate the size of mainnet, starting with Ethereum.
-```
-Runs Genesis -> Seeds Validators -> Deploys Validator Infra -> Metrics/Data
-```
-### AI driven infrastructure configuration & devops
-
-#### V0 Generation: Timeline ~ Q4 23'- Q1 24'
-
-AI driven infrastructure that automates infrastructure config customization & handles devops via log ingestion. Generation v0, public access will be strictly limited to early users of Zeus and a small pool of API access will be allocated to those who request access in FIFO basis.
-
-#### V1 Generation: Timeline ~ Q1 24'- Q1 25'
-
-The next generation will be able to read helm charts & configure infrastructure automatically for medium size complexity applications, and small networks of related applications.
+5. Send a validator service request. See pkg/hestia, which shows how you post a request to the hestia.zeus.fyi/v1/validators/service/create endpoint to service new validators.
 
 ## Cookbooks ##
 
