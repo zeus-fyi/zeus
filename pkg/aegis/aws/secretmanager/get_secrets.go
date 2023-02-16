@@ -1,4 +1,4 @@
-package aws_secrets
+package aegis_aws_secretmanager
 
 import (
 	"context"
@@ -48,4 +48,19 @@ func (s *SecretsManagerAuthAWS) GetSecretsJSON(ctx context.Context, si SecretInf
 	}
 
 	return m, nil
+}
+
+func (s *SecretsManagerAuthAWS) GetSecretBinary(ctx context.Context, si SecretInfo) ([]byte, error) {
+	input := &secretsmanager.GetSecretValueInput{
+		SecretId:     aws.String(si.Name),
+		VersionStage: aws.String("AWSCURRENT"), // VersionStage defaults to AWSCURRENT if unspecified
+	}
+	result, err := s.GetSecretValue(ctx, input)
+	if err != nil {
+		// For a list of exceptions thrown, see
+		// https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html
+		log.Ctx(ctx).Err(err)
+		return nil, err
+	}
+	return result.SecretBinary, nil
 }

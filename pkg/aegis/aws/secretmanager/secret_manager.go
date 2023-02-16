@@ -1,4 +1,4 @@
-package aws_secrets
+package aegis_aws_secretmanager
 
 import (
 	"context"
