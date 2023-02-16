@@ -14,11 +14,11 @@ type AwsLambdaTestSuite struct {
 var ctx = context.Background()
 
 func (t *AwsLambdaTestSuite) TestClientInit() {
-	region := "us-west-1"
 	a := AuthAWS{
-		AccessKey: t.Tc.AccessKeyAWS,
-		SecretKey: t.Tc.SecretKeyAWS,
-		Region:    region,
+		AccountNumber: t.Tc.AwsAccountNumber,
+		AccessKey:     t.Tc.AccessKeyAWS,
+		SecretKey:     t.Tc.SecretKeyAWS,
+		Region:        region,
 	}
 	lm, err := InitLambdaClient(ctx, a)
 	t.Require().Nil(err)

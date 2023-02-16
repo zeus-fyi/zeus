@@ -16,9 +16,10 @@ var ctx = context.Background()
 func (t *AwsIAMTestSuite) TestClientInit() {
 	region := "us-west-1"
 	a := AuthAWS{
-		AccessKey: t.Tc.AccessKeyAWS,
-		SecretKey: t.Tc.SecretKeyAWS,
-		Region:    region,
+		AccountNumber: t.Tc.AwsAccountNumber,
+		AccessKey:     t.Tc.AccessKeyAWS,
+		SecretKey:     t.Tc.SecretKeyAWS,
+		Region:        region,
 	}
 	iamClient, err := InitIAMClient(ctx, a)
 	t.Require().Nil(err)
@@ -28,32 +29,34 @@ func (t *AwsIAMTestSuite) TestClientInit() {
 func (t *AwsIAMTestSuite) TestCreateInternal() {
 	region := "us-west-1"
 	a := AuthAWS{
-		AccessKey: t.Tc.AccessKeyAWS,
-		SecretKey: t.Tc.SecretKeyAWS,
-		Region:    region,
+		AccountNumber: t.Tc.AwsAccountNumber,
+		AccessKey:     t.Tc.AccessKeyAWS,
+		SecretKey:     t.Tc.SecretKeyAWS,
+		Region:        region,
 	}
 	iamClient, err := InitIAMClient(ctx, a)
 	t.Require().Nil(err)
 	t.Assert().NotEmpty(iamClient)
 
-	resourceID := "3323"
-	err = iamClient.CreateLambdaUser(ctx, InternalLambdaUserAndPolicy, resourceID)
+	fnName := "testFn"
+	err = iamClient.CreateLambdaUser(ctx, InternalLambdaUserAndPolicy, fnName)
 	t.Require().Nil(err)
 }
 
 func (t *AwsIAMTestSuite) TestCreateExt() {
 	region := "us-west-1"
 	a := AuthAWS{
-		AccessKey: t.Tc.AccessKeyAWS,
-		SecretKey: t.Tc.SecretKeyAWS,
-		Region:    region,
+		AccountNumber: t.Tc.AwsAccountNumber,
+		AccessKey:     t.Tc.AccessKeyAWS,
+		SecretKey:     t.Tc.SecretKeyAWS,
+		Region:        region,
 	}
 	iamClient, err := InitIAMClient(ctx, a)
 	t.Require().Nil(err)
 	t.Assert().NotEmpty(iamClient)
 
-	resourceID := "3323"
-	err = iamClient.CreateLambdaUser(ctx, ExternalLambdaUserAndPolicy, resourceID)
+	fnName := "testFn"
+	err = iamClient.CreateLambdaUser(ctx, ExternalLambdaUserAndPolicy, fnName)
 	t.Require().Nil(err)
 }
 

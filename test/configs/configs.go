@@ -38,6 +38,7 @@ type TestContainer struct {
 	ServerlessSignerFuncBLS        string
 	ServerlessSignerFuncSecretName string
 
+	AwsAccountNumber         string
 	AwsAccessKeyLambdaInvoke string
 	AwsSecretKeyLambdaInvoke string
 }
@@ -63,6 +64,7 @@ func InitLocalTestConfigs() TestContainer {
 	testCont.Web3SignerDockerImage = viper.GetString("WEB3SIGNER_DOCKER_IMG")
 	testCont.Web3SignerAuthURL = viper.GetString("WEB3SIGNER_AUTH_URL")
 
+	testCont.AwsAccountNumber = viper.GetString("AWS_ACCOUNT_NUMBER")
 	testCont.AccessKeyAWS = viper.GetString("AWS_ACCESS_KEY")
 	testCont.SecretKeyAWS = viper.GetString("AWS_SECRET_KEY")
 
