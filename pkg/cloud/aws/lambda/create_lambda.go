@@ -32,7 +32,7 @@ var (
 		PackageType:       types.PackageTypeZip,
 		Publish:           false,
 		Runtime:           types.RuntimeGo1x,
-		Tags:              nil,
+		Tags:              make(map[string]string),
 		Timeout:           aws.Int32(3),
 		TracingConfig:     nil,
 	}
@@ -49,15 +49,18 @@ Creates a Lambda function. To create a function, you need a deployment package
 
 // GetLambdaRole references a role created in aegis_aws_iam
 func (l *LambdaClientAWS) GetLambdaRole() string {
-	return fmt.Sprintf("arn:aws:iam:%s:role/%s", l.AccountNumber, aegis_aws_iam.LambdaRoleName)
+	return fmt.Sprintf("arn:aws:iam::%s:role/%s", l.AccountNumber, aegis_aws_iam.LambdaRoleName)
 }
 
+// GetLambdaExtensionARN uses the us-west-1 specific number
+// more info: https://docs.aws.amazon.com/systems-manager/latest/userguide/ps-integration-lambda-extensions.html
 func (l *LambdaClientAWS) GetLambdaExtensionARN() string {
-	return fmt.Sprintf("arn:aws:lambda:%s:%s:layer:AWS-Parameters-and-Secrets-Lambda-Extension:4", l.Region, l.AccountNumber)
+	return fmt.Sprintf("arn:aws:lambda:%s:997803712105:layer:AWS-Parameters-and-Secrets-Lambda-Extension:4", l.Region)
 }
 
+// GetLambdaKeystoreLayerARN uses version 1, you'll need to update if you add new versions to this layer
 func (l *LambdaClientAWS) GetLambdaKeystoreLayerARN() string {
-	return fmt.Sprintf("arn:aws:lambda:%s:%s:layer:%s:4", l.Region, l.AccountNumber, KeystoresLayerName)
+	return fmt.Sprintf("arn:aws:lambda:%s:%s:layer:%s:1", l.Region, l.AccountNumber, KeystoresLayerName)
 }
 
 func (l *LambdaClientAWS) CreateServerlessBLSLambdaFn(ctx context.Context) (*lambda.CreateFunctionOutput, error) {
@@ -65,7 +68,7 @@ func (l *LambdaClientAWS) CreateServerlessBLSLambdaFn(ctx context.Context) (*lam
 	blsFnParams.Role = aws.String(l.GetLambdaRole())
 	blsFnParams.Code.ZipFile = blsMainZipFilePath.ReadFileInPath()
 	blsFnParams.Layers = []string{l.GetLambdaExtensionARN(), l.GetLambdaKeystoreLayerARN()}
-	lf, err := l.CreateFunction(ctx, blsFnParams, nil)
+	lf, err := l.CreateFunction(ctx, blsFnParams)
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("CreateNewLambdaFn: error creating lambda function")
 		return nil, err
