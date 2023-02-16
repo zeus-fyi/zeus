@@ -36,24 +36,32 @@ func (t *AwsIAMTestSuite) TestCreateUsers() {
 	t.Require().Nil(err)
 }
 
-func (t *AwsIAMTestSuite) TestCreateInternalRolePolicy() {
+func (t *AwsIAMTestSuite) TestCreateInternalRole() {
 	t.TestClientInit()
-	res, err := t.IAMClientAWS.CreateLambdaRole(ctx, internalLambdaUserTemplateName)
+	res, err := t.IAMClientAWS.CreateInternalLambdaRole(ctx)
 	t.Require().Nil(err)
 	t.Assert().NotEmpty(res)
 }
 
 func (t *AwsIAMTestSuite) TestCreateInternalPolicy() {
 	t.TestClientInit()
-	err := t.IAMClientAWS.CreateLambdaUserPolicy(ctx, InternalLambdaUserAndPolicy, "")
+	r, err := t.IAMClientAWS.CreateNewLambdaUserPolicy(ctx, InternalLambdaUserAndPolicy)
 	t.Require().Nil(err)
+	t.Assert().NotEmpty(r)
+}
+
+func (t *AwsIAMTestSuite) TestAddInternalLambdaRolePolicies() {
+	t.TestClientInit()
+	res, err := t.IAMClientAWS.AddInternalPolicyToLambdaRolePolicies(ctx)
+	t.Require().Nil(err)
+	t.Assert().NotEmpty(res)
 }
 
 func (t *AwsIAMTestSuite) TestCreateExternalPolicy() {
 	t.TestClientInit()
-	fnName := "testFn"
-	err := t.IAMClientAWS.CreateLambdaUserPolicy(ctx, ExternalLambdaUserAndPolicy, fnName)
+	r, err := t.IAMClientAWS.CreateNewLambdaUserPolicy(ctx, ExternalLambdaUserAndPolicy)
 	t.Require().Nil(err)
+	t.Assert().NotEmpty(r)
 }
 
 func TestAwsIAMTestSuite(t *testing.T) {

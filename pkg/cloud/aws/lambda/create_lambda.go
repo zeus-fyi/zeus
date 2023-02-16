@@ -59,15 +59,15 @@ func (l *LambdaClientAWS) GetLambdaExtensionARN() string {
 }
 
 // GetLambdaKeystoreLayerARN uses version 1, you'll need to update if you add new versions to this layer
-func (l *LambdaClientAWS) GetLambdaKeystoreLayerARN() string {
-	return fmt.Sprintf("arn:aws:lambda:%s:%s:layer:%s:1", l.Region, l.AccountNumber, KeystoresLayerName)
+func (l *LambdaClientAWS) GetLambdaKeystoreLayerARN(version string) string {
+	return fmt.Sprintf("arn:aws:lambda:%s:%s:layer:%s:%s", l.Region, l.AccountNumber, KeystoresLayerName, version)
 }
 
 func (l *LambdaClientAWS) CreateServerlessBLSLambdaFn(ctx context.Context) (*lambda.CreateFunctionOutput, error) {
 	builds.ChangeToBuildsDir()
 	blsFnParams.Role = aws.String(l.GetLambdaRole())
 	blsFnParams.Code.ZipFile = blsMainZipFilePath.ReadFileInPath()
-	blsFnParams.Layers = []string{l.GetLambdaExtensionARN(), l.GetLambdaKeystoreLayerARN()}
+	blsFnParams.Layers = []string{l.GetLambdaExtensionARN(), l.GetLambdaKeystoreLayerARN("1")}
 	lf, err := l.CreateFunction(ctx, blsFnParams)
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("CreateNewLambdaFn: error creating lambda function")
