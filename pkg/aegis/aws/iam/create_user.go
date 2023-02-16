@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
+	"github.com/rs/zerolog/log"
 )
 
 var (
@@ -48,25 +49,41 @@ func (p *UserPolicyTemplate) GetTemplateIAM(ctx context.Context, resource string
 	var createPolicyInput *iam.CreatePolicyInput
 	switch p.PolicyName {
 	case internalLambdaPolicyTemplateName:
-		iamPolicy = fmt.Sprintf(`
+		iamPolicy = `
 	{
 	  "Version": "2012-10-17",
 	  "Statement": [
-	    {
-	      "Effect": "Allow",
-	      "Action": [
-	        "lambda:UpdateFunctionCode",
-			"lambda:UpdateEventSourceMapping",
-			"lambda:InvokeFunctionUrl",
-			"lambda:InvokeFunction",
-			"lambda:PublishLayerVersion",
-			"lambda:PublishVersion"
-	      ],
-	      "Resource": "%s"
-	    }
+       {
+            "Effect": "Allow",
+            "Principal": {
+                "Service": "lambda.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+            ],
+            "Resource": "arn:aws:logs:*:*:*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+				"lambda:UpdateFunctionCode",
+				"lambda:UpdateEventSourceMapping",
+				"lambda:InvokeFunctionUrl",
+				"lambda:InvokeFunction",
+				"lambda:PublishLayerVersion",
+				"lambda:PublishVersion",
+                "lambda:InvokeFunction"
+            ],
+            "Resource": "arn:aws:lambda:*:*:*"
+        }
 	  ]
-	}
-`, resource)
+	}`
 		createPolicyInput = &iam.CreatePolicyInput{
 			PolicyName:     &internalLambdaPolicyTemplateName,
 			PolicyDocument: &iamPolicy,
@@ -95,22 +112,10 @@ func (p *UserPolicyTemplate) GetTemplateIAM(ctx context.Context, resource string
 	return createPolicyInput
 }
 
-func (i *IAMClientAWS) CreateLambdaUser(ctx context.Context, upt UserPolicyTemplate, fnName string) error {
+func (i *IAMClientAWS) CreateLambdaUser(ctx context.Context, upt UserPolicyTemplate) error {
 	_, err := i.CreateUser(ctx, upt.UserName)
 	if err != nil {
-		return err
-	}
-	createPolicyInput := upt.GetTemplateIAM(ctx, i.GetLambdaResourceARN(fnName))
-	createPolicyOutput, err := i.CreatePolicy(ctx, createPolicyInput)
-	if err != nil {
-		return err
-	}
-	attachUserPolicyInput := &iam.AttachUserPolicyInput{
-		UserName:  upt.UserName.UserName,
-		PolicyArn: createPolicyOutput.Policy.Arn,
-	}
-	_, err = i.AttachUserPolicy(ctx, attachUserPolicyInput)
-	if err != nil {
+		log.Ctx(ctx).Err(err).Msg("CreateLambdaUser: error creating user")
 		return err
 	}
 	return nil

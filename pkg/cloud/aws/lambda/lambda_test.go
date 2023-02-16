@@ -8,6 +8,7 @@ import (
 )
 
 type AwsLambdaTestSuite struct {
+	LambdaClientAWS
 	test_suites.BaseTestSuite
 }
 
@@ -23,6 +24,22 @@ func (t *AwsLambdaTestSuite) TestClientInit() {
 	lm, err := InitLambdaClient(ctx, a)
 	t.Require().Nil(err)
 	t.Assert().NotEmpty(lm)
+	t.LambdaClientAWS = lm
+}
+
+func (t *AwsLambdaTestSuite) TestLambdaFnCreation() {
+	t.TestClientInit()
+	lf, err := t.LambdaClientAWS.CreateServerlessBLSLambdaFn(ctx)
+	t.Require().Nil(err)
+	t.Assert().NotEmpty(lf)
+}
+
+func (t *AwsLambdaTestSuite) TestKeystoresLayerCreation() {
+	t.TestClientInit()
+
+	lyOut, err := t.LambdaClientAWS.CreateServerlessBLSLambdaFnKeystoreLayer(ctx)
+	t.Require().Nil(err)
+	t.Assert().NotEmpty(lyOut)
 }
 
 func TestAwsLambdaTestSuite(t *testing.T) {

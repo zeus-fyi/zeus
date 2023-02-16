@@ -8,6 +8,7 @@ import (
 )
 
 type AwsIAMTestSuite struct {
+	IAMClientAWS
 	test_suites.BaseTestSuite
 }
 
@@ -24,39 +25,34 @@ func (t *AwsIAMTestSuite) TestClientInit() {
 	iamClient, err := InitIAMClient(ctx, a)
 	t.Require().Nil(err)
 	t.Assert().NotEmpty(iamClient)
+	t.IAMClientAWS = iamClient
 }
 
-func (t *AwsIAMTestSuite) TestCreateInternal() {
-	region := "us-west-1"
-	a := AuthAWS{
-		AccountNumber: t.Tc.AwsAccountNumber,
-		AccessKey:     t.Tc.AccessKeyAWS,
-		SecretKey:     t.Tc.SecretKeyAWS,
-		Region:        region,
-	}
-	iamClient, err := InitIAMClient(ctx, a)
+func (t *AwsIAMTestSuite) TestCreateUsers() {
+	t.TestClientInit()
+	err := t.IAMClientAWS.CreateLambdaUser(ctx, InternalLambdaUserAndPolicy)
 	t.Require().Nil(err)
-	t.Assert().NotEmpty(iamClient)
-
-	fnName := "testFn"
-	err = iamClient.CreateLambdaUser(ctx, InternalLambdaUserAndPolicy, fnName)
+	err = t.IAMClientAWS.CreateLambdaUser(ctx, ExternalLambdaUserAndPolicy)
 	t.Require().Nil(err)
 }
 
-func (t *AwsIAMTestSuite) TestCreateExt() {
-	region := "us-west-1"
-	a := AuthAWS{
-		AccountNumber: t.Tc.AwsAccountNumber,
-		AccessKey:     t.Tc.AccessKeyAWS,
-		SecretKey:     t.Tc.SecretKeyAWS,
-		Region:        region,
-	}
-	iamClient, err := InitIAMClient(ctx, a)
+func (t *AwsIAMTestSuite) TestCreateInternalRolePolicy() {
+	t.TestClientInit()
+	res, err := t.IAMClientAWS.CreateLambdaRole(ctx, internalLambdaUserTemplateName)
 	t.Require().Nil(err)
-	t.Assert().NotEmpty(iamClient)
+	t.Assert().NotEmpty(res)
+}
 
+func (t *AwsIAMTestSuite) TestCreateInternalPolicy() {
+	t.TestClientInit()
+	err := t.IAMClientAWS.CreateLambdaUserPolicy(ctx, InternalLambdaUserAndPolicy, "")
+	t.Require().Nil(err)
+}
+
+func (t *AwsIAMTestSuite) TestCreateExternalPolicy() {
+	t.TestClientInit()
 	fnName := "testFn"
-	err = iamClient.CreateLambdaUser(ctx, ExternalLambdaUserAndPolicy, fnName)
+	err := t.IAMClientAWS.CreateLambdaUserPolicy(ctx, ExternalLambdaUserAndPolicy, fnName)
 	t.Require().Nil(err)
 }
 

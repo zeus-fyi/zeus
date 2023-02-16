@@ -11,24 +11,26 @@ import (
 )
 
 var (
-	keystoresLayerName      = "blsKeystores"
+	KeystoresLayerName      = "blsKeystores"
 	blsKeystoresZipFilePath = filepaths.Path{DirIn: "./serverless/bls_signatures", FnIn: "keystores.zip"}
 )
 
 func (l *LambdaClientAWS) CreateServerlessBLSLambdaFnKeystoreLayer(ctx context.Context) (*lambda.PublishLayerVersionOutput, error) {
 	builds.ChangeToBuildsDir()
+
+	b := blsKeystoresZipFilePath.ReadFileInPath()
 	input := &lambda.PublishLayerVersionInput{
 		Content: &types.LayerVersionContentInput{
-			ZipFile: blsKeystoresZipFilePath.ReadFileInPath(),
+			ZipFile: b,
 		},
-		LayerName:               aws.String(keystoresLayerName),
+		LayerName:               aws.String(KeystoresLayerName),
 		CompatibleArchitectures: []types.Architecture{types.ArchitectureX8664},
 		CompatibleRuntimes:      []types.Runtime{types.RuntimeGo1x},
-		Description:             nil,
-		LicenseInfo:             nil,
+		Description:             aws.String("-"),
+		LicenseInfo:             aws.String("-"),
 	}
 
-	ly, err := l.PublishLayerVersion(ctx, input, nil)
+	ly, err := l.PublishLayerVersion(ctx, input)
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("LambdaClientAWS: CreateServerlessBLSLambdaFnKeystoreLayer: error creating lambda layer")
 		return nil, err
