@@ -4,11 +4,12 @@ import (
 	"encoding/json"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
+	aws_aegis_auth "github.com/zeus-fyi/zeus/pkg/aegis/aws/auth"
 )
 
 func (t *AwsSecretManagerTestSuite) TestCreateSecret() {
 	region := "us-west-1"
-	a := AuthAWS{
+	a := aws_aegis_auth.AuthAWS{
 		AccessKey: t.Tc.AccessKeyAWS,
 		SecretKey: t.Tc.SecretKeyAWS,
 		Region:    region,
@@ -26,7 +27,7 @@ func (t *AwsSecretManagerTestSuite) TestCreateSecret() {
 
 func (t *AwsSecretManagerTestSuite) TestCreateSecretBinary() {
 	region := "us-west-1"
-	a := AuthAWS{
+	a := aws_aegis_auth.AuthAWS{
 		AccessKey: t.Tc.AccessKeyAWS,
 		SecretKey: t.Tc.SecretKeyAWS,
 		Region:    region,

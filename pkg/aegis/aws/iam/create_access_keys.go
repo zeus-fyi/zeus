@@ -4,11 +4,11 @@ import (
 	"context"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/rs/zerolog/log"
-	aegis_aws_secretmanager "github.com/zeus-fyi/zeus/pkg/aegis/aws/secretmanager"
+	aws_aegis_auth "github.com/zeus-fyi/zeus/pkg/aegis/aws/auth"
 )
 
-func (i *IAMClientAWS) CreateUserAccessKeys(ctx context.Context, userName string) (aegis_aws_secretmanager.AuthAWS, error) {
-	auth := aegis_aws_secretmanager.AuthAWS{
+func (i *IAMClientAWS) CreateUserAccessKeys(ctx context.Context, userName string) (aws_aegis_auth.AuthAWS, error) {
+	auth := aws_aegis_auth.AuthAWS{
 		Region:    i.Region,
 		AccessKey: "",
 		SecretKey: "",

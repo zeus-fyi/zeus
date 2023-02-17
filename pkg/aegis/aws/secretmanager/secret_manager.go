@@ -6,16 +6,11 @@ import (
 	"github.com/aws/aws-sdk-go-v2/credentials"
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
 	"github.com/rs/zerolog/log"
+	aws_aegis_auth "github.com/zeus-fyi/zeus/pkg/aegis/aws/auth"
 )
 
 type SecretsManagerAuthAWS struct {
 	*secretsmanager.Client
-}
-
-type AuthAWS struct {
-	Region    string
-	AccessKey string
-	SecretKey string
 }
 
 type SecretInfo struct {
@@ -24,7 +19,7 @@ type SecretInfo struct {
 	Key    string `json:"key,omitempty"`
 }
 
-func InitSecretsManager(ctx context.Context, auth AuthAWS) (SecretsManagerAuthAWS, error) {
+func InitSecretsManager(ctx context.Context, auth aws_aegis_auth.AuthAWS) (SecretsManagerAuthAWS, error) {
 	creds := credentials.NewStaticCredentialsProvider(auth.AccessKey, auth.SecretKey, "")
 	cfg, err := config.LoadDefaultConfig(ctx, config.WithCredentialsProvider(creds), config.WithRegion(auth.Region))
 	if err != nil {

@@ -2,6 +2,7 @@ package aegis_aws_iam
 
 import (
 	"context"
+	aws_aegis_auth "github.com/zeus-fyi/zeus/pkg/aegis/aws/auth"
 
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/credentials"
@@ -15,14 +16,7 @@ type IAMClientAWS struct {
 	*iam.Client
 }
 
-type AuthAWS struct {
-	AccountNumber string `json:"accountNumber"`
-	Region        string `json:"region"`
-	AccessKey     string `json:"accessKey"`
-	SecretKey     string `json:"secretKey"`
-}
-
-func InitIAMClient(ctx context.Context, auth AuthAWS) (IAMClientAWS, error) {
+func InitIAMClient(ctx context.Context, auth aws_aegis_auth.AuthAWS) (IAMClientAWS, error) {
 	creds := credentials.NewStaticCredentialsProvider(auth.AccessKey, auth.SecretKey, "")
 	cfg, err := config.LoadDefaultConfig(ctx, config.WithCredentialsProvider(creds), config.WithRegion(auth.Region))
 	if err != nil {

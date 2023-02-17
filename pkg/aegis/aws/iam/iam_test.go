@@ -3,6 +3,7 @@ package aegis_aws_iam
 import (
 	"context"
 	"github.com/stretchr/testify/suite"
+	aegis_aws_auth "github.com/zeus-fyi/zeus/pkg/aegis/aws/auth"
 	"github.com/zeus-fyi/zeus/test/test_suites"
 	"testing"
 )
@@ -16,7 +17,7 @@ var ctx = context.Background()
 
 func (t *AwsIAMTestSuite) TestClientInit() {
 	region := "us-west-1"
-	a := AuthAWS{
+	a := aegis_aws_auth.AuthAWS{
 		AccountNumber: t.Tc.AwsAccountNumber,
 		AccessKey:     t.Tc.AccessKeyAWS,
 		SecretKey:     t.Tc.SecretKeyAWS,

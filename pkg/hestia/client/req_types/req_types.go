@@ -12,6 +12,17 @@ const (
 	Ephemery                          = "ephemery"
 )
 
+func ProtocolNetworkStringToID(network string) int {
+	switch network {
+	case Mainnet:
+		return EthereumMainnetProtocolNetworkID
+	case Ephemery:
+		return EthereumEphemeryProtocolNetworkID
+	default:
+		return 0
+	}
+}
+
 func ProtocolNetworkIDToString(id int) string {
 	switch id {
 	case EthereumMainnetProtocolNetworkID:

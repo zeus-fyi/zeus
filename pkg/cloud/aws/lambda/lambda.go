@@ -6,6 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/credentials"
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
 	"github.com/rs/zerolog/log"
+	aws_aegis_auth "github.com/zeus-fyi/zeus/pkg/aegis/aws/auth"
 )
 
 type LambdaClientAWS struct {
@@ -14,14 +15,7 @@ type LambdaClientAWS struct {
 	*lambda.Client
 }
 
-type AuthAWS struct {
-	AccountNumber string `json:"accountNumber"`
-	Region        string `json:"region"`
-	AccessKey     string `json:"accessKey"`
-	SecretKey     string `json:"secretKey"`
-}
-
-func InitLambdaClient(ctx context.Context, auth AuthAWS) (LambdaClientAWS, error) {
+func InitLambdaClient(ctx context.Context, auth aws_aegis_auth.AuthAWS) (LambdaClientAWS, error) {
 	creds := credentials.NewStaticCredentialsProvider(auth.AccessKey, auth.SecretKey, "")
 	cfg, err := config.LoadDefaultConfig(ctx, config.WithCredentialsProvider(creds), config.WithRegion(auth.Region))
 	if err != nil {
