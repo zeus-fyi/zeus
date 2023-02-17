@@ -2,6 +2,7 @@ package aegis_aws_secretmanager
 
 import (
 	"context"
+	aws_aegis_auth "github.com/zeus-fyi/zeus/pkg/aegis/aws/auth"
 	"testing"
 
 	"github.com/stretchr/testify/suite"
@@ -17,7 +18,7 @@ var ctx = context.Background()
 
 func (t *AwsSecretManagerTestSuite) TestFetchSecrets() {
 	region := "us-west-1"
-	a := AuthAWS{
+	a := aws_aegis_auth.AuthAWS{
 		AccessKey: t.Tc.AccessKeyAWS,
 		SecretKey: t.Tc.SecretKeyAWS,
 		Region:    region,

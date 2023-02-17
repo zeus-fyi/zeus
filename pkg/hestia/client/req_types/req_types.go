@@ -12,6 +12,17 @@ const (
 	Ephemery                          = "ephemery"
 )
 
+func ProtocolNetworkStringToID(network string) int {
+	switch network {
+	case Mainnet:
+		return EthereumMainnetProtocolNetworkID
+	case Ephemery:
+		return EthereumEphemeryProtocolNetworkID
+	default:
+		return 0
+	}
+}
+
 func ProtocolNetworkIDToString(id int) string {
 	switch id {
 	case EthereumMainnetProtocolNetworkID:
@@ -54,8 +65,8 @@ type AuthLamdbaAWS struct {
 	SecretName string `json:"secretName"` // this is the name of the secret in the aws secrets manager you use for decrypting your keystores
 	// these are the auth credentials you link to an IAM user that can call your aws lambda function to sign messages
 	// we use these to call your lambda function to sign messages
-	AccessKey    string `json:"accessKey"`
-	AccessSecret string `json:"accessSecret"`
+	AccessKey string `json:"accessKey"`
+	SecretKey string `json:"accessSecret"`
 }
 
 func (a *ServiceAuthConfig) Validate() error {
@@ -72,7 +83,7 @@ func (a *ServiceAuthConfig) Validate() error {
 			err := fmt.Errorf("you must provide a secret name")
 			return err
 		}
-		if len(a.AuthLamdbaAWS.AccessSecret) == 0 {
+		if len(a.AuthLamdbaAWS.SecretKey) == 0 {
 			err := fmt.Errorf("you must provide an access secret")
 			return err
 		}

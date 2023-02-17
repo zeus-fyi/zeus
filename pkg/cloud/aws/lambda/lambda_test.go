@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/stretchr/testify/suite"
+	aws_aegis_auth "github.com/zeus-fyi/zeus/pkg/aegis/aws/auth"
 	"github.com/zeus-fyi/zeus/test/test_suites"
 	"testing"
 )
@@ -16,7 +17,7 @@ type AwsLambdaTestSuite struct {
 var ctx = context.Background()
 
 func (t *AwsLambdaTestSuite) TestClientInit() {
-	a := AuthAWS{
+	a := aws_aegis_auth.AuthAWS{
 		AccountNumber: t.Tc.AwsAccountNumber,
 		AccessKey:     t.Tc.AccessKeyAWS,
 		SecretKey:     t.Tc.SecretKeyAWS,
@@ -44,7 +45,6 @@ func (t *AwsLambdaTestSuite) TestUpdateSignerLambdaFnBinary() {
 
 func (t *AwsLambdaTestSuite) TestKeystoresLayerCreation() {
 	t.TestClientInit()
-
 	lyOut, err := t.LambdaClientAWS.CreateServerlessBLSLambdaFnKeystoreLayer(ctx)
 	t.Require().Nil(err)
 	t.Assert().NotEmpty(lyOut)

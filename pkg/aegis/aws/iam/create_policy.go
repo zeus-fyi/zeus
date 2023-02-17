@@ -10,18 +10,18 @@ import (
 
 var (
 	EthereumSignerFunctionName       = "ethereumSignerBLS"
-	internalLambdaUserTemplateName   = "internalLambdaUser"
+	internalLambdaUserName           = "internalLambdaUser"
 	internalLambdaPolicyTemplateName = "internalLambdaPolicy"
 	InternalLambdaUserAndPolicy      = UserPolicyTemplate{
 		PolicyName: internalLambdaPolicyTemplateName,
 		UserName: &iam.CreateUserInput{
-			UserName: aws.String(internalLambdaUserTemplateName),
+			UserName: aws.String(internalLambdaUserName),
 		}, Policy: nil,
 	}
-	externalLambdaUserTemplateName   = "externalLambdaUser"
+	ExternalLambdaUserName           = "externalLambdaUser"
 	externalLambdaPolicyTemplateName = "externalLambdaPolicy"
 	ExternalLambdaUserAndPolicy      = UserPolicyTemplate{
-		PolicyName: externalLambdaUserTemplateName,
+		PolicyName: ExternalLambdaUserName,
 		UserName: &iam.CreateUserInput{
 			UserName: aws.String(externalLambdaPolicyTemplateName),
 		},

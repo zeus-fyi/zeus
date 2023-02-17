@@ -21,16 +21,15 @@ func (t *HestiaClientTestSuite) TestValidatorServiceRequest() {
 		Enabled:           true,
 		ServiceAuth: hestia_req_types.ServiceAuthConfig{
 			AuthLamdbaAWS: &hestia_req_types.AuthLamdbaAWS{
-				ServiceURL:   t.Tc.ServerlessSignerFuncBLS,
-				SecretName:   t.Tc.ServerlessSignerFuncSecretName,
-				AccessKey:    t.Tc.AwsAccessKeyLambdaInvoke,
-				AccessSecret: t.Tc.AwsSecretKeyLambdaInvoke,
+				ServiceURL: t.Tc.ServerlessSignerFuncBLS,
+				SecretName: t.Tc.ServerlessSignerFuncSecretName,
+				AccessKey:  t.Tc.AwsAccessKeyLambdaInvoke,
+				SecretKey:  t.Tc.AwsSecretKeyLambdaInvoke,
 			}},
 	}
 
 	pubkeys := hestia_req_types.ValidatorServiceOrgGroupSlice{}
 	for _, validatorDepositInfo := range dp {
-
 		pubkeys = append(pubkeys, hestia_req_types.ValidatorServiceOrgGroup{
 			Pubkey:       validatorDepositInfo.Pubkey,
 			FeeRecipient: "0xF7Ab1d834Cd0A33691e9A750bD720cb6436cA1B9",
