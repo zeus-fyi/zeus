@@ -186,7 +186,6 @@ var Cmd = &cobra.Command{
 				panic("ERROR: lambda function url not provided")
 			}
 			serverless_aws_automation.VerifyLambdaSigner(ctx, keystoresPath, lambdaFnUrl, ageEncryptionSecretName)
-
 		}
 
 		// Creates service request
