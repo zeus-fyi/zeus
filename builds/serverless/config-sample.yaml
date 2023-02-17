@@ -1,39 +1,65 @@
 # This is a sample config file for the serverless build.
 
-# AWS settings (if using aws automation)
+########################################
+# AWS settings (internal access)
+########################################
+# if using aws automation, don't share these values with anyone including us these are your private credentials
 AWS_ACCOUNT_NUMBER: ""
 AWS_ACCESS_KEY: ""
 AWS_SECRET_KEY: ""
 
-# AWS Lambda Values (if you have a lambda function, otherwise you can let the app install and generate these values for you)
-AWS_LAMBA_FUNC_URL: ""
-AWS_LAMBDA_INVOKE_ACCESS_KEY: ""
-AWS_LAMBDA_INVOKE_SECRET_KEY: ""
+# ACTIONS
+AWS_AUTOMATION: "false"
 
+########################################
+# AWS Lambda Values (external access)
+########################################
+# (if you have a lambda function, otherwise you can let the app install and generate these values for you)
+# You share these values with us, so we can send message to your lambda function for your validators
+AWS_LAMBDA_FUNC_URL: ""
+AWS_AGE_DECRYPTION_SECRET_NAME: ""
+# This tells the lambda function what secret to use to decrypt your validator keys to sign messages
+AWS_EXTERNAL_ACCESS_KEY: ""
+AWS_EXTERNAL_SECRET_KEY: ""
 # Age encryption private, public key values used to encrypt all your validator keys in a single file.
 # If you don't have one, you can let the app generate one for you. If using the aws automation, it will also save
 # it in secret manager for you as well
 AGE_PRIVKEY: ""
 AGE_PUBKEY: ""
 
+# ACTIONS
+KEYGEN_SECRETS: "true"
+
+#############################
 # Validator network settings
+#############################
+
 NODE_URL: "https://eth.ephemeral.zeus.fyi"
 NETWORK: "ephemery"
-# Validator deposit & keystore generation settings
+
+## Validator deposit & keystore generation settings ##
 ETH1_PRIVATE_KEY: ""
 # This eth1 key (ecdsa) is used to send the validator deposit txs, it should have 32 ETH + gas to send the txs per validator
-
 MNEMONIC_24_WORDS: ""
 HD_WALLET_PASSWORD: ""
 # If you don't have one, you can let the app generate them for you.
 # If using the aws automation, it will also save it in secret manager for you as well
-
 VALIDATORS_COUNT: "3"
 # If generating new keystores, e.g. you have generated 10 from your master hd seed,
 # but now want to add 10 more, add the offset here to start from the Nth offset validator onwards
-HD_OFFSET_VALIDATORS: ""
+HD_OFFSET_VALIDATORS: "0"
+KEYSTORE_DIR_IN: "./serverless/keystores"
+KEYSTORE_DIR_OUT: "./serverless/keystores"
+# These are relative to the ./builds/serverless/ directory
+# If you have existing deposit data & validator keystores, you can copy them to the ./builds/serverless/keystores/ directory
 
-# Validator service values
+# ACTIONS
+KEYGEN_VALIDATORS: "true"
+SUBMIT_DEPOSITS: "false"
+
+######################################
+## Validator service values for Zeus ##
+######################################
 BEARER: ""
 # You need a bearer token to request validator service from us
 # If you don't have one, you can request one from us
@@ -43,3 +69,7 @@ KEY_GROUP_NAME: ""
 # but you can override it per validator if you want here:
 # builds/serverless/aws_automation/validators_service_requests.go
 FEE_RECIPIENT_ADDR: ""
+
+# ACTIONS
+SUBMIT_SERVICE_REQUEST: "false"
+

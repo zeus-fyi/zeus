@@ -37,7 +37,7 @@ Makefile: Keystore generation
 
 ```make
     serverless.keygen:
-	./builds/serverless/bin/serverless --keygen true --num-keys 3
+	./builds/serverless/bin/serverless --keygen true --validator-count 3
 ```
 Makefile: Deposit submission
 
@@ -67,7 +67,7 @@ Flags:
       --mnemonic string             twenty four word mnemonic to generate keystores
       --network string              network to run on (mainnet, goerli, ephemery, etc (default "ephemery")
       --node-url string             beacon for getting network data for validator deposit generation & submitting deposits (default "https://eth.ephemeral.zeus.fyi")
-      --num-keys int                number of keys to generate (default 3)
+      --validator-count int         number of keys to generate (default 3)
       --submit-deposits             submits validator deposits in keystore directory to the network for activation
 ```
 
