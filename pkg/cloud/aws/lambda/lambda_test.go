@@ -67,7 +67,7 @@ func (t *AwsLambdaTestSuite) TestMakeLambdaURLPublic() {
 
 func (t *AwsLambdaTestSuite) TestUpdateLambdaLayer() {
 	t.TestClientInit()
-	lf, err := t.LambdaClientAWS.UpdateServerlessBLSLambdaFnKeystoreLayer(ctx, "2")
+	lf, err := t.LambdaClientAWS.UpdateServerlessBLSLambdaFnKeystoreLayer(ctx, "4")
 	t.Require().Nil(err)
 	t.Assert().NotEmpty(lf)
 }
