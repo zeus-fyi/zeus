@@ -1,0 +1,77 @@
+package aws_lambda
+
+import (
+	"context"
+	"fmt"
+	"github.com/stretchr/testify/suite"
+	"github.com/zeus-fyi/zeus/test/test_suites"
+	"testing"
+)
+
+type AwsLambdaTestSuite struct {
+	LambdaClientAWS
+	test_suites.BaseTestSuite
+}
+
+var ctx = context.Background()
+
+func (t *AwsLambdaTestSuite) TestClientInit() {
+	a := AuthAWS{
+		AccountNumber: t.Tc.AwsAccountNumber,
+		AccessKey:     t.Tc.AccessKeyAWS,
+		SecretKey:     t.Tc.SecretKeyAWS,
+		Region:        region,
+	}
+	lm, err := InitLambdaClient(ctx, a)
+	t.Require().Nil(err)
+	t.Assert().NotEmpty(lm)
+	t.LambdaClientAWS = lm
+}
+
+func (t *AwsLambdaTestSuite) TestLambdaFnCreation() {
+	t.TestClientInit()
+	lf, err := t.LambdaClientAWS.CreateServerlessBLSLambdaFn(ctx)
+	t.Require().Nil(err)
+	t.Assert().NotEmpty(lf)
+}
+
+func (t *AwsLambdaTestSuite) TestUpdateSignerLambdaFnBinary() {
+	t.TestClientInit()
+	lf, err := t.LambdaClientAWS.UpdateServerlessBLSLambdaFnBinary(ctx)
+	t.Require().Nil(err)
+	t.Assert().NotEmpty(lf)
+}
+
+func (t *AwsLambdaTestSuite) TestKeystoresLayerCreation() {
+	t.TestClientInit()
+
+	lyOut, err := t.LambdaClientAWS.CreateServerlessBLSLambdaFnKeystoreLayer(ctx)
+	t.Require().Nil(err)
+	t.Assert().NotEmpty(lyOut)
+}
+
+func (t *AwsLambdaTestSuite) TestMakeLambdaFnURL() {
+	t.TestClientInit()
+	lf, err := t.LambdaClientAWS.MakeEthereumSignerURL(ctx)
+	t.Require().Nil(err)
+	t.Assert().NotEmpty(lf)
+	fmt.Print(lf.FunctionUrl)
+}
+
+func (t *AwsLambdaTestSuite) TestMakeLambdaURLPublic() {
+	t.TestClientInit()
+	lf, err := t.LambdaClientAWS.MakeEthereumSignerFuncPublic(ctx)
+	t.Require().Nil(err)
+	t.Assert().NotEmpty(lf)
+}
+
+func (t *AwsLambdaTestSuite) TestUpdateLambdaLayer() {
+	t.TestClientInit()
+	lf, err := t.LambdaClientAWS.UpdateServerlessBLSLambdaFnKeystoreLayer(ctx, "4")
+	t.Require().Nil(err)
+	t.Assert().NotEmpty(lf)
+}
+
+func TestAwsLambdaTestSuite(t *testing.T) {
+	suite.Run(t, new(AwsLambdaTestSuite))
+}

@@ -10,10 +10,12 @@ import (
 	"io"
 	"io/fs"
 	"os"
+	"path"
 	"path/filepath"
 
 	"github.com/rs/zerolog/log"
 	serverless_generation_helper "github.com/zeus-fyi/zeus/builds"
+	"github.com/zeus-fyi/zeus/cookbooks"
 	signing_automation_ethereum "github.com/zeus-fyi/zeus/pkg/artemis/signing_automation/ethereum"
 	age_encryption "github.com/zeus-fyi/zeus/pkg/crypto/age"
 	bls_signer "github.com/zeus-fyi/zeus/pkg/crypto/bls"
@@ -34,7 +36,6 @@ func GenerateValidatorDepositsAndCreateAgeEncryptedKeystores(ctx context.Context
 		return err
 	}
 	signing_automation_ethereum.PrintJSONSlice(vdg.Fp, dpSlice, vdg.Network)
-
 	err = decryptToInMemFS(vdg.Fp.DirOut, HDPassword)
 	if err != nil {
 		return err
@@ -61,7 +62,13 @@ func GenerateValidatorDepositsAndCreateAgeEncryptedKeystores(ctx context.Context
 
 	vdg.Fp.FnIn = p.FnIn
 	vdg.Fp.FnOut = "keystores"
-	err = zipAndDeleteFile(vdg.Fp)
+	err = zipKeystoreFolder(vdg.Fp)
+	if err != nil {
+		return err
+	}
+	fip := vdg.Fp.FileInPath()
+	cookbooks.ChangeToCookbookDir()
+	err = os.Remove(fip)
 	if err != nil {
 		return err
 	}
@@ -73,7 +80,6 @@ func decryptToInMemFS(directoryPath, hdPassword string) error {
 	if ferr != nil {
 		return ferr
 	}
-
 	filter := strings_filter.FilterOpts{
 		DoesNotStartWithThese: []string{".DS_Store"},
 		StartsWithThese:       nil,
@@ -188,7 +194,8 @@ func gzipDirectoryToMemoryFS(p filepaths.Path) ([]byte, error) {
 	return gzipBytes.Bytes(), nil
 }
 
-func zipAndDeleteFile(p filepaths.Path) error {
+// zipKeystoreFolder zips the keystore folder which contains keystore.tar.gz.age
+func zipKeystoreFolder(p filepaths.Path) error {
 	// Open the file for reading
 	fileToZip, err := os.Open(p.FileInPath())
 	if err != nil {
@@ -197,7 +204,6 @@ func zipAndDeleteFile(p filepaths.Path) error {
 	defer fileToZip.Close()
 
 	// Create the zip file
-	defer os.Remove(p.FileInPath())
 	zipFileName := p.FnOut + ".zip"
 	serverless_generation_helper.ChangeToBuildsDir()
 	generationPath := filepaths.Path{
@@ -226,6 +232,7 @@ func zipAndDeleteFile(p filepaths.Path) error {
 		return err
 	}
 	header.Method = zip.Deflate
+	header.Name = path.Join("keystores", header.Name)
 	writer, err := zipWriter.CreateHeader(header)
 	if err != nil {
 		return err
@@ -234,6 +241,5 @@ func zipAndDeleteFile(p filepaths.Path) error {
 	if err != nil {
 		return err
 	}
-
 	return nil
 }
