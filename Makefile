@@ -27,6 +27,9 @@ tag.push:
 docker.debug:
 	docker run -it --entrypoint /bin/bash zeusfyi/hercules:latest
 
+build.staking.cli:
+	go build -o ./builds/serverless/bin/serverless ./builds/serverless
+
 # generates new mnemonic, age encryption key, uses default hd password if none provided, and creates keystores
 # zipped age encrypted file for serverless app --keygen true/false will toggle new keygen creation
 serverless.keygen:
