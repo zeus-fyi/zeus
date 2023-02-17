@@ -49,21 +49,26 @@ Makefile: Deposit submission
 ```
 Here are the full flags for generating keystores & serverless zip file with your encrypted age validator keystores
 ```
-    Flags:
+Flags:
       --age-private-key string      age private key
       --age-public-key string       age public key
+      --aws-access-key string       aws access key, which needs permissions to create iam users, roles, policies, secrets, and lambda functions and layers
+      --aws-account-number string   aws account number
+      --aws-automation-on           automate the entire setup process on aws, requires you provide aws credentials
+      --aws-secret-key string       aws secret key
       --eth1-addr-priv-key string   eth1 address private key for submitting deposits
       --hd-offset int               offset to start generating keys from hd wallet
       --hd-wallet-pw string         hd wallet password
   -h, --help                        help for Web3
-      --keygen                      generates full keygen procedure (default true)
+      --keygen                      generates secrets for validator encryption and generation (default true)
+      --keygen-validators           generates validator deposits, with additional encrypted age keystore (default true)
       --keystores-dir-in string     keystores directory in location (relative to builds dir) (default "./serverless/keystores")
       --keystores-dir-out string    keystores directory out location (relative to builds dir) (default "./serverless/keystores")
       --mnemonic string             twenty four word mnemonic to generate keystores
       --network string              network to run on (mainnet, goerli, ephemery, etc (default "ephemery")
       --node-url string             beacon for getting network data for validator deposit generation & submitting deposits (default "https://eth.ephemeral.zeus.fyi")
       --num-keys int                number of keys to generate (default 3)
-      --submit-deposits bool        submits validator deposits in keystore directory to the network for activation (bool)
+      --submit-deposits             submits validator deposits in keystore directory to the network for activation
 ```
 
 5. Create a secret that stores your Age public and private key values in AWS secret manager. 

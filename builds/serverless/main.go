@@ -96,7 +96,7 @@ func init() {
 	Cmd.Flags().StringVar(&eth1AddrPrivKey, "eth1-addr-priv-key", "", "eth1 address private key for submitting deposits")
 
 	// aws automation settings for lambda setup
-	Cmd.Flags().BoolVar(&automateSetupOnAWS, "aws-account-number", false, "automate the entire setup process on aws, requires you provide aws credentials")
+	Cmd.Flags().BoolVar(&automateSetupOnAWS, "aws-automation-on", false, "automate the entire setup process on aws, requires you provide aws credentials")
 	Cmd.Flags().StringVar(&awsAuth.AccountNumber, "aws-account-number", "", "aws account number")
 	Cmd.Flags().StringVar(&awsAuth.AccessKey, "aws-access-key", "", "aws access key, which needs permissions to create iam users, roles, policies, secrets, and lambda functions and layers")
 	Cmd.Flags().StringVar(&awsAuth.SecretKey, "aws-secret-key", "", "aws secret key")
