@@ -197,15 +197,18 @@ var Cmd = &cobra.Command{
 			if feeRecipient == "" {
 				panic("ERROR: fee recipient not provided")
 			}
+			err := web3_actions.ValidateToAddress(ctx, feeRecipient)
+			if err != nil {
+				panic("ERROR: fee recipient is not a valid ethereum address")
+			}
+			feeRecipient = strings_filter.AddHexPrefix(feeRecipient)
 			serverless_aws_automation.ExternalUserRolePolicySetupForLambdaDeployment(ctx, awsAuth)
 			keys := serverless_aws_automation.CreateExternalLambdaUserAccessKeys(ctx, awsAuth)
-
 			if keyGroupName == "" {
 				fmt.Println("INFO: no key group name provided, generating a key group name")
 				keyGroupName = fmt.Sprintf("keyGroup-%d", time.Now().Unix())
 				fmt.Println("INFO: generated key group name: ", keyGroupName)
 			}
-
 			sr := hestia_req_types.ServiceRequestWrapper{
 				GroupName:         keyGroupName,
 				ProtocolNetworkID: hestia_req_types.ProtocolNetworkStringToID(network),
@@ -218,7 +221,7 @@ var Cmd = &cobra.Command{
 						AccessSecret: keys.SecretKey,
 					},
 				}}
-			err := sr.ServiceAuth.Validate()
+			err = sr.ServiceAuth.Validate()
 			if err != nil {
 				panic(err)
 			}
