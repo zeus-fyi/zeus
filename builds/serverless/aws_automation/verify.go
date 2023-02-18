@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/go-resty/resty/v2"
 	"github.com/zeus-fyi/zeus/builds"
+	aegis_aws_auth "github.com/zeus-fyi/zeus/pkg/aegis/aws/auth"
 	bls_serverless_signing "github.com/zeus-fyi/zeus/pkg/aegis/aws/serverless_signing"
 	aegis_inmemdbs "github.com/zeus-fyi/zeus/pkg/aegis/inmemdbs"
 	signing_automation_ethereum "github.com/zeus-fyi/zeus/pkg/artemis/signing_automation/ethereum"
@@ -14,7 +15,7 @@ import (
 	strings_filter "github.com/zeus-fyi/zeus/pkg/utils/strings"
 )
 
-func VerifyLambdaSigner(ctx context.Context, keystoresPath filepaths.Path, funcUrl string, ageEncryptionSecretNameInSecretManager string) {
+func VerifyLambdaSigner(ctx context.Context, auth aegis_aws_auth.AuthAWS, keystoresPath filepaths.Path, funcUrl string, ageEncryptionSecretNameInSecretManager string) {
 	r := resty.New()
 	r.SetBaseURL(funcUrl)
 	respMsgMap := make(map[string]aegis_inmemdbs.EthereumBLSKeySignatureResponse)
@@ -36,9 +37,15 @@ func VerifyLambdaSigner(ctx context.Context, keystoresPath filepaths.Path, funcU
 		}
 		sr.SignatureRequests.Map[dp.Pubkey] = aegis_inmemdbs.EthereumBLSKeySignatureRequest{Message: hexMessage}
 	}
+	req, err := auth.CreateV4AuthPOSTReq(ctx, "lambda", funcUrl, sr)
+	if err != nil {
+		panic(err)
+	}
 	resp, err := r.R().
+		SetHeaderMultiValues(req.Header).
 		SetResult(&signedEventResponse).
 		SetBody(sr).Post("/")
+
 	if err != nil {
 		panic(err)
 	}
