@@ -4,6 +4,8 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"time"
+
 	"github.com/gochain/gochain/v4/core/types"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
@@ -21,7 +23,6 @@ import (
 	hestia_req_types "github.com/zeus-fyi/zeus/pkg/hestia/client/req_types"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 	strings_filter "github.com/zeus-fyi/zeus/pkg/utils/strings"
-	"time"
 )
 
 func main() {
@@ -215,7 +216,7 @@ var Cmd = &cobra.Command{
 			if lambdaFnUrl == "" {
 				panic("ERROR: lambda function url not provided")
 			}
-			serverless_aws_automation.VerifyLambdaSigner(ctx, keystoresPath, lambdaFnUrl, ageEncryptionSecretName)
+			serverless_aws_automation.VerifyLambdaSigner(ctx, awsAuth, keystoresPath, lambdaFnUrl, ageEncryptionSecretName)
 		}
 
 		// Creates service request

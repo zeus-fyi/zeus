@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/go-resty/resty/v2"
 	"github.com/stretchr/testify/suite"
+	aegis_aws_auth "github.com/zeus-fyi/zeus/pkg/aegis/aws/auth"
 	bls_serverless_signing "github.com/zeus-fyi/zeus/pkg/aegis/aws/serverless_signing"
 	aegis_inmemdbs "github.com/zeus-fyi/zeus/pkg/aegis/inmemdbs"
 	bls_signer "github.com/zeus-fyi/zeus/pkg/crypto/bls"
@@ -29,16 +30,26 @@ func (s *ServerlessInMemFSTestSuite) TestServerlessSigningFunc() {
 		SignatureRequests: aegis_inmemdbs.EthereumBLSKeySignatureRequests{Map: make(map[string]aegis_inmemdbs.EthereumBLSKeySignatureRequest)},
 	}
 	key := "0x8a7addbf2857a72736205d861169c643545283a74a1ccb71c95dd2c9652acb89de226ca26d60248c4ef9591d7e010288"
-
 	hexMessage, err := aegis_inmemdbs.RandomHex(10)
 	s.Require().Nil(err)
 	signMsg := aegis_inmemdbs.EthereumBLSKeySignatureRequest{Message: hexMessage}
 	sr.SignatureRequests.Map[key] = signMsg
+	auth := aegis_aws_auth.AuthAWS{
+		AccountNumber: "",
+		Region:        "us-west-1",
+		AccessKey:     s.Tc.AwsAccessKeyLambdaInvoke,
+		SecretKey:     s.Tc.AwsSecretKeyLambdaInvoke,
+	}
+	req, err := auth.CreateV4AuthPOSTReq(ctx, "lambda", s.Tc.ServerlessSignerFuncBLS, sr)
+	s.Require().Nil(err)
+
 	resp, err := r.R().
+		SetHeaderMultiValues(req.Header).
 		SetResult(&signedEventResponse).
 		SetBody(sr).Post("/")
 	s.Require().Nil(err)
-	s.Require().Equal(200, resp.StatusCode())
+	respCode := resp.StatusCode()
+	s.Require().Equal(200, respCode)
 	s.Assert().NotEmpty(respMsgMap)
 
 	err = bls_signer.InitEthBLS()
