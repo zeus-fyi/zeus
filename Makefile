@@ -44,11 +44,21 @@ serverless.validator.gen:
 serverless.verify:
 	./builds/serverless/bin/serverless --automation-steps verifyLambdaFunction
 
+serverless.service:
+	./builds/serverless/bin/serverless --automation-steps createValidatorServiceRequestOnZeus
 
 ETH1_PRIV_KEY := ""
 # you will need an eth1 address and it must have 32 Eth + gas fees to deposit per validator
 serverless.submit.deposits:
-	./builds/serverless/bin/serverless --keygen false --submit-deposits true --eth1-addr-priv-key $(ETH1_PRIV_KEY)
+	./builds/serverless/bin/serverless --keygen false --submit-deposits true --eth1-addr-priv-key $(ETH1_PRIV_KEY) --automation-steps sendValidatorDeposits
 
+AWS_ACCOUNT_NUMBER:= ""
+AWS_ACCESS_KEY := ""
+AWS_SECRET_KEY := ""
+BEARER := ""
 
+serverless.deploy.all.cli:
+	./builds/serverless/bin/serverless --aws-account-number $(AWS_ACCOUNT_NUMBER) --aws-access-key $(AWS_ACCESS_KEY) --aws-secret-key $(AWS_SECRET_KEY) --eth1-addr-priv-key $(ETH1_PRIV_KEY) --bearer $(BEARER) --automation-steps all
 
+serverless.deploy.all.config:
+	./builds/serverless/bin/serverless --automation-steps all

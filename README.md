@@ -49,12 +49,21 @@ You can copy the sample-config.yaml into a new config.yaml and use that, or you 
 # all        - will run steps 1-9
 # serverless - will run steps 1-7
 
+# AUTOMATION_STEPS: set this config variable with keywords
+
+# ACTIONS keywords
+# all        - will run steps 1-9
+# serverless - will run steps 1-7
+
 # HELPERS: keywords
 # use these keywords to fetch the secrets from aws secret manager and print them to the console
 
 # getAgeEncryptionKeySecret
 # getMnemonicHDWalletPasswordSecret
 # getExternalLambdaAccessKeys
+
+# updateLambdaKeystoresLayerToLatest - this will update the lambda function with the latest keystores layer, if you run createLambdaFunctionKeystoresLayer
+# again it will create a new layer with the latest keystores.zip, so you need to run this to update the lambda function with the latest layer (e.g. if you want to add more keystores)
 
 #############################################
 ## serverless automation minimum settings  ##
@@ -72,6 +81,58 @@ You will need these values to be set at minimum to run the aws automation for st
 You will need these values to be set at minimum to run the automation for step 8. Send us a message to get a bearer token
       --bearer string                    BEARER: bearer token for validator service on zeus
       --fee-recipient string             FEE_RECIPIENT_ADDR: fee recipient address for validators service on zeus
+      
+#############################################
+## makefile commands                       ##
+#############################################      
+
+build.staking.cli:
+	go build -o ./builds/serverless/bin/serverless ./builds/serverless
+
+# generates new mnemonic, age encryption key, uses default hd password if none provided, and creates keystores
+# zipped age encrypted file for serverless app --keygen true/false will toggle new keygen creation
+
+VALIDATORS_COUNT := 0
+AUTOMATION_STEPS := serverless
+serverless.automation:
+	./builds/serverless/bin/serverless --validator-count $(VALIDATORS_COUNT) --automation-steps $(AUTOMATION_STEPS)
+
+serverless.validator.gen:
+	./builds/serverless/bin/serverless --validator-count $(VALIDATORS_COUNT) --automation-steps generateValidatorDeposits
+
+serverless.verify:
+	./builds/serverless/bin/serverless --automation-steps verifyLambdaFunction
+
+serverless.service:
+	./builds/serverless/bin/serverless --automation-steps createValidatorServiceRequestOnZeus
+
+ETH1_PRIV_KEY := ""
+# you will need an eth1 address and it must have 32 Eth + gas fees to deposit per validator
+serverless.submit.deposits:
+	./builds/serverless/bin/serverless --keygen false --submit-deposits true --eth1-addr-priv-key $(ETH1_PRIV_KEY) --automation-steps sendValidatorDeposits
+
+AWS_ACCOUNT_NUMBER:= ""
+AWS_ACCESS_KEY := ""
+AWS_SECRET_KEY := ""
+BEARER := ""
+
+serverless.deploy.all.cli:
+	./builds/serverless/bin/serverless --aws-account-number $(AWS_ACCOUNT_NUMBER) --aws-access-key $(AWS_ACCESS_KEY) --aws-secret-key $(AWS_SECRET_KEY) --eth1-addr-priv-key $(ETH1_PRIV_KEY) --bearer $(BEARER) --automation-steps all
+
+serverless.deploy.all.config:
+	./builds/serverless/bin/serverless --automation-steps all
+
+
+EXAMPLES:
+
+Full automation using cli params:
+    make serverless.deploy.all.cli AWS_ACCOUNT_NUMBER=accountNumber AWS_ACCESS_KEY=accessKey AWS_SECRET_KEY=secretKey ETH1_PRIV_KEY=0xYourPrivateKey BEARER=ZeusBearerToken
+    
+If you have builds/serverless/config.yaml setup with your values, you can run:
+    make serverless.deploy.all.config
+
+If you want to make changes to the build app, you can run this to rebuild the helper app:
+    make build.staking.cli
 ```
 For ephemery network deposits you can check the status of your validator here: https://beaconchain.ephemery.pk910.de/validators/eth1deposits
 
