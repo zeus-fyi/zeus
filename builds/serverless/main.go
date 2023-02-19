@@ -56,7 +56,7 @@ var (
 	automateSetupOnAWS            bool
 	mnemonicAndHDWalletSecretName = "mnemonicAndHDWallet"
 	ageEncryptionSecretName       = "ageEncryptionKey"
-	externalLambdaAccessKeys      = "externalLambdaAccessKeys"
+	externalZeusLambdaAccessKeys  = "externalZeusLambdaAccessKeys"
 	awsRegion                     = "us-west-1"
 	awsAuth                       = aws_aegis_auth.AuthAWS{
 		AccountNumber: "",
@@ -65,12 +65,11 @@ var (
 		SecretKey:     "",
 	}
 	feeRecipient              string
-	lambdaFnUrl               string
 	bearerToken               string
 	keyGroupName              string
 	submitValidatorServiceReq bool
 	externalAwsAuth           = hestia_req_types.AuthLamdbaAWS{
-		ServiceURL: lambdaFnUrl,
+		ServiceURL: "",
 		SecretName: "",
 		AccessKey:  "",
 		SecretKey:  "",
@@ -94,9 +93,14 @@ func init() {
 	*/
 	// aws automation settings for lambda set up
 	// your aws account number should not have dashes here, even thought it is displayed with dashes in the UI
-	Cmd.Flags().StringVar(&awsAuth.AccountNumber, "aws-account-number", viper.GetString("AWS_ACCOUNT_NUMBER"), "AWS_ACCOUNT_NUMBER: aws account number")
-	Cmd.Flags().StringVar(&awsAuth.AccessKey, "aws-access-key", viper.GetString("AWS_ACCESS_KEY"), "AWS_ACCESS_KEY: your private aws access key, which needs permissions to create iam users, roles, policies, secrets, and lambda functions and layers")
-	Cmd.Flags().StringVar(&awsAuth.SecretKey, "aws-secret-key", viper.GetString("AWS_SECRET_KEY"), "AWS_SECRET_KEY: your private aws secret key")
+	Cmd.Flags().StringVar(&awsAuth.AccountNumber, "aws-account-number", "", "AWS_ACCOUNT_NUMBER: aws account number")
+	Cmd.Flags().StringVar(&awsAuth.AccessKey, "aws-access-key", "", "AWS_ACCESS_KEY: your private aws access key, which needs permissions to create iam users, roles, policies, secrets, and lambda functions and layers")
+	Cmd.Flags().StringVar(&awsAuth.SecretKey, "aws-secret-key", "", "AWS_SECRET_KEY: your private aws secret key")
+	if viper.GetString("AWS_ACCESS_KEY") != "" && viper.GetString("AWS_SECRET_KEY") != "" && viper.GetString("AWS_ACCOUNT_NUMBER") != "" {
+		awsAuth.AccountNumber = viper.GetString("AWS_ACCOUNT_NUMBER")
+		awsAuth.AccessKey = viper.GetString("AWS_ACCESS_KEY")
+		awsAuth.SecretKey = viper.GetString("AWS_SECRET_KEY")
+	}
 	// actions
 	Cmd.Flags().BoolVar(&automateSetupOnAWS, "aws-automation-on", viper.GetBool("AWS_AUTOMATION"), "AWS_AUTOMATION: automate the entire setup process on aws, requires you provide aws credentials")
 	/*
@@ -106,12 +110,21 @@ func init() {
 	*/
 	// aws service
 	Cmd.Flags().StringVar(&externalAwsAuth.ServiceURL, "ext-aws-lambda-url", viper.GetString("AWS_LAMBDA_FUNC_URL"), "AWS_LAMBDA_FUNC_URL: your lambda func url for validator service on zeus")
-	Cmd.Flags().StringVar(&externalAwsAuth.AccessKey, "ext-aws-access-key", viper.GetString("AWS_EXTERNAL_ACCESS_KEY"), "AWS_EXTERNAL_ACCESS_KEY: external access token for validator service on zeus")
-	Cmd.Flags().StringVar(&externalAwsAuth.SecretKey, "ext-aws-secret-key", viper.GetString("AWS_EXTERNAL_SECRET_KEY"), "AWS_EXTERNAL_SECRET_KEY: external secret token for validator service on zeus")
+	Cmd.Flags().StringVar(&externalAwsAuth.AccessKey, "ext-aws-access-key", "", "AWS_EXTERNAL_ACCESS_KEY: external access token for validator service on zeus")
+	Cmd.Flags().StringVar(&externalAwsAuth.SecretKey, "ext-aws-secret-key", "", "AWS_EXTERNAL_SECRET_KEY: external secret token for validator service on zeus")
 	Cmd.Flags().StringVar(&externalAwsAuth.SecretName, "ext-aws-age-secret-name", viper.GetString("AWS_AGE_DECRYPTION_SECRET_NAME"), "AWS_AGE_DECRYPTION_SECRET_NAME: the name of the secret that holds your age decryption keys for validator service on zeus")
+	if viper.GetString("AWS_EXTERNAL_ACCESS_KEY") != "" && viper.GetString("AWS_EXTERNAL_SECRET_KEY") != "" {
+		externalAwsAuth.AccessKey = viper.GetString("AWS_EXTERNAL_ACCESS_KEY")
+		externalAwsAuth.SecretKey = viper.GetString("AWS_EXTERNAL_SECRET_KEY")
+	}
+
 	// secret key generation for serverless
-	Cmd.Flags().StringVar(&agePrivKey, "age-private-key", viper.GetString("AGE_PRIVKEY"), "AGE_PRIVKEY: age private key")
-	Cmd.Flags().StringVar(&agePubKey, "age-public-key", viper.GetString("AGE_PUBKEY"), "AGE_PUBKEY: age public key")
+	Cmd.Flags().StringVar(&agePrivKey, "age-private-key", "", "AGE_PRIVKEY: age private key")
+	Cmd.Flags().StringVar(&agePubKey, "age-public-key", "", "AGE_PUBKEY: age public key")
+	if viper.GetString("AGE_PRIVKEY") != "" && viper.GetString("AGE_PUBKEY") != "" {
+		agePrivKey = viper.GetString("AGE_PRIVKEY")
+		agePubKey = viper.GetString("AGE_PUBKEY")
+	}
 	// actions
 	Cmd.Flags().BoolVar(&keyGenSecrets, "keygen", viper.GetBool("KEYGEN_SECRETS"), "KEYGEN_SECRETS: generates secrets for validator encryption and generation")
 	/*
@@ -120,21 +133,37 @@ func init() {
 		###################################################
 	*/
 	// validator key generation for deposits settings
+	if viper.GetString("NETWORK") == "" || viper.GetString("NODE_URL") == "" {
+		log.Info().Msg("no network or node url provided, using ephemery network and eth.ephemeral.zeus.fyi node url")
+		viper.Set("NETWORK", "ephemery")
+		viper.Set("NODE_URL", "https://eth.ephemeral.zeus.fyi")
+	}
 	Cmd.Flags().StringVar(&nodeURL, "node-url", viper.GetString("NODE_URL"), "NODE_URL: beacon for getting network data for validator deposit generation & submitting deposits")
 	Cmd.Flags().StringVar(&network, "network", viper.GetString("NETWORK"), "NETWORK: network to run on mainnet, goerli, ephemery, etc")
-	Cmd.Flags().StringVar(&eth1AddrPrivKey, "eth1-addr-priv-key", viper.GetString("ETH1_PRIVATE_KEY"), "ETH1_PRIVATE_KEY: eth1 address private key for submitting deposits")
-	// validator secret key generation
-	Cmd.Flags().StringVar(&mnemonic, "mnemonic", viper.GetString("MNEMONIC_24_WORDS"), "MNEMONIC_24_WORDS: twenty four word mnemonic to generate keystores")
-	Cmd.Flags().StringVar(&hdWalletPassword, "hd-wallet-pw", viper.GetString("HD_WALLET_PASSWORD"), "HD_WALLET_PASSWORD: hd wallet password")
-
-	if viper.GetInt("VALIDATORS_COUNT") == 0 {
-		viper.Set("VALIDATORS_COUNT", 3)
+	Cmd.Flags().StringVar(&eth1AddrPrivKey, "eth1-addr-priv-key", "", "ETH1_PRIVATE_KEY: eth1 address private key for submitting deposits")
+	if viper.GetString("ETH1_PRIVATE_KEY") != "" {
+		eth1AddrPrivKey = viper.GetString("ETH1_PRIVATE_KEY")
 	}
+
+	// validator secret key generation
+	Cmd.Flags().StringVar(&mnemonic, "mnemonic", "", "MNEMONIC_24_WORDS: twenty four word mnemonic to generate keystores")
+	Cmd.Flags().StringVar(&hdWalletPassword, "hd-wallet-pw", "", "HD_WALLET_PASSWORD: hd wallet password")
+
+	if viper.GetString("MNEMONIC_24_WORDS") != "" && viper.GetString("HD_WALLET_PASSWORD") != "" {
+		mnemonic = viper.GetString("MNEMONIC_24_WORDS")
+		hdWalletPassword = viper.GetString("HD_WALLET_PASSWORD")
+	}
+
 	Cmd.Flags().IntVar(&numKeysToGen, "validator-count", viper.GetInt("VALIDATORS_COUNT"), "VALIDATORS_COUNT: number of keys to generate")
 	Cmd.Flags().IntVar(&hdOffset, "hd-offset", viper.GetInt("HD_OFFSET_VALIDATORS"), "HD_OFFSET_VALIDATORS: offset to start generating keys from hd wallet")
 	// validator key generation paths
 	Cmd.Flags().StringVar(&keystoresPath.DirIn, "keystores-dir-in", viper.GetString("KEYSTORE_DIR_IN"), "KEYSTORE_DIR_IN: keystores directory in location (relative to builds dir)")
 	Cmd.Flags().StringVar(&keystoresPath.DirOut, "keystores-dir-out", viper.GetString("KEYSTORE_DIR_OUT"), "KEYSTORE_DIR_OUT: keystores directory out location (relative to builds dir)")
+	if keystoresPath.DirIn == "" || keystoresPath.DirOut == "" {
+		log.Info().Msg("no keystore path provided, using ./serverless/keystores as default, this is relative to the builds directory")
+		keystoresPath.DirIn = "./serverless/keystores"
+		keystoresPath.DirOut = "./serverless/keystores"
+	}
 	// actions
 	Cmd.Flags().BoolVar(&genValidatorDeposits, "keygen-validators", viper.GetBool("KEYGEN_VALIDATORS"), "KEYGEN_VALIDATORS: generates validator deposits, with additional encrypted age keystore")
 	Cmd.Flags().BoolVar(&sendDeposits, "submit-deposits", viper.GetBool("SUBMIT_DEPOSITS"), "SUBMIT_DEPOSITS: submits validator deposits in keystore directory to the network for activation")
@@ -148,7 +177,6 @@ func init() {
 	Cmd.Flags().StringVar(&keyGroupName, "key-group-name", viper.GetString("KEY_GROUP_NAME"), "KEY_GROUP_NAME: name for validator service group on zeus")
 	Cmd.Flags().StringVar(&feeRecipient, "fee-recipient", viper.GetString("FEE_RECIPIENT_ADDR"), "FEE_RECIPIENT_ADDR: fee recipient address for validators service on zeus")
 	Cmd.Flags().BoolVar(&submitValidatorServiceReq, "submit-validator-service-req", viper.GetBool("SUBMIT_SERVICE_REQUEST"), "SUBMIT_SERVICE_REQUEST: sends a request to zeus to setup a validator service")
-
 	/*
 		###################################################
 			Automation Steps
@@ -191,6 +219,26 @@ var Cmd = &cobra.Command{
 
 		for _, automationStep := range strings.Split(automationSteps, ",") {
 			switch automationStep {
+			case "getMnemonicHDWalletPasswordSecret":
+				s, err := serverless_aws_automation.GetSecret(ctx, awsAuth, mnemonicAndHDWalletSecretName)
+				if err != nil {
+					panic(err)
+				}
+				fmt.Println(s)
+			case "getAgeEncryptionKeySecret":
+				s, err := serverless_aws_automation.GetSecret(ctx, awsAuth, ageEncryptionSecretName)
+				if err != nil {
+					panic(err)
+				}
+				fmt.Println(s)
+			case "getExternalLambdaAccessKeys":
+				s, err := serverless_aws_automation.GetSecret(ctx, awsAuth, externalZeusLambdaAccessKeys)
+				if err != nil {
+					panic(err)
+				}
+				fmt.Println(s)
+			case "updateLambdaKeystoresLayerToLatest":
+				serverless_aws_automation.UpdateLambdaFunctionKeystoresLayer(ctx, awsAuth)
 			case "1", "createSecretsAndStoreInAWS":
 				if agePubKey == "" || agePrivKey == "" {
 					fmt.Println("INFO: no credentials provided, generating new age keypair")
@@ -248,13 +296,14 @@ var Cmd = &cobra.Command{
 				serverless_aws_automation.CreateLambdaFunctionKeystoresLayer(ctx, awsAuth)
 			case "5", "createLambdaFunction":
 				fmt.Println("INFO: creating lambda function")
-				lambdaFnUrl = serverless_aws_automation.CreateLambdaFunction(ctx, awsAuth)
-				fmt.Println("lambdaFnUrl: ", lambdaFnUrl)
+				lambdaFnUrl := serverless_aws_automation.CreateLambdaFunction(ctx, awsAuth)
+				externalAwsAuth.ServiceURL = lambdaFnUrl
+				fmt.Println("lambdaFnUrl: ", externalAwsAuth.ServiceURL)
 			case "6", "createExternalLambdaUser":
 				fmt.Println("INFO: creating external iam user, role, policies for us to send validator messages to your lambda function")
 				serverless_aws_automation.ExternalUserRolePolicySetupForLambdaDeployment(ctx, awsAuth)
 				if externalAwsAuth.AccessKey == "" || externalAwsAuth.SecretKey == "" {
-					s, err := serverless_aws_automation.GetExternalAccessKeySecretIfExists(ctx, awsAuth, externalLambdaAccessKeys)
+					s, err := serverless_aws_automation.GetExternalAccessKeySecretIfExists(ctx, awsAuth, externalZeusLambdaAccessKeys)
 					if err != nil {
 						panic(err)
 					}
@@ -262,19 +311,22 @@ var Cmd = &cobra.Command{
 					externalAwsAuth.SecretKey = s.SecretKey
 					if externalAwsAuth.AccessKey == "" || externalAwsAuth.SecretKey == "" {
 						externalAccessKeys := serverless_aws_automation.CreateExternalLambdaUserAccessKeys(ctx, awsAuth)
-						serverless_aws_automation.AddExternalAccessKeysInAWSSecretManager(ctx, awsAuth, externalLambdaAccessKeys, externalAccessKeys)
+						serverless_aws_automation.AddExternalAccessKeysInAWSSecretManager(ctx, awsAuth, externalZeusLambdaAccessKeys, externalAccessKeys)
 						externalAwsAuth.AccessKey = externalAccessKeys.AccessKey
 						externalAwsAuth.SecretKey = externalAccessKeys.SecretKey
 					}
 				}
 			case "7", "verifyLambdaFunction":
-				lambdaFnUrl = serverless_aws_automation.GetLambdaFunctionUrl(ctx, awsAuth)
-				if lambdaFnUrl == "" {
+				if externalAwsAuth.ServiceURL == "" {
+					fmt.Println("INFO: no lambda fn url, looking up url if exists")
+					externalAwsAuth.ServiceURL = serverless_aws_automation.GetLambdaFunctionUrl(ctx, awsAuth)
+				}
+				if externalAwsAuth.ServiceURL == "" {
 					panic("ERROR: lambda function url not provided or configured")
 				}
 				if externalAwsAuth.AccessKey == "" || externalAwsAuth.SecretKey == "" {
 					fmt.Println("INFO: checking if external access keys are stored in aws secret manager")
-					s, err := serverless_aws_automation.GetExternalAccessKeySecretIfExists(ctx, awsAuth, externalLambdaAccessKeys)
+					s, err := serverless_aws_automation.GetExternalAccessKeySecretIfExists(ctx, awsAuth, externalZeusLambdaAccessKeys)
 					if err != nil {
 						panic(err)
 					}
@@ -285,7 +337,7 @@ var Cmd = &cobra.Command{
 						externalAccessKeys := serverless_aws_automation.CreateExternalLambdaUserAccessKeys(ctx, awsAuth)
 						externalAwsAuth.AccessKey = externalAccessKeys.AccessKey
 						externalAwsAuth.SecretKey = externalAccessKeys.SecretKey
-						serverless_aws_automation.AddExternalAccessKeysInAWSSecretManager(ctx, awsAuth, externalLambdaAccessKeys, externalAccessKeys)
+						serverless_aws_automation.AddExternalAccessKeysInAWSSecretManager(ctx, awsAuth, externalZeusLambdaAccessKeys, externalAccessKeys)
 					}
 				}
 				lambdaAccessAuth := aws_aegis_auth.AuthAWS{
@@ -294,7 +346,7 @@ var Cmd = &cobra.Command{
 					SecretKey: externalAwsAuth.SecretKey,
 				}
 				fmt.Println("INFO: verifying we can send validator messages to your lambda function")
-				serverless_aws_automation.VerifyLambdaSigner(ctx, lambdaAccessAuth, keystoresPath, lambdaFnUrl, ageEncryptionSecretName)
+				serverless_aws_automation.VerifyLambdaSigner(ctx, lambdaAccessAuth, keystoresPath, externalAwsAuth.ServiceURL, ageEncryptionSecretName)
 			case "8", "createValidatorServiceRequestOnZeus":
 				fmt.Println("INFO: creating zeus validator service request")
 				if bearerToken == "" {
@@ -311,7 +363,7 @@ var Cmd = &cobra.Command{
 				serverless_aws_automation.ExternalUserRolePolicySetupForLambdaDeployment(ctx, awsAuth)
 				if externalAwsAuth.AccessKey == "" || externalAwsAuth.SecretKey == "" {
 					fmt.Println("INFO: no credentials provided, generating new aws access key pair")
-					keys, err := serverless_aws_automation.GetExternalAccessKeySecret(ctx, awsAuth, externalLambdaAccessKeys)
+					keys, err := serverless_aws_automation.GetExternalAccessKeySecret(ctx, awsAuth, externalZeusLambdaAccessKeys)
 					if err != nil {
 						panic("ERROR: failed to get external access key secret")
 					}
@@ -329,7 +381,7 @@ var Cmd = &cobra.Command{
 					Enabled:           true,
 					ServiceAuth: hestia_req_types.ServiceAuthConfig{
 						AuthLamdbaAWS: &hestia_req_types.AuthLamdbaAWS{
-							ServiceURL: lambdaFnUrl,
+							ServiceURL: externalAwsAuth.ServiceURL,
 							SecretName: ageEncryptionSecretName,
 							AccessKey:  externalAwsAuth.AccessKey,
 							SecretKey:  externalAwsAuth.SecretKey,
@@ -356,7 +408,7 @@ var Cmd = &cobra.Command{
 				}
 				w3Client.Account = acc
 				builds.ChangeToBuildsDir()
-				filter := &strings_filter.FilterOpts{StartsWith: "deposit_data"}
+				filter := &strings_filter.FilterOpts{StartsWith: "deposit_data", DoesNotInclude: []string{"keystores.tar.gz.age", ".DS_Store"}}
 				keystoresPath.FilterFiles = filter
 				dpSlice, err := signing_automation_ethereum.ParseValidatorDepositSliceJSON(ctx, keystoresPath)
 				if err != nil {
@@ -381,27 +433,6 @@ var Cmd = &cobra.Command{
 			}
 		}
 
-		if automationSteps == "getMnemonicHDWalletPasswordSecret" {
-			s, err := serverless_aws_automation.GetSecret(ctx, awsAuth, mnemonicAndHDWalletSecretName)
-			if err != nil {
-				panic(err)
-			}
-			fmt.Println(s)
-		}
-		if automationSteps == "getAgeEncryptionKeySecret" {
-			s, err := serverless_aws_automation.GetSecret(ctx, awsAuth, ageEncryptionSecretName)
-			if err != nil {
-				panic(err)
-			}
-			fmt.Println(s)
-		}
-		if automationSteps == "getExternalLambdaAccessKeys" {
-			s, err := serverless_aws_automation.GetSecret(ctx, awsAuth, externalLambdaAccessKeys)
-			if err != nil {
-				panic(err)
-			}
-			fmt.Println(s)
-		}
 	}}
 
 func ForceDirToRootDir() string {

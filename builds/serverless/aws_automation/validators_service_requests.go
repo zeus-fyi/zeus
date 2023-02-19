@@ -3,6 +3,7 @@ package serverless_aws_automation
 import (
 	"context"
 	"fmt"
+
 	"github.com/zeus-fyi/zeus/builds"
 	signing_automation_ethereum "github.com/zeus-fyi/zeus/pkg/artemis/signing_automation/ethereum"
 	hestia_client "github.com/zeus-fyi/zeus/pkg/hestia/client"
@@ -15,7 +16,7 @@ func CreateHestiaValidatorsServiceRequest(ctx context.Context, keystoresPath fil
 	fmt.Println("INFO: Creating Hestia Validators Service Request...")
 	hc := hestia_client.NewDefaultHestiaClient(bearerToken)
 	builds.ChangeToBuildsDir()
-	filter := &strings_filter.FilterOpts{StartsWith: "deposit_data"}
+	filter := &strings_filter.FilterOpts{StartsWith: "deposit_data", DoesNotInclude: []string{"keystores.tar.gz.age", ".DS_Store"}}
 	keystoresPath.FilterFiles = filter
 	dpSlice, err := signing_automation_ethereum.ParseValidatorDepositSliceJSON(ctx, keystoresPath)
 	if err != nil {
@@ -33,6 +34,9 @@ func CreateHestiaValidatorsServiceRequest(ctx context.Context, keystoresPath fil
 	resp, err := hc.ValidatorsServiceRequest(ctx, hs)
 	if err != nil {
 		panic(err)
+	}
+	if resp.Message == "" {
+		panic("ERROR: Hestia Validators Service Request failed!")
 	}
 	fmt.Println(resp)
 }

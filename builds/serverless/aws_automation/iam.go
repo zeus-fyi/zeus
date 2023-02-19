@@ -3,9 +3,10 @@ package serverless_aws_automation
 import (
 	"context"
 	"fmt"
+	"strings"
+
 	aegis_aws_auth "github.com/zeus-fyi/zeus/pkg/aegis/aws/auth"
 	aegis_aws_iam "github.com/zeus-fyi/zeus/pkg/aegis/aws/iam"
-	"strings"
 )
 
 func InternalUserRolePolicySetupForLambdaDeployment(ctx context.Context, auth aegis_aws_auth.AuthAWS) {
@@ -66,6 +67,12 @@ func CreateInternalLambdaUser(ctx context.Context, auth aegis_aws_auth.AuthAWS) 
 	if err != nil {
 		panic(err)
 	}
+	userExists := iamClient.DoesUserExist(ctx, aegis_aws_iam.InternalLambdaUserAndPolicy)
+	if userExists {
+		fmt.Println("INFO: user already exists, skipping creation")
+		return
+	}
+
 	err = iamClient.CreateLambdaUser(ctx, aegis_aws_iam.InternalLambdaUserAndPolicy)
 	if err != nil {
 		if strings.Contains(err.Error(), "EntityAlreadyExists:") {

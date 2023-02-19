@@ -20,6 +20,8 @@ See config yaml and/or main.go cmd flags for more details and groupings of flags
 # STEP "8", "createValidatorServiceRequestOnZeus":
 # STEP "9", "sendValidatorDeposits":
 
+# AUTOMATION_STEPS: set this config variable with keywords
+
 # ACTIONS keywords
 # all        - will run steps 1-9
 # serverless - will run steps 1-7

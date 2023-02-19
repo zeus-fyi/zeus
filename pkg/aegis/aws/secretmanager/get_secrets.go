@@ -64,3 +64,18 @@ func (s *SecretsManagerAuthAWS) GetSecretBinary(ctx context.Context, si SecretIn
 	}
 	return result.SecretBinary, nil
 }
+
+func (s *SecretsManagerAuthAWS) DoesSecretExist(ctx context.Context, sn string) bool {
+	input := &secretsmanager.DescribeSecretInput{
+		SecretId: aws.String(sn),
+	}
+	result, err := s.DescribeSecret(ctx, input)
+	if err != nil || result == nil {
+		// For a list of exceptions thrown, see
+		// https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html
+		log.Ctx(ctx).Err(err).Msg("secret not found, or other error")
+		return false
+	}
+
+	return true
+}
