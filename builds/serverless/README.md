@@ -69,5 +69,5 @@ Flags:
       --node-url string                  NODE_URL: beacon for getting network data for validator deposit generation & submitting deposits (default "https://eth.ephemeral.zeus.fyi")
       --submit-deposits                  SUBMIT_DEPOSITS: submits validator deposits in keystore directory to the network for activation
       --submit-validator-service-req     SUBMIT_SERVICE_REQUEST: sends a request to zeus to setup a validator service
-      --validator-count int              VALIDATORS_COUNT: number of keys to generate (default 3)
+      --validator-count int              VALIDATORS_COUNT: number of keys to generate 
 ```

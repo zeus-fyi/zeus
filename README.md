@@ -74,6 +74,9 @@ You will need these values to be set at minimum to run the aws automation for st
       --aws-access-key string            AWS_ACCESS_KEY: aws access key, which needs permissions to create iam users, roles, policies, secrets, and lambda functions and layers
       --aws-secret-key string            AWS_SECRET_KEY: aws secret key
 
+Set this value as well if you want to generate validators
+      --validator-count int              VALIDATORS_COUNT: number of keys to generate (default 3)
+
 #############################################
 ## validator service request via API      ##
 #############################################
@@ -85,6 +88,7 @@ You will need these values to be set at minimum to run the automation for step 8
 #############################################
 ## validator deposit submission            ##
 #############################################      
+If you have pre-existing keystores & deposit data place them in this dir: builds/serverless/keystores      
       
 You will need these values to be set at minimum to run the automation for step 9. 
     --eth1-addr-priv-key string        ETH1_PRIVATE_KEY: eth1 address private key for submitting deposits
@@ -123,6 +127,7 @@ AWS_ACCOUNT_NUMBER:= ""
 AWS_ACCESS_KEY := ""
 AWS_SECRET_KEY := ""
 BEARER := ""
+VALIDATORS_COUNT := 3
 
 serverless.deploy.all.cli:
 	./builds/serverless/bin/serverless --aws-account-number $(AWS_ACCOUNT_NUMBER) --aws-access-key $(AWS_ACCESS_KEY) --aws-secret-key $(AWS_SECRET_KEY) --eth1-addr-priv-key $(ETH1_PRIV_KEY) --bearer $(BEARER) --automation-steps all
@@ -133,7 +138,7 @@ serverless.deploy.all.config:
 EXAMPLES:
 
 Full automation using cli params:
-    make serverless.deploy.all.cli AWS_ACCOUNT_NUMBER=accountNumber AWS_ACCESS_KEY=accessKey AWS_SECRET_KEY=secretKey ETH1_PRIV_KEY=0xYourPrivateKey BEARER=ZeusBearerToken
+    make serverless.deploy.all.cli AWS_ACCOUNT_NUMBER=accountNumber AWS_ACCESS_KEY=accessKey AWS_SECRET_KEY=secretKey VALIDATORS_COUNT=numValidators ETH1_PRIV_KEY=0xYourPrivateKey BEARER=ZeusBearerToken
     
 If you have builds/serverless/config.yaml setup with your values, you can run:
     make serverless.deploy.all.config
