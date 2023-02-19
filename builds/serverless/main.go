@@ -244,32 +244,41 @@ var Cmd = &cobra.Command{
 				fmt.Println("lambdaFnUrl: ", lambdaFnUrl)
 			case "6", "createExternalLambdaUser":
 				fmt.Println("INFO: creating external iam user, role, policies for us to send validator messages to your lambda function")
+				serverless_aws_automation.ExternalUserRolePolicySetupForLambdaDeployment(ctx, awsAuth)
 
 				if externalAwsAuth.AccessKey == "" || externalAwsAuth.SecretKey == "" {
-					serverless_aws_automation.ExternalUserRolePolicySetupForLambdaDeployment(ctx, awsAuth)
 					externalAccessKeys := serverless_aws_automation.CreateExternalLambdaUserAccessKeys(ctx, awsAuth)
 					serverless_aws_automation.AddExternalAccessKeysInAWSSecretManager(ctx, awsAuth, externalLambdaAccessKeys, externalAccessKeys)
-
 					externalAwsAuth.AccessKey = externalAccessKeys.AccessKey
 					externalAwsAuth.SecretKey = externalAccessKeys.SecretKey
 				}
 			case "7", "verifyLambdaFunction":
 				lambdaFnUrl = serverless_aws_automation.GetLambdaFunctionUrl(ctx, awsAuth)
 				if lambdaFnUrl == "" {
-					panic("ERROR: lambda function url not provided")
+					panic("ERROR: lambda function url not provided or configured")
 				}
-				fmt.Println("INFO: verifying we can send validator messages to your lambda function")
 				if externalAwsAuth.AccessKey == "" || externalAwsAuth.SecretKey == "" {
-					serverless_aws_automation.ExternalUserRolePolicySetupForLambdaDeployment(ctx, awsAuth)
-					externalAccessKeys := serverless_aws_automation.CreateExternalLambdaUserAccessKeys(ctx, awsAuth)
-					externalAwsAuth.AccessKey = externalAccessKeys.AccessKey
-					externalAwsAuth.SecretKey = externalAccessKeys.SecretKey
+					fmt.Println("INFO: checking if external access keys are stored in aws secret manager")
+					s, err := serverless_aws_automation.GetExternalAccessKeySecretIfExists(ctx, awsAuth, externalLambdaAccessKeys)
+					if err != nil {
+						panic(err)
+					}
+					externalAwsAuth.AccessKey = s.AccessKey
+					externalAwsAuth.SecretKey = s.SecretKey
+					if externalAwsAuth.AccessKey == "" || externalAwsAuth.SecretKey == "" {
+						fmt.Println("INFO: no external access keys found in aws secret manager, generating and storing new access keys")
+						externalAccessKeys := serverless_aws_automation.CreateExternalLambdaUserAccessKeys(ctx, awsAuth)
+						externalAwsAuth.AccessKey = externalAccessKeys.AccessKey
+						externalAwsAuth.SecretKey = externalAccessKeys.SecretKey
+						serverless_aws_automation.AddExternalAccessKeysInAWSSecretManager(ctx, awsAuth, externalLambdaAccessKeys, externalAccessKeys)
+					}
 				}
 				lambdaAccessAuth := aws_aegis_auth.AuthAWS{
 					Region:    "us-west-1",
 					AccessKey: externalAwsAuth.AccessKey,
 					SecretKey: externalAwsAuth.SecretKey,
 				}
+				fmt.Println("INFO: verifying we can send validator messages to your lambda function")
 				serverless_aws_automation.VerifyLambdaSigner(ctx, lambdaAccessAuth, keystoresPath, lambdaFnUrl, ageEncryptionSecretName)
 			case "8", "createValidatorServiceRequestOnZeus":
 				fmt.Println("INFO: creating zeus validator service request")

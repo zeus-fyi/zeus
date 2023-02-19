@@ -97,4 +97,11 @@ SUBMIT_SERVICE_REQUEST: "false"
 # all        - will run steps 1-9
 # serverless - will run steps 1-7
 
+# HELPERS: keywords
+# use these keywords to fetch the secrets from aws secret manager and print them to the console
+
+# getAgeEncryptionKeySecret
+# getMnemonicHDWalletPasswordSecret
+# getExternalLambdaAccessKeys
+
 AUTOMATION_STEPS: "all"

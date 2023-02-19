@@ -25,12 +25,6 @@ func CreateLambdaFunction(ctx context.Context, auth aegis_aws_auth.AuthAWS) stri
 	if lfUrl.FunctionUrl == nil {
 		panic("ERROR: lambda function url is nil")
 	}
-	fmt.Println("INFO: lambda function url: ", lfUrl.FunctionUrl)
-	fmt.Println("INFO: making lambda function url public")
-	_, err = lm.MakeEthereumSignerFuncPublic(ctx)
-	if err != nil {
-		panic(err)
-	}
 	return *lfUrl.FunctionUrl
 }
 
