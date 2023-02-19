@@ -59,7 +59,7 @@ Flags:
       --keygen-validators                KEYGEN_VALIDATORS: generates validator deposits, with additional encrypted age keystore (default true)
       --keystores-dir-in string          KEYSTORE_DIR_IN: keystores directory in location (relative to builds dir) (default "./serverless/keystores")
       --keystores-dir-out string         KEYSTORE_DIR_OUT: keystores directory out location (relative to builds dir) (default "./serverless/keystores")
-      --mnemonic string                  MNEMONIC_24_WORDS: twenty four word mnemonic to generate keystores (default "fashion rapid beach column tissue fence opinion garden ice atom organ gauge galaxy hire ski panic kind script acquire verify fossil theory feed chef")
+      --mnemonic string                  MNEMONIC_24_WORDS: twenty four word mnemonic to generate keystores
       --network string                   NETWORK: network to run on mainnet, goerli, ephemery, etc (default "ephemery")
       --node-url string                  NODE_URL: beacon for getting network data for validator deposit generation & submitting deposits (default "https://eth.ephemeral.zeus.fyi")
       --submit-deposits                  SUBMIT_DEPOSITS: submits validator deposits in keystore directory to the network for activation
