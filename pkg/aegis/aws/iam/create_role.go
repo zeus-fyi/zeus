@@ -42,6 +42,7 @@ func (i *IAMClientAWS) CreateInternalLambdaRole(ctx context.Context) (*iam.Creat
 func (i *IAMClientAWS) GetInternalPolicyARN() string {
 	return fmt.Sprintf("arn:aws:iam::%s:policy/%s", i.AccountNumber, internalLambdaPolicyTemplateName)
 }
+
 func (i *IAMClientAWS) AddInternalPolicyToLambdaRolePolicies(ctx context.Context) (*iam.AttachRolePolicyOutput, error) {
 	roleRes, err := i.Client.AttachRolePolicy(ctx, &iam.AttachRolePolicyInput{
 		PolicyArn: aws.String(i.GetInternalPolicyARN()),

@@ -72,6 +72,17 @@ func (t *AwsLambdaTestSuite) TestUpdateLambdaLayer() {
 	t.Assert().NotEmpty(lf)
 }
 
+func (t *AwsLambdaTestSuite) TestGetExtLambdaFnInfo() {
+	t.TestClientInit()
+	lf, err := t.LambdaClientAWS.GetExternalLambdaFuncInfo(ctx)
+	t.Require().Nil(err)
+	t.Assert().NotEmpty(lf)
+
+	lurl, err := t.LambdaClientAWS.GetExternalLambdaSignerConfigURL(ctx)
+	t.Require().Nil(err)
+	t.Assert().NotEmpty(lurl)
+}
+
 func TestAwsLambdaTestSuite(t *testing.T) {
 	suite.Run(t, new(AwsLambdaTestSuite))
 }

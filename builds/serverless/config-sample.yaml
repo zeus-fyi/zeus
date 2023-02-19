@@ -4,12 +4,13 @@
 # AWS settings (internal access)
 ########################################
 # if using aws automation, don't share these values with anyone including us these are your private credentials
-AWS_ACCOUNT_NUMBER: ""
-AWS_ACCESS_KEY: ""
-AWS_SECRET_KEY: ""
+AWS_ACCOUNT_NUMBER: "" # required for aws automation
+# your aws account number should not have dashes here, even thought it is displayed with dashes in the UI
+AWS_ACCESS_KEY: "" # required for aws automation
+AWS_SECRET_KEY: "" # required for aws automation
 
 # ACTIONS
-AWS_AUTOMATION: "false"
+AWS_AUTOMATION: "true" # required to be true for aws automation, AUTOMATION_STEPS="all" will set this to true
 
 ########################################
 # AWS Lambda Values (external access)
@@ -54,8 +55,8 @@ KEYSTORE_DIR_OUT: "./serverless/keystores"
 # If you have existing deposit data & validator keystores, you can copy them to the ./builds/serverless/keystores/ directory
 
 # ACTIONS
-KEYGEN_VALIDATORS: "true"
-SUBMIT_DEPOSITS: "false"
+KEYGEN_VALIDATORS: "true" # if you have existing keystores, set this to false
+SUBMIT_DEPOSITS: "true" # if you have existing validators already deposited, set this to false
 
 ######################################
 ## Validator service values for Zeus ##
@@ -73,3 +74,34 @@ FEE_RECIPIENT_ADDR: ""
 # ACTIONS
 SUBMIT_SERVICE_REQUEST: "false"
 
+
+######################################
+##    Automation Step Selection     ##
+######################################
+
+# you can replace all with a comma separated list of steps to run
+# e.g. only run step 7 to verify the lambda function
+# or only step 9 to send the validator deposits
+
+# STEP "1", "createSecretsAndStoreInAWS"
+# STEP "2", "createInternalLambdaUser":
+# STEP "3", "generateValidatorDeposits":
+# STEP "4", "createLambdaFunctionKeystoresLayer":
+# STEP "5", "createLambdaFunction":
+# STEP "6", "createExternalLambdaUser":
+# STEP "7", "verifyLambdaFunction":
+# STEP "8", "createValidatorServiceRequestOnZeus":
+# STEP "9", "sendValidatorDeposits":
+
+# ACTIONS keywords
+# all        - will run steps 1-9
+# serverless - will run steps 1-7
+
+# HELPERS: keywords
+# use these keywords to fetch the secrets from aws secret manager and print them to the console
+
+# getAgeEncryptionKeySecret
+# getMnemonicHDWalletPasswordSecret
+# getExternalLambdaAccessKeys
+
+AUTOMATION_STEPS: "all"
