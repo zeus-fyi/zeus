@@ -100,9 +100,6 @@ If you are using this for a network other than ephemery you will need to update 
 build.staking.cli:
 	go build -o ./builds/serverless/bin/serverless ./builds/serverless
 
-# generates new mnemonic, age encryption key, uses default hd password if none provided, and creates keystores
-# zipped age encrypted file for serverless app --keygen true/false will toggle new keygen creation
-
 VALIDATORS_COUNT := 0
 AUTOMATION_STEPS := serverless
 serverless.automation:
@@ -132,7 +129,6 @@ serverless.deploy.all.cli:
 
 serverless.deploy.all.config:
 	./builds/serverless/bin/serverless --automation-steps all
-
 
 EXAMPLES:
 
