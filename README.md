@@ -45,10 +45,6 @@ You can copy the sample-config.yaml into a new config.yaml and use that, or you 
 # STEP "8", "createValidatorServiceRequestOnZeus"
 # STEP "9", "sendValidatorDeposits"
 
-# ACTIONS keywords
-# all        - will run steps 1-9
-# serverless - will run steps 1-7
-
 # AUTOMATION_STEPS: set this config variable with keywords
 
 # ACTIONS keywords
