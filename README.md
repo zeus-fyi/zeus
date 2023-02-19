@@ -81,7 +81,18 @@ You will need these values to be set at minimum to run the aws automation for st
 You will need these values to be set at minimum to run the automation for step 8. Send us a message to get a bearer token
       --bearer string                    BEARER: bearer token for validator service on zeus
       --fee-recipient string             FEE_RECIPIENT_ADDR: fee recipient address for validators service on zeus
+
+#############################################
+## validator deposit submission            ##
+#############################################      
       
+You will need these values to be set at minimum to run the automation for step 9. 
+    --eth1-addr-priv-key string        ETH1_PRIVATE_KEY: eth1 address private key for submitting deposits
+
+If you are using this for a network other than ephemery you will need to update these values as well
+      --network string                   NETWORK: network to run on mainnet, goerli, ephemery, etc (default "ephemery")
+      --node-url string                  NODE_URL: beacon for getting network data for validator deposit generation & submitting deposits (default "https://eth.ephemeral.zeus.fyi") 
+
 #############################################
 ## makefile commands                       ##
 #############################################      
