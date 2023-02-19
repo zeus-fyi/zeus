@@ -39,3 +39,16 @@ func (l *LambdaClientAWS) MakeEthereumSignerURL(ctx context.Context) (*lambda.Cr
 
 	return resp, err
 }
+
+func (l *LambdaClientAWS) GetExternalLambdaSignerConfigURL(ctx context.Context) (*lambda.GetFunctionUrlConfigOutput, error) {
+	input := &lambda.GetFunctionUrlConfigInput{
+		FunctionName: aws.String(EthereumSignerFunctionName),
+	}
+	resp, err := l.GetFunctionUrlConfig(ctx, input)
+	if err != nil {
+		log.Ctx(ctx).Err(err).Msg("LambdaClientAWS: MakeFuncPublic: error making function public")
+		return resp, err
+	}
+
+	return resp, err
+}

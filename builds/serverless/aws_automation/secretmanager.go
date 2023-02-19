@@ -55,6 +55,44 @@ func AddAgeEncryptionKeyInAWSSecretManager(ctx context.Context, awsAuth aws_aegi
 	}
 }
 
+func AddExternalAccessKeysInAWSSecretManager(ctx context.Context, awsAuth aws_aegis_auth.AuthAWS, externalLambdaAccessKeysSecretName string, awsAuthExternal aws_aegis_auth.AuthAWS) {
+	fmt.Println("INFO: storing external iam user credentials in aws secrets manager with secret name: ", externalLambdaAccessKeysSecretName)
+	sm, err := aegis_aws_secretmanager.InitSecretsManager(ctx, awsAuth)
+	if err != nil {
+		panic(err)
+	}
+	b, err := json.Marshal(awsAuthExternal)
+	if err != nil {
+		panic(err)
+	}
+	si := secretsmanager.CreateSecretInput{
+		Name:         aws.String(externalLambdaAccessKeysSecretName),
+		SecretBinary: b,
+	}
+	err = sm.CreateNewSecret(ctx, si)
+	if err != nil {
+		panic(err)
+	}
+}
+
+func GetExternalAccessKeySecret(ctx context.Context, awsAuth aws_aegis_auth.AuthAWS, sn string) (aws_aegis_auth.AuthAWS, error) {
+	sm, err := aegis_aws_secretmanager.InitSecretsManager(ctx, awsAuth)
+	secretInfo := aegis_aws_secretmanager.SecretInfo{
+		Region: awsAuth.Region,
+		Name:   sn,
+	}
+	b, err := sm.GetSecretBinary(ctx, secretInfo)
+	if err != nil {
+		panic(err)
+	}
+	extAuth := aws_aegis_auth.AuthAWS{}
+	err = json.Unmarshal(b, &extAuth)
+	if err != nil {
+		panic(err)
+	}
+	return extAuth, err
+}
+
 func GetSecret(ctx context.Context, awsAuth aws_aegis_auth.AuthAWS, sn string) (map[string]string, error) {
 	sm, err := aegis_aws_secretmanager.InitSecretsManager(ctx, awsAuth)
 	secretInfo := aegis_aws_secretmanager.SecretInfo{

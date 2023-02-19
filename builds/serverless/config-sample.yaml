@@ -88,7 +88,7 @@ SUBMIT_SERVICE_REQUEST: "false"
 # STEP "3", "generateValidatorDeposits":
 # STEP "4", "createLambdaFunctionKeystoresLayer":
 # STEP "5", "createLambdaFunction":
-# STEP "6", "creatingExternalLambdaUser":
+# STEP "6", "createExternalLambdaUser":
 # STEP "7", "verifyLambdaFunction":
 # STEP "8", "createValidatorServiceRequestOnZeus":
 # STEP "9", "sendValidatorDeposits":

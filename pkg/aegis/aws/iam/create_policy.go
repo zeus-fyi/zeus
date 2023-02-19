@@ -74,20 +74,19 @@ func (p *UserPolicyTemplate) GetPolicyTemplateIAM(ctx context.Context, resource 
 			PolicyDocument: &iamPolicy,
 		}
 	case externalLambdaPolicyTemplateName:
-		iamPolicy = fmt.Sprintf(`
-	{
-	  "Version": "2012-10-17",
-	  "Statement": [
-	    {
-	      "Effect": "Allow",
-	      "Action": [
-			"lambda:InvokeFunction",
-	      ],
-	      "Resource": "%s"
-	    }
-	  ]
-	}
-`, resource)
+		iamPolicy = fmt.Sprintf(
+			`{
+					"Version": "2012-10-17",
+					"Statement": [
+						{
+							"Effect": "Allow",
+							"Action": [
+								"lambda:InvokeFunction"
+							],
+						  "Resource": "%s"
+						}
+					  ]
+					}`, resource)
 		createPolicyInput = &iam.CreatePolicyInput{
 			PolicyName:     &externalLambdaPolicyTemplateName,
 			PolicyDocument: &iamPolicy,
