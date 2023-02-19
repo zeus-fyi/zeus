@@ -67,7 +67,12 @@ func (l *LambdaClientAWS) CreateServerlessBLSLambdaFn(ctx context.Context) (*lam
 	builds.ChangeToBuildsDir()
 	blsFnParams.Role = aws.String(l.GetLambdaRole())
 	blsFnParams.Code.ZipFile = blsMainZipFilePath.ReadFileInPath()
-	blsFnParams.Layers = []string{l.GetLambdaExtensionARN(), l.GetLambdaKeystoreLayerARN("1")}
+	layerVersion, err := l.GetKeystoreLayerInfo(ctx)
+	if err != nil || layerVersion == nil {
+		log.Ctx(ctx).Err(err).Msg("CreateNewLambdaFn: error getting lambda function keystore layer info")
+		return nil, err
+	}
+	blsFnParams.Layers = []string{l.GetLambdaExtensionARN(), *layerVersion.LayerVersions[0].LayerVersionArn}
 	lf, err := l.CreateFunction(ctx, blsFnParams)
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("CreateNewLambdaFn: error creating lambda function")

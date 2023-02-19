@@ -35,7 +35,7 @@ func VerifyLambdaSigner(ctx context.Context, auth aegis_aws_auth.AuthAWS, keysto
 		if herr != nil {
 			panic(herr)
 		}
-		sr.SignatureRequests.Map[dp.Pubkey] = aegis_inmemdbs.EthereumBLSKeySignatureRequest{Message: hexMessage}
+		sr.SignatureRequests.Map[strings_filter.AddHexPrefix(dp.Pubkey)] = aegis_inmemdbs.EthereumBLSKeySignatureRequest{Message: hexMessage}
 	}
 	req, err := auth.CreateV4AuthPOSTReq(ctx, "lambda", funcUrl, sr)
 	if err != nil {
@@ -49,7 +49,8 @@ func VerifyLambdaSigner(ctx context.Context, auth aegis_aws_auth.AuthAWS, keysto
 	if err != nil {
 		panic(err)
 	}
-	if resp.StatusCode() != 200 {
+	respCode := resp.StatusCode()
+	if respCode != 200 {
 		err = errors.New("status code not 200")
 		panic(err)
 	}

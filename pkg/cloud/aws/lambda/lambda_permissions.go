@@ -25,17 +25,45 @@ func (l *LambdaClientAWS) MakeEthereumSignerFuncPublic(ctx context.Context) (*la
 	return resp, err
 }
 
-// MakeEthereumSignerURL uses the EthereumSignerFunctionName to make the function public
-func (l *LambdaClientAWS) MakeEthereumSignerURL(ctx context.Context) (*lambda.CreateFunctionUrlConfigOutput, error) {
-	input := &lambda.CreateFunctionUrlConfigInput{
-		AuthType:     types.FunctionUrlAuthTypeNone,
-		FunctionName: aws.String(EthereumSignerFunctionName),
+// MakeEthereumSignerFuncAuthIAM uses the EthereumSignerFunctionName to make the function public
+func (l *LambdaClientAWS) MakeEthereumSignerFuncAuthIAM(ctx context.Context) (*lambda.AddPermissionOutput, error) {
+	input := &lambda.AddPermissionInput{
+		Action:              aws.String("lambda:InvokeFunctionUrl"),
+		FunctionName:        aws.String(EthereumSignerFunctionName),
+		Principal:           aws.String("*"),
+		StatementId:         aws.String("FunctionURLAllowAuthIAMAccess"),
+		FunctionUrlAuthType: types.FunctionUrlAuthTypeAwsIam,
 	}
-	resp, err := l.CreateFunctionUrlConfig(ctx, input)
+	resp, err := l.AddPermission(ctx, input)
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("LambdaClientAWS: MakeFuncPublic: error making function public")
 		return resp, err
 	}
+	return resp, err
+}
 
+// MakeEthereumSignerURL uses the EthereumSignerFunctionName to make the function IAM authenticated
+func (l *LambdaClientAWS) MakeEthereumSignerURL(ctx context.Context) (*lambda.CreateFunctionUrlConfigOutput, error) {
+	input := &lambda.CreateFunctionUrlConfigInput{
+		AuthType:     types.FunctionUrlAuthTypeAwsIam,
+		FunctionName: aws.String(EthereumSignerFunctionName),
+	}
+	resp, err := l.CreateFunctionUrlConfig(ctx, input)
+	if err != nil {
+		log.Ctx(ctx).Err(err).Msg("LambdaClientAWS: MakeEthereumSignerURL: error making function public")
+		return resp, err
+	}
+	return resp, err
+}
+
+func (l *LambdaClientAWS) GetExternalLambdaSignerConfigURL(ctx context.Context) (*lambda.GetFunctionUrlConfigOutput, error) {
+	input := &lambda.GetFunctionUrlConfigInput{
+		FunctionName: aws.String(EthereumSignerFunctionName),
+	}
+	resp, err := l.GetFunctionUrlConfig(ctx, input)
+	if err != nil {
+		log.Ctx(ctx).Err(err).Msg("LambdaClientAWS: GetExternalLambdaSignerConfigURL: error getting function url config")
+		return resp, err
+	}
 	return resp, err
 }

@@ -15,7 +15,6 @@ import (
 
 	"github.com/rs/zerolog/log"
 	serverless_generation_helper "github.com/zeus-fyi/zeus/builds"
-	"github.com/zeus-fyi/zeus/cookbooks"
 	signing_automation_ethereum "github.com/zeus-fyi/zeus/pkg/artemis/signing_automation/ethereum"
 	age_encryption "github.com/zeus-fyi/zeus/pkg/crypto/age"
 	bls_signer "github.com/zeus-fyi/zeus/pkg/crypto/bls"
@@ -66,12 +65,6 @@ func GenerateValidatorDepositsAndCreateAgeEncryptedKeystores(ctx context.Context
 	if err != nil {
 		return err
 	}
-	fip := vdg.Fp.FileInPath()
-	cookbooks.ChangeToCookbookDir()
-	err = os.Remove(fip)
-	if err != nil {
-		return err
-	}
 	return nil
 }
 
@@ -81,7 +74,7 @@ func decryptToInMemFS(directoryPath, hdPassword string) error {
 		return ferr
 	}
 	filter := strings_filter.FilterOpts{
-		DoesNotStartWithThese: []string{".DS_Store"},
+		DoesNotStartWithThese: []string{".DS_Store", "keystores.tar"},
 		StartsWithThese:       nil,
 		StartsWith:            "keystore",
 		Contains:              "",

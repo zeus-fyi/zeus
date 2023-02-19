@@ -21,9 +21,9 @@ var (
 	ExternalLambdaUserName           = "externalLambdaUser"
 	externalLambdaPolicyTemplateName = "externalLambdaPolicy"
 	ExternalLambdaUserAndPolicy      = UserPolicyTemplate{
-		PolicyName: ExternalLambdaUserName,
+		PolicyName: externalLambdaPolicyTemplateName,
 		UserName: &iam.CreateUserInput{
-			UserName: aws.String(externalLambdaPolicyTemplateName),
+			UserName: aws.String(ExternalLambdaUserName),
 		},
 		Policy: nil,
 	}
@@ -74,25 +74,6 @@ func (p *UserPolicyTemplate) GetPolicyTemplateIAM(ctx context.Context, resource 
 			PolicyDocument: &iamPolicy,
 		}
 	case externalLambdaPolicyTemplateName:
-		iamPolicy = fmt.Sprintf(`
-	{
-	  "Version": "2012-10-17",
-	  "Statement": [
-	    {
-	      "Effect": "Allow",
-	      "Action": [
-			"lambda:InvokeFunction",
-	      ],
-	      "Resource": "%s"
-	    }
-	  ]
-	}
-`, resource)
-		createPolicyInput = &iam.CreatePolicyInput{
-			PolicyName:     &externalLambdaPolicyTemplateName,
-			PolicyDocument: &iamPolicy,
-		}
-
 	}
 	return createPolicyInput
 }
@@ -105,4 +86,20 @@ func (i *IAMClientAWS) CreateNewLambdaUserPolicy(ctx context.Context, upt UserPo
 		return createPolicyOutput, err
 	}
 	return createPolicyOutput, err
+}
+
+func (i *IAMClientAWS) GetExternalPolicyARN() string {
+	return "arn:aws:iam::aws:policy/service-role/AWSLambdaRole"
+}
+func (i *IAMClientAWS) AttachExternalLambdaUserPolicy(ctx context.Context) error {
+	policy := &iam.AttachUserPolicyInput{
+		PolicyArn: aws.String(i.GetExternalPolicyARN()),
+		UserName:  aws.String(ExternalLambdaUserName),
+	}
+	_, err := i.AttachUserPolicy(ctx, policy)
+	if err != nil {
+		log.Ctx(ctx).Err(err).Msg("CreateLambdaUserPolicy: error creating user policy")
+		return err
+	}
+	return err
 }
