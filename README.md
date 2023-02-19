@@ -91,7 +91,7 @@ You will need these values to be set at minimum to run the automation for step 8
 If you have pre-existing keystores & deposit data place them in this dir: builds/serverless/keystores      
       
 You will need these values to be set at minimum to run the automation for step 9. 
-    --eth1-addr-priv-key string        ETH1_PRIVATE_KEY: eth1 address private key for submitting deposits
+    --eth1-addr-priv-key string          ETH1_PRIVATE_KEY: eth1 address private key for submitting deposits
 
 If you are using this for a network other than ephemery you will need to update these values as well
       --network string                   NETWORK: network to run on mainnet, goerli, ephemery, etc (default "ephemery")
