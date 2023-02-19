@@ -5,6 +5,7 @@ import (
 	"fmt"
 	aegis_aws_auth "github.com/zeus-fyi/zeus/pkg/aegis/aws/auth"
 	aegis_aws_iam "github.com/zeus-fyi/zeus/pkg/aegis/aws/iam"
+	"strings"
 )
 
 func InternalUserRolePolicySetupForLambdaDeployment(ctx context.Context, auth aegis_aws_auth.AuthAWS) {
@@ -40,6 +41,10 @@ func CreateExternalLambdaUser(ctx context.Context, auth aegis_aws_auth.AuthAWS) 
 	}
 	err = iamClient.CreateLambdaUser(ctx, aegis_aws_iam.ExternalLambdaUserAndPolicy)
 	if err != nil {
+		if strings.Contains(err.Error(), "EntityAlreadyExists:") {
+			fmt.Println("INFO: policy already exists, skipping creation")
+			return
+		}
 		panic(err)
 	}
 }
@@ -52,6 +57,10 @@ func CreateExternalLambdaPolicy(ctx context.Context, auth aegis_aws_auth.AuthAWS
 	}
 	_, err = iamClient.CreateNewLambdaUserPolicy(ctx, aegis_aws_iam.InternalLambdaUserAndPolicy)
 	if err != nil {
+		if strings.Contains(err.Error(), "EntityAlreadyExists:") {
+			fmt.Println("INFO: policy already exists, skipping creation")
+			return
+		}
 		panic(err)
 	}
 }
@@ -64,6 +73,10 @@ func CreateInternalLambdaUser(ctx context.Context, auth aegis_aws_auth.AuthAWS) 
 	}
 	err = iamClient.CreateLambdaUser(ctx, aegis_aws_iam.InternalLambdaUserAndPolicy)
 	if err != nil {
+		if strings.Contains(err.Error(), "EntityAlreadyExists:") {
+			fmt.Println("INFO: policy already exists, skipping creation")
+			return
+		}
 		panic(err)
 	}
 }
@@ -76,6 +89,10 @@ func CreateInternalLambdaRole(ctx context.Context, auth aegis_aws_auth.AuthAWS) 
 	}
 	_, err = iamClient.CreateInternalLambdaRole(ctx)
 	if err != nil {
+		if strings.Contains(err.Error(), "EntityAlreadyExists:") {
+			fmt.Println("INFO: policy already exists, skipping creation")
+			return
+		}
 		panic(err)
 	}
 }
@@ -87,7 +104,12 @@ func CreateInternalLambdaPolicy(ctx context.Context, auth aegis_aws_auth.AuthAWS
 		panic(err)
 	}
 	_, err = iamClient.CreateNewLambdaUserPolicy(ctx, aegis_aws_iam.InternalLambdaUserAndPolicy)
+
 	if err != nil {
+		if strings.Contains(err.Error(), "EntityAlreadyExists:") {
+			fmt.Println("INFO: policy already exists, skipping creation")
+			return
+		}
 		panic(err)
 	}
 }
@@ -100,6 +122,10 @@ func AddInternalLambdaPoliciesToRole(ctx context.Context, auth aegis_aws_auth.Au
 	}
 	_, err = iamClient.AddInternalPolicyToLambdaRolePolicies(ctx)
 	if err != nil {
+		if strings.Contains(err.Error(), "EntityAlreadyExists:") {
+			fmt.Println("INFO: policy already exists, skipping creation")
+			return
+		}
 		panic(err)
 	}
 }

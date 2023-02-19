@@ -11,12 +11,11 @@ import (
 )
 
 func AddMnemonicHDWalletSecretInAWSSecretManager(ctx context.Context, awsAuth aws_aegis_auth.AuthAWS, mnemonicAndHDWalletSecretName string, hdWalletPassword string, mnemonic string) {
-	fmt.Println("INFO: storing age keypair and hd wallet password in aws secrets manager")
+	fmt.Println("INFO: storing mnemonic and wallet password in aws secrets manager with secret name: ", mnemonicAndHDWalletSecretName)
 	sm, err := aegis_aws_secretmanager.InitSecretsManager(ctx, awsAuth)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("INFO: storing mnemonic and wallet password in aws secrets manager with secret name: ", mnemonicAndHDWalletSecretName)
 	m := make(map[string]string)
 	m["hdWalletPassword"] = hdWalletPassword
 	m["mnemonic"] = mnemonic
@@ -54,4 +53,22 @@ func AddAgeEncryptionKeyInAWSSecretManager(ctx context.Context, awsAuth aws_aegi
 	if err != nil {
 		panic(err)
 	}
+}
+
+func GetSecret(ctx context.Context, awsAuth aws_aegis_auth.AuthAWS, sn string) (map[string]string, error) {
+	sm, err := aegis_aws_secretmanager.InitSecretsManager(ctx, awsAuth)
+	secretInfo := aegis_aws_secretmanager.SecretInfo{
+		Region: awsAuth.Region,
+		Name:   sn,
+	}
+	b, err := sm.GetSecretBinary(ctx, secretInfo)
+	if err != nil {
+		panic(err)
+	}
+	newM := make(map[string]string)
+	err = json.Unmarshal(b, &newM)
+	if err != nil {
+		panic(err)
+	}
+	return newM, err
 }
