@@ -38,5 +38,4 @@ func CreateHestiaValidatorsServiceRequest(ctx context.Context, keystoresPath fil
 	if resp.Message == "" {
 		panic("ERROR: Hestia Validators Service Request failed!")
 	}
-	fmt.Println(resp)
 }
