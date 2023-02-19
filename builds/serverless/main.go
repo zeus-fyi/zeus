@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"os"
 	"path"
@@ -394,9 +393,6 @@ var Cmd = &cobra.Command{
 				serverless_aws_automation.CreateHestiaValidatorsServiceRequest(ctx, keystoresPath, sr, bearerToken, feeRecipient)
 			case "9", "sendValidatorDeposits":
 				fmt.Println("INFO: submitting validator deposits to the network")
-				if w3Client.Account == nil {
-					panic(errors.New("eth1 acount is required for submitting deposits, you'll also need 32 Eth per validator + gas fees"))
-				}
 				if eth1AddrPrivKey == "" {
 					panic("eth1 address private key is required for submitting deposits, you'll also need 32 Eth per validator + gas fees")
 				}
