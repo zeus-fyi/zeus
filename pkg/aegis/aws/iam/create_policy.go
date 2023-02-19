@@ -21,9 +21,9 @@ var (
 	ExternalLambdaUserName           = "externalLambdaUser"
 	externalLambdaPolicyTemplateName = "externalLambdaPolicy"
 	ExternalLambdaUserAndPolicy      = UserPolicyTemplate{
-		PolicyName: ExternalLambdaUserName,
+		PolicyName: externalLambdaPolicyTemplateName,
 		UserName: &iam.CreateUserInput{
-			UserName: aws.String(externalLambdaPolicyTemplateName),
+			UserName: aws.String(ExternalLambdaUserName),
 		},
 		Policy: nil,
 	}
