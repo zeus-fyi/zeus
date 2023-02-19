@@ -75,16 +75,15 @@ func GetLambdaFunctionUrl(ctx context.Context, auth aegis_aws_auth.AuthAWS) stri
 	if err != nil {
 		panic(err)
 	}
-
 	return *lcfg.FunctionUrl
 }
-func UpdateLambdaFunctionKeystoresLayer(ctx context.Context, auth aegis_aws_auth.AuthAWS, version string) {
-	fmt.Println("INFO: updating lambda function keystores layer")
+func UpdateLambdaFunctionKeystoresLayer(ctx context.Context, auth aegis_aws_auth.AuthAWS) {
+	fmt.Println("INFO: updating lambda function keystores layer to latest")
 	lm, err := aws_lambda.InitLambdaClient(ctx, auth)
 	if err != nil {
 		panic(err)
 	}
-	_, err = lm.UpdateServerlessBLSLambdaFnKeystoreLayer(ctx, version)
+	_, err = lm.UpdateServerlessBLSLambdaFnKeystoreLayer(ctx)
 	if err != nil {
 		panic(err)
 	}

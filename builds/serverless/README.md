@@ -20,6 +20,8 @@ See config yaml and/or main.go cmd flags for more details and groupings of flags
 # STEP "8", "createValidatorServiceRequestOnZeus":
 # STEP "9", "sendValidatorDeposits":
 
+# AUTOMATION_STEPS: set this config variable with keywords
+
 # ACTIONS keywords
 # all        - will run steps 1-9
 # serverless - will run steps 1-7
@@ -30,6 +32,9 @@ See config yaml and/or main.go cmd flags for more details and groupings of flags
 # getAgeEncryptionKeySecret
 # getMnemonicHDWalletPasswordSecret
 # getExternalLambdaAccessKeys
+
+# updateLambdaKeystoresLayerToLatest - this will update the lambda function with the latest keystores layer, if you run createLambdaFunctionKeystoresLayer
+# again it will create a new layer with the latest keystores.zip, so you need to run this to update the lambda function with the latest layer (e.g. if you want to add more keystores)
 ```
 
 ```text

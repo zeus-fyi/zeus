@@ -4,11 +4,13 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"strings"
+
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
+	"github.com/rs/zerolog/log"
 	aws_aegis_auth "github.com/zeus-fyi/zeus/pkg/aegis/aws/auth"
 	aegis_aws_secretmanager "github.com/zeus-fyi/zeus/pkg/aegis/aws/secretmanager"
-	"strings"
 )
 
 func AddMnemonicHDWalletSecretInAWSSecretManager(ctx context.Context, awsAuth aws_aegis_auth.AuthAWS, mnemonicAndHDWalletSecretName string, hdWalletPassword string, mnemonic string) {
@@ -16,6 +18,10 @@ func AddMnemonicHDWalletSecretInAWSSecretManager(ctx context.Context, awsAuth aw
 	sm, err := aegis_aws_secretmanager.InitSecretsManager(ctx, awsAuth)
 	if err != nil {
 		panic(err)
+	}
+	if sm.DoesSecretExist(ctx, mnemonicAndHDWalletSecretName) {
+		log.Info().Msg("INFO: secret already exists, skipping creation")
+		return
 	}
 	m := make(map[string]string)
 	m["hdWalletPassword"] = hdWalletPassword
@@ -44,6 +50,10 @@ func AddAgeEncryptionKeyInAWSSecretManager(ctx context.Context, awsAuth aws_aegi
 	if err != nil {
 		panic(err)
 	}
+	if sm.DoesSecretExist(ctx, ageEncryptionSecretName) {
+		log.Info().Msg("INFO: secret already exists, skipping creation")
+		return
+	}
 	m := make(map[string]string)
 	m[agePubKey] = agePrivKey
 	b, err := json.Marshal(m)
@@ -69,6 +79,10 @@ func AddExternalAccessKeysInAWSSecretManager(ctx context.Context, awsAuth aws_ae
 	sm, err := aegis_aws_secretmanager.InitSecretsManager(ctx, awsAuth)
 	if err != nil {
 		panic(err)
+	}
+	if sm.DoesSecretExist(ctx, externalLambdaAccessKeysSecretName) {
+		log.Info().Msg("INFO: secret already exists, skipping creation")
+		return
 	}
 	if awsAuthExternal.AccessKey == "" || awsAuthExternal.SecretKey == "" {
 		panic("ERROR: external access key and secret key cannot be empty")

@@ -3,10 +3,11 @@ package aws_lambda
 import (
 	"context"
 	"fmt"
+	"testing"
+
 	"github.com/stretchr/testify/suite"
 	aws_aegis_auth "github.com/zeus-fyi/zeus/pkg/aegis/aws/auth"
 	"github.com/zeus-fyi/zeus/test/test_suites"
-	"testing"
 )
 
 type AwsLambdaTestSuite struct {
@@ -67,7 +68,7 @@ func (t *AwsLambdaTestSuite) TestMakeLambdaURLPublic() {
 
 func (t *AwsLambdaTestSuite) TestUpdateLambdaLayer() {
 	t.TestClientInit()
-	lf, err := t.LambdaClientAWS.UpdateServerlessBLSLambdaFnKeystoreLayer(ctx, "4")
+	lf, err := t.LambdaClientAWS.UpdateServerlessBLSLambdaFnKeystoreLayer(ctx)
 	t.Require().Nil(err)
 	t.Assert().NotEmpty(lf)
 }
