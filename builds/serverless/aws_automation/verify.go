@@ -49,7 +49,8 @@ func VerifyLambdaSigner(ctx context.Context, auth aegis_aws_auth.AuthAWS, keysto
 	if err != nil {
 		panic(err)
 	}
-	if resp.StatusCode() != 200 {
+	respCode := resp.StatusCode()
+	if respCode != 200 {
 		err = errors.New("status code not 200")
 		panic(err)
 	}

@@ -17,7 +17,7 @@ func InternalUserRolePolicySetupForLambdaDeployment(ctx context.Context, auth ae
 
 func ExternalUserRolePolicySetupForLambdaDeployment(ctx context.Context, auth aegis_aws_auth.AuthAWS) {
 	CreateExternalLambdaUser(ctx, auth)
-	CreateExternalLambdaPolicy(ctx, auth)
+	AddExternalLambdaPolicyToUser(ctx, auth)
 }
 
 func CreateExternalLambdaUserAccessKeys(ctx context.Context, auth aegis_aws_auth.AuthAWS) aegis_aws_auth.AuthAWS {
@@ -49,18 +49,13 @@ func CreateExternalLambdaUser(ctx context.Context, auth aegis_aws_auth.AuthAWS) 
 	}
 }
 
-func CreateExternalLambdaPolicy(ctx context.Context, auth aegis_aws_auth.AuthAWS) {
-	fmt.Println("INFO: creating policy for external lambda invocation with policy name ", aegis_aws_iam.ExternalLambdaUserAndPolicy.PolicyName)
+func AddExternalLambdaPolicyToUser(ctx context.Context, auth aegis_aws_auth.AuthAWS) {
 	iamClient, err := aegis_aws_iam.InitIAMClient(ctx, auth)
 	if err != nil {
 		panic(err)
 	}
-	_, err = iamClient.CreateNewLambdaUserPolicy(ctx, aegis_aws_iam.InternalLambdaUserAndPolicy)
+	err = iamClient.AttachExternalLambdaUserPolicy(ctx)
 	if err != nil {
-		if strings.Contains(err.Error(), "EntityAlreadyExists:") {
-			fmt.Println("INFO: policy already exists, skipping creation")
-			return
-		}
 		panic(err)
 	}
 }

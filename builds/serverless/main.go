@@ -221,6 +221,14 @@ var Cmd = &cobra.Command{
 				serverless_aws_automation.InternalUserRolePolicySetupForLambdaDeployment(ctx, awsAuth)
 			case "3", "generateValidatorDeposits":
 				fmt.Println("INFO: generating keystores, deposit data, and encypting keystores with age encryption")
+				s, err := serverless_aws_automation.GetSecret(ctx, awsAuth, ageEncryptionSecretName)
+				if err != nil {
+					panic(err)
+				}
+				for pubkey, privkey := range s {
+					agePubKey = pubkey
+					agePrivKey = privkey
+				}
 				vdg := signing_automation_ethereum.ValidatorDepositGenerationParams{
 					Fp:                   keystoresPath,
 					Mnemonic:             mnemonic,
@@ -231,7 +239,7 @@ var Cmd = &cobra.Command{
 				}
 				enc := age_encryption.NewAge(agePrivKey, agePubKey)
 				builds.ChangeToBuildsDir()
-				err := ethereum_automation_cookbook.GenerateValidatorDepositsAndCreateAgeEncryptedKeystores(ctx, w3Client, vdg, enc, hdWalletPassword)
+				err = ethereum_automation_cookbook.GenerateValidatorDepositsAndCreateAgeEncryptedKeystores(ctx, w3Client, vdg, enc, hdWalletPassword)
 				if err != nil {
 					panic(err)
 				}
@@ -245,12 +253,19 @@ var Cmd = &cobra.Command{
 			case "6", "createExternalLambdaUser":
 				fmt.Println("INFO: creating external iam user, role, policies for us to send validator messages to your lambda function")
 				serverless_aws_automation.ExternalUserRolePolicySetupForLambdaDeployment(ctx, awsAuth)
-
 				if externalAwsAuth.AccessKey == "" || externalAwsAuth.SecretKey == "" {
-					externalAccessKeys := serverless_aws_automation.CreateExternalLambdaUserAccessKeys(ctx, awsAuth)
-					serverless_aws_automation.AddExternalAccessKeysInAWSSecretManager(ctx, awsAuth, externalLambdaAccessKeys, externalAccessKeys)
-					externalAwsAuth.AccessKey = externalAccessKeys.AccessKey
-					externalAwsAuth.SecretKey = externalAccessKeys.SecretKey
+					s, err := serverless_aws_automation.GetExternalAccessKeySecretIfExists(ctx, awsAuth, externalLambdaAccessKeys)
+					if err != nil {
+						panic(err)
+					}
+					externalAwsAuth.AccessKey = s.AccessKey
+					externalAwsAuth.SecretKey = s.SecretKey
+					if externalAwsAuth.AccessKey == "" || externalAwsAuth.SecretKey == "" {
+						externalAccessKeys := serverless_aws_automation.CreateExternalLambdaUserAccessKeys(ctx, awsAuth)
+						serverless_aws_automation.AddExternalAccessKeysInAWSSecretManager(ctx, awsAuth, externalLambdaAccessKeys, externalAccessKeys)
+						externalAwsAuth.AccessKey = externalAccessKeys.AccessKey
+						externalAwsAuth.SecretKey = externalAccessKeys.SecretKey
+					}
 				}
 			case "7", "verifyLambdaFunction":
 				lambdaFnUrl = serverless_aws_automation.GetLambdaFunctionUrl(ctx, awsAuth)

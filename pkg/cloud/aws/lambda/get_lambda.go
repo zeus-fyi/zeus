@@ -19,3 +19,14 @@ func (l *LambdaClientAWS) GetExternalLambdaFuncInfo(ctx context.Context) (*lambd
 	}
 	return fnInfo, err
 }
+
+func (l *LambdaClientAWS) GetKeystoreLayerInfo(ctx context.Context) (*lambda.ListLayerVersionsOutput, error) {
+	fnInfo, err := l.ListLayerVersions(ctx, &lambda.ListLayerVersionsInput{
+		LayerName: aws.String(KeystoresLayerName),
+	})
+	if err != nil {
+		log.Ctx(ctx).Err(err).Msg("GetExternalLambdaFuncInfo: error getting lambda layer info")
+		return nil, err
+	}
+	return fnInfo, err
+}

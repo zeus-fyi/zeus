@@ -60,13 +60,23 @@ func HandleEthSignRequestBLS(ctx context.Context, event events.APIGatewayProxyRe
 		return ApiResponse, err
 	}
 
-	ss := *svo.SecretString
 	m = make(map[string]any)
-	err = json.Unmarshal([]byte(ss), &m)
-	if err != nil {
-		log.Ctx(ctx).Err(err)
-		ApiResponse = events.APIGatewayProxyResponse{Body: event.Body, StatusCode: 500}
-		return ApiResponse, err
+	if svo.SecretString != nil {
+		m = make(map[string]any)
+		ss := *svo.SecretString
+		err = json.Unmarshal([]byte(ss), &m)
+		if err != nil {
+			log.Ctx(ctx).Err(err)
+			ApiResponse = events.APIGatewayProxyResponse{Body: event.Body, StatusCode: 500}
+			return ApiResponse, err
+		}
+	} else {
+		err = json.Unmarshal(svo.SecretBinary, &m)
+		if err != nil {
+			log.Ctx(ctx).Err(err)
+			ApiResponse = events.APIGatewayProxyResponse{Body: event.Body, StatusCode: 500}
+			return ApiResponse, err
+		}
 	}
 
 	// init inmemfs, m should only have one age key in it
