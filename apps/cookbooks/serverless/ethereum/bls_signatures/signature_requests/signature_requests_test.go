@@ -29,7 +29,7 @@ func (s *ServerlessInMemFSTestSuite) TestServerlessSigningFunc() {
 		SecretName:        s.Tc.ServerlessSignerFuncSecretName,
 		SignatureRequests: aegis_inmemdbs.EthereumBLSKeySignatureRequests{Map: make(map[string]aegis_inmemdbs.EthereumBLSKeySignatureRequest)},
 	}
-	key := "0x913d41b26a157bc8f539a9f63695b87a066f5086f259673f602a85cf9be0738629e872efd94eda6b08ecfd3c229e875e"
+	key := "0x8a7addbf2857a72736205d861169c643545283a74a1ccb71c95dd2c9652acb89de226ca26d60248c4ef9591d7e010288"
 	hexMessage, err := aegis_inmemdbs.RandomHex(10)
 	s.Require().Nil(err)
 	signMsg := aegis_inmemdbs.EthereumBLSKeySignatureRequest{Message: hexMessage}
