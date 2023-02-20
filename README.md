@@ -1,6 +1,6 @@
 ## Zeus ##
 
-Zeus is an evolution of web container orchestration into web ecosystems orchestration. It changes the paradigm into one that unifies configuration with the underlying orchestrator, instead of decoupling them into confusing messes like Helm, Terraform, and GitOps, while also reducing the operational complexity of building with Kubernetes significantly and is capable of building systems at the scale and complexity of AWS (without the terrible UX/UI) by unifying multi-network Kubernetes node pools with SQL driven relationship building & querying. 
+Zeus is an evolution of web container orchestration into web ecosystems orchestration. It unifies configuration and infra & devops automation with the underlying container orchestrator, instead of decoupling them into confusing messes like Helm, Terraform, and GitOps, while also reducing the operational complexity of building with Kubernetes significantly and is capable of building systems at the scale and complexity of AWS (without the terrible UX/UI) by unifying multi-network Kubernetes node pools with SQL driven relationship building & querying. 
 
 We're not just a web3 company, we have a lot of experience in crypto cloud tech so that's why it's our first product line theme, we'll be offering many  web2 focused products by the end of the year in addition to advancing our web3 products. 
 
@@ -149,7 +149,17 @@ If you have builds/serverless/config.yaml setup with your values, you can run:
 If you want to make changes to the build app, you can run this to rebuild the helper app:
     make build.staking.cli
 ```
-For ephemery network deposits you can check the status of your validator here: https://beaconchain.ephemery.pk910.de/validators/eth1deposits
+
+### Ephemery testnet faucets and validator status:
+
+### https://faucet.bordel.wtf/
+### https://ephemery-faucet.pk910.de/
+
+For large testnet quantities contact us. Eg. 50+ validators.
+
+For ephemery network deposits you can check the status of your validator here:
+
+### https://beaconchain.ephemery.pk910.de/validators/eth1deposits
 
 ## Cookbooks ##
 
