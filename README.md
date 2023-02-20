@@ -142,6 +142,14 @@ If you have builds/serverless/config.yaml setup with your values, you can run:
 If you want to make changes to the build app, you can run this to rebuild the helper app:
     make build.staking.cli
 ```
+
+Ephemeral testnet faucets:
+
+https://faucet.bordel.wtf/
+https://ephemery-faucet.pk910.de/
+
+For large testnet quantities contact us. Eg. 50+ validators.
+
 For ephemery network deposits you can check the status of your validator here: https://beaconchain.ephemery.pk910.de/validators/eth1deposits
 
 ## Cookbooks ##
