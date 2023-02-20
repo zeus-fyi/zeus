@@ -57,7 +57,7 @@ Flags:
       --ext-aws-secret-key string        AWS_EXTERNAL_SECRET_KEY: external secret token for validator service on zeus
       --fee-recipient string             FEE_RECIPIENT_ADDR: fee recipient address for validators service on zeus
       --hd-offset int                    HD_OFFSET_VALIDATORS: offset to start generating keys from hd wallet
-      --hd-wallet-pw string              HD_WALLET_PASSWORD: hd wallet password (default "password")
+      --hd-wallet-pw string              HD_WALLET_PASSWORD: hd wallet password (default is a randomly generated string)
   -h, --help                             help for Validator
       --key-group-name string            KEY_GROUP_NAME: name for validator service group on zeus
       --keygen                           KEYGEN_SECRETS: generates secrets for validator encryption and generation (default true)
