@@ -272,6 +272,13 @@ var Cmd = &cobra.Command{
 				if err != nil {
 					panic(err)
 				}
+				mns, err := serverless_aws_automation.GetSecret(ctx, awsAuth, mnemonicAndHDWalletSecretName)
+				if err != nil {
+					panic(err)
+				}
+				mnemonic = mns["mnemonic"]
+				hdWalletPassword = mns["hdWalletPassword"]
+
 				for pubkey, privkey := range s {
 					agePubKey = pubkey
 					agePrivKey = privkey
