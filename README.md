@@ -24,8 +24,9 @@ https://medium.com/@alex_16579/how-to-setup-serverless-ethereum-validators-on-ze
 
 Ephemery explorers
 
-https://beaconchain.ephemery.pk910.de/
-https://explorer.ephemery.pk910.de/
+> https://beaconchain.ephemery.pk910.de
+
+> https://explorer.ephemery.pk910.de
 
 ## Cookbooks ##
 
