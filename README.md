@@ -1,8 +1,6 @@
 ## Zeus ##
 
-Zeus is an evolution of web container orchestration into web ecosystems orchestration. It unifies configuration and infra & devops automation with the underlying container orchestrator, instead of decoupling them into confusing messes like Helm, Terraform, and GitOps, which reduces the operational complexity of building with Kubernetes significantly and is capable of building systems at the scale and complexity of AWS (without the terrible UX/UI) by unifying multi-network Kubernetes node pools with SQL driven relationship building & querying. 
-
-We're not just a web3 company, we have a lot of experience in crypto cloud tech so that's why it's our first product line theme, we'll be offering many  web2 focused products by the end of the year in addition to advancing our web3 products. 
+We combine the best parts of infra technology in Kubernetes and merge the configuration of it into highly relational, structured, and uniform SQL models, using Postgres to store infrastructure state, instead of Helm charts, and driving state changes through the Kubernetes API directly using Temporal to orchestrate the states reliably, instead of GitOps. We also merge Kubernetes app design & configuration into natural code letting you build infra like you would with real code, meaning libraries, building in your IDE, making everything much easier to maintain and observe, making complex scalable infrastructure setup, building, and DevOps as simple as 1-click.
 
 Here are some early demo videos of infrastructure building and interfacing with the pods controller (pre-cluster & matrix version). We'll replace them with higher quality demos of the latest cluster building suite over the next few months.
 
