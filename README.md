@@ -18,9 +18,14 @@ $10/mo solo or large scale enterprise staking for Ethereum per validator.
 
 ### How do I setup validators?
 
-You can use our automation app to setup your own validators in 1 click, or step by step using the config value. Here's our tutorial on Medium
+You can use our automation app to setup your own validators in 1 click, or step by step using the config value. Here's our tutorial on Medium. If you fill out the form on our website at: https://www.zeus.fyi, it'll automatically send you a bearer token to your email address for access.
 
 https://medium.com/@alex_16579/how-to-setup-serverless-ethereum-validators-on-zeus-17f4af917259
+
+Ephemery explorers
+
+https://beaconchain.ephemery.pk910.de/
+https://explorer.ephemery.pk910.de/
 
 ## Cookbooks ##
 
