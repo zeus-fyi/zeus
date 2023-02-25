@@ -1,4 +1,4 @@
-FROM golang:1.19-buster as snapshot_builder
+FROM golang:1.20.1-buster as snapshot_builder
 
 WORKDIR /app
 
