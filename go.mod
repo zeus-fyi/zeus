@@ -23,6 +23,7 @@ require (
 	github.com/herumi/bls-eth-go-binary v1.28.1
 	github.com/pierrec/lz4 v2.6.1+incompatible
 	github.com/pkg/errors v0.9.1
+	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.63.0
 	github.com/rs/zerolog v1.28.0
 	github.com/sashabaranov/go-gpt3 v0.0.0-20221216095610-1c20931ead68
 	github.com/shirou/gopsutil/v3 v3.22.10

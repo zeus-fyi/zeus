@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 
+	v1sm "github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v1"
 	"github.com/rs/zerolog/log"
 	v1 "k8s.io/api/apps/v1"
 	v1core "k8s.io/api/core/v1"
@@ -32,6 +33,9 @@ func (t *TopologyBaseInfraWorkload) DecodeBytes(jsonBytes []byte) error {
 	case "Ingress":
 		t.Ingress = &v1networking.Ingress{}
 		err = json.Unmarshal(jsonBytes, t.Ingress)
+	case "ServiceMonitor":
+		t.ServiceMonitor = &v1sm.ServiceMonitor{}
+		err = json.Unmarshal(jsonBytes, t.ServiceMonitor)
 	default:
 		err = errors.New("TopologyBaseInfraWorkload: DecodeBytes, no matching kind found")
 		log.Err(err).Msg("TopologyBaseInfraWorkload: DecodeBytes, no matching kind found")
