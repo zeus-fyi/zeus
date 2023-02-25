@@ -45,6 +45,13 @@ func (t *TopologyBaseInfraWorkload) PrintWorkload(p filepaths.Path) error {
 			return err
 		}
 	}
+	if t.ServiceMonitor != nil {
+		name := addPrefixAndYamlSuffixIfNotExists("sm", t.ServiceMonitor.Name)
+		err := t.printYaml(&p, name, t.ServiceMonitor)
+		if err != nil {
+			return err
+		}
+	}
 	return nil
 }
 
