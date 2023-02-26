@@ -8,9 +8,9 @@ import (
 )
 
 const (
-	execClient         = "zeus-exec-client"
-	execClientDiskName = "exec-client-storage"
-	execClientDiskSize = "10Gi"
+	execClient                  = "zeus-exec-client"
+	execClientDiskName          = "exec-client-storage"
+	execClientDiskSizeEphemeral = "10Gi"
 
 	hercules              = "hercules"
 	herculesEphemeral     = "herculesEphemeral"
@@ -56,7 +56,7 @@ func EphemeralExecClientGethConfig(inf topology_workloads.TopologyBaseInfraWorkl
 
 		for i, v := range inf.StatefulSet.Spec.VolumeClaimTemplates {
 			if v.Name == execClientDiskName {
-				q, err := resource.ParseQuantity(execClientDiskSize)
+				q, err := resource.ParseQuantity(execClientDiskSizeEphemeral)
 				if err != nil {
 					panic(err)
 				}

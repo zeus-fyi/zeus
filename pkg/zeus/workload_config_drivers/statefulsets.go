@@ -6,6 +6,7 @@ import (
 
 type StatefulSetDriver struct {
 	ContainerDrivers map[string]ContainerDriver
+	PVCDriver        *PersistentVolumeClaimsConfigDriver
 }
 
 func NewStatefulSetDriver() StatefulSetDriver {
@@ -31,5 +32,11 @@ func (s *StatefulSetDriver) SetStatefulSetConfigs(sts *v1.StatefulSet) {
 			v.SetContainerConfigs(&c)
 			sts.Spec.Template.Spec.Containers[i] = c
 		}
+	}
+	// pvcs
+	if s.PVCDriver != nil {
+		tmp := sts.Spec.VolumeClaimTemplates
+		s.PVCDriver.CustomPVCS(tmp)
+		sts.Spec.VolumeClaimTemplates = tmp
 	}
 }

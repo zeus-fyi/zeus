@@ -34,7 +34,7 @@ func (t *BeaconCookbookTestSuite) TestConsensusClientBeaconConfigDriver() {
 	err = inf.PrintWorkload(p)
 	t.Require().Nil(err)
 
-	q, err := resource.ParseQuantity(consensusStorageDiskSize)
+	q, err := resource.ParseQuantity(consensusStorageDiskSizeEphemeral)
 	if err != nil {
 		panic(err)
 	}

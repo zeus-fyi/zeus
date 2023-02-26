@@ -2,6 +2,7 @@ package ethereum_beacon_cookbooks
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/zeus-fyi/zeus/cookbooks"
 	choreography_cookbooks "github.com/zeus-fyi/zeus/cookbooks/microservices/choreography"
@@ -16,7 +17,44 @@ var (
 	execSkeletonBases      = []string{"gethHercules"}
 	consensusSkeletonBases = []string{"lighthouseHercules"}
 	ingressBaseName        = []string{"beaconIngress"}
+
+	ctx = context.Background()
 )
+
+func (t *BeaconCookbookTestSuite) TestClusterDeployV2() {
+	cd := BeaconClusterDefinition
+	_, err := cd.UploadChartsFromClusterDefinition(ctx, t.ZeusTestClient, true)
+	t.Require().Nil(err)
+
+	cdep := cd.GenerateDeploymentRequest()
+	_, err = t.ZeusTestClient.DeployCluster(ctx, cdep)
+	t.Require().Nil(err)
+}
+
+func (t *BeaconCookbookTestSuite) TestClusterSetupV2() {
+	cd := BeaconClusterDefinition
+	gcd := cd.BuildClusterDefinitions()
+	t.Assert().NotEmpty(gcd)
+	fmt.Println(gcd)
+
+	gdr := cd.GenerateDeploymentRequest()
+	t.Assert().NotEmpty(gdr)
+	fmt.Println(gdr)
+
+	sbDefs, err := cd.GenerateSkeletonBaseCharts()
+	t.Require().Nil(err)
+	t.Assert().NotEmpty(sbDefs)
+}
+
+func (t *BeaconCookbookTestSuite) TestClusterDefinitionCreationV2() {
+	cd := BeaconClusterDefinition
+	gcd := cd.BuildClusterDefinitions()
+	t.Assert().NotEmpty(gcd)
+	fmt.Println(gcd)
+
+	err := gcd.CreateClusterClassDefinitions(context.Background(), t.ZeusTestClient)
+	t.Require().Nil(err)
+}
 
 func (t *BeaconCookbookTestSuite) TestClusterDeploy() {
 	ctx := context.Background()
@@ -86,7 +124,13 @@ func (t *BeaconCookbookTestSuite) TestCreateClusterClass() {
 
 func (t *BeaconCookbookTestSuite) TestCreateClusterBase() {
 	ctx := context.Background()
-	basesInsert := []string{"executionClient", "consensusClient", "beaconIngress", "choreography"}
+	basesInsert := []string{
+		"executionClient",
+		"consensusClient",
+		"beaconIngress",
+		"serviceMonitorConsensusClient",
+		"serviceMonitorExecClient",
+		"choreography"}
 	cc := zeus_req_types.TopologyCreateOrAddComponentBasesToClassesRequest{
 		ClusterClassName:   clusterClassName,
 		ComponentBaseNames: basesInsert,
@@ -126,6 +170,30 @@ func (t *BeaconCookbookTestSuite) TestCreateClusterSkeletonBases() {
 		ClusterClassName:  clusterClassName,
 		ComponentBaseName: "choreography",
 		SkeletonBaseNames: []string{"choreography"},
+	}
+	_, err = t.ZeusTestClient.AddSkeletonBasesToClass(ctx, cc)
+	t.Require().Nil(err)
+
+	cc = zeus_req_types.TopologyCreateOrAddSkeletonBasesToClassesRequest{
+		ClusterClassName:  clusterClassName,
+		ComponentBaseName: "choreography",
+		SkeletonBaseNames: []string{"choreography"},
+	}
+	_, err = t.ZeusTestClient.AddSkeletonBasesToClass(ctx, cc)
+	t.Require().Nil(err)
+
+	cc = zeus_req_types.TopologyCreateOrAddSkeletonBasesToClassesRequest{
+		ClusterClassName:  clusterClassName,
+		ComponentBaseName: "serviceMonitorConsensusClient",
+		SkeletonBaseNames: []string{"serviceMonitorConsensusClient"},
+	}
+	_, err = t.ZeusTestClient.AddSkeletonBasesToClass(ctx, cc)
+	t.Require().Nil(err)
+
+	cc = zeus_req_types.TopologyCreateOrAddSkeletonBasesToClassesRequest{
+		ClusterClassName:  clusterClassName,
+		ComponentBaseName: "serviceMonitorExecClient",
+		SkeletonBaseNames: []string{"serviceMonitorExecClient"},
 	}
 	_, err = t.ZeusTestClient.AddSkeletonBasesToClass(ctx, cc)
 	t.Require().Nil(err)
@@ -219,4 +287,5 @@ func (t *BeaconCookbookTestSuite) TestUploadEphemeralBeaconConfig(withIngress bo
 	resp, err := t.ZeusTestClient.UploadChart(ctx, choreography_cookbooks.GenericDeploymentChartPath, choreography_cookbooks.GenericChoreographyChart)
 	t.Require().Nil(err)
 	t.Assert().NotZero(resp.TopologyID)
+
 }
