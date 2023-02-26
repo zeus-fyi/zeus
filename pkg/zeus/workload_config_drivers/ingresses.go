@@ -17,9 +17,7 @@ func (i *IngressDriver) SetIngressConfigs(ing *v1.Ingress) {
 	if ing.Annotations == nil {
 		ing.Annotations = make(map[string]string)
 	}
-
 	tmp := ing.Annotations
-
 	if i.NginxAuthURL != "" {
 		tmp[nginxAuthURLAnnotation] = i.NginxAuthURL
 	}
