@@ -7,6 +7,8 @@ type TopologyConfigDriver struct {
 	*StatefulSetDriver
 	*ServiceDriver
 	*DeploymentDriver
+	*ServiceMonitorDriver
+	*ConfigMapDriver
 }
 
 func (t *TopologyConfigDriver) SetCustomConfig(inf *topology_workloads.TopologyBaseInfraWorkload) {
@@ -21,5 +23,11 @@ func (t *TopologyConfigDriver) SetCustomConfig(inf *topology_workloads.TopologyB
 	}
 	if inf.Service != nil && t.ServiceDriver != nil {
 		t.SetServiceConfigs(inf.Service)
+	}
+	if inf.ServiceMonitor != nil && t.ServiceMonitorDriver != nil {
+		t.SetServiceMonitorConfigs(inf.ServiceMonitor)
+	}
+	if inf.ConfigMap != nil && t.ConfigMapDriver != nil {
+		t.SetConfigMaps(inf.ConfigMap)
 	}
 }

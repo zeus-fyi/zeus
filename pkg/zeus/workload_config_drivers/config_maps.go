@@ -4,7 +4,7 @@ import v1 "k8s.io/api/core/v1"
 
 type ConfigMapDriver struct {
 	v1.ConfigMap
-	// swap key for values in the configmap
+	// swap key for values key in the configmap
 	SwapKeys map[string]string
 }
 
@@ -13,11 +13,11 @@ func (cm *ConfigMapDriver) SetConfigMaps(cmap *v1.ConfigMap) {
 		return
 	}
 	if cmap.Data != nil {
-		for originalKey, _ := range cmap.Data {
-			if swapValue, ok := cm.SwapKeys[originalKey]; ok {
-				cmap.Data[originalKey] = swapValue
+		for swapKey, newContentsKey := range cm.SwapKeys {
+			if _, ok := cmap.Data[swapKey]; ok {
+				nc := cmap.Data[newContentsKey]
+				cmap.Data[swapKey] = nc
 			}
 		}
 	}
-
 }
