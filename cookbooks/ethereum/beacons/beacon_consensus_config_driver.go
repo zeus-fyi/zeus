@@ -8,9 +8,9 @@ import (
 )
 
 const (
-	consensusClient          = "zeus-consensus-client"
-	consensusStorageDiskName = "consensus-client-storage"
-	consensusStorageDiskSize = "2Gi"
+	consensusClient                   = "zeus-consensus-client"
+	consensusStorageDiskName          = "consensus-client-storage"
+	consensusStorageDiskSizeEphemeral = "2Gi"
 
 	LighthouseEphemeral         = "lighthouseEphemeral"
 	downloadLighthouseEphemeral = "downloadLighthouseEphemeral"
@@ -53,7 +53,7 @@ func EphemeralConsensusClientLighthouseConfig(inf topology_workloads.TopologyBas
 		}
 		for i, v := range inf.StatefulSet.Spec.VolumeClaimTemplates {
 			if v.Name == consensusStorageDiskName {
-				q, err := resource.ParseQuantity(consensusStorageDiskSize)
+				q, err := resource.ParseQuantity(consensusStorageDiskSizeEphemeral)
 				if err != nil {
 					panic(err)
 				}

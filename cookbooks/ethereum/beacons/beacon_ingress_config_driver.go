@@ -19,7 +19,7 @@ const (
 
 var BeaconIngressSkeletonBaseConfig = zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
 	SkeletonBaseChart:         zeus_req_types.TopologyCreateRequest{},
-	SkeletonBaseNameChartPath: BeaconConsensusClientChartPath,
+	SkeletonBaseNameChartPath: IngressChartPath,
 }
 
 var IngressChart = zeus_req_types.TopologyCreateRequest{
