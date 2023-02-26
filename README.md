@@ -182,6 +182,7 @@ AWS, GCP, Azure, type cloud companies purposely have highly confusing pricing mo
 3. Services
 4. ConfigMaps
 5. Ingresses
+6. ServiceMonitors
 
 ### Pods Controller 
 
