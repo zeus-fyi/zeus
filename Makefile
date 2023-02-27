@@ -4,7 +4,7 @@ GOMODCACHE := $(shell go env GOMODCACHE)
 GOCACHE := $(shell go env GOCACHE)
 GOOS 	:= linux
 GOARCH  := amd64
-VERSION := 0.2.4
+VERSION := 0.2.5
 
 # hercules build info
 REPO	:= zeusfyi
@@ -70,3 +70,6 @@ serverless.service.config:
 
 serverless.deploy.all.config:
 	./builds/serverless/bin/serverless --automation-steps=all
+
+serverless.validators.gen:
+	./builds/serverless/bin/serverless --automation-steps=generateValidatorDeposits

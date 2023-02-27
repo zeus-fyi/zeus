@@ -57,7 +57,6 @@ func (t *BeaconCookbookTestSuite) TestClusterDefinitionCreationV2() {
 }
 
 func (t *BeaconCookbookTestSuite) TestClusterDeploy() {
-	ctx := context.Background()
 	switch clusterClassName {
 	case "ethereumEphemeralBeacons":
 		Cd.ClusterClassName = clusterClassName
@@ -72,8 +71,6 @@ func (t *BeaconCookbookTestSuite) TestClusterDeploy() {
 }
 
 func (t *BeaconCookbookTestSuite) TestClusterDestroy() {
-	ctx := context.Background()
-
 	knsReq := DeployConsensusClientKnsReq
 	switch clusterClassName {
 	case "ethereumEphemeralBeacons":
@@ -111,7 +108,6 @@ func (t *BeaconCookbookTestSuite) TestEndToEnd() {
 }
 
 func (t *BeaconCookbookTestSuite) TestCreateClusterClass() {
-	ctx := context.Background()
 	cookbooks.ChangeToCookbookDir()
 
 	cc := zeus_req_types.TopologyCreateClusterClassRequest{
@@ -123,7 +119,6 @@ func (t *BeaconCookbookTestSuite) TestCreateClusterClass() {
 }
 
 func (t *BeaconCookbookTestSuite) TestCreateClusterBase() {
-	ctx := context.Background()
 	basesInsert := []string{
 		"executionClient",
 		"consensusClient",
@@ -200,7 +195,6 @@ func (t *BeaconCookbookTestSuite) TestCreateClusterSkeletonBases() {
 }
 
 func (t *BeaconCookbookTestSuite) TestUploadBeaconCharts(consensusChartPath, execChartPath, ingChartPath filepaths.Path, withIngress bool) {
-	ctx := context.Background()
 	// Consensus
 	resp, err := t.ZeusTestClient.UploadChart(ctx, consensusChartPath, ConsensusClientChart)
 	t.Require().Nil(err)
@@ -279,8 +273,6 @@ func (t *BeaconCookbookTestSuite) TestUploadEphemeralBeaconConfig(withIngress bo
 	ep.DirIn = ep.DirOut
 	ing.DirIn = ing.DirOut
 	t.TestUploadBeaconCharts(cp, ep, ing, withIngress)
-
-	ctx := context.Background()
 
 	// choreography option
 	choreography_cookbooks.GenericChoreographyChart.ClusterClassName = clusterClassName
