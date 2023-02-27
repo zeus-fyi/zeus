@@ -49,10 +49,8 @@ VALIDATORS_COUNT: "3"
 # If generating new keystores, e.g. you have generated 10 from your master hd seed,
 # but now want to add 10 more, add the offset here to start from the Nth offset validator onwards
 HD_OFFSET_VALIDATORS: "0"
-KEYSTORE_DIR_IN: "./serverless/keystores"
-KEYSTORE_DIR_OUT: "./serverless/keystores"
-# These are relative to the ./builds/serverless/ directory
-# If you have existing deposit data & validator keystores, you can copy them to the ./builds/serverless/keystores/ directory
+KEYSTORE_DIR_IN: ""
+KEYSTORE_DIR_OUT: ""
 
 # ACTIONS
 KEYGEN_VALIDATORS: "true" # if you have existing keystores, set this to false
