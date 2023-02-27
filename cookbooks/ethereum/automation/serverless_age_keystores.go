@@ -14,7 +14,6 @@ import (
 	"path/filepath"
 
 	"github.com/rs/zerolog/log"
-	serverless_generation_helper "github.com/zeus-fyi/zeus/builds"
 	signing_automation_ethereum "github.com/zeus-fyi/zeus/pkg/artemis/signing_automation/ethereum"
 	age_encryption "github.com/zeus-fyi/zeus/pkg/crypto/age"
 	bls_signer "github.com/zeus-fyi/zeus/pkg/crypto/bls"
@@ -45,12 +44,10 @@ func GenerateValidatorDepositsAndCreateAgeEncryptedKeystores(ctx context.Context
 	if err != nil {
 		return err
 	}
-
 	err = InMemFs.MakeFileOut(&p, b)
 	if err != nil {
 		return err
 	}
-
 	p.FnIn = "keystores.tar.gz"
 	p.DirIn = "./gzip"
 	p.DirOut = vdg.Fp.DirIn
@@ -58,7 +55,6 @@ func GenerateValidatorDepositsAndCreateAgeEncryptedKeystores(ctx context.Context
 	if err != nil {
 		return err
 	}
-
 	vdg.Fp.FnIn = p.FnIn
 	vdg.Fp.FnOut = "keystores"
 	err = zipKeystoreFolder(vdg.Fp)
@@ -74,7 +70,7 @@ func decryptToInMemFS(directoryPath, hdPassword string) error {
 		return ferr
 	}
 	filter := strings_filter.FilterOpts{
-		DoesNotStartWithThese: []string{".DS_Store", "keystores.tar"},
+		DoesNotStartWithThese: []string{".DS_Store", "keystores.tar", "keystores.zip"},
 		StartsWithThese:       nil,
 		StartsWith:            "keystore",
 		Contains:              "",
@@ -115,7 +111,6 @@ func decryptToInMemFS(directoryPath, hdPassword string) error {
 
 func gzipDirectoryToMemoryFS(p filepaths.Path) ([]byte, error) {
 	// Create in-memory file system and populate it with files from directoryPath
-
 	// Create gzip writer on top of output file in memory
 	gzipBytes := new(bytes.Buffer)
 	gzipWriter := gzip.NewWriter(gzipBytes)
@@ -127,7 +122,6 @@ func gzipDirectoryToMemoryFS(p filepaths.Path) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-
 	// Iterate over files in directory and add to tar archive
 	err = fs.WalkDir(dir, ".", func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
@@ -195,12 +189,10 @@ func zipKeystoreFolder(p filepaths.Path) error {
 		return err
 	}
 	defer fileToZip.Close()
-
 	// Create the zip file
 	zipFileName := p.FnOut + ".zip"
-	serverless_generation_helper.ChangeToBuildsDir()
 	generationPath := filepaths.Path{
-		DirOut:      "./serverless/bls_signatures",
+		DirOut:      p.DirOut,
 		FnOut:       zipFileName,
 		Env:         "",
 		FilterFiles: nil,

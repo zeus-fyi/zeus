@@ -15,7 +15,6 @@ import (
 	"github.com/spf13/viper"
 	"github.com/zeus-fyi/gochain/web3/accounts"
 	"github.com/zeus-fyi/gochain/web3/web3_actions"
-	"github.com/zeus-fyi/zeus/builds"
 	serverless_aws_automation "github.com/zeus-fyi/zeus/builds/serverless/aws_automation"
 	ethereum_automation_cookbook "github.com/zeus-fyi/zeus/cookbooks/ethereum/automation"
 	aws_aegis_auth "github.com/zeus-fyi/zeus/pkg/aegis/aws/auth"
@@ -78,10 +77,18 @@ var (
 )
 
 func init() {
-	dir := ForceDirToRootDir()
-	viper.AddConfigPath(dir)
-	_ = viper.ReadInConfig()
-	err := bls_signer.InitEthBLS()
+	cd, err := os.Getwd()
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("cd: ", cd)
+	serverlessDir := path.Join(cd, "builds/serverless")
+	viper.AddConfigPath(serverlessDir)
+	err = viper.ReadInConfig()
+	if err != nil {
+		panic(err)
+	}
+	err = bls_signer.InitEthBLS()
 	if err != nil {
 		panic(err)
 	}
@@ -160,8 +167,8 @@ func init() {
 	Cmd.Flags().StringVar(&keystoresPath.DirOut, "keystores-dir-out", viper.GetString("KEYSTORE_DIR_OUT"), "KEYSTORE_DIR_OUT: keystores directory out location (relative to builds dir)")
 	if keystoresPath.DirIn == "" || keystoresPath.DirOut == "" {
 		log.Info().Msg("no keystore path provided, using ./serverless/keystores as default, this is relative to the builds directory")
-		keystoresPath.DirIn = "./serverless/keystores"
-		keystoresPath.DirOut = "./serverless/keystores"
+		keystoresPath.DirIn = path.Join(serverlessDir, "/keystores")
+		keystoresPath.DirOut = path.Join(serverlessDir, "/keystores")
 	}
 	// actions
 	Cmd.Flags().BoolVar(&genValidatorDeposits, "keygen-validators", viper.GetBool("KEYGEN_VALIDATORS"), "KEYGEN_VALIDATORS: generates validator deposits, with additional encrypted age keystore")
@@ -193,20 +200,17 @@ var Cmd = &cobra.Command{
 	Short: "Automates the entire setup process for validator keys and serverless setup on AWS",
 	Run: func(cmd *cobra.Command, args []string) {
 		ctx := context.Background()
-
 		if automateSetupOnAWS {
 			if awsAuth.AccountNumber == "" || awsAuth.AccessKey == "" || awsAuth.SecretKey == "" {
 				panic("ERROR: aws credentials and/or account number missing")
 			}
 		}
-
 		w3Client := signing_automation_ethereum.Web3SignerClient{
 			Web3Actions: web3_actions.Web3Actions{
 				NodeURL: nodeURL,
 				Network: network,
 			},
 		}
-
 		if automationSteps == "all" {
 			automationSteps = "1,2,3,4,5,6,7,8,9"
 			automateSetupOnAWS = true
@@ -239,6 +243,8 @@ var Cmd = &cobra.Command{
 			case "updateLambdaKeystoresLayerToLatest":
 				serverless_aws_automation.UpdateLambdaFunctionKeystoresLayer(ctx, awsAuth)
 			case "1", "createSecretsAndStoreInAWS":
+				fmt.Println("INFO: no credentials provided, will generate new credentials, but won't" +
+					" store these in AWS if you already have them in AWS, it will reuse your AWS stored ones for the following steps")
 				if agePubKey == "" || agePrivKey == "" {
 					fmt.Println("INFO: no credentials provided, generating new age keypair")
 					agePubKey, agePrivKey = age_encryption.GenerateNewKeyPair()
@@ -267,7 +273,7 @@ var Cmd = &cobra.Command{
 				fmt.Println("INFO: creating internal iam user, role, policies for serverless deployment")
 				serverless_aws_automation.InternalUserRolePolicySetupForLambdaDeployment(ctx, awsAuth)
 			case "3", "generateValidatorDeposits":
-				fmt.Println("INFO: generating keystores, deposit data, and encypting keystores with age encryption")
+				fmt.Println("INFO: generating keystores, deposit data, and encrypting keystores with age encryption")
 				s, err := serverless_aws_automation.GetSecret(ctx, awsAuth, ageEncryptionSecretName)
 				if err != nil {
 					panic(err)
@@ -278,7 +284,6 @@ var Cmd = &cobra.Command{
 				}
 				mnemonic = mns["mnemonic"]
 				hdWalletPassword = mns["hdWalletPassword"]
-
 				for pubkey, privkey := range s {
 					agePubKey = pubkey
 					agePrivKey = privkey
@@ -292,14 +297,13 @@ var Cmd = &cobra.Command{
 					Network:              network,
 				}
 				enc := age_encryption.NewAge(agePrivKey, agePubKey)
-				builds.ChangeToBuildsDir()
 				err = ethereum_automation_cookbook.GenerateValidatorDepositsAndCreateAgeEncryptedKeystores(ctx, w3Client, vdg, enc, hdWalletPassword)
 				if err != nil {
 					panic(err)
 				}
 			case "4", "createLambdaFunctionKeystoresLayer":
 				fmt.Println("INFO: creating lambda keystore layer using your encrypted keystores from step 3")
-				serverless_aws_automation.CreateLambdaFunctionKeystoresLayer(ctx, awsAuth)
+				serverless_aws_automation.CreateLambdaFunctionKeystoresLayer(ctx, awsAuth, keystoresPath)
 			case "5", "createLambdaFunction":
 				fmt.Println("INFO: creating lambda function")
 				lambdaFnUrl := serverless_aws_automation.CreateLambdaFunction(ctx, awsAuth)
@@ -410,7 +414,6 @@ var Cmd = &cobra.Command{
 					panic(err)
 				}
 				w3Client.Account = acc
-				builds.ChangeToBuildsDir()
 				filter := &strings_filter.FilterOpts{StartsWith: "deposit_data", DoesNotInclude: []string{"keystores.tar.gz.age", ".DS_Store"}}
 				keystoresPath.FilterFiles = filter
 				dpSlice, err := signing_automation_ethereum.ParseValidatorDepositSliceJSON(ctx, keystoresPath)

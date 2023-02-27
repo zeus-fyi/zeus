@@ -2,22 +2,20 @@ package aws_lambda
 
 import (
 	"context"
+
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
 	"github.com/aws/aws-sdk-go-v2/service/lambda/types"
 	"github.com/rs/zerolog/log"
-	"github.com/zeus-fyi/zeus/builds"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 )
 
 var (
-	KeystoresLayerName      = "blsKeystores"
-	blsKeystoresZipFilePath = filepaths.Path{DirIn: "./serverless/bls_signatures", FnIn: "keystores.zip"}
+	KeystoresLayerName = "blsKeystores"
 )
 
-func (l *LambdaClientAWS) CreateServerlessBLSLambdaFnKeystoreLayer(ctx context.Context) (*lambda.PublishLayerVersionOutput, error) {
-	builds.ChangeToBuildsDir()
-
+func (l *LambdaClientAWS) CreateServerlessBLSLambdaFnKeystoreLayer(ctx context.Context, blsKeystoresZipFilePath filepaths.Path) (*lambda.PublishLayerVersionOutput, error) {
+	blsKeystoresZipFilePath.FnIn = "keystores.zip"
 	b := blsKeystoresZipFilePath.ReadFileInPath()
 	input := &lambda.PublishLayerVersionInput{
 		Content: &types.LayerVersionContentInput{

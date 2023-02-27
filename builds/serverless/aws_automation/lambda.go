@@ -9,6 +9,7 @@ import (
 	"github.com/rs/zerolog/log"
 	aegis_aws_auth "github.com/zeus-fyi/zeus/pkg/aegis/aws/auth"
 	aws_lambda "github.com/zeus-fyi/zeus/pkg/cloud/aws/lambda"
+	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 )
 
 func CreateLambdaFunction(ctx context.Context, auth aegis_aws_auth.AuthAWS) string {
@@ -53,13 +54,13 @@ func CreateLambdaFunction(ctx context.Context, auth aegis_aws_auth.AuthAWS) stri
 	return *lfUrl.FunctionUrl
 }
 
-func CreateLambdaFunctionKeystoresLayer(ctx context.Context, auth aegis_aws_auth.AuthAWS) {
+func CreateLambdaFunctionKeystoresLayer(ctx context.Context, auth aegis_aws_auth.AuthAWS, p filepaths.Path) {
 	fmt.Println("INFO: creating lambda function keystores layer")
 	lm, err := aws_lambda.InitLambdaClient(ctx, auth)
 	if err != nil {
 		panic(err)
 	}
-	_, err = lm.CreateServerlessBLSLambdaFnKeystoreLayer(ctx)
+	_, err = lm.CreateServerlessBLSLambdaFnKeystoreLayer(ctx, p)
 	if err != nil {
 		panic(err)
 	}
