@@ -20,7 +20,6 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-
     - name: Clone external repos into workspace
       run: |
         mkdir -p apps/external
