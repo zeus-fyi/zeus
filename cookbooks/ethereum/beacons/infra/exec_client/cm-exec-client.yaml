@@ -17,6 +17,8 @@ data:
       --ws.addr=0.0.0.0 \
       --ws.port=8546 \
       --ws.origins=* \
+      --metrics \
+      --metrics.addr=0.0.0.0 \
       --authrpc.jwtsecret=/data/jwt.hex \
       --authrpc.addr=0.0.0.0 \
       --authrpc.port=8551 \
@@ -44,6 +46,8 @@ data:
       --ws.addr=0.0.0.0 \
       --ws.port=8546 \
       --ws.origins=* \
+      --metrics \
+      --metrics.addr=0.0.0.0 \
       --authrpc.jwtsecret=/data/jwt.hex \
       --authrpc.addr=0.0.0.0 \
       --authrpc.port=8551 \
@@ -72,6 +76,8 @@ data:
       --authrpc.addr=0.0.0.0 \
       --authrpc.port=8551 \
       --authrpc.vhosts=* \
+      --metrics \
+      --metrics.addr=0.0.0.0 \
       --rpc.gascap=0 \
       --rpc.txfeecap=0 \
       --networkid=$(grep CHAIN_ID /data/nodevars_env.txt | cut -d '=' -f 2 | tr -d '"') \
