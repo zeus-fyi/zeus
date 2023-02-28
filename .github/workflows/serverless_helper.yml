@@ -35,8 +35,7 @@ jobs:
 
     - name: Build binary
       run: |
-        cd builds/serverless
-        CGO_ENABLED=1 GOOS=darwin GOARCH=arm64 go build
+        CGO_ENABLED=1 GOOS=darwin GOARCH=arm64 go build builds/serverless/main.go
         zip serverless.zip serverless
 
     - name: Upload binary as artifact
