@@ -34,6 +34,7 @@ jobs:
 
     - name: Build binary
       run: |
+        go work sync
         CGO_ENABLED=1 GOOS=darwin GOARCH=arm64 go build builds/serverless/main.go
         zip serverless.zip serverless
 
