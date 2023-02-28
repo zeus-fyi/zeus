@@ -30,6 +30,10 @@ docker.debug:
 build.staking.cli:
 	go build -o ./builds/serverless/bin/serverless ./builds/serverless
 
+# arch -x86_64
+build.staking.cli.mac.intel:
+	CGO_CFLAGS="-O -D__BLST_PORTABLE__" CGO_ENABLED=1 GOOS=darwin GOARCH=amd64 CC="clang" CXX="zig c++ -target x86_64-macos" go build --tags extended -o ./builds/serverless/bin_mac_intel/serverless ./builds/serverless
+
 AWS_ACCOUNT_NUMBER:= ""
 AWS_ACCESS_KEY := ""
 AWS_SECRET_KEY := ""
@@ -73,3 +77,6 @@ serverless.deploy.all.config:
 
 serverless.validators.gen:
 	./builds/serverless/bin/serverless --automation-steps=generateValidatorDeposits
+
+serverless.validators.gen.mac:
+	arch -x86_64 ./builds/serverless/bin_mac_intel/serverless --automation-steps=generateValidatorDeposits
