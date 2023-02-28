@@ -4,7 +4,7 @@ on:
   push:
     paths:
       - builds/serverless/**
-      - .github/workflows/bls_serverless.yml
+      - .github/workflows/serverless_helper.yml
     branches:
       - main
       - dev
