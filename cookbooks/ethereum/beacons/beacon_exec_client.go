@@ -26,7 +26,7 @@ var ExecClientSkeletonBaseConfig = zeus_cluster_config_drivers.ClusterSkeletonBa
 	TopologyConfigDriver: &zeus_topology_config_drivers.TopologyConfigDriver{
 		ConfigMapDriver: &zeus_topology_config_drivers.ConfigMapDriver{
 			ConfigMap: v1Core.ConfigMap{
-				ObjectMeta: metav1.ObjectMeta{Name: "cm-consensus-client"},
+				ObjectMeta: metav1.ObjectMeta{Name: "cm-exec-client"},
 			},
 			SwapKeys: map[string]string{
 				"start.sh": GethEphemeral + ".sh",
