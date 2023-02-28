@@ -36,7 +36,7 @@ build.staking.cli.mac.intel:
 	CGO_CFLAGS="-O -D__BLST_PORTABLE__" CGO_ENABLED=1 GOOS=darwin GOARCH=amd64 CC="clang" CXX="zig c++ -target x86_64-macos" go build --tags extended -o ./builds/serverless/bin_mac_intel/serverless ./builds/serverless
 
 #build.staking.cli.windows:
-#	CGO_CFLAGS="-O -D__BLST_PORTABLE__" CGO_ENABLED=1 GOOS=windows GOARCH=amd64 CC="zig cc -target x86_64-windows-gnu" CXX="zig c++ -target x86_64-windows-gnu" go build  -trimpath -ldflags='-H=windowsgui' -o ./builds/serverless/bin_windows/serverless ./builds/serverless
+#	CGO_CFLAGS="-O -D__BLST_PORTABLE__" CGO_ENABLED=1 GOOS=windows GOARCH=amd64 CC="zig cc -target x86_64-windows-gnu" CXX="zig c++ -target x86_64-windows-gnu" go build -trimpath -ldflags='-H=windowsgui' -o ./builds/serverless/bin_windows/serverless ./builds/serverless
 
 AWS_ACCOUNT_NUMBER:= ""
 AWS_ACCESS_KEY := ""
