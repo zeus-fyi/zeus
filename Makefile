@@ -4,7 +4,7 @@ GOMODCACHE := $(shell go env GOMODCACHE)
 GOCACHE := $(shell go env GOCACHE)
 GOOS 	:= linux
 GOARCH  := amd64
-VERSION := 0.2.7
+VERSION := 0.2.8
 
 # hercules build info
 REPO	:= zeusfyi
@@ -85,3 +85,6 @@ serverless.validators.gen.mac.intel:
 
 serverless.deploy.all.config.mac.intel:
 	./builds/serverless/bin_mac_intel/serverless --automation-steps=all
+
+serverless.verify.config.mac.intel:
+	./builds/serverless/bin_mac_intel/serverless --automation-steps=verifyLambdaFunction
