@@ -73,3 +73,9 @@ serverless.deploy.all.config:
 
 serverless.validators.gen:
 	./builds/serverless/bin/serverless --automation-steps=generateValidatorDeposits
+
+serverless.deploy.all.config.mac.intel:
+	./builds/serverless/bin_mac_intel/serverless --automation-steps=all
+
+serverless.validators.gen.mac.intel:
+	./builds/serverless/bin_mac_intel/serverless --automation-steps=generateValidatorDeposits

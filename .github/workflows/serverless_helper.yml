@@ -45,5 +45,5 @@ jobs:
     - name: Upload binary as artifact
       uses: actions/upload-artifact@v2
       with:
-        name: main.zip
-        path: builds/serverless/serverless.zip
+        name: serverless.zip
+        path: serverless.zip
