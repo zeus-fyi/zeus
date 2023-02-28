@@ -1,0 +1,47 @@
+name: Build Serverless Helper
+
+on:
+  push:
+    paths:
+      - builds/serverless/**
+      - .github/workflows/bls_serverless.yml
+    branches:
+      - main
+      - dev
+env:
+  AWS_REGION: us-west-1
+  GO111MODULE: on
+  GOOS: darwin
+  GOARCH: amd64
+  CGO_ENABLED: 1
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Clone external repos into workspace
+      run: |
+        mkdir -p apps/external
+        cd apps/external
+        git clone https://github.com/zeus-fyi/web3.git --branch master --single-branch
+
+    - name: Cache Go Modules
+      uses: actions/cache@v2
+      with:
+        path: ~/go/pkg/mod
+        key: go-mod-${{ hashFiles('**/go.sum') }}
+
+    - name: Build binary
+      run: |
+        cd builds/serverless
+        CGO_ENABLED=1 GOOS=darwin GOARCH=arm64 go build
+        zip serverless.zip serverless
+
+    - name: Upload binary as artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: main.zip
+        path: builds/serverless/serverless.zip
