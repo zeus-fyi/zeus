@@ -19,6 +19,7 @@ data:
       --ws.origins=* \
       --metrics \
       --metrics.addr=0.0.0.0 \
+      --metrics.port=6060 \
       --authrpc.jwtsecret=/data/jwt.hex \
       --authrpc.addr=0.0.0.0 \
       --authrpc.port=8551 \
@@ -48,6 +49,7 @@ data:
       --ws.origins=* \
       --metrics \
       --metrics.addr=0.0.0.0 \
+      --metrics.port=6060 \
       --authrpc.jwtsecret=/data/jwt.hex \
       --authrpc.addr=0.0.0.0 \
       --authrpc.port=8551 \
@@ -78,6 +80,7 @@ data:
       --authrpc.vhosts=* \
       --metrics \
       --metrics.addr=0.0.0.0 \
+      --metrics.port=6060 \
       --rpc.gascap=0 \
       --rpc.txfeecap=0 \
       --networkid=$(grep CHAIN_ID /data/nodevars_env.txt | cut -d '=' -f 2 | tr -d '"') \
