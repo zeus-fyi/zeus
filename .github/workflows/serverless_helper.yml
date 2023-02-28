@@ -20,6 +20,10 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+    - name: Set up Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: 1.20.1
     - name: Clone external repos into workspace
       run: |
         mkdir -p apps/external
