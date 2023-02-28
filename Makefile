@@ -79,3 +79,6 @@ serverless.deploy.all.config.mac.intel:
 
 serverless.validators.gen.mac.intel:
 	./builds/serverless/bin_mac_intel/serverless --automation-steps=generateValidatorDeposits
+
+serverless.validators.gen.mac.intel.create.keystore.layer:
+	./builds/serverless/bin_mac_intel/serverless --automation-steps=createLambdaFunctionKeystoresLayer
