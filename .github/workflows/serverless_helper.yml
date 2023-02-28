@@ -47,3 +47,35 @@ jobs:
       with:
         name: serverless.zip
         path: serverless.zip
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.20.1
+      - name: Clone external repos into workspace
+        run: |
+          mkdir -p apps/external
+          cd apps/external
+          git clone https://github.com/zeus-fyi/web3.git --branch master --single-branch
+
+      - name: Cache Go Modules
+        uses: actions/cache@v2
+        with:
+          path: ~/go/pkg/mod
+          key: go-mod-${{ hashFiles('**/go.sum') }}
+
+      - name: Build binary
+        run: |
+          go work sync
+          CGO_ENABLED=1 GOOS=windows GOARCH=arm64 go build -o serverlesswindows builds/serverless/main.go
+          zip serverlesswindows.zip serverlesswindows
+
+      - name: Upload binary as artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: serverlesswindows.zip
+          path: serverlesswindows.zip
