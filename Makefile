@@ -31,6 +31,7 @@ build.staking.cli:
 	go build -o ./builds/serverless/bin/serverless ./builds/serverless
 
 # arch -x86_64
+# export CGO_CFLAGS_ALLOW="-D__BLST_PORTABLE__"
 build.staking.cli.mac.intel:
 	CGO_CFLAGS="-O -D__BLST_PORTABLE__" CGO_ENABLED=1 GOOS=darwin GOARCH=amd64 CC="clang" CXX="zig c++ -target x86_64-macos" go build --tags extended -o ./builds/serverless/bin_mac_intel/serverless ./builds/serverless
 
@@ -78,5 +79,9 @@ serverless.deploy.all.config:
 serverless.validators.gen:
 	./builds/serverless/bin/serverless --automation-steps=generateValidatorDeposits
 
-serverless.validators.gen.mac:
-	arch -x86_64 ./builds/serverless/bin_mac_intel/serverless --automation-steps=generateValidatorDeposits
+# use prefix: arch -x86_64 (for m1 macs)
+serverless.validators.gen.mac.intel:
+	./builds/serverless/bin_mac_intel/serverless --automation-steps=generateValidatorDeposits
+
+serverless.deploy.all.config.mac.intel:
+	./builds/serverless/bin_mac_intel/serverless --automation-steps=all
