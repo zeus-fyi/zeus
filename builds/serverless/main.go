@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"os"
 	"path"
-	"runtime"
 	"strings"
 	"time"
 
@@ -448,13 +447,3 @@ var Cmd = &cobra.Command{
 		}
 
 	}}
-
-func ForceDirToRootDir() string {
-	_, filename, _, _ := runtime.Caller(0)
-	dir := path.Join(path.Dir(filename), "")
-	err := os.Chdir(dir)
-	if err != nil {
-		panic(err.Error())
-	}
-	return dir
-}
