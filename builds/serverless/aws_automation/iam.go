@@ -72,7 +72,6 @@ func CreateInternalLambdaUser(ctx context.Context, auth aegis_aws_auth.AuthAWS) 
 		fmt.Println("INFO: user already exists, skipping creation")
 		return
 	}
-
 	err = iamClient.CreateLambdaUser(ctx, aegis_aws_iam.InternalLambdaUserAndPolicy)
 	if err != nil {
 		if strings.Contains(err.Error(), "EntityAlreadyExists:") {

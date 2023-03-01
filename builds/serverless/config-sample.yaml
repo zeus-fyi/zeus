@@ -104,4 +104,6 @@ SUBMIT_SERVICE_REQUEST: "false"
 # updateLambdaKeystoresLayerToLatest - this will update the lambda function with the latest keystores layer, if you run createLambdaFunctionKeystoresLayer
 # again it will create a new layer with the latest keystores.zip, so you need to run this to update the lambda function with the latest layer (e.g. if you want to add more keystores)
 
+# allDontSendDepositsToNetwork : this runs steps 1-8, so it doesn't send the validator deposits to the network
+
 AUTOMATION_STEPS: "all"

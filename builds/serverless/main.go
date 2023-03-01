@@ -211,6 +211,10 @@ var Cmd = &cobra.Command{
 				Network: network,
 			},
 		}
+		if automationSteps == "allDontSendDepositsToNetwork" {
+			automationSteps = "1,2,3,4,5,6,7,8"
+			automateSetupOnAWS = true
+		}
 		if automationSteps == "all" {
 			automationSteps = "1,2,3,4,5,6,7,8,9"
 			automateSetupOnAWS = true
