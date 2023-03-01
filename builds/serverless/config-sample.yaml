@@ -86,7 +86,7 @@ SUBMIT_SERVICE_REQUEST: "false"
 # STEP "4", "createLambdaFunctionKeystoresLayer":
 # STEP "5", "createLambdaFunction":
 # STEP "6", "createExternalLambdaUser":
-# STEP "7", "verifyLambdaFunction":
+# STEP "7", "verifyLambdaFunction": // verifyLambdaFunction requires your deposit_data_*.json files to be in your keystoresPath, since it uses it to get your public keys to verify.
 # STEP "8", "createValidatorServiceRequestOnZeus":
 # STEP "9", "sendValidatorDeposits":
 
