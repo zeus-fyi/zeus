@@ -1,6 +1,8 @@
 package zeus_topology_config_drivers
 
-import v1Core "k8s.io/api/core/v1"
+import (
+	v1Core "k8s.io/api/core/v1"
+)
 
 type ContainerDriver struct {
 	v1Core.Container
@@ -25,6 +27,12 @@ func (cd *ContainerDriver) SetContainerConfigs(cont *v1Core.Container) {
 	}
 	if cd.Args != nil {
 		cont.Args = cd.Args
+	}
+	if cd.Resources.Limits != nil {
+		cont.Resources.Limits = cd.Resources.Limits
+	}
+	if cd.Resources.Requests != nil {
+		cont.Resources.Requests = cd.Resources.Requests
 	}
 }
 
