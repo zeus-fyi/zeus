@@ -384,6 +384,10 @@ var Cmd = &cobra.Command{
 					externalAwsAuth.AccessKey = keys.AccessKey
 					externalAwsAuth.SecretKey = keys.SecretKey
 				}
+				if externalAwsAuth.ServiceURL == "" {
+					fmt.Println("INFO: no lambda fn url, looking up url if exists")
+					externalAwsAuth.ServiceURL = serverless_aws_automation.GetLambdaFunctionUrl(ctx, awsAuth)
+				}
 				if keyGroupName == "" {
 					fmt.Println("INFO: no key group name provided, generating a key group name")
 					keyGroupName = fmt.Sprintf("keyGroup-%d", time.Now().Unix())
