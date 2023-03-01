@@ -3,6 +3,7 @@ package serverless_aws_automation
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/zeus-fyi/zeus/builds"
 	signing_automation_ethereum "github.com/zeus-fyi/zeus/pkg/artemis/signing_automation/ethereum"
@@ -28,14 +29,31 @@ func CreateHestiaValidatorsServiceRequest(ctx context.Context, keystoresPath fil
 			Pubkey:       validatorDepositInfo.Pubkey,
 			FeeRecipient: feeRecipientAddr,
 		})
+		if len(pubkeys) >= 100 {
+			hs := hestia_req_types.CreateValidatorServiceRequest{}
+			hs.CreateValidatorServiceRequest(pubkeys, sr)
+			resp, verr := hc.ValidatorsServiceRequest(ctx, hs)
+			if verr != nil {
+				panic(verr)
+			}
+			if resp.Message == "" {
+				panic("ERROR: Hestia Validators Service Request failed!")
+			}
+			pubkeys = hestia_req_types.ValidatorServiceOrgGroupSlice{}
+			time.Sleep(1 * time.Second)
+		}
 	}
-	hs := hestia_req_types.CreateValidatorServiceRequest{}
-	hs.CreateValidatorServiceRequest(pubkeys, sr)
-	resp, err := hc.ValidatorsServiceRequest(ctx, hs)
-	if err != nil {
-		panic(err)
+
+	if len(pubkeys) > 0 {
+		hs := hestia_req_types.CreateValidatorServiceRequest{}
+		hs.CreateValidatorServiceRequest(pubkeys, sr)
+		resp, verr := hc.ValidatorsServiceRequest(ctx, hs)
+		if verr != nil {
+			panic(verr)
+		}
+		if resp.Message == "" {
+			panic("ERROR: Hestia Validators Service Request failed!")
+		}
 	}
-	if resp.Message == "" {
-		panic("ERROR: Hestia Validators Service Request failed!")
-	}
+
 }

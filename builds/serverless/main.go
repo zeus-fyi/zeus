@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"os"
 	"path"
-	"runtime"
 	"strings"
 	"time"
 
@@ -211,6 +210,10 @@ var Cmd = &cobra.Command{
 				Network: network,
 			},
 		}
+		if automationSteps == "allDontSendDepositsToNetwork" {
+			automationSteps = "1,2,3,4,5,6,7,8"
+			automateSetupOnAWS = true
+		}
 		if automationSteps == "all" {
 			automationSteps = "1,2,3,4,5,6,7,8,9"
 			automateSetupOnAWS = true
@@ -380,6 +383,10 @@ var Cmd = &cobra.Command{
 					externalAwsAuth.AccessKey = keys.AccessKey
 					externalAwsAuth.SecretKey = keys.SecretKey
 				}
+				if externalAwsAuth.ServiceURL == "" {
+					fmt.Println("INFO: no lambda fn url, looking up url if exists")
+					externalAwsAuth.ServiceURL = serverless_aws_automation.GetLambdaFunctionUrl(ctx, awsAuth)
+				}
 				if keyGroupName == "" {
 					fmt.Println("INFO: no key group name provided, generating a key group name")
 					keyGroupName = fmt.Sprintf("keyGroup-%d", time.Now().Unix())
@@ -440,13 +447,3 @@ var Cmd = &cobra.Command{
 		}
 
 	}}
-
-func ForceDirToRootDir() string {
-	_, filename, _, _ := runtime.Caller(0)
-	dir := path.Join(path.Dir(filename), "")
-	err := os.Chdir(dir)
-	if err != nil {
-		panic(err.Error())
-	}
-	return dir
-}
