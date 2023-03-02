@@ -9,6 +9,7 @@ use (
 	./apps/cookbooks/serverless/ethereum/bls_signatures
 
 	./apps/external/web3
+	./apps/hades
 
 	./apps/hercules
 	./apps/snapshots

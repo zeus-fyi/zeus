@@ -11,9 +11,10 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-func (h *Hades) GetStatefulSetList(ctx context.Context, kubeCtxNs zeus_common_types.CloudCtxNs, filter *strings_filter.FilterOpts) (*v1.StatefulSetList, error) {
+func (h *Hades) GetStatefulSetList(ctx context.Context, kns zeus_common_types.CloudCtxNs, filter *strings_filter.FilterOpts) (*v1.StatefulSetList, error) {
+	h.SetContext(kns.Context)
 	opts := metav1.ListOptions{}
-	ssl, err := h.kc.AppsV1().StatefulSets(kubeCtxNs.Namespace).List(ctx, opts)
+	ssl, err := h.kc.AppsV1().StatefulSets(kns.Namespace).List(ctx, opts)
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("GetStatefulSetList")
 		return ssl, err
@@ -22,6 +23,7 @@ func (h *Hades) GetStatefulSetList(ctx context.Context, kubeCtxNs zeus_common_ty
 }
 
 func (h *Hades) GetStatefulSet(ctx context.Context, kns zeus_common_types.CloudCtxNs, name string, filter *strings_filter.FilterOpts) (*v1.StatefulSet, error) {
+	h.SetContext(kns.Context)
 	opts := metav1.GetOptions{}
 	ss, err := h.kc.AppsV1().StatefulSets(kns.Namespace).Get(ctx, name, opts)
 	if err != nil {
@@ -32,6 +34,7 @@ func (h *Hades) GetStatefulSet(ctx context.Context, kns zeus_common_types.CloudC
 }
 
 func (h *Hades) DeleteStatefulSet(ctx context.Context, kns zeus_common_types.CloudCtxNs, name string, filter *strings_filter.FilterOpts) error {
+	h.SetContext(kns.Context)
 	opts := metav1.DeleteOptions{}
 	err := h.kc.AppsV1().StatefulSets(kns.Namespace).Delete(ctx, name, opts)
 	if errors.IsNotFound(err) {
@@ -42,6 +45,7 @@ func (h *Hades) DeleteStatefulSet(ctx context.Context, kns zeus_common_types.Clo
 }
 
 func (h *Hades) CreateStatefulSet(ctx context.Context, kns zeus_common_types.CloudCtxNs, ss *v1.StatefulSet, filter *strings_filter.FilterOpts) (*v1.StatefulSet, error) {
+	h.SetContext(kns.Context)
 	opts := metav1.CreateOptions{}
 	ss, err := h.kc.AppsV1().StatefulSets(kns.Namespace).Create(ctx, ss, opts)
 	if err != nil {
