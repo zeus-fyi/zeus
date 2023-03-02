@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cm-hades
+data:
+  start.sh: |-
+    #!/bin/sh
+    exec hades --env="production"

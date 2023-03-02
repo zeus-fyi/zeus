@@ -10,13 +10,30 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-func (h *Hades) GetPodsUsingCtxNs(ctx context.Context, kubeCtxNs zeus_common_types.CloudCtxNs, filter *strings_filter.FilterOpts) (*v1.PodList, error) {
+func (h *Hades) GetPod(ctx context.Context, name string, kns zeus_common_types.CloudCtxNs) (*v1.Pod, error) {
+	h.SetContext(kns.Context)
+	log.Ctx(ctx).Debug().Msg("GetPod")
+	p, err := h.kc.CoreV1().Pods(kns.Namespace).Get(ctx, name, metav1.GetOptions{})
+	return p, err
+}
+
+func (h *Hades) GetPods(ctx context.Context, kns zeus_common_types.CloudCtxNs, opts metav1.ListOptions) (*v1.PodList, error) {
+	h.SetContext(kns.Context)
+	return h.kc.CoreV1().Pods(kns.Namespace).List(ctx, opts)
+}
+
+func (h *Hades) GetPodsUsingCtxNs(ctx context.Context, kubeCtxNs zeus_common_types.CloudCtxNs, logOpts *v1.PodLogOptions, filter *strings_filter.FilterOpts) (*v1.PodList, error) {
 	log.Ctx(ctx).Debug().Msg("GetPodsUsingCtxNs")
-	pods, err := h.GetPods(ctx, kubeCtxNs.Namespace, metav1.ListOptions{})
+	h.SetContext(kubeCtxNs.Context)
+
+	if logOpts == nil {
+		logOpts = &v1.PodLogOptions{}
+	}
+	pods, err := h.GetPods(ctx, kubeCtxNs, metav1.ListOptions{})
 	if err != nil {
-		log.Ctx(ctx).Err(err).Msg("GetPodsUsingCtxNs: GetPods")
 		return pods, err
 	}
+
 	if filter != nil {
 		filteredPods := v1.PodList{}
 		for _, pod := range pods.Items {
@@ -26,9 +43,6 @@ func (h *Hades) GetPodsUsingCtxNs(ctx context.Context, kubeCtxNs zeus_common_typ
 		}
 		return &filteredPods, nil
 	}
-	return pods, err
-}
 
-func (h *Hades) GetPods(ctx context.Context, ns string, opts metav1.ListOptions) (*v1.PodList, error) {
-	return h.kc.CoreV1().Pods(ns).List(ctx, opts)
+	return pods, err
 }
