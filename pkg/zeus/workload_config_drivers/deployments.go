@@ -5,6 +5,7 @@ import (
 )
 
 type DeploymentDriver struct {
+	ReplicaCount     *int32
 	ContainerDrivers map[string]ContainerDriver
 }
 
@@ -18,6 +19,11 @@ func (d *DeploymentDriver) SetDeploymentConfigs(dep *v1.Deployment) {
 	}
 	// TODO refactor into pod template spec config, then share w/sts + here
 	// init containers
+
+	if d.ReplicaCount != nil {
+		dep.Spec.Replicas = d.ReplicaCount
+	}
+
 	for i, c := range dep.Spec.Template.Spec.InitContainers {
 		if v, ok := d.ContainerDrivers[c.Name]; ok {
 			v.SetContainerConfigs(&c)

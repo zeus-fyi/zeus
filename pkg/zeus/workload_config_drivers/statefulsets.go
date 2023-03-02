@@ -5,6 +5,7 @@ import (
 )
 
 type StatefulSetDriver struct {
+	ReplicaCount     *int32
 	ContainerDrivers map[string]ContainerDriver
 	PVCDriver        *PersistentVolumeClaimsConfigDriver
 }
@@ -16,6 +17,10 @@ func NewStatefulSetDriver() StatefulSetDriver {
 func (s *StatefulSetDriver) SetStatefulSetConfigs(sts *v1.StatefulSet) {
 	if sts == nil {
 		return
+	}
+
+	if s.ReplicaCount != nil {
+		sts.Spec.Replicas = s.ReplicaCount
 	}
 
 	// init containers
