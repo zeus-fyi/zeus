@@ -81,16 +81,13 @@ spec:
               mountPath: "/data"
           ports:
             - name: p2p-tcp
-              containerPort: 9000
+              containerPort: 9651
               protocol: TCP
-            - name: p2p-udp
-              containerPort: 9000
-              protocol: UDP
             - name: http-api
-              containerPort: 5052
+              containerPort: 9650
               protocol: TCP
             - name: metrics
-              containerPort: 5054
+              containerPort: 9090
           livenessProbe:
             initialDelaySeconds: 60
             periodSeconds: 120
