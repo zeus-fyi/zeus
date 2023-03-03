@@ -5,7 +5,7 @@ metadata:
 data:
   start.sh: |-
     #!/bin/sh
-    exec /avalanchego/build/avalanchego
+    exec /avalanchego/build/avalanchego --db-dir=/data --http-host=0.0.0.0
   download.sh: |-
     #!/bin/sh
     exec snapshots --downloadURL="" --clientName=""
