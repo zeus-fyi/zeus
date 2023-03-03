@@ -92,7 +92,7 @@ var (
 	ServiceMonitorChartPath = filepaths.Path{
 		PackageName: "",
 		DirIn:       "./avax/node/servicemonitor",
-		DirOut:      "./avax/node/infra/processed_servicemonitor",
+		DirOut:      "./avax/node/processed_servicemonitor",
 		FnIn:        "servicemonitor", // filename for your gzip workload
 		FnOut:       "",
 		Env:         "",
