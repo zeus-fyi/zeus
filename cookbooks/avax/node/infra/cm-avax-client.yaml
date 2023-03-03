@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cm-avax-client
+data:
+  start.sh: |-
+    #!/bin/sh
+    exec /avalanchego/build/avalanchego
+  download.sh: |-
+    #!/bin/sh
+    exec snapshots --downloadURL="" --clientName=""
+  pause.sh: |-
+    #!/bin/sh
+    exec sleep 100000000000000000
+  hercules.sh: |-
+    #!/bin/sh 
+    hercules
