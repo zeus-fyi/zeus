@@ -36,12 +36,14 @@ func (t *AvaxCookbookTestSuite) TestClusterDestroy() {
 }
 
 func (t *AvaxCookbookTestSuite) TestClusterSetup() {
-	cd := AvaxNodeClusterDefinition
 	infCfg := zeus_topology_config_drivers.IngressDriver{NginxAuthURL: t.Tc.Web3SignerAuthURL}
 	customIngTc := zeus_topology_config_drivers.TopologyConfigDriver{
 		IngressDriver: &infCfg,
 	}
 	AvaxIngressSkeletonBaseConfig.TopologyConfigDriver = &customIngTc
+	IngressComponentBase.SkeletonBases["avaxIngress"] = AvaxIngressSkeletonBaseConfig
+	AvaxNodeComponentBases["avaxIngress"] = IngressComponentBase
+	cd := AvaxNodeClusterDefinition
 	gcd := cd.BuildClusterDefinitions()
 	t.Assert().NotEmpty(gcd)
 	fmt.Println(gcd)
@@ -73,7 +75,7 @@ type AvaxCookbookTestSuite struct {
 func (t *AvaxCookbookTestSuite) SetupTest() {
 	// points dir to test/configs
 	tc := configs.InitLocalTestConfigs()
-
+	t.Tc = tc
 	// uses the bearer token from test/configs/config.yaml
 	t.ZeusTestClient = zeus_client.NewDefaultZeusClient(tc.Bearer)
 	//t.ZeusTestClient = zeus_client.NewZeusClient("http://localhost:9001", tc.Bearer)
