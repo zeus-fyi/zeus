@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: "hades"
-          image: "zeusfyi/hercules:latest"
+          image: "zeusfyi/hades:latest"
           volumeMounts:
             - mountPath: "/scripts"
               name: "cm-hades"
