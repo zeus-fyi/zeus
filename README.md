@@ -6,6 +6,12 @@ Here are some early demo videos of infrastructure building and interfacing with 
 
 https://drive.google.com/drive/folders/1tACuTADLbmYT7vS8qBqY_l5buZh_cn__?usp=sharing
 
+### Zeus K8s Infra as Code Concepts
+
+Here we overview the core concepts needed to understand how you can build, deploy, configure K8s apps using Zeus, with a full walkthrough example of how we created an Ethereum beacon.
+
+https://medium.com/@zeusfyi/zeus-k8s-infra-as-code-concepts-47e690c6e3c5
+
 ### Ethereum staking from your wallets & private secret managers.
 
 Event driven signature automation for Ethereum staking using our synthetic staking beacon, which bundles middleware like slashing protection and mev into the service which streams validator messages to you on demand to serverless functions, hosted signers, or mobile apps, with the benefit of letting you stake from your wallet without anyone having access to your signing or withdrawal keys and without any infrastructure setup, with only a few lines of code.
