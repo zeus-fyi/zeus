@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: "zeus-avax-client"
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  ingressClassName: "nginx"
+  tls:
+    - secretName: avax-tls
+      hosts:
+        - avax.zeus.fyi
+  rules:
+    - host: avax.zeus.fyi
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: zeus-avax-client
+                port:
+                  number: 80
