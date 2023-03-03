@@ -20,7 +20,7 @@ const (
 	avaxDiskSize = "2Ti"
 
 	avaxCPURequest = "8"
-	avaxRAMRequest = "16Gi"
+	avaxRAMRequest = "12Gi"
 )
 
 var (

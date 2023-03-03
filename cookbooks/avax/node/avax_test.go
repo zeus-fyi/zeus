@@ -8,6 +8,7 @@ import (
 	"github.com/stretchr/testify/suite"
 	"github.com/zeus-fyi/zeus/cookbooks"
 	zeus_client "github.com/zeus-fyi/zeus/pkg/zeus/client"
+	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_req_types"
 	zeus_topology_config_drivers "github.com/zeus-fyi/zeus/pkg/zeus/workload_config_drivers"
 	"github.com/zeus-fyi/zeus/test/configs"
 	"github.com/zeus-fyi/zeus/test/test_suites"
@@ -23,6 +24,15 @@ func (t *AvaxCookbookTestSuite) TestClusterDeploy() {
 	cdep := cd.GenerateDeploymentRequest()
 	_, err = t.ZeusTestClient.DeployCluster(ctx, cdep)
 	t.Require().Nil(err)
+}
+
+func (t *AvaxCookbookTestSuite) TestClusterDestroy() {
+	d := zeus_req_types.TopologyDeployRequest{
+		CloudCtxNs: AvaxNodeCloudCtxNs,
+	}
+	resp, err := t.ZeusTestClient.DestroyDeploy(ctx, d)
+	t.Require().Nil(err)
+	t.Assert().NotEmpty(resp)
 }
 
 func (t *AvaxCookbookTestSuite) TestClusterSetup() {
