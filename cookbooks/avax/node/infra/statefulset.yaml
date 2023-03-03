@@ -93,11 +93,6 @@ spec:
             periodSeconds: 120
             tcpSocket:
               port: http-api
-          readinessProbe:
-            initialDelaySeconds: 10
-            periodSeconds: 10
-            tcpSocket:
-              port: http-api
           resources:
             {}
       nodeSelector:
