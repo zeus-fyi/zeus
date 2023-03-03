@@ -17,6 +17,13 @@ import (
 var ctx = context.Background()
 
 func (t *AvaxCookbookTestSuite) TestClusterDeploy() {
+	infCfg := zeus_topology_config_drivers.IngressDriver{NginxAuthURL: t.Tc.Web3SignerAuthURL}
+	customIngTc := zeus_topology_config_drivers.TopologyConfigDriver{
+		IngressDriver: &infCfg,
+	}
+	AvaxIngressSkeletonBaseConfig.TopologyConfigDriver = &customIngTc
+	IngressComponentBase.SkeletonBases["avaxIngress"] = AvaxIngressSkeletonBaseConfig
+	AvaxNodeComponentBases["avaxIngress"] = IngressComponentBase
 	cd := AvaxNodeClusterDefinition
 	_, err := cd.UploadChartsFromClusterDefinition(ctx, t.ZeusTestClient, true)
 	t.Require().Nil(err)
