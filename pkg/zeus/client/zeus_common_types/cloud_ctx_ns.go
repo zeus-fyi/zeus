@@ -5,5 +5,5 @@ type CloudCtxNs struct {
 	Region        string `json:"region"`
 	Context       string `json:"context"`
 	Namespace     string `json:"namespace"`
-	Env           string `json:"env"`
+	Env           string `json:"env,omitempty"`
 }

@@ -12,7 +12,8 @@ const (
 	// InfraReadChartV1Path reads the chart workload you uploaded
 	InfraReadChartV1Path = "/v1/infra/read/chart"
 	// InfraReadTopologyV1Path reads the metadata for your uploaded topologies
-	InfraReadTopologyV1Path = "/v1/infra/read/topologies"
+	InfraReadTopologyV1Path      = "/v1/infra/read/topologies"
+	InfraReadOrgTopologiesV1Path = "v1/infra/read/org/topologies"
 
 	// deploy infra, distributed systems api endpoints
 
