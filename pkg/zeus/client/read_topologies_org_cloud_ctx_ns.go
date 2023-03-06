@@ -13,7 +13,7 @@ import (
 func (z *ZeusClient) ReadTopologiesOrgCloudCtxNs(ctx context.Context) (zeus_resp_types.TopologiesOrgCloudCtxNsSlice, error) {
 	respJson := zeus_resp_types.TopologiesOrgCloudCtxNsSlice{}
 	resp, err := z.R().
-		SetResult(respJson).
+		SetResult(&respJson).
 		Post(zeus_endpoints.InfraReadOrgTopologiesV1Path)
 
 	if err != nil || resp.StatusCode() != http.StatusOK {
