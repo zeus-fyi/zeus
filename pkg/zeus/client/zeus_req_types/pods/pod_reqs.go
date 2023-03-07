@@ -9,9 +9,9 @@ import (
 
 type PodActionRequest struct {
 	zeus_req_types.TopologyDeployRequest
-	Action        string
-	PodName       string
-	ContainerName string
+	Action        string `json:"action"`
+	PodName       string `json:"podName,omitempty"`
+	ContainerName string `json:"containerName,omitempty"`
 
 	FilterOpts *strings_filter.FilterOpts
 	ClientReq  *ClientRequest
