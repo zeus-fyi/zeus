@@ -1,6 +1,9 @@
 package zeus_pods_reqs
 
-const DeleteAllPods = "delete-all"
-const GetPodLogs = "logs"
-const GetPods = "describe"
-const PortForwardToAllMatchingPods = "port-forward-all"
+const (
+	DeleteAllPods                = "delete-all"
+	GetPodLogs                   = "logs"
+	GetPods                      = "describe"
+	PortForwardToAllMatchingPods = "port-forward-all"
+	DescribeAudit                = "describe-audit"
+)

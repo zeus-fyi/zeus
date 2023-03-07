@@ -14,7 +14,7 @@ func (z *ZeusClient) ReadTopologiesOrgCloudCtxNs(ctx context.Context) (zeus_resp
 	respJson := zeus_resp_types.TopologiesOrgCloudCtxNsSlice{}
 	resp, err := z.R().
 		SetResult(&respJson).
-		Post(zeus_endpoints.InfraReadOrgTopologiesV1Path)
+		Get(zeus_endpoints.InfraReadOrgTopologiesV1Path)
 
 	if err != nil || resp.StatusCode() != http.StatusOK {
 		log.Ctx(ctx).Err(err).Msg("ZeusClient: ReadTopologiesOrgCloudCtxNs")
