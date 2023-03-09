@@ -3,6 +3,7 @@ package serverless_aws_automation
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"strings"
 
@@ -13,22 +14,22 @@ import (
 	aegis_aws_secretmanager "github.com/zeus-fyi/zeus/pkg/aegis/aws/secretmanager"
 )
 
-func AddMnemonicHDWalletSecretInAWSSecretManager(ctx context.Context, awsAuth aws_aegis_auth.AuthAWS, mnemonicAndHDWalletSecretName string, hdWalletPassword string, mnemonic string) {
+func AddMnemonicHDWalletSecretInAWSSecretManager(ctx context.Context, awsAuth aws_aegis_auth.AuthAWS, mnemonicAndHDWalletSecretName string, hdWalletPassword string, mnemonic string) error {
 	fmt.Println("INFO: storing mnemonic and wallet password in aws secrets manager with secret name: ", mnemonicAndHDWalletSecretName)
 	sm, err := aegis_aws_secretmanager.InitSecretsManager(ctx, awsAuth)
 	if err != nil {
-		panic(err)
+		return err
 	}
 	if sm.DoesSecretExist(ctx, mnemonicAndHDWalletSecretName) {
 		log.Info().Msg("INFO: secret already exists, skipping creation")
-		return
+		return nil
 	}
 	m := make(map[string]string)
 	m["hdWalletPassword"] = hdWalletPassword
 	m["mnemonic"] = mnemonic
 	b, err := json.Marshal(m)
 	if err != nil {
-		panic(err)
+		return err
 	}
 	si := secretsmanager.CreateSecretInput{
 		Name:         aws.String(mnemonicAndHDWalletSecretName),
@@ -38,27 +39,28 @@ func AddMnemonicHDWalletSecretInAWSSecretManager(ctx context.Context, awsAuth aw
 	if err != nil {
 		if strings.Contains(err.Error(), "already exists") {
 			fmt.Println("INFO: secret already exists, skipping creation")
-			return
+			return nil
 		}
-		panic(err)
+		return err
 	}
+	return err
 }
 
-func AddAgeEncryptionKeyInAWSSecretManager(ctx context.Context, awsAuth aws_aegis_auth.AuthAWS, ageEncryptionSecretName, agePubKey, agePrivKey string) {
+func AddAgeEncryptionKeyInAWSSecretManager(ctx context.Context, awsAuth aws_aegis_auth.AuthAWS, ageEncryptionSecretName, agePubKey, agePrivKey string) error {
 	fmt.Println("INFO: storing age encryption key in aws secrets manager with secret name: ", ageEncryptionSecretName)
 	sm, err := aegis_aws_secretmanager.InitSecretsManager(ctx, awsAuth)
 	if err != nil {
-		panic(err)
+		return err
 	}
 	if sm.DoesSecretExist(ctx, ageEncryptionSecretName) {
 		log.Info().Msg("INFO: secret already exists, skipping creation")
-		return
+		return nil
 	}
 	m := make(map[string]string)
 	m[agePubKey] = agePrivKey
 	b, err := json.Marshal(m)
 	if err != nil {
-		panic(err)
+		return err
 	}
 	si := secretsmanager.CreateSecretInput{
 		Name:         aws.String(ageEncryptionSecretName),
@@ -68,28 +70,30 @@ func AddAgeEncryptionKeyInAWSSecretManager(ctx context.Context, awsAuth aws_aegi
 	if err != nil {
 		if strings.Contains(err.Error(), "already exists") {
 			fmt.Println("INFO: secret already exists, skipping creation")
-			return
+			return nil
 		}
-		panic(err)
+		return err
 	}
+	return err
+
 }
 
-func AddExternalAccessKeysInAWSSecretManager(ctx context.Context, awsAuth aws_aegis_auth.AuthAWS, externalLambdaAccessKeysSecretName string, awsAuthExternal aws_aegis_auth.AuthAWS) {
+func AddExternalAccessKeysInAWSSecretManager(ctx context.Context, awsAuth aws_aegis_auth.AuthAWS, externalLambdaAccessKeysSecretName string, awsAuthExternal aws_aegis_auth.AuthAWS) error {
 	fmt.Println("INFO: storing external iam user credentials in aws secrets manager with secret name: ", externalLambdaAccessKeysSecretName)
 	sm, err := aegis_aws_secretmanager.InitSecretsManager(ctx, awsAuth)
 	if err != nil {
-		panic(err)
+		return err
 	}
 	if sm.DoesSecretExist(ctx, externalLambdaAccessKeysSecretName) {
 		log.Info().Msg("INFO: secret already exists, skipping creation")
-		return
+		return nil
 	}
 	if awsAuthExternal.AccessKey == "" || awsAuthExternal.SecretKey == "" {
-		panic("ERROR: external access key and secret key cannot be empty")
+		return errors.New("ERROR: external access key and secret key cannot be empty")
 	}
 	b, err := json.Marshal(awsAuthExternal)
 	if err != nil {
-		panic(err)
+		return err
 	}
 	si := secretsmanager.CreateSecretInput{
 		Name:         aws.String(externalLambdaAccessKeysSecretName),
@@ -99,10 +103,11 @@ func AddExternalAccessKeysInAWSSecretManager(ctx context.Context, awsAuth aws_ae
 	if err != nil {
 		if strings.Contains(err.Error(), "already exists") {
 			fmt.Println("INFO: secret already exists, skipping creation")
-			return
+			return nil
 		}
-		panic(err)
+		return err
 	}
+	return err
 }
 
 func GetExternalAccessKeySecret(ctx context.Context, awsAuth aws_aegis_auth.AuthAWS, sn string) (aws_aegis_auth.AuthAWS, error) {
@@ -126,14 +131,14 @@ func GetExternalAccessKeySecret(ctx context.Context, awsAuth aws_aegis_auth.Auth
 	return extAuth, err
 }
 
-func UpdateExternalAccessKeySecret(ctx context.Context, auth aws_aegis_auth.AuthAWS, externalLambdaAccessKeysSecretName string, extAuth aws_aegis_auth.AuthAWS) {
+func UpdateExternalAccessKeySecret(ctx context.Context, auth aws_aegis_auth.AuthAWS, externalLambdaAccessKeysSecretName string, extAuth aws_aegis_auth.AuthAWS) error {
 	sm, err := aegis_aws_secretmanager.InitSecretsManager(ctx, auth)
 	if err != nil {
-		panic(err)
+		return err
 	}
 	b, err := json.Marshal(extAuth)
 	if err != nil {
-		panic(err)
+		return err
 	}
 	si := &secretsmanager.UpdateSecretInput{
 		SecretId:     aws.String(externalLambdaAccessKeysSecretName),
@@ -141,14 +146,15 @@ func UpdateExternalAccessKeySecret(ctx context.Context, auth aws_aegis_auth.Auth
 	}
 	_, err = sm.UpdateSecret(ctx, si)
 	if err != nil {
-		panic(err)
+		return err
 	}
+	return err
 }
 
 func GetSecret(ctx context.Context, awsAuth aws_aegis_auth.AuthAWS, sn string) (map[string]string, error) {
 	sm, err := aegis_aws_secretmanager.InitSecretsManager(ctx, awsAuth)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 	secretInfo := aegis_aws_secretmanager.SecretInfo{
 		Region: awsAuth.Region,
@@ -156,12 +162,12 @@ func GetSecret(ctx context.Context, awsAuth aws_aegis_auth.AuthAWS, sn string) (
 	}
 	b, err := sm.GetSecretBinary(ctx, secretInfo)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 	newM := make(map[string]string)
 	err = json.Unmarshal(b, &newM)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 	return newM, err
 }
@@ -169,7 +175,7 @@ func GetSecret(ctx context.Context, awsAuth aws_aegis_auth.AuthAWS, sn string) (
 func GetExternalAccessKeySecretIfExists(ctx context.Context, awsAuth aws_aegis_auth.AuthAWS, sn string) (aws_aegis_auth.AuthAWS, error) {
 	sm, err := aegis_aws_secretmanager.InitSecretsManager(ctx, awsAuth)
 	if err != nil {
-		panic(err)
+		return aws_aegis_auth.AuthAWS{}, err
 	}
 	secretInfo := aegis_aws_secretmanager.SecretInfo{
 		Region: awsAuth.Region,
@@ -181,12 +187,12 @@ func GetExternalAccessKeySecretIfExists(ctx context.Context, awsAuth aws_aegis_a
 			fmt.Println("INFO: secret doesn't exists")
 			return aws_aegis_auth.AuthAWS{}, nil
 		}
-		panic(err)
+		return aws_aegis_auth.AuthAWS{}, err
 	}
 	extAuth := aws_aegis_auth.AuthAWS{}
 	err = json.Unmarshal(b, &extAuth)
 	if err != nil {
-		panic(err)
+		return aws_aegis_auth.AuthAWS{}, err
 	}
 	return extAuth, err
 }

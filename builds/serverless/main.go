@@ -244,7 +244,10 @@ var Cmd = &cobra.Command{
 				}
 				fmt.Println(s)
 			case "updateLambdaKeystoresLayerToLatest":
-				serverless_aws_automation.UpdateLambdaFunctionKeystoresLayer(ctx, awsAuth)
+				err := serverless_aws_automation.UpdateLambdaFunctionKeystoresLayer(ctx, awsAuth)
+				if err != nil {
+					panic(err)
+				}
 			case "1", "createSecretsAndStoreInAWS":
 				fmt.Println("INFO: no credentials provided, will generate new credentials, but won't" +
 					" store these in AWS if you already have them in AWS, it will reuse your AWS stored ones for the following steps")
@@ -269,12 +272,21 @@ var Cmd = &cobra.Command{
 					fmt.Println("mnemonic: ", mnemonic)
 				}
 				if automateSetupOnAWS {
-					serverless_aws_automation.AddMnemonicHDWalletSecretInAWSSecretManager(ctx, awsAuth, mnemonicAndHDWalletSecretName, hdWalletPassword, mnemonic)
-					serverless_aws_automation.AddAgeEncryptionKeyInAWSSecretManager(ctx, awsAuth, ageEncryptionSecretName, agePubKey, agePrivKey)
+					err := serverless_aws_automation.AddMnemonicHDWalletSecretInAWSSecretManager(ctx, awsAuth, mnemonicAndHDWalletSecretName, hdWalletPassword, mnemonic)
+					if err != nil {
+						panic(err)
+					}
+					err = serverless_aws_automation.AddAgeEncryptionKeyInAWSSecretManager(ctx, awsAuth, ageEncryptionSecretName, agePubKey, agePrivKey)
+					if err != nil {
+						panic(err)
+					}
 				}
 			case "2", "createInternalLambdaUser":
 				fmt.Println("INFO: creating internal iam user, role, policies for serverless deployment")
-				serverless_aws_automation.InternalUserRolePolicySetupForLambdaDeployment(ctx, awsAuth)
+				err := serverless_aws_automation.InternalUserRolePolicySetupForLambdaDeployment(ctx, awsAuth)
+				if err != nil {
+					panic(err)
+				}
 			case "3", "generateValidatorDeposits":
 				fmt.Println("INFO: generating keystores, deposit data, and encrypting keystores with age encryption")
 				s, err := serverless_aws_automation.GetSecret(ctx, awsAuth, ageEncryptionSecretName)
@@ -306,15 +318,24 @@ var Cmd = &cobra.Command{
 				}
 			case "4", "createLambdaFunctionKeystoresLayer":
 				fmt.Println("INFO: creating lambda keystore layer using your encrypted keystores from step 3")
-				serverless_aws_automation.CreateLambdaFunctionKeystoresLayer(ctx, awsAuth, keystoresPath)
+				err := serverless_aws_automation.CreateLambdaFunctionKeystoresLayer(ctx, awsAuth, keystoresPath)
+				if err != nil {
+					panic(err)
+				}
 			case "5", "createLambdaFunction":
 				fmt.Println("INFO: creating lambda function")
-				lambdaFnUrl := serverless_aws_automation.CreateLambdaFunction(ctx, awsAuth)
+				lambdaFnUrl, err := serverless_aws_automation.CreateLambdaFunction(ctx, awsAuth)
+				if err != nil {
+					panic(err)
+				}
 				externalAwsAuth.ServiceURL = lambdaFnUrl
 				fmt.Println("lambdaFnUrl: ", externalAwsAuth.ServiceURL)
 			case "6", "createExternalLambdaUser":
 				fmt.Println("INFO: creating external iam user, role, policies for us to send validator messages to your lambda function")
-				serverless_aws_automation.ExternalUserRolePolicySetupForLambdaDeployment(ctx, awsAuth)
+				err := serverless_aws_automation.ExternalUserRolePolicySetupForLambdaDeployment(ctx, awsAuth)
+				if err != nil {
+					panic(err)
+				}
 				if externalAwsAuth.AccessKey == "" || externalAwsAuth.SecretKey == "" {
 					s, err := serverless_aws_automation.GetExternalAccessKeySecretIfExists(ctx, awsAuth, externalZeusLambdaAccessKeys)
 					if err != nil {
@@ -323,8 +344,14 @@ var Cmd = &cobra.Command{
 					externalAwsAuth.AccessKey = s.AccessKey
 					externalAwsAuth.SecretKey = s.SecretKey
 					if externalAwsAuth.AccessKey == "" || externalAwsAuth.SecretKey == "" {
-						externalAccessKeys := serverless_aws_automation.CreateExternalLambdaUserAccessKeys(ctx, awsAuth)
-						serverless_aws_automation.AddExternalAccessKeysInAWSSecretManager(ctx, awsAuth, externalZeusLambdaAccessKeys, externalAccessKeys)
+						externalAccessKeys, err := serverless_aws_automation.CreateExternalLambdaUserAccessKeys(ctx, awsAuth)
+						if err != nil {
+							panic(err)
+						}
+						err = serverless_aws_automation.AddExternalAccessKeysInAWSSecretManager(ctx, awsAuth, externalZeusLambdaAccessKeys, externalAccessKeys)
+						if err != nil {
+							panic(err)
+						}
 						externalAwsAuth.AccessKey = externalAccessKeys.AccessKey
 						externalAwsAuth.SecretKey = externalAccessKeys.SecretKey
 					}
@@ -332,7 +359,11 @@ var Cmd = &cobra.Command{
 			case "7", "verifyLambdaFunction":
 				if externalAwsAuth.ServiceURL == "" {
 					fmt.Println("INFO: no lambda fn url, looking up url if exists")
-					externalAwsAuth.ServiceURL = serverless_aws_automation.GetLambdaFunctionUrl(ctx, awsAuth)
+					url, err := serverless_aws_automation.GetLambdaFunctionUrl(ctx, awsAuth)
+					if err != nil {
+						panic(err)
+					}
+					externalAwsAuth.ServiceURL = url
 				}
 				if externalAwsAuth.ServiceURL == "" {
 					panic("ERROR: lambda function url not provided or configured")
@@ -347,10 +378,16 @@ var Cmd = &cobra.Command{
 					externalAwsAuth.SecretKey = s.SecretKey
 					if externalAwsAuth.AccessKey == "" || externalAwsAuth.SecretKey == "" {
 						fmt.Println("INFO: no external access keys found in aws secret manager, generating and storing new access keys")
-						externalAccessKeys := serverless_aws_automation.CreateExternalLambdaUserAccessKeys(ctx, awsAuth)
+						externalAccessKeys, err := serverless_aws_automation.CreateExternalLambdaUserAccessKeys(ctx, awsAuth)
+						if err != nil {
+							panic(err)
+						}
 						externalAwsAuth.AccessKey = externalAccessKeys.AccessKey
 						externalAwsAuth.SecretKey = externalAccessKeys.SecretKey
-						serverless_aws_automation.AddExternalAccessKeysInAWSSecretManager(ctx, awsAuth, externalZeusLambdaAccessKeys, externalAccessKeys)
+						err = serverless_aws_automation.AddExternalAccessKeysInAWSSecretManager(ctx, awsAuth, externalZeusLambdaAccessKeys, externalAccessKeys)
+						if err != nil {
+							panic(err)
+						}
 					}
 				}
 				lambdaAccessAuth := aws_aegis_auth.AuthAWS{
@@ -373,7 +410,10 @@ var Cmd = &cobra.Command{
 					panic("ERROR: fee recipient is not a valid ethereum address")
 				}
 				feeRecipient = strings_filter.AddHexPrefix(feeRecipient)
-				serverless_aws_automation.ExternalUserRolePolicySetupForLambdaDeployment(ctx, awsAuth)
+				err = serverless_aws_automation.ExternalUserRolePolicySetupForLambdaDeployment(ctx, awsAuth)
+				if err != nil {
+					panic(err)
+				}
 				if externalAwsAuth.AccessKey == "" || externalAwsAuth.SecretKey == "" {
 					fmt.Println("INFO: no credentials provided, generating new aws access key pair")
 					keys, err := serverless_aws_automation.GetExternalAccessKeySecret(ctx, awsAuth, externalZeusLambdaAccessKeys)
@@ -385,7 +425,10 @@ var Cmd = &cobra.Command{
 				}
 				if externalAwsAuth.ServiceURL == "" {
 					fmt.Println("INFO: no lambda fn url, looking up url if exists")
-					externalAwsAuth.ServiceURL = serverless_aws_automation.GetLambdaFunctionUrl(ctx, awsAuth)
+					externalAwsAuth.ServiceURL, err = serverless_aws_automation.GetLambdaFunctionUrl(ctx, awsAuth)
+					if err != nil {
+						panic(err)
+					}
 				}
 				if keyGroupName == "" {
 					fmt.Println("INFO: no key group name provided, generating a key group name")

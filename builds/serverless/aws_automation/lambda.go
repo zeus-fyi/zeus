@@ -12,18 +12,18 @@ import (
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 )
 
-func CreateLambdaFunction(ctx context.Context, auth aegis_aws_auth.AuthAWS) string {
+func CreateLambdaFunction(ctx context.Context, auth aegis_aws_auth.AuthAWS) (string, error) {
 	fmt.Println("INFO: creating lambda function")
 	lm, err := aws_lambda.InitLambdaClient(ctx, auth)
 	if err != nil {
-		panic(err)
+		return "", err
 	}
 	_, err = lm.CreateServerlessBLSLambdaFn(ctx)
 	if err != nil {
 		if strings.Contains(err.Error(), "Function already exist") {
 			log.Ctx(ctx).Info().Msg("INFO: lambda function already exists, skipping creation")
 		} else {
-			panic(err)
+			return "", err
 		}
 	}
 	fmt.Println("INFO: creating lambda function url")
@@ -33,11 +33,11 @@ func CreateLambdaFunction(ctx context.Context, auth aegis_aws_auth.AuthAWS) stri
 			log.Ctx(ctx).Info().Msg("INFO: lambda function url already exists, skipping creation")
 			lfUrlCfg, lerr := lm.GetExternalLambdaSignerConfigURL(ctx)
 			if lerr != nil {
-				panic(lerr)
+				return "", lerr
 			}
 			lfUrl = &lambda.CreateFunctionUrlConfigOutput{FunctionUrl: lfUrlCfg.FunctionUrl}
 		} else {
-			panic(err)
+			return "", err
 		}
 	}
 	_, err = lm.MakeEthereumSignerFuncAuthIAM(ctx)
@@ -45,47 +45,49 @@ func CreateLambdaFunction(ctx context.Context, auth aegis_aws_auth.AuthAWS) stri
 		if strings.Contains(err.Error(), "already exists") {
 			log.Ctx(ctx).Info().Msg("INFO: lambda function iam auth config already exists, skipping creation")
 		} else {
-			panic(err)
+			return "", err
 		}
 	}
 	if lfUrl.FunctionUrl == nil {
 		panic("ERROR: lambda function url is nil")
 	}
-	return *lfUrl.FunctionUrl
+	return *lfUrl.FunctionUrl, err
 }
 
-func CreateLambdaFunctionKeystoresLayer(ctx context.Context, auth aegis_aws_auth.AuthAWS, p filepaths.Path) {
+func CreateLambdaFunctionKeystoresLayer(ctx context.Context, auth aegis_aws_auth.AuthAWS, p filepaths.Path) error {
 	fmt.Println("INFO: creating lambda function keystores layer")
 	lm, err := aws_lambda.InitLambdaClient(ctx, auth)
 	if err != nil {
-		panic(err)
+		return err
 	}
 	_, err = lm.CreateServerlessBLSLambdaFnKeystoreLayer(ctx, p)
 	if err != nil {
-		panic(err)
+		return err
 	}
+	return err
 }
 
-func GetLambdaFunctionUrl(ctx context.Context, auth aegis_aws_auth.AuthAWS) string {
+func GetLambdaFunctionUrl(ctx context.Context, auth aegis_aws_auth.AuthAWS) (string, error) {
 	fmt.Println("INFO: getting lambda function url")
 	lm, err := aws_lambda.InitLambdaClient(ctx, auth)
 	if err != nil {
-		panic(err)
+		return "", err
 	}
 	lcfg, err := lm.GetExternalLambdaSignerConfigURL(ctx)
 	if err != nil {
-		panic(err)
+		return "", err
 	}
-	return *lcfg.FunctionUrl
+	return *lcfg.FunctionUrl, err
 }
-func UpdateLambdaFunctionKeystoresLayer(ctx context.Context, auth aegis_aws_auth.AuthAWS) {
+func UpdateLambdaFunctionKeystoresLayer(ctx context.Context, auth aegis_aws_auth.AuthAWS) error {
 	fmt.Println("INFO: updating lambda function keystores layer to latest")
 	lm, err := aws_lambda.InitLambdaClient(ctx, auth)
 	if err != nil {
-		panic(err)
+		return err
 	}
 	_, err = lm.UpdateServerlessBLSLambdaFnKeystoreLayer(ctx)
 	if err != nil {
-		panic(err)
+		return err
 	}
+	return err
 }
