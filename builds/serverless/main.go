@@ -396,7 +396,10 @@ var Cmd = &cobra.Command{
 					SecretKey: externalAwsAuth.SecretKey,
 				}
 				fmt.Println("INFO: verifying we can send validator messages to your lambda function")
-				serverless_aws_automation.VerifyLambdaSigner(ctx, lambdaAccessAuth, keystoresPath, externalAwsAuth.ServiceURL, ageEncryptionSecretName)
+				err := serverless_aws_automation.VerifyLambdaSigner(ctx, lambdaAccessAuth, keystoresPath, externalAwsAuth.ServiceURL, ageEncryptionSecretName)
+				if err != nil {
+					panic(err)
+				}
 			case "8", "createValidatorServiceRequestOnZeus":
 				fmt.Println("INFO: creating zeus validator service request")
 				if bearerToken == "" {
@@ -488,5 +491,4 @@ var Cmd = &cobra.Command{
 				}
 			}
 		}
-
 	}}
