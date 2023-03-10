@@ -54,6 +54,28 @@ data:
       --authrpc.addr=0.0.0.0 \
       --authrpc.port=8551 \
       --authrpc.vhosts=*
+  gethGoerli.sh: |-
+    #!/bin/sh
+    exec geth \
+      --datadir=/data \
+      --port=30303 \
+      --goerli \
+      --http \
+      --http.addr=0.0.0.0 \
+      --http.port=8545 \
+      --http.vhosts=* \
+      --http.corsdomain=* \
+      --ws \
+      --ws.addr=0.0.0.0 \
+      --ws.port=8546 \
+      --ws.origins=* \
+      --metrics \
+      --metrics.addr=0.0.0.0 \
+      --metrics.port=6060 \
+      --authrpc.jwtsecret=/data/jwt.hex \
+      --authrpc.addr=0.0.0.0 \
+      --authrpc.port=8551 \
+      --authrpc.vhosts=*
   hercules.sh: |-
     #!/bin/sh 
     hercules

@@ -18,10 +18,10 @@ import (
 )
 
 // VerifyLambdaSigner requires your deposit_data_*.json files to be in your keystoresPath, since it uses it to get your public keys to verify.
-func VerifyLambdaSigner(ctx context.Context, auth aegis_aws_auth.AuthAWS, keystoresPath filepaths.Path, funcUrl string, ageEncryptionSecretNameInSecretManager string) {
+func VerifyLambdaSigner(ctx context.Context, auth aegis_aws_auth.AuthAWS, keystoresPath filepaths.Path, funcUrl string, ageEncryptionSecretNameInSecretManager string) error {
 	err := bls_signer.InitEthBLS()
 	if err != nil {
-		panic(err)
+		return err
 	}
 	sr := bls_serverless_signing.SignatureRequests{
 		SecretName:        ageEncryptionSecretNameInSecretManager,
@@ -33,19 +33,22 @@ func VerifyLambdaSigner(ctx context.Context, auth aegis_aws_auth.AuthAWS, keysto
 	keystoresPath.FilterFiles = filter
 	dpSlice, err := signing_automation_ethereum.ParseValidatorDepositSliceJSON(ctx, keystoresPath)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	sliceGroup := signing_automation_ethereum.ValidatorDepositSlice{}
 	for _, dp := range dpSlice {
 		hexMessage, herr := aegis_inmemdbs.RandomHex(10)
 		if herr != nil {
-			panic(herr)
+			return herr
 		}
 		sr.SignatureRequests.Map[strings_filter.AddHexPrefix(dp.Pubkey)] = aegis_inmemdbs.EthereumBLSKeySignatureRequest{Message: hexMessage}
 		sliceGroup = append(sliceGroup, dp)
 		if len(sliceGroup) >= 100 {
-			sliceGroup = sendVerify(ctx, auth, funcUrl, sr, sliceGroup)
+			sliceGroup, err = sendVerify(ctx, auth, funcUrl, sr, sliceGroup)
+			if err != nil {
+				return err
+			}
 			sr = bls_serverless_signing.SignatureRequests{
 				SecretName:        ageEncryptionSecretNameInSecretManager,
 				SignatureRequests: aegis_inmemdbs.EthereumBLSKeySignatureRequests{Map: make(map[string]aegis_inmemdbs.EthereumBLSKeySignatureRequest)},
@@ -54,18 +57,19 @@ func VerifyLambdaSigner(ctx context.Context, auth aegis_aws_auth.AuthAWS, keysto
 		}
 	}
 	if len(sliceGroup) > 0 {
-		sendVerify(ctx, auth, funcUrl, sr, sliceGroup)
+		_, err = sendVerify(ctx, auth, funcUrl, sr, sliceGroup)
 	}
+	return err
 }
 
 // returns keys if the func fails due to non-200 response to retry
 func sendVerify(ctx context.Context, auth aegis_aws_auth.AuthAWS, funcUrl string, sr bls_serverless_signing.SignatureRequests,
-	dpSlice signing_automation_ethereum.ValidatorDepositSlice) signing_automation_ethereum.ValidatorDepositSlice {
+	dpSlice signing_automation_ethereum.ValidatorDepositSlice) (signing_automation_ethereum.ValidatorDepositSlice, error) {
 	r := resty.New()
 	r.SetBaseURL(funcUrl)
 	req, err := auth.CreateV4AuthPOSTReq(ctx, "lambda", funcUrl, sr)
 	if err != nil {
-		panic(err)
+		return signing_automation_ethereum.ValidatorDepositSlice{}, err
 	}
 	respMsgMap := make(map[string]aegis_inmemdbs.EthereumBLSKeySignatureResponse)
 	signedEventResponse := aegis_inmemdbs.EthereumBLSKeySignatureResponses{
@@ -82,14 +86,14 @@ func sendVerify(ctx context.Context, auth aegis_aws_auth.AuthAWS, funcUrl string
 		SetBody(sr).Post("/")
 
 	if err != nil {
-		panic(err)
+		return signing_automation_ethereum.ValidatorDepositSlice{}, err
 	}
 	respCode := resp.StatusCode()
 	if respCode != 200 {
 		// cool down, too many requests most likely
 		log.Warn().Msgf("resp code: %d", respCode)
 		time.Sleep(10 * time.Second)
-		return dpSlice
+		return dpSlice, nil
 	}
 
 	verified, err := signedEventResponse.VerifySignatures(ctx, sr.SignatureRequests, true)
@@ -102,7 +106,7 @@ func sendVerify(ctx context.Context, auth aegis_aws_auth.AuthAWS, funcUrl string
 
 	if len(verified) != len(dpSlice) {
 		err = errors.New("not all signatures verified")
-		panic(err)
+		return signing_automation_ethereum.ValidatorDepositSlice{}, err
 	}
-	return signing_automation_ethereum.ValidatorDepositSlice{}
+	return signing_automation_ethereum.ValidatorDepositSlice{}, err
 }
