@@ -2,12 +2,15 @@ package hestia_req_types
 
 import (
 	"fmt"
+
 	strings_filter "github.com/zeus-fyi/zeus/pkg/utils/strings"
 )
 
 const (
 	EthereumMainnetProtocolNetworkID  = 1
+	EthereumGoerliProtocolNetworkID   = 5
 	EthereumEphemeryProtocolNetworkID = 1673748447294772000
+	Goerli                            = "goerli"
 	Mainnet                           = "mainnet"
 	Ephemery                          = "ephemery"
 )
@@ -16,6 +19,8 @@ func ProtocolNetworkStringToID(network string) int {
 	switch network {
 	case Mainnet:
 		return EthereumMainnetProtocolNetworkID
+	case Goerli:
+		return EthereumGoerliProtocolNetworkID
 	case Ephemery:
 		return EthereumEphemeryProtocolNetworkID
 	default:
@@ -27,6 +32,8 @@ func ProtocolNetworkIDToString(id int) string {
 	switch id {
 	case EthereumMainnetProtocolNetworkID:
 		return Mainnet
+	case EthereumGoerliProtocolNetworkID:
+		return Goerli
 	case EthereumEphemeryProtocolNetworkID:
 		return Ephemery
 	default:
