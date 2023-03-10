@@ -27,6 +27,20 @@ data:
   pause.sh: |-
     #!/bin/sh
     exec sleep 100000000000000000
+  lodestarGoerli.sh: |-
+    #!/bin/sh
+    exec node /usr/app/node_modules/.bin/lodestar beacon \
+              --dataDir /data \
+              --network goerli \
+              --rest \
+              --execution.urls http://zeus-exec-client:8551 \
+              --rest.address 0.0.0.0 \
+              --rest.namespace '*' \
+              --rest.port 9596 \
+              --metrics --logFile /logs/beacon.log \
+              --logFileLevel debug \
+              --logFileDailyRotate 5 \
+              --jwt-secret /data/jwt.hex
   lighthouse.sh: |-
     #!/bin/sh
     exec lighthouse beacon_node \

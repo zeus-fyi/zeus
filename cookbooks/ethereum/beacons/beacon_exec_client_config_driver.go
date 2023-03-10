@@ -11,12 +11,15 @@ const (
 	execClient                  = "zeus-exec-client"
 	execClientDiskName          = "exec-client-storage"
 	execClientDiskSizeEphemeral = "10Gi"
+	execClientDiskSizeGoerli    = "500Gi"
 
-	hercules              = "hercules"
-	herculesEphemeral     = "herculesEphemeral"
-	GethEphemeral         = "gethEphemeral"
+	hercules          = "hercules"
+	herculesEphemeral = "herculesEphemeral"
+	GethEphemeral     = "gethEphemeral"
+	GethGoerli        = "gethGoerli"
+
 	downloadGethEphemeral = "downloadGethEphemeral"
-	gethDockerImage       = "ethereum/client-go:v1.10.26"
+	gethDockerImage       = "ethereum/client-go:v1.11.4"
 
 	gethDockerImageCapella = "ethpandaops/geth:master"
 )

@@ -6,12 +6,16 @@ import (
 )
 
 type ServiceDriver struct {
+	v1.Service
 	ExtendPorts []v1.ServicePort
 }
 
 func (s *ServiceDriver) SetServiceConfigs(svc *v1.Service) {
 	if svc == nil {
 		return
+	}
+	if s.Service.Spec.Ports != nil {
+		svc.Spec.Ports = s.Service.Spec.Ports
 	}
 	if s.ExtendPorts != nil {
 		if svc.Spec.Ports == nil {

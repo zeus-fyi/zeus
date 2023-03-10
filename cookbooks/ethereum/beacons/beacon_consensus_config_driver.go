@@ -11,12 +11,16 @@ const (
 	consensusClient                   = "zeus-consensus-client"
 	consensusStorageDiskName          = "consensus-client-storage"
 	consensusStorageDiskSizeEphemeral = "2Gi"
+	consensusStorageDiskSizeGoerli    = "100Gi"
 
 	LighthouseEphemeral         = "lighthouseEphemeral"
 	downloadLighthouseEphemeral = "downloadLighthouseEphemeral"
 
 	lighthouseDockerImage        = "sigp/lighthouse:v3.3.0-modern"
 	lighthouseDockerImageCapella = "sigp/lighthouse:capella"
+
+	LodestarGoerli      = "lodestarGoerli"
+	lodestarDockerImage = "chainsafe/lodestar:v1.5.1"
 )
 
 func EphemeralConsensusClientLighthouseConfig(inf topology_workloads.TopologyBaseInfraWorkload) {
