@@ -15,6 +15,14 @@ func (t *BeaconCookbookTestSuite) TestGoerliClusterDeployV2() {
 	t.Require().Nil(err)
 }
 
+func (t *BeaconCookbookTestSuite) TestGoerliClusterDestroy() {
+	knsReq := DeployConsensusClientKnsReq
+	knsReq.CloudCtxNs = BeaconGoerliClusterDefinition.CloudCtxNs
+	resp, err := t.ZeusTestClient.DestroyDeploy(ctx, knsReq)
+	t.Require().Nil(err)
+	t.Assert().NotEmpty(resp)
+}
+
 func (t *BeaconCookbookTestSuite) TestGoerliClusterSetupV2() {
 	cd := BeaconGoerliClusterDefinition
 	gcd := cd.BuildClusterDefinitions()

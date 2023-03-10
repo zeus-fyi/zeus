@@ -32,7 +32,6 @@ var (
 		"serviceMonitorExecClient":      ExecClientMonitoringComponentBase,
 		"choreography":                  choreography_cookbooks.ChoreographyComponentBase,
 	}
-
 	ConsensusClientComponentBase = zeus_cluster_config_drivers.ComponentBaseDefinition{
 		SkeletonBases: map[string]zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
 			"lighthouseHercules": ConsensusClientSkeletonBaseConfig,
