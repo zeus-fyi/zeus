@@ -52,7 +52,7 @@ func CreateExternalLambdaUserAccessKeys(ctx context.Context, auth aegis_aws_auth
 }
 
 func CreateExternalLambdaUser(ctx context.Context, auth aegis_aws_auth.AuthAWS) error {
-	fmt.Println("INFO: creating iam user for external lambda invocation with username ", aegis_aws_iam.ExternalLambdaUserAndPolicy.UserName)
+	fmt.Println("INFO: creating iam user for external lambda invocation with username", *aegis_aws_iam.ExternalLambdaUserAndPolicy.UserName.UserName)
 	iamClient, err := aegis_aws_iam.InitIAMClient(ctx, auth)
 	if err != nil {
 		return err
@@ -81,7 +81,7 @@ func AddExternalLambdaPolicyToUser(ctx context.Context, auth aegis_aws_auth.Auth
 }
 
 func CreateInternalLambdaUser(ctx context.Context, auth aegis_aws_auth.AuthAWS) error {
-	fmt.Println("INFO: creating iam user for lambda deployment with username ", aegis_aws_iam.InternalLambdaUserAndPolicy.UserName)
+	fmt.Println("INFO: creating iam user for lambda deployment with username ", *aegis_aws_iam.InternalLambdaUserAndPolicy.UserName.UserName)
 	iamClient, err := aegis_aws_iam.InitIAMClient(ctx, auth)
 	if err != nil {
 		return err
