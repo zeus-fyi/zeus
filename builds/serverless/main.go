@@ -222,7 +222,6 @@ var Cmd = &cobra.Command{
 			automationSteps = "1,2,3,4,5,6,7"
 			automateSetupOnAWS = true
 		}
-
 		for _, automationStep := range strings.Split(automationSteps, ",") {
 			switch automationStep {
 			case "getMnemonicHDWalletPasswordSecret":

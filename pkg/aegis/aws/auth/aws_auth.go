@@ -2,9 +2,11 @@ package aws_aegis_auth
 
 import (
 	"context"
+
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/credentials"
+	"github.com/aws/aws-sdk-go-v2/service/sts"
 	"github.com/rs/zerolog/log"
 )
 
@@ -23,6 +25,14 @@ func (a *AuthAWS) CreateConfig(ctx context.Context) (aws.Config, error) {
 		return cfg, err
 	}
 	cfg.Region = a.Region
+	client := sts.NewFromConfig(cfg)
+
+	// Call the GetCallerIdentity API to get the account ID
+	resp, err := client.GetCallerIdentity(context.Background(), &sts.GetCallerIdentityInput{})
+	if err != nil {
+		panic(err)
+	}
+	a.AccountNumber = aws.ToString(resp.Account)
 	return cfg, err
 }
 
