@@ -13,8 +13,12 @@ import (
 	types "github.com/wealdtech/go-eth2-types/v2"
 	util "github.com/wealdtech/go-eth2-util"
 	keystorev4 "github.com/wealdtech/go-eth2-wallet-encryptor-keystorev4"
+	age_encryption "github.com/zeus-fyi/zeus/pkg/crypto/age"
 	bls_signer "github.com/zeus-fyi/zeus/pkg/crypto/bls"
+	"github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/compression"
+	"github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/memfs"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
+	strings_filter "github.com/zeus-fyi/zeus/pkg/utils/strings"
 )
 
 type ValidatorDepositGenerationParams struct {
@@ -95,6 +99,55 @@ func (vd *ValidatorDepositGenerationParams) GenerateAndEncryptValidatorKeysFromS
 		err = vd.Fp.WriteToFileOutPath(b)
 	}
 	return nil
+}
+
+// GenerateAgeEncryptedValidatorKeysInMemZipFile generates a zip file of validator keys encrypted with age, the unzipped contents are keystores/keystores.tar.gz.age
+func (vd *ValidatorDepositGenerationParams) GenerateAgeEncryptedValidatorKeysInMemZipFile(ctx context.Context, inMemFs memfs.MemFS, age age_encryption.Age) ([]byte, error) {
+	initErr := bls_signer.InitEthBLS()
+	if initErr != nil {
+		log.Ctx(ctx).Err(initErr)
+		return nil, initErr
+	}
+	p := filepaths.Path{DirIn: "./keystores", DirOut: "./gzip", FnOut: "keystores.tar.gz"}
+	for i := vd.ValidatorIndexOffset; i < vd.NumValidators+vd.ValidatorIndexOffset; i++ {
+		path := fmt.Sprintf("m/12381/3600/%d/0/0", i)
+
+		sk, err := vd.DerivedKey(ctx, path)
+		if err != nil {
+			panic(err)
+		}
+		acc := bls_signer.NewEthSignerBLSFromExistingKey(bls_signer.ConvertBytesToString(sk.Marshal()))
+		p.FnIn = strings_filter.AddHexPrefix(acc.PublicKeyString())
+		err = inMemFs.MakeFileIn(&p, []byte(bls_signer.ConvertBytesToString(acc.BLSPrivateKey.Marshal())))
+		if err != nil {
+			return nil, err
+		}
+	}
+	b, err := compression.GzipDirectoryToMemoryFS(p, inMemFs)
+	if err != nil {
+		return nil, err
+	}
+	err = inMemFs.MakeFileOut(&p, b)
+	if err != nil {
+		return nil, err
+	}
+	err = inMemFs.RemoveAll("./keystores")
+	if err != nil {
+		return nil, err
+	}
+	p.FnIn = "keystores.tar.gz"
+	p.DirIn = "./gzip"
+	p.DirOut = "./keystores"
+	err = age.EncryptFromInMemFS(inMemFs, &p)
+	if err != nil {
+		return nil, err
+	}
+	p.DirIn = "./keystores"
+	zipBytes, err := compression.ZipKeystoreFileInMemory(p, inMemFs)
+	if err != nil {
+		return nil, err
+	}
+	return zipBytes, err
 }
 
 func (vd *ValidatorDepositGenerationParams) DerivedKey(ctx context.Context, path string) (*types.BLSPrivateKey, error) {

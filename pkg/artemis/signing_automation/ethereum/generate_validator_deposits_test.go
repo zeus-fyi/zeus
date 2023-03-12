@@ -1,6 +1,8 @@
 package signing_automation_ethereum
 
 import (
+	age_encryption "github.com/zeus-fyi/zeus/pkg/crypto/age"
+	"github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/memfs"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 	strings_filter "github.com/zeus-fyi/zeus/pkg/utils/strings"
 	"github.com/zeus-fyi/zeus/test/configs"
@@ -41,4 +43,26 @@ func (t *Web3SignerClientTestSuite) TestEphemeralDepositsFromMnemonicInEth2Keyst
 	}
 	err := vdg.GenerateAndEncryptValidatorKeysFromSeedAndPath(ctx)
 	t.Require().Nil(err)
+
+}
+
+func (t *Web3SignerClientTestSuite) TestAgeEncryptedKeystoresGen() {
+	t.Tc = configs.InitLocalTestConfigs()
+	configs.ForceDirToConfigLocation()
+	offset := 0
+	numKeys := 3
+
+	vdg := ValidatorDepositGenerationParams{
+		Fp:                   depositDataPath,
+		Mnemonic:             t.TestMnemonic,
+		Pw:                   t.TestHDWalletPassword,
+		ValidatorIndexOffset: offset,
+		NumValidators:        numKeys,
+		Network:              "ephemery",
+	}
+	inMemFs := memfs.NewMemFs()
+	enc := age_encryption.NewAge(t.Tc.AgePrivKey, t.Tc.AgePubKey)
+	b, err := vdg.GenerateAgeEncryptedValidatorKeysInMemZipFile(ctx, inMemFs, enc)
+	t.Require().Nil(err)
+	t.Require().NotNil(b)
 }

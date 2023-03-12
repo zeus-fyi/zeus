@@ -1,12 +1,14 @@
 package age_encryption
 
 import (
+	"bytes"
 	"errors"
+	"io"
+	"os"
+
 	"github.com/rs/zerolog/log"
 	"github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/compression"
 	"github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/memfs"
-	"io"
-	"os"
 
 	"filippo.io/age"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
@@ -22,12 +24,8 @@ func (a *Age) EncryptFromInMemFS(inMemFs memfs.MemFS, p *filepaths.Path) error {
 		return err
 	}
 	p.FnOut = p.FnIn + ".age"
-	outFile, err := os.Create(p.FileOutPath())
-	if err != nil {
-		log.Err(err)
-		return err
-	}
-	defer outFile.Close()
+	outFile := new(bytes.Buffer)
+
 	bytesToEncrypt, err := inMemFs.ReadFile(p.FileInPath())
 	if err != nil {
 		log.Err(err)
@@ -50,6 +48,11 @@ func (a *Age) EncryptFromInMemFS(inMemFs memfs.MemFS, p *filepaths.Path) error {
 	if cerr := w.Close(); cerr != nil {
 		log.Err(cerr)
 		return cerr
+	}
+	err = inMemFs.MakeFileOut(p, outFile.Bytes())
+	if err != nil {
+		log.Err(err)
+		return err
 	}
 	p.FnIn = p.FnOut
 	return err
