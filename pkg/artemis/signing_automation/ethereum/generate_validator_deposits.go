@@ -109,7 +109,6 @@ func (w *Web3SignerClient) GenerateDepositDataWithDefaultWd(ctx context.Context,
 		log.Ctx(ctx).Err(werr)
 		return depositSlice, werr
 	}
-
 	count := 0
 	for i := vdg.ValidatorIndexOffset; i < vdg.NumValidators+vdg.ValidatorIndexOffset; i++ {
 		path := fmt.Sprintf("m/12381/3600/%d/0/0", i)
@@ -121,6 +120,36 @@ func (w *Web3SignerClient) GenerateDepositDataWithDefaultWd(ctx context.Context,
 
 		acc := bls_signer.NewEthSignerBLSFromExistingKey(bls_signer.ConvertBytesToString(sk.Marshal()))
 		dd, err := w.GenerateDepositData(ctx, acc, wc, fv)
+		if err != nil {
+			panic(err)
+		}
+		depositSlice[count] = dd
+		count++
+	}
+	return depositSlice, nil
+}
+
+func (w *Web3SignerClient) GenerateDepositDataWithForWdAddr(ctx context.Context, vdg ValidatorDepositGenerationParams, wd []byte, fv *spec.Version) ([]*DepositDataParams, error) {
+	w.Dial()
+	defer w.Close()
+	depositSlice := make([]*DepositDataParams, vdg.NumValidators)
+	initErr := bls_signer.InitEthBLS()
+	if initErr != nil {
+		log.Ctx(ctx).Err(initErr)
+		return depositSlice, initErr
+	}
+
+	count := 0
+	for i := vdg.ValidatorIndexOffset; i < vdg.NumValidators+vdg.ValidatorIndexOffset; i++ {
+		path := fmt.Sprintf("m/12381/3600/%d/0/0", i)
+
+		sk, err := vdg.DerivedKey(ctx, path)
+		if err != nil {
+			panic(err)
+		}
+
+		acc := bls_signer.NewEthSignerBLSFromExistingKey(bls_signer.ConvertBytesToString(sk.Marshal()))
+		dd, err := w.GenerateDepositData(ctx, acc, wd, fv)
 		if err != nil {
 			panic(err)
 		}

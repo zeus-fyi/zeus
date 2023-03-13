@@ -7,6 +7,9 @@ use (
 	./apps/cookbooks/microservices/server_template
 	./apps/cookbooks/serverless/aws/secrets_fetch
 	./apps/cookbooks/serverless/ethereum/bls_signatures
+	./apps/cookbooks/serverless/ethereum/bls_secrets_gen
+	./apps/cookbooks/serverless/ethereum/bls_encrypted_zip_gen
+	./apps/cookbooks/serverless/ethereum/validators_deposits_gen
 
 	./apps/external/web3
 	./apps/hades

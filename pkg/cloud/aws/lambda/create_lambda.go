@@ -3,6 +3,7 @@ package aws_lambda
 import (
 	"context"
 	"fmt"
+
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
 	"github.com/aws/aws-sdk-go-v2/service/lambda/types"
@@ -76,6 +77,116 @@ func (l *LambdaClientAWS) CreateServerlessBLSLambdaFn(ctx context.Context) (*lam
 	lf, err := l.CreateFunction(ctx, blsFnParams)
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("CreateNewLambdaFn: error creating lambda function")
+		return nil, err
+	}
+	return lf, err
+}
+
+var (
+	EthereumValidatorsSecretsGenFunctionName = "ethereumValidatorSecretsGen"
+	evSecretsGenZipFilePath                  = filepaths.Path{DirIn: "./serverless/bls_secrets_gen", FnIn: "main.zip"}
+	evSecGenFnParams                         = &lambda.CreateFunctionInput{
+		Code: &types.FunctionCode{
+			ZipFile: nil,
+		},
+		FunctionName:      aws.String(EthereumValidatorsSecretsGenFunctionName),
+		Role:              nil,
+		Architectures:     []types.Architecture{types.ArchitectureX8664},
+		Description:       aws.String("BLS Ethereum Validator Secrets Generator Lambda Function"),
+		FileSystemConfigs: nil,
+		Handler:           aws.String("main"),
+		Layers:            []string{},
+		MemorySize:        nil,
+		PackageType:       types.PackageTypeZip,
+		Publish:           false,
+		Runtime:           types.RuntimeGo1x,
+		Tags:              make(map[string]string),
+		Timeout:           aws.Int32(3),
+		TracingConfig:     nil,
+	}
+)
+
+func (l *LambdaClientAWS) CreateServerlessBlsSecretsKeyGenLambdaFn(ctx context.Context) (*lambda.CreateFunctionOutput, error) {
+	builds.ChangeToBuildsDir()
+	evSecGenFnParams.Role = aws.String(l.GetLambdaRole())
+	evSecGenFnParams.Code.ZipFile = evSecretsGenZipFilePath.ReadFileInPath()
+	lf, err := l.CreateFunction(ctx, evSecGenFnParams)
+	if err != nil {
+		log.Ctx(ctx).Err(err).Msg("CreateServerlessBlsSecretsKeyGenLambdaFn: error creating lambda function")
+		return nil, err
+	}
+	return lf, err
+}
+
+var (
+	EthereumValidatorsEncryptedSecretsZipGenFunctionName = "ethereumValidatorSecretsGenEncryptedZip"
+	encSecretsGenZipFilePath                             = filepaths.Path{DirIn: "./serverless/bls_encrypted_zip_gen", FnIn: "main.zip"}
+	encSecGenFnParams                                    = &lambda.CreateFunctionInput{
+		Code: &types.FunctionCode{
+			ZipFile: nil,
+		},
+		FunctionName:      aws.String(EthereumValidatorsEncryptedSecretsZipGenFunctionName),
+		Role:              nil,
+		Architectures:     []types.Architecture{types.ArchitectureX8664},
+		Description:       aws.String("BLS Ethereum Validator Encrypted Zip Secrets Generator Lambda Function"),
+		FileSystemConfigs: nil,
+		Handler:           aws.String("main"),
+		Layers:            []string{},
+		MemorySize:        nil,
+		PackageType:       types.PackageTypeZip,
+		Publish:           false,
+		Runtime:           types.RuntimeGo1x,
+		Tags:              make(map[string]string),
+		Timeout:           aws.Int32(3),
+		TracingConfig:     nil,
+	}
+)
+
+func (l *LambdaClientAWS) CreateServerlessBlsSecretsEncKeyGenLambdaFn(ctx context.Context) (*lambda.CreateFunctionOutput, error) {
+	builds.ChangeToBuildsDir()
+	encSecGenFnParams.Role = aws.String(l.GetLambdaRole())
+	encSecGenFnParams.Code.ZipFile = encSecretsGenZipFilePath.ReadFileInPath()
+	encSecGenFnParams.Layers = []string{l.GetLambdaExtensionARN()}
+	lf, err := l.CreateFunction(ctx, encSecGenFnParams)
+	if err != nil {
+		log.Ctx(ctx).Err(err).Msg("CreateServerlessBlsSecretsEncKeyGenLambdaFn: error creating lambda function")
+		return nil, err
+	}
+	return lf, err
+}
+
+var (
+	EthereumCreateValidatorsDepositsFunctionName = "ethereumValidatorDepositsGen"
+	vdgSecretsGenZipFilePath                     = filepaths.Path{DirIn: "./serverless/validators_deposits_gen", FnIn: "main.zip"}
+	vdgSecGenFnParams                            = &lambda.CreateFunctionInput{
+		Code: &types.FunctionCode{
+			ZipFile: nil,
+		},
+		FunctionName:      aws.String(EthereumCreateValidatorsDepositsFunctionName),
+		Role:              nil,
+		Architectures:     []types.Architecture{types.ArchitectureX8664},
+		Description:       aws.String("BLS Ethereum Validator Encrypted Zip Secrets Generator Lambda Function"),
+		FileSystemConfigs: nil,
+		Handler:           aws.String("main"),
+		Layers:            []string{},
+		MemorySize:        nil,
+		PackageType:       types.PackageTypeZip,
+		Publish:           false,
+		Runtime:           types.RuntimeGo1x,
+		Tags:              make(map[string]string),
+		Timeout:           aws.Int32(3),
+		TracingConfig:     nil,
+	}
+)
+
+func (l *LambdaClientAWS) CreateServerlessValidatorDepositsGenLambdaFn(ctx context.Context) (*lambda.CreateFunctionOutput, error) {
+	builds.ChangeToBuildsDir()
+	vdgSecGenFnParams.Role = aws.String(l.GetLambdaRole())
+	vdgSecGenFnParams.Code.ZipFile = vdgSecretsGenZipFilePath.ReadFileInPath()
+	vdgSecGenFnParams.Layers = []string{l.GetLambdaExtensionARN()}
+	lf, err := l.CreateFunction(ctx, vdgSecGenFnParams)
+	if err != nil {
+		log.Ctx(ctx).Err(err).Msg("CreateServerlessValidatorDepositsGenLambdaFn: error creating lambda function")
 		return nil, err
 	}
 	return lf, err

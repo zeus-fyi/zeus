@@ -3,6 +3,7 @@ package aegis_aws_iam
 import (
 	"context"
 	"fmt"
+
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/rs/zerolog/log"
@@ -98,7 +99,7 @@ func (i *IAMClientAWS) AttachExternalLambdaUserPolicy(ctx context.Context) error
 	}
 	_, err := i.AttachUserPolicy(ctx, policy)
 	if err != nil {
-		log.Ctx(ctx).Err(err).Msg("CreateLambdaUserPolicy: error creating user policy")
+		log.Ctx(ctx).Err(err).Msg("AttachExternalLambdaUserPolicy: error creating user policy")
 		return err
 	}
 	return err
