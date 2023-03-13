@@ -142,14 +142,14 @@ var (
 	}
 )
 
-func (l *LambdaClientAWS) CreateServerlessBlsSecretsEncKeyGenLambdaFn(ctx context.Context) (*lambda.CreateFunctionOutput, error) {
+func (l *LambdaClientAWS) CreateServerlessBlsEncryptedKeystoresZipLambdaFn(ctx context.Context) (*lambda.CreateFunctionOutput, error) {
 	builds.ChangeToBuildsDir()
 	encSecGenFnParams.Role = aws.String(l.GetLambdaRole())
 	encSecGenFnParams.Code.ZipFile = encSecretsGenZipFilePath.ReadFileInPath()
 	encSecGenFnParams.Layers = []string{l.GetLambdaExtensionARN()}
 	lf, err := l.CreateFunction(ctx, encSecGenFnParams)
 	if err != nil {
-		log.Ctx(ctx).Err(err).Msg("CreateServerlessBlsSecretsEncKeyGenLambdaFn: error creating lambda function")
+		log.Ctx(ctx).Err(err).Msg("CreateServerlessBlsEncryptedKeystoresZipLambdaFn: error creating lambda function")
 		return nil, err
 	}
 	return lf, err

@@ -79,6 +79,7 @@ func GetLambdaFunctionUrl(ctx context.Context, auth aegis_aws_auth.AuthAWS) (str
 	}
 	return *lcfg.FunctionUrl, err
 }
+
 func UpdateLambdaFunctionKeystoresLayer(ctx context.Context, auth aegis_aws_auth.AuthAWS) error {
 	fmt.Println("INFO: updating lambda function keystores layer to latest")
 	lm, err := aws_lambda.InitLambdaClient(ctx, auth)
