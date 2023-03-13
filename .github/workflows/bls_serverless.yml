@@ -3,7 +3,7 @@ name: Build Serverless BLS Signer
 on:
   push:
     paths:
-      - apps/cookbooks/serverless/ethereum/bls_signatures/**
+      - apps/cookbooks/serverless/ethereum/**
       - .github/workflows/bls_serverless.yml
     branches:
       - main
@@ -44,28 +44,79 @@ jobs:
 
     - name: Build Serverless BLS Signer
       run: |
-        docker buildx build -t ${{ env.SERVERLESS_IMG }} -t ${{ env.SERVERLESS_LATEST }} --build-arg GOMODCACHE=${{ env.GOMODCACHE }} --build-arg GOCACHE=${{ env.GOCACHE }} --build-arg GOOS=${{ env.GOOS }} --build-arg GOARCH=${{ env.GOARCH }} --platform=${{ env.GOOS }}/${{ env.GOARCH }} -f docker/serverless/Dockerfile .
+        docker buildx build -t ${{ env.SERVERLESS_IMG }} -t ${{ env.SERVERLESS_LATEST }} --build-arg GOMODCACHE=${{ env.GOMODCACHE }} --build-arg GOCACHE=${{ env.GOCACHE }} --build-arg GOOS=${{ env.GOOS }} --build-arg GOARCH=${{ env.GOARCH }} --platform=${{ env.GOOS }}/${{ env.GOARCH }} -f docker/serverless/signatures/Dockerfile .
+
+    - name: Build Serverless Secrets KeyGen
+      run: |
+        docker buildx build -t ${{ env.SERVERLESS_IMG }} -t ${{ env.SERVERLESS_LATEST }} --build-arg GOMODCACHE=${{ env.GOMODCACHE }} --build-arg GOCACHE=${{ env.GOCACHE }} --build-arg GOOS=${{ env.GOOS }} --build-arg GOARCH=${{ env.GOARCH }} --platform=${{ env.GOOS }}/${{ env.GOARCH }} -f docker/serverless/secrets_keygen/Dockerfile .
+
+    - name: Build Serverless BLS Encrypted Zip Gen
+      run: |
+        docker buildx build -t ${{ env.SERVERLESS_IMG }} -t ${{ env.SERVERLESS_LATEST }} --build-arg GOMODCACHE=${{ env.GOMODCACHE }} --build-arg GOCACHE=${{ env.GOCACHE }} --build-arg GOOS=${{ env.GOOS }} --build-arg GOARCH=${{ env.GOARCH }} --platform=${{ env.GOOS }}/${{ env.GOARCH }} -f docker/serverless/enc_zip_genDockerfile .
+
+    - name: Build Serverless Validator Deposits Gen
+      run: |
+        docker buildx build -t ${{ env.SERVERLESS_IMG }} -t ${{ env.SERVERLESS_LATEST }} --build-arg GOMODCACHE=${{ env.GOMODCACHE }} --build-arg GOCACHE=${{ env.GOCACHE }} --build-arg GOOS=${{ env.GOOS }} --build-arg GOARCH=${{ env.GOARCH }} --platform=${{ env.GOOS }}/${{ env.GOARCH }} -f docker/serverless/deposits_gen/Dockerfile .
 
     - name: Copy Serverless BLS Signer Docker Binary Into Zip File
       run: |
         docker run -d ${{ env.SERVERLESS_LATEST }} sleep 3
-        docker cp $(docker container ls | awk 'NR==2 {print $1}'):/usr/bin/ethereumsignbls main
+        docker cp $(docker container ls | awk 'NR==2 {print $1}'):/usr/bin/ethereumsignbls ethereumsignbls
         docker container stop $(docker container ls | awk 'NR==2 {print $1}')
-        zip main.zip main
+        zip ethereumsignbls.zip ethereumsignbls
 
-    - name: Set up AWS CLI
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ env.AWS_REGION }}
-
-    - name: Upload the zip file to AWS Lambda
+    - name: Copy Serverless Secrets KeyGen Docker Binary Into Zip File
       run: |
-        aws lambda update-function-code --function-name ${{ secrets.AWS_BLS_FUNCTION_NAME }} --zip-file fileb://main.zip > /dev/null
+        docker run -d ${{ env.SERVERLESS_LATEST }} sleep 3
+        docker cp $(docker container ls | awk 'NR==2 {print $1}'):/usr/bin/secretskeygen secretskeygen
+        docker container stop $(docker container ls | awk 'NR==2 {print $1}')
+        zip secretskeygen.zip secretskeygen
+
+    - name: Copy Serverless Secrets Encrypted Zip Gen Docker Binary Into Zip File
+      run: |
+        docker run -d ${{ env.SERVERLESS_LATEST }} sleep 3
+        docker cp $(docker container ls | awk 'NR==2 {print $1}'):/usr/bin/blsencryptedzipgen blsencryptedzipgen
+        docker container stop $(docker container ls | awk 'NR==2 {print $1}')
+        zip blsencryptedzipgen.zip blsencryptedzipgen
+
+    - name: Copy Serverless Validator Deposits Gen Docker Binary Into Zip File
+      run: |
+        docker run -d ${{ env.SERVERLESS_LATEST }} sleep 3
+        docker cp $(docker container ls | awk 'NR==2 {print $1}'):/usr/bin/validatorsdepositsgen validatorsdepositsgen
+        docker container stop $(docker container ls | awk 'NR==2 {print $1}')
+        zip validatorsdepositsgen.zip validatorsdepositsgen
+
+#    - name: Set up AWS CLI
+#      uses: aws-actions/configure-aws-credentials@v1
+#      with:
+#        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#        aws-region: ${{ env.AWS_REGION }}
+
+#    - name: Upload the zip file to AWS Lambda
+#      run: |
+#        aws lambda update-function-code --function-name ${{ secrets.AWS_BLS_FUNCTION_NAME }} --zip-file fileb://main.zip > /dev/null
 
     - name: Upload binary as artifact
       uses: actions/upload-artifact@v2
       with:
-        name: main.zip
-        path: main.zip
+        name: ethereumsignbls.zip
+        path: ethereumsignbls.zip
+
+    - name: Upload binary as artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: secretskeygen.zip
+        path: secretskeygen.zip
+
+    - name: Upload binary as artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: blsencryptedzipgen.zip
+        path: blsencryptedzipgen.zip
+
+    - name: Upload binary as artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: validatorsdepositsgen.zip
+        path: validatorsdepositsgen.zip
