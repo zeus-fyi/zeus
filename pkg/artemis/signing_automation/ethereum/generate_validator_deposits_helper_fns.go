@@ -22,23 +22,26 @@ import (
 )
 
 type ValidatorDepositGenerationParams struct {
-	Fp                                  filepaths.Path
-	Mnemonic, Pw                        string
-	ValidatorIndexOffset, NumValidators int
+	Fp                   filepaths.Path
+	Mnemonic             string `json:"mnemonic"`
+	Pw                   string `json:"hdWalletPassword"`
+	ValidatorIndexOffset int    `json:"hdOffset"`
+	NumValidators        int    `json:"validatorCount"`
 
 	// used for looping derivations
-	WithdrawalKeyIndexOffset, NumWithdrawalKeys int
+	WithdrawalKeyIndexOffset int `json:"WdHdOffset"`
+	NumWithdrawalKeys        int `json:"numWdKeys"`
 
 	// used for network selection variables
-	Network string
+	Network string `json:"network"`
 }
 
 /*
-EIP-2334 defines derivation path indices for withdrawal and validator keys.
-For a given index i the keys will be at the following paths:
+	EIP-2334 defines derivation path indices for withdrawal and validator keys.
+	For a given index i the keys will be at the following paths:
 
-withdrawal key: m/12381/3600/i/0
-validator key: m/12381/3600/i/0/0
+	withdrawal key: m/12381/3600/i/0
+	validator key: m/12381/3600/i/0/0
 */
 
 func (vd *ValidatorDepositGenerationParams) GeneratePaddedBytesDefaultDerivedBLSWithdrawalKey(ctx context.Context) ([]byte, error) {
