@@ -2,6 +2,7 @@ package aws_lambda
 
 import (
 	"context"
+
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
 	"github.com/aws/aws-sdk-go-v2/service/lambda/types"
@@ -63,6 +64,35 @@ func (l *LambdaClientAWS) GetExternalLambdaSignerConfigURL(ctx context.Context) 
 	resp, err := l.GetFunctionUrlConfig(ctx, input)
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("LambdaClientAWS: GetExternalLambdaSignerConfigURL: error getting function url config")
+		return resp, err
+	}
+	return resp, err
+}
+
+func (l *LambdaClientAWS) MakeLambdaURL(ctx context.Context, lambdaName string) (*lambda.CreateFunctionUrlConfigOutput, error) {
+	input := &lambda.CreateFunctionUrlConfigInput{
+		AuthType:     types.FunctionUrlAuthTypeAwsIam,
+		FunctionName: aws.String(lambdaName),
+	}
+	resp, err := l.CreateFunctionUrlConfig(ctx, input)
+	if err != nil {
+		log.Ctx(ctx).Err(err).Msg("LambdaClientAWS: MakeLambdaURL: error making function public")
+		return resp, err
+	}
+	return resp, err
+}
+
+func (l *LambdaClientAWS) MakeLambdaFuncAuthIAM(ctx context.Context, lambdaName string) (*lambda.AddPermissionOutput, error) {
+	input := &lambda.AddPermissionInput{
+		Action:              aws.String("lambda:InvokeFunctionUrl"),
+		FunctionName:        aws.String(lambdaName),
+		Principal:           aws.String("*"),
+		StatementId:         aws.String("FunctionURLAllowAuthIAMAccess"),
+		FunctionUrlAuthType: types.FunctionUrlAuthTypeAwsIam,
+	}
+	resp, err := l.AddPermission(ctx, input)
+	if err != nil {
+		log.Ctx(ctx).Err(err).Msg("LambdaClientAWS: MakeFuncPublic: error making function public")
 		return resp, err
 	}
 	return resp, err
