@@ -81,7 +81,7 @@ func CreateLambdaFunctionEncryptedKeystoresZip(ctx context.Context, auth aegis_a
 			return "", err
 		}
 	}
-	_, err = lm.MakeLambdaFuncAuthIAM(ctx, aws_lambda.EthereumValidatorsSecretsGenFunctionName)
+	_, err = lm.MakeLambdaFuncAuthIAM(ctx, aws_lambda.EthereumValidatorsEncryptedSecretsZipGenFunctionName)
 	if err != nil {
 		if strings.Contains(err.Error(), "already exists") {
 			log.Ctx(ctx).Info().Msg("INFO: lambda function iam auth config already exists, skipping creation")
@@ -123,7 +123,7 @@ func CreateLambdaFunctionDepositGen(ctx context.Context, auth aegis_aws_auth.Aut
 			return "", err
 		}
 	}
-	_, err = lm.MakeLambdaFuncAuthIAM(ctx, aws_lambda.EthereumValidatorsSecretsGenFunctionName)
+	_, err = lm.MakeLambdaFuncAuthIAM(ctx, aws_lambda.EthereumCreateValidatorsDepositsFunctionName)
 	if err != nil {
 		if strings.Contains(err.Error(), "already exists") {
 			log.Ctx(ctx).Info().Msg("INFO: lambda function iam auth config already exists, skipping creation")
