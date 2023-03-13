@@ -170,7 +170,7 @@ func init() {
 		keystoresPath.DirOut = path.Join(serverlessDir, "/keystores")
 	}
 	// actions
-	Cmd.Flags().BoolVar(&genValidatorDeposits, "secrets_keygen-validators", viper.GetBool("KEYGEN_VALIDATORS"), "KEYGEN_VALIDATORS: generates validator deposits, with additional encrypted age keystore")
+	Cmd.Flags().BoolVar(&genValidatorDeposits, "keygen-validators", viper.GetBool("KEYGEN_VALIDATORS"), "KEYGEN_VALIDATORS: generates validator deposits, with additional encrypted age keystore")
 	Cmd.Flags().BoolVar(&sendDeposits, "submit-deposits", viper.GetBool("SUBMIT_DEPOSITS"), "SUBMIT_DEPOSITS: submits validator deposits in keystore directory to the network for activation")
 	/*
 		###################################################
