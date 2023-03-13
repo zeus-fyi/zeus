@@ -37,7 +37,7 @@ func (l *LambdaClientAWS) MakeEthereumSignerFuncAuthIAM(ctx context.Context) (*l
 	}
 	resp, err := l.AddPermission(ctx, input)
 	if err != nil {
-		log.Ctx(ctx).Err(err).Msg("LambdaClientAWS: MakeFuncPublic: error making function public")
+		log.Ctx(ctx).Err(err).Msg("LambdaClientAWS: MakeEthereumSignerFuncAuthIAM: error making function iam")
 		return resp, err
 	}
 	return resp, err
@@ -92,7 +92,7 @@ func (l *LambdaClientAWS) MakeLambdaFuncAuthIAM(ctx context.Context, lambdaName 
 	}
 	resp, err := l.AddPermission(ctx, input)
 	if err != nil {
-		log.Ctx(ctx).Err(err).Msg("LambdaClientAWS: MakeFuncPublic: error making function public")
+		log.Ctx(ctx).Err(err).Msg("LambdaClientAWS: MakeLambdaFuncAuthIAM: error making function iam")
 		return resp, err
 	}
 	return resp, err
