@@ -7,6 +7,7 @@ on:
       - .github/workflows/bls_serverless.yml
     branches:
       - main
+      - dev
 env:
   AWS_REGION: us-west-1
   GO111MODULE: on
@@ -44,44 +45,44 @@ jobs:
 
     - name: Build Serverless BLS Signer
       run: |
-        docker buildx build -t ${{ env.SERVERLESS_IMG }} -t ${{ env.SERVERLESS_LATEST }} --build-arg GOMODCACHE=${{ env.GOMODCACHE }} --build-arg GOCACHE=${{ env.GOCACHE }} --build-arg GOOS=${{ env.GOOS }} --build-arg GOARCH=${{ env.GOARCH }} --platform=${{ env.GOOS }}/${{ env.GOARCH }} -f docker/serverless/signatures/Dockerfile .
+        docker buildx build -t ${{ env.SERVERLESS_IMG }} -t ${{ env.SERVERLESS_LATEST }}-signer --build-arg GOMODCACHE=${{ env.GOMODCACHE }} --build-arg GOCACHE=${{ env.GOCACHE }} --build-arg GOOS=${{ env.GOOS }} --build-arg GOARCH=${{ env.GOARCH }} --platform=${{ env.GOOS }}/${{ env.GOARCH }} -f docker/serverless/signatures/Dockerfile .
 
     - name: Build Serverless Secrets KeyGen
       run: |
-        docker buildx build -t ${{ env.SERVERLESS_IMG }} -t ${{ env.SERVERLESS_LATEST }} --build-arg GOMODCACHE=${{ env.GOMODCACHE }} --build-arg GOCACHE=${{ env.GOCACHE }} --build-arg GOOS=${{ env.GOOS }} --build-arg GOARCH=${{ env.GOARCH }} --platform=${{ env.GOOS }}/${{ env.GOARCH }} -f docker/serverless/secrets_keygen/Dockerfile .
+        docker buildx build -t ${{ env.SERVERLESS_IMG }} -t ${{ env.SERVERLESS_LATEST }}-keygen --build-arg GOMODCACHE=${{ env.GOMODCACHE }} --build-arg GOCACHE=${{ env.GOCACHE }} --build-arg GOOS=${{ env.GOOS }} --build-arg GOARCH=${{ env.GOARCH }} --platform=${{ env.GOOS }}/${{ env.GOARCH }} -f docker/serverless/secrets_keygen/Dockerfile .
 
     - name: Build Serverless BLS Encrypted Zip Gen
       run: |
-        docker buildx build -t ${{ env.SERVERLESS_IMG }} -t ${{ env.SERVERLESS_LATEST }} --build-arg GOMODCACHE=${{ env.GOMODCACHE }} --build-arg GOCACHE=${{ env.GOCACHE }} --build-arg GOOS=${{ env.GOOS }} --build-arg GOARCH=${{ env.GOARCH }} --platform=${{ env.GOOS }}/${{ env.GOARCH }} -f docker/serverless/enc_zip_gen/Dockerfile .
+        docker buildx build -t ${{ env.SERVERLESS_IMG }} -t ${{ env.SERVERLESS_LATEST }}-zip --build-arg GOMODCACHE=${{ env.GOMODCACHE }} --build-arg GOCACHE=${{ env.GOCACHE }} --build-arg GOOS=${{ env.GOOS }} --build-arg GOARCH=${{ env.GOARCH }} --platform=${{ env.GOOS }}/${{ env.GOARCH }} -f docker/serverless/enc_zip_gen/Dockerfile .
 
     - name: Build Serverless Validator Deposits Gen
       run: |
-        docker buildx build -t ${{ env.SERVERLESS_IMG }} -t ${{ env.SERVERLESS_LATEST }} --build-arg GOMODCACHE=${{ env.GOMODCACHE }} --build-arg GOCACHE=${{ env.GOCACHE }} --build-arg GOOS=${{ env.GOOS }} --build-arg GOARCH=${{ env.GOARCH }} --platform=${{ env.GOOS }}/${{ env.GOARCH }} -f docker/serverless/deposits_gen/Dockerfile .
+        docker buildx build -t ${{ env.SERVERLESS_IMG }} -t ${{ env.SERVERLESS_LATEST }}-vdg --build-arg GOMODCACHE=${{ env.GOMODCACHE }} --build-arg GOCACHE=${{ env.GOCACHE }} --build-arg GOOS=${{ env.GOOS }} --build-arg GOARCH=${{ env.GOARCH }} --platform=${{ env.GOOS }}/${{ env.GOARCH }} -f docker/serverless/deposits_gen/Dockerfile .
 
     - name: Copy Serverless BLS Signer Docker Binary Into Zip File
       run: |
-        docker run -d ${{ env.SERVERLESS_LATEST }} sleep 3
+        docker run -d ${{ env.SERVERLESS_LATEST }}-signer sleep 3
         docker cp $(docker container ls | awk 'NR==2 {print $1}'):/usr/bin/ethereumsignbls ethereumsignbls
         docker container stop $(docker container ls | awk 'NR==2 {print $1}')
         zip ethereumsignbls.zip ethereumsignbls
 
     - name: Copy Serverless Secrets KeyGen Docker Binary Into Zip File
       run: |
-        docker run -d ${{ env.SERVERLESS_LATEST }} sleep 3
+        docker run -d ${{ env.SERVERLESS_LATEST }}-keygen sleep 3
         docker cp $(docker container ls | awk 'NR==2 {print $1}'):/usr/bin/secretskeygen secretskeygen
         docker container stop $(docker container ls | awk 'NR==2 {print $1}')
         zip secretskeygen.zip secretskeygen
 
     - name: Copy Serverless Secrets Encrypted Zip Gen Docker Binary Into Zip File
       run: |
-        docker run -d ${{ env.SERVERLESS_LATEST }} sleep 3
+        docker run -d ${{ env.SERVERLESS_LATEST }}-zip sleep 3
         docker cp $(docker container ls | awk 'NR==2 {print $1}'):/usr/bin/blsencryptedzipgen blsencryptedzipgen
         docker container stop $(docker container ls | awk 'NR==2 {print $1}')
         zip blsencryptedzipgen.zip blsencryptedzipgen
 
     - name: Copy Serverless Validator Deposits Gen Docker Binary Into Zip File
       run: |
-        docker run -d ${{ env.SERVERLESS_LATEST }} sleep 3
+        docker run -d ${{ env.SERVERLESS_LATEST }}-vdg sleep 3
         docker cp $(docker container ls | awk 'NR==2 {print $1}'):/usr/bin/validatorsdepositsgen validatorsdepositsgen
         docker container stop $(docker container ls | awk 'NR==2 {print $1}')
         zip validatorsdepositsgen.zip validatorsdepositsgen
