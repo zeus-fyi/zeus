@@ -84,7 +84,7 @@ func (l *LambdaClientAWS) CreateServerlessBLSLambdaFn(ctx context.Context) (*lam
 
 var (
 	EthereumValidatorsSecretsGenFunctionName = "ethereumValidatorSecretsGen"
-	evSecretsGenZipFilePath                  = filepaths.Path{DirIn: "./serverless/secrets_keygen", FnIn: "main.zip"}
+	evSecretsGenZipFilePath                  = filepaths.Path{DirIn: "./serverless/bls_secrets_gen", FnIn: "main.zip"}
 	evSecGenFnParams                         = &lambda.CreateFunctionInput{
 		Code: &types.FunctionCode{
 			ZipFile: nil,
