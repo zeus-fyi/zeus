@@ -91,6 +91,11 @@ func HandleEthSignRequestBLS(ctx context.Context, event events.APIGatewayProxyRe
 	}
 
 	signedResponses, err := serverless_inmemfs.SignValidatorMessagesFromInMemFs(ctx, sr.SignatureRequests)
+	if err != nil {
+		log.Ctx(ctx).Err(err)
+		ApiResponse = events.APIGatewayProxyResponse{Body: event.Body, StatusCode: 500}
+		return ApiResponse, err
+	}
 	b, err = json.Marshal(signedResponses)
 	if err != nil {
 		log.Ctx(ctx).Err(err)
