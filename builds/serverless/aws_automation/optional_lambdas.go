@@ -17,6 +17,12 @@ func CreateLambdaFunctionSecretsKeyGen(ctx context.Context, auth aegis_aws_auth.
 	if err != nil {
 		return "", err
 	}
+
+	fnUrl, _ := lm.GetLambdaConfigURL(ctx, aws_lambda.EthereumValidatorsSecretsGenFunctionName)
+	if fnUrl.FunctionUrl != nil {
+		return *fnUrl.FunctionUrl, nil
+	}
+
 	_, err = lm.CreateServerlessBlsSecretsKeyGenLambdaFn(ctx)
 	if err != nil {
 		if strings.Contains(err.Error(), "Function already exist") {
@@ -59,6 +65,10 @@ func CreateLambdaFunctionEncryptedKeystoresZip(ctx context.Context, auth aegis_a
 	if err != nil {
 		return "", err
 	}
+	fnUrl, _ := lm.GetLambdaConfigURL(ctx, aws_lambda.EthereumValidatorsEncryptedSecretsZipGenFunctionName)
+	if fnUrl.FunctionUrl != nil {
+		return *fnUrl.FunctionUrl, nil
+	}
 	_, err = lm.CreateServerlessBlsEncryptedKeystoresZipLambdaFn(ctx)
 	if err != nil {
 		if strings.Contains(err.Error(), "Function already exist") {
@@ -100,6 +110,10 @@ func CreateLambdaFunctionDepositGen(ctx context.Context, auth aegis_aws_auth.Aut
 	lm, err := aws_lambda.InitLambdaClient(ctx, auth)
 	if err != nil {
 		return "", err
+	}
+	fnUrl, _ := lm.GetLambdaConfigURL(ctx, aws_lambda.EthereumCreateValidatorsDepositsFunctionName)
+	if fnUrl.FunctionUrl != nil {
+		return *fnUrl.FunctionUrl, nil
 	}
 	_, err = lm.CreateServerlessValidatorDepositsGenLambdaFn(ctx)
 	if err != nil {
