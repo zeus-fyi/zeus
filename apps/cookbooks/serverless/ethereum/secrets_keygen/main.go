@@ -39,15 +39,18 @@ func HandleEthValidatorKeyGenRequest(ctx context.Context, event events.APIGatewa
 		ApiResponse = events.APIGatewayProxyResponse{Body: event.Body, StatusCode: 500}
 		return ApiResponse, err
 	}
-	sr := bls_serverless_signing.BlsKeyGenRequests{}
-	err = json.Unmarshal(b, &sr)
+	keyGenRequest := bls_serverless_signing.BlsKeyGenRequests{}
+	err = json.Unmarshal(b, &keyGenRequest)
 	if err != nil {
 		log.Ctx(ctx).Err(err)
-		ApiResponse = events.APIGatewayProxyResponse{Body: event.Body, StatusCode: 500}
+		ApiResponse = events.APIGatewayProxyResponse{Body: err.Error(), StatusCode: 500}
 		return ApiResponse, err
 	}
 
-	cfg, err := config.LoadDefaultConfig(ctx)
+	if keyGenRequest.Region == "" {
+		keyGenRequest.Region = "us-west-1"
+	}
+	cfg, err := config.LoadDefaultConfig(ctx, config.WithRegion(keyGenRequest.Region))
 	if err != nil {
 		log.Ctx(ctx).Err(err)
 		ApiResponse = events.APIGatewayProxyResponse{Body: event.Body, StatusCode: 500}
@@ -59,40 +62,40 @@ func HandleEthValidatorKeyGenRequest(ctx context.Context, event events.APIGatewa
 	}
 	// if name is provided for this secret, but no mnemonic, then it will assume you want one to be generated and saved
 	// will not overwrite any existing secrets to prevent accidental overwrites
-	if len(sr.MnemonicAndHDWalletSecretName) > 0 {
-		if sm.DoesSecretExist(ctx, sr.MnemonicAndHDWalletSecretName) {
+	if len(keyGenRequest.MnemonicAndHDWalletSecretName) > 0 {
+		if sm.DoesSecretExist(ctx, keyGenRequest.MnemonicAndHDWalletSecretName) {
 			log.Info().Msg("INFO: secret already exists, skipping creation")
 		} else {
 			hdWalletSecrets := make(map[string]string)
-			if len(sr.Mnemonic) <= 0 {
+			if len(keyGenRequest.Mnemonic) <= 0 {
 				mn, er := aegis_random.GenerateMnemonic()
 				if er != nil {
 					log.Ctx(ctx).Err(er)
-					ApiResponse = events.APIGatewayProxyResponse{Body: event.Body, StatusCode: 500}
+					ApiResponse = events.APIGatewayProxyResponse{Body: event.Body, StatusCode: 509}
 					return ApiResponse, er
 				}
-				sr.Mnemonic = mn
+				keyGenRequest.Mnemonic = mn
 			}
-			if len(sr.HdWalletPassword) <= 0 {
+			if len(keyGenRequest.HdWalletPassword) <= 0 {
 				pw, er := aegis_random.GenerateRandomPassword(32)
 				if er != nil {
 					log.Ctx(ctx).Err(er)
-					ApiResponse = events.APIGatewayProxyResponse{Body: event.Body, StatusCode: 500}
+					ApiResponse = events.APIGatewayProxyResponse{Body: event.Body, StatusCode: 510}
 					return ApiResponse, er
 				}
-				sr.HdWalletPassword = pw
+				keyGenRequest.HdWalletPassword = pw
 			}
 
-			hdWalletSecrets["hdWalletPassword"] = sr.HdWalletPassword
-			hdWalletSecrets["mnemonic"] = sr.Mnemonic
+			hdWalletSecrets["hdWalletPassword"] = keyGenRequest.HdWalletPassword
+			hdWalletSecrets["mnemonic"] = keyGenRequest.Mnemonic
 			by, er := json.Marshal(hdWalletSecrets)
 			if er != nil {
 				log.Ctx(ctx).Err(er)
-				ApiResponse = events.APIGatewayProxyResponse{Body: event.Body, StatusCode: 500}
+				ApiResponse = events.APIGatewayProxyResponse{Body: event.Body, StatusCode: 511}
 				return ApiResponse, er
 			}
 			si := secretsmanager.CreateSecretInput{
-				Name:         aws.String(sr.MnemonicAndHDWalletSecretName),
+				Name:         aws.String(keyGenRequest.MnemonicAndHDWalletSecretName),
 				SecretBinary: by,
 			}
 			err = sm.CreateNewSecret(ctx, si)
@@ -101,7 +104,7 @@ func HandleEthValidatorKeyGenRequest(ctx context.Context, event events.APIGatewa
 					fmt.Println("INFO: secret already exists, skipping creation")
 				} else {
 					log.Ctx(ctx).Err(er)
-					ApiResponse = events.APIGatewayProxyResponse{Body: event.Body, StatusCode: 500}
+					ApiResponse = events.APIGatewayProxyResponse{Body: event.Body, StatusCode: 512}
 					return ApiResponse, er
 				}
 			}
@@ -110,23 +113,23 @@ func HandleEthValidatorKeyGenRequest(ctx context.Context, event events.APIGatewa
 
 	// if name is provided for this secret, but no mnemonic, then it will assume you want one to be generated and saved
 	// will not overwrite any existing secrets to prevent accidental overwrites
-	if len(sr.AgeSecretName) > 0 {
-		if sm.DoesSecretExist(ctx, sr.AgeSecretName) {
+	if len(keyGenRequest.AgeSecretName) > 0 {
+		if sm.DoesSecretExist(ctx, keyGenRequest.AgeSecretName) {
 			log.Info().Msg("INFO: secret already exists, skipping creation")
 		} else {
 			ageSecrets := make(map[string]string)
-			if len(sr.AgePubKey) <= 0 || len(sr.AgePrivKey) <= 0 {
-				sr.AgePubKey, sr.AgePrivKey = age_encryption.GenerateNewKeyPair()
+			if len(keyGenRequest.AgePubKey) <= 0 || len(keyGenRequest.AgePrivKey) <= 0 {
+				keyGenRequest.AgePubKey, keyGenRequest.AgePrivKey = age_encryption.GenerateNewKeyPair()
 			}
-			ageSecrets[sr.AgePubKey] = sr.AgePrivKey
+			ageSecrets[keyGenRequest.AgePubKey] = keyGenRequest.AgePrivKey
 			by, er := json.Marshal(ageSecrets)
 			if er != nil {
 				log.Ctx(ctx).Err(er)
-				ApiResponse = events.APIGatewayProxyResponse{Body: event.Body, StatusCode: 500}
+				ApiResponse = events.APIGatewayProxyResponse{Body: event.Body, StatusCode: 513}
 				return ApiResponse, er
 			}
 			si := secretsmanager.CreateSecretInput{
-				Name:         aws.String(sr.AgeSecretName),
+				Name:         aws.String(keyGenRequest.AgeSecretName),
 				SecretBinary: by,
 			}
 			err = sm.CreateNewSecret(ctx, si)
@@ -135,7 +138,7 @@ func HandleEthValidatorKeyGenRequest(ctx context.Context, event events.APIGatewa
 					fmt.Println("INFO: secret already exists, skipping creation")
 				} else {
 					log.Ctx(ctx).Err(er)
-					ApiResponse = events.APIGatewayProxyResponse{Body: event.Body, StatusCode: 500}
+					ApiResponse = events.APIGatewayProxyResponse{Body: event.Body, StatusCode: 514}
 					return ApiResponse, er
 				}
 			}
