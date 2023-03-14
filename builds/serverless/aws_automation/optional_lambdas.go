@@ -30,7 +30,7 @@ func CreateLambdaFunctionSecretsKeyGen(ctx context.Context, auth aegis_aws_auth.
 	if err != nil {
 		if strings.Contains(err.Error(), " FunctionUrlConfig exists for this Lambda function") {
 			log.Ctx(ctx).Info().Msg("INFO: lambda function url already exists, skipping creation")
-			lfUrlCfg, lerr := lm.GetExternalLambdaSignerConfigURL(ctx)
+			lfUrlCfg, lerr := lm.GetLambdaConfigURL(ctx, aws_lambda.EthereumValidatorsSecretsGenFunctionName)
 			if lerr != nil {
 				return "", lerr
 			}
@@ -72,7 +72,7 @@ func CreateLambdaFunctionEncryptedKeystoresZip(ctx context.Context, auth aegis_a
 	if err != nil {
 		if strings.Contains(err.Error(), " FunctionUrlConfig exists for this Lambda function") {
 			log.Ctx(ctx).Info().Msg("INFO: lambda function url already exists, skipping creation")
-			lfUrlCfg, lerr := lm.GetExternalLambdaSignerConfigURL(ctx)
+			lfUrlCfg, lerr := lm.GetLambdaConfigURL(ctx, aws_lambda.EthereumValidatorsEncryptedSecretsZipGenFunctionName)
 			if lerr != nil {
 				return "", lerr
 			}
@@ -114,7 +114,7 @@ func CreateLambdaFunctionDepositGen(ctx context.Context, auth aegis_aws_auth.Aut
 	if err != nil {
 		if strings.Contains(err.Error(), " FunctionUrlConfig exists for this Lambda function") {
 			log.Ctx(ctx).Info().Msg("INFO: lambda function url already exists, skipping creation")
-			lfUrlCfg, lerr := lm.GetExternalLambdaSignerConfigURL(ctx)
+			lfUrlCfg, lerr := lm.GetLambdaConfigURL(ctx, aws_lambda.EthereumCreateValidatorsDepositsFunctionName)
 			if lerr != nil {
 				return "", lerr
 			}

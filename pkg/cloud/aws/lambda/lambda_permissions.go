@@ -69,6 +69,18 @@ func (l *LambdaClientAWS) GetExternalLambdaSignerConfigURL(ctx context.Context) 
 	return resp, err
 }
 
+func (l *LambdaClientAWS) GetLambdaConfigURL(ctx context.Context, functionName string) (*lambda.GetFunctionUrlConfigOutput, error) {
+	input := &lambda.GetFunctionUrlConfigInput{
+		FunctionName: aws.String(functionName),
+	}
+	resp, err := l.GetFunctionUrlConfig(ctx, input)
+	if err != nil {
+		log.Ctx(ctx).Err(err).Msg("LambdaClientAWS: GetLambdaConfigURL: error getting function url config")
+		return resp, err
+	}
+	return resp, err
+}
+
 func (l *LambdaClientAWS) MakeLambdaURL(ctx context.Context, lambdaName string) (*lambda.CreateFunctionUrlConfigOutput, error) {
 	input := &lambda.CreateFunctionUrlConfigInput{
 		AuthType:     types.FunctionUrlAuthTypeAwsIam,
