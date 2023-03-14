@@ -68,7 +68,7 @@ func HandleEthValidatorKeyGenRequest(ctx context.Context, event events.APIGatewa
 				mn, er := aegis_random.GenerateMnemonic()
 				if er != nil {
 					log.Ctx(ctx).Err(er)
-					ApiResponse = events.APIGatewayProxyResponse{Body: er.Error(), StatusCode: 500}
+					ApiResponse = events.APIGatewayProxyResponse{Body: er.Error(), StatusCode: 509}
 					return ApiResponse, er
 				}
 				keyGenRequest.Mnemonic = mn
@@ -77,7 +77,7 @@ func HandleEthValidatorKeyGenRequest(ctx context.Context, event events.APIGatewa
 				pw, er := aegis_random.GenerateRandomPassword(32)
 				if er != nil {
 					log.Ctx(ctx).Err(er)
-					ApiResponse = events.APIGatewayProxyResponse{Body: er.Error(), StatusCode: 500}
+					ApiResponse = events.APIGatewayProxyResponse{Body: er.Error(), StatusCode: 510}
 					return ApiResponse, er
 				}
 				keyGenRequest.HdWalletPassword = pw
@@ -88,7 +88,7 @@ func HandleEthValidatorKeyGenRequest(ctx context.Context, event events.APIGatewa
 			by, er := json.Marshal(hdWalletSecrets)
 			if er != nil {
 				log.Ctx(ctx).Err(er)
-				ApiResponse = events.APIGatewayProxyResponse{Body: er.Error(), StatusCode: 500}
+				ApiResponse = events.APIGatewayProxyResponse{Body: er.Error(), StatusCode: 511}
 				return ApiResponse, er
 			}
 			si := secretsmanager.CreateSecretInput{
@@ -101,7 +101,7 @@ func HandleEthValidatorKeyGenRequest(ctx context.Context, event events.APIGatewa
 					fmt.Println("INFO: secret already exists, skipping creation")
 				} else {
 					log.Ctx(ctx).Err(er)
-					ApiResponse = events.APIGatewayProxyResponse{Body: er.Error(), StatusCode: 500}
+					ApiResponse = events.APIGatewayProxyResponse{Body: er.Error(), StatusCode: 512}
 					return ApiResponse, er
 				}
 			}
@@ -122,7 +122,7 @@ func HandleEthValidatorKeyGenRequest(ctx context.Context, event events.APIGatewa
 			by, er := json.Marshal(ageSecrets)
 			if er != nil {
 				log.Ctx(ctx).Err(er)
-				ApiResponse = events.APIGatewayProxyResponse{Body: er.Error(), StatusCode: 500}
+				ApiResponse = events.APIGatewayProxyResponse{Body: er.Error(), StatusCode: 513}
 				return ApiResponse, er
 			}
 			si := secretsmanager.CreateSecretInput{
@@ -135,7 +135,7 @@ func HandleEthValidatorKeyGenRequest(ctx context.Context, event events.APIGatewa
 					fmt.Println("INFO: secret already exists, skipping creation")
 				} else {
 					log.Ctx(ctx).Err(er)
-					ApiResponse = events.APIGatewayProxyResponse{Body: er.Error(), StatusCode: 500}
+					ApiResponse = events.APIGatewayProxyResponse{Body: er.Error(), StatusCode: 514}
 					return ApiResponse, er
 				}
 			}

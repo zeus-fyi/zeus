@@ -35,8 +35,7 @@ func (s *ServerlessKeygenTestSuite) TestServerlessSigningFunc() {
 	r.SetBaseURL(fnUrl)
 
 	kgReq := bls_serverless_signing.BlsKeyGenRequests{
-		MnemonicAndHDWalletSecretName: "testMnemonic",
-		HdWalletPassword:              "testHdWalletPw",
+		MnemonicAndHDWalletSecretName: "testHdWalletPw",
 		AgeSecretName:                 "testAgeKey",
 	}
 	req, err := auth.CreateV4AuthPOSTReq(ctx, "lambda", fnUrl, kgReq)
