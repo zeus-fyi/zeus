@@ -19,7 +19,7 @@ func CreateLambdaFunctionSecretsKeyGen(ctx context.Context, auth aegis_aws_auth.
 	}
 
 	fnUrl, _ := lm.GetLambdaConfigURL(ctx, aws_lambda.EthereumValidatorsSecretsGenFunctionName)
-	if fnUrl.FunctionUrl != nil {
+	if fnUrl != nil && fnUrl.FunctionUrl != nil {
 		return *fnUrl.FunctionUrl, nil
 	}
 
@@ -66,7 +66,7 @@ func CreateLambdaFunctionEncryptedKeystoresZip(ctx context.Context, auth aegis_a
 		return "", err
 	}
 	fnUrl, _ := lm.GetLambdaConfigURL(ctx, aws_lambda.EthereumValidatorsEncryptedSecretsZipGenFunctionName)
-	if fnUrl.FunctionUrl != nil {
+	if fnUrl != nil && fnUrl.FunctionUrl != nil {
 		return *fnUrl.FunctionUrl, nil
 	}
 	_, err = lm.CreateServerlessBlsEncryptedKeystoresZipLambdaFn(ctx)
@@ -112,7 +112,7 @@ func CreateLambdaFunctionDepositGen(ctx context.Context, auth aegis_aws_auth.Aut
 		return "", err
 	}
 	fnUrl, _ := lm.GetLambdaConfigURL(ctx, aws_lambda.EthereumCreateValidatorsDepositsFunctionName)
-	if fnUrl.FunctionUrl != nil {
+	if fnUrl != nil && fnUrl.FunctionUrl != nil {
 		return *fnUrl.FunctionUrl, nil
 	}
 	_, err = lm.CreateServerlessValidatorDepositsGenLambdaFn(ctx)
