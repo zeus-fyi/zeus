@@ -62,7 +62,7 @@ func (p *UserPolicyTemplate) GetPolicyTemplateIAM(ctx context.Context, resource 
 							"Effect": "Allow",
 							"Action": [
 								"kms:Decrypt",
-								"secretsmanager:CreateSecretValue",
+								"secretsmanager:CreateSecret",
 								"secretsmanager:GetSecretValue",
 								"secretsmanager:DescribeSecret",
 								"secretsmanager:ListSecrets"
