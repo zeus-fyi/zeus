@@ -47,7 +47,10 @@ func HandleEthValidatorKeyGenRequest(ctx context.Context, event events.APIGatewa
 		return ApiResponse, err
 	}
 
-	cfg, err := config.LoadDefaultConfig(ctx)
+	if keyGenRequest.Region == "" {
+		keyGenRequest.Region = "us-west-1"
+	}
+	cfg, err := config.LoadDefaultConfig(ctx, config.WithRegion(keyGenRequest.Region))
 	if err != nil {
 		log.Ctx(ctx).Err(err)
 		ApiResponse = events.APIGatewayProxyResponse{Body: event.Body, StatusCode: 500}

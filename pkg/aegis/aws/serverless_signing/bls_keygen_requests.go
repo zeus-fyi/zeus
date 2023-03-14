@@ -3,6 +3,8 @@ package bls_serverless_signing
 import spec "github.com/attestantio/go-eth2-client/spec/phase0"
 
 type BlsKeyGenRequests struct {
+	Region string `json:"region,omitempty"`
+
 	MnemonicAndHDWalletSecretName string `json:"mnemonicAndHDWalletSecretName,omitempty"`
 	Mnemonic                      string `json:"mnemonic,omitempty"`
 	HdWalletPassword              string `json:"hdWalletPassword,omitempty"`
