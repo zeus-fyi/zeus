@@ -30,7 +30,7 @@ func (a *AuthAWS) CreateConfig(ctx context.Context) (aws.Config, error) {
 	// Call the GetCallerIdentity API to get the account ID
 	resp, err := client.GetCallerIdentity(context.Background(), &sts.GetCallerIdentityInput{})
 	if err != nil {
-		panic(err)
+		return aws.Config{}, err
 	}
 	a.AccountNumber = aws.ToString(resp.Account)
 	return cfg, err
