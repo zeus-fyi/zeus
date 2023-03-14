@@ -94,18 +94,6 @@ func HandleValidatorDepositsGen(ctx context.Context, event events.APIGatewayProx
 	var er error
 	var wc []byte
 	w3Client := signing_automation_ethereum.Web3SignerClient{}
-	if len(sr.BeaconURL) > 0 {
-		w3Client = signing_automation_ethereum.Web3SignerClient{Web3Actions: web3_actions.Web3Actions{
-			NodeURL: sr.BeaconURL,
-			Network: sr.Network,
-		}}
-	} else {
-		err = errors.New("beacon url is empty")
-		log.Ctx(ctx).Err(err)
-		ApiResponse = events.APIGatewayProxyResponse{Body: event.Body, StatusCode: 500}
-		return ApiResponse, err
-	}
-
 	if strings.ToLower(sr.Network) == "ephemery" {
 		w3Client = signing_automation_ethereum.Web3SignerClient{Web3Actions: web3_actions.Web3Actions{
 			NodeURL: signing_automation_ethereum.EphemeralBeacon,
@@ -139,7 +127,16 @@ func HandleValidatorDepositsGen(ctx context.Context, event events.APIGatewayProx
 			}
 		}
 	} else {
-		if len(sr.BeaconURL) > 0 {
+		w3Client = signing_automation_ethereum.Web3SignerClient{Web3Actions: web3_actions.Web3Actions{
+			NodeURL: sr.BeaconURL,
+			Network: sr.Network,
+		}}
+		if len(sr.BeaconURL) <= 0 {
+			log.Ctx(ctx).Err(er)
+			ApiResponse = events.APIGatewayProxyResponse{Body: event.Body, StatusCode: 500}
+			return ApiResponse, er
+		}
+		if sr.ForkVersion == nil {
 			fv, er = signing_automation_ethereum.GetForkVersion(ctx, sr.BeaconURL)
 			if er != nil {
 				log.Ctx(ctx).Err(er)
