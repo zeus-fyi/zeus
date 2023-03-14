@@ -87,16 +87,16 @@ jobs:
         docker container stop $(docker container ls | awk 'NR==2 {print $1}')
         zip validatorsdepositsgen.zip validatorsdepositsgen
 
-#    - name: Set up AWS CLI
-#      uses: aws-actions/configure-aws-credentials@v1
-#      with:
-#        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-#        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-#        aws-region: ${{ env.AWS_REGION }}
+    - name: Set up AWS CLI
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
 
-#    - name: Upload the zip file to AWS Lambda
-#      run: |
-#        aws lambda update-function-code --function-name ${{ secrets.AWS_BLS_FUNCTION_NAME }} --zip-file fileb://main.zip > /dev/null
+    - name: Upload the zip file to update AWS Lambda Key Gen Function
+      run: |
+        aws lambda update-function-code --function-name ${{ secrets.AWS_LAMBDA_KEYGEN_FN }} --zip-file fileb://secretskeygen.zip > /dev/null
 
     - name: Upload binary as artifact
       uses: actions/upload-artifact@v2
