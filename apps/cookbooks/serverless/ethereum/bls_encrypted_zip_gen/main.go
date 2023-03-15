@@ -133,6 +133,8 @@ func HandleValidatorEncryptedKeystoreZipGenRequest(ctx context.Context, event ev
 		return ApiResponse, err
 	}
 	ApiResponse = events.APIGatewayProxyResponse{Body: string(zipFileData), StatusCode: 200}
+	ApiResponse.Headers = make(map[string]string)
+	ApiResponse.Headers["Content-Type"] = "application/zip"
 	return ApiResponse, nil
 }
 
