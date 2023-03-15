@@ -58,7 +58,6 @@ func (t *Web3SignerClientTestSuite) TestAgeEncryptedKeystoresGen() {
 		Pw:                   t.TestHDWalletPassword,
 		ValidatorIndexOffset: offset,
 		NumValidators:        numKeys,
-		Network:              "ephemery",
 	}
 	inMemFs := memfs.NewMemFs()
 	enc := age_encryption.NewAge(t.Tc.AgePrivKey, t.Tc.AgePubKey)
