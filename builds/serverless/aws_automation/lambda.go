@@ -60,7 +60,9 @@ func CreateLambdaFunctionKeystoresLayer(ctx context.Context, auth aegis_aws_auth
 	if err != nil {
 		return err
 	}
-	_, err = lm.CreateServerlessBLSLambdaFnKeystoreLayer(ctx, p)
+	p.FnIn = "keystores.zip"
+	keystoresZipBinary := p.ReadFileInPath()
+	_, err = lm.CreateServerlessBLSLambdaFnKeystoreLayer(ctx, "blsKeystores", keystoresZipBinary)
 	if err != nil {
 		return err
 	}

@@ -7,7 +7,6 @@ import (
 
 	"github.com/stretchr/testify/suite"
 	aws_aegis_auth "github.com/zeus-fyi/zeus/pkg/aegis/aws/auth"
-	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 	"github.com/zeus-fyi/zeus/test/test_suites"
 )
 
@@ -47,8 +46,8 @@ func (t *AwsLambdaTestSuite) TestUpdateSignerLambdaFnBinary() {
 
 func (t *AwsLambdaTestSuite) TestKeystoresLayerCreation() {
 	t.TestClientInit()
-	p := filepaths.Path{}
-	lyOut, err := t.LambdaClientAWS.CreateServerlessBLSLambdaFnKeystoreLayer(ctx, p)
+	keystoresZipBin := make([]byte, 0)
+	lyOut, err := t.LambdaClientAWS.CreateServerlessBLSLambdaFnKeystoreLayer(ctx, "blsKeystores", keystoresZipBin)
 	t.Require().Nil(err)
 	t.Assert().NotEmpty(lyOut)
 }

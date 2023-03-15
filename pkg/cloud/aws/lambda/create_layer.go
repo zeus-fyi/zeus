@@ -7,27 +7,19 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
 	"github.com/aws/aws-sdk-go-v2/service/lambda/types"
 	"github.com/rs/zerolog/log"
-	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 )
 
-var (
-	KeystoresLayerName = "blsKeystores"
-)
-
-func (l *LambdaClientAWS) CreateServerlessBLSLambdaFnKeystoreLayer(ctx context.Context, blsKeystoresZipFilePath filepaths.Path) (*lambda.PublishLayerVersionOutput, error) {
-	blsKeystoresZipFilePath.FnIn = "keystores.zip"
-	b := blsKeystoresZipFilePath.ReadFileInPath()
+func (l *LambdaClientAWS) CreateServerlessBLSLambdaFnKeystoreLayer(ctx context.Context, keystoresLayerName string, blsKeystoresZipFileBinary []byte) (*lambda.PublishLayerVersionOutput, error) {
 	input := &lambda.PublishLayerVersionInput{
 		Content: &types.LayerVersionContentInput{
-			ZipFile: b,
+			ZipFile: blsKeystoresZipFileBinary,
 		},
-		LayerName:               aws.String(KeystoresLayerName),
+		LayerName:               aws.String(keystoresLayerName),
 		CompatibleArchitectures: []types.Architecture{types.ArchitectureX8664},
 		CompatibleRuntimes:      []types.Runtime{types.RuntimeGo1x},
 		Description:             aws.String("-"),
 		LicenseInfo:             aws.String("-"),
 	}
-
 	ly, err := l.PublishLayerVersion(ctx, input)
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("LambdaClientAWS: CreateServerlessBLSLambdaFnKeystoreLayer: error creating lambda layer")
