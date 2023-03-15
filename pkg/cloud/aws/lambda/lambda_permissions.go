@@ -57,18 +57,6 @@ func (l *LambdaClientAWS) MakeEthereumSignerURL(ctx context.Context) (*lambda.Cr
 	return resp, err
 }
 
-func (l *LambdaClientAWS) GetExternalLambdaSignerConfigURL(ctx context.Context) (*lambda.GetFunctionUrlConfigOutput, error) {
-	input := &lambda.GetFunctionUrlConfigInput{
-		FunctionName: aws.String(EthereumSignerFunctionName),
-	}
-	resp, err := l.GetFunctionUrlConfig(ctx, input)
-	if err != nil {
-		log.Ctx(ctx).Err(err).Msg("LambdaClientAWS: GetExternalLambdaSignerConfigURL: error getting function url config")
-		return resp, err
-	}
-	return resp, err
-}
-
 func (l *LambdaClientAWS) GetLambdaConfigURL(ctx context.Context, functionName string) (*lambda.GetFunctionUrlConfigOutput, error) {
 	input := &lambda.GetFunctionUrlConfigInput{
 		FunctionName: aws.String(functionName),

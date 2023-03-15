@@ -32,14 +32,14 @@ func (t *AwsLambdaTestSuite) TestClientInit() {
 
 func (t *AwsLambdaTestSuite) TestLambdaFnCreation() {
 	t.TestClientInit()
-	lf, err := t.LambdaClientAWS.CreateServerlessBLSLambdaFn(ctx)
+	lf, err := t.LambdaClientAWS.CreateServerlessBLSLambdaFn(ctx, EthereumSignerFunctionName, "blsKeystores")
 	t.Require().Nil(err)
 	t.Assert().NotEmpty(lf)
 }
 
 func (t *AwsLambdaTestSuite) TestUpdateSignerLambdaFnBinary() {
 	t.TestClientInit()
-	lf, err := t.LambdaClientAWS.UpdateServerlessBLSLambdaFnBinary(ctx)
+	lf, err := t.LambdaClientAWS.UpdateServerlessBLSLambdaFnBinary(ctx, EthereumSignerFunctionName)
 	t.Require().Nil(err)
 	t.Assert().NotEmpty(lf)
 }
@@ -69,7 +69,7 @@ func (t *AwsLambdaTestSuite) TestMakeLambdaURLPublic() {
 
 func (t *AwsLambdaTestSuite) TestUpdateLambdaLayer() {
 	t.TestClientInit()
-	lf, err := t.LambdaClientAWS.UpdateServerlessBLSLambdaFnKeystoreLayer(ctx)
+	lf, err := t.LambdaClientAWS.UpdateServerlessBLSLambdaFnKeystoreLayer(ctx, EthereumSignerFunctionName, "blsKeystores")
 	t.Require().Nil(err)
 	t.Assert().NotEmpty(lf)
 }
@@ -80,7 +80,7 @@ func (t *AwsLambdaTestSuite) TestGetExtLambdaFnInfo() {
 	t.Require().Nil(err)
 	t.Assert().NotEmpty(lf)
 
-	lurl, err := t.LambdaClientAWS.GetExternalLambdaSignerConfigURL(ctx)
+	lurl, err := t.LambdaClientAWS.GetLambdaConfigURL(ctx, EthereumSignerFunctionName)
 	t.Require().Nil(err)
 	t.Assert().NotEmpty(lurl)
 }
