@@ -23,19 +23,25 @@ func VerifyLambdaSigner(ctx context.Context, auth aegis_aws_auth.AuthAWS, keysto
 	if err != nil {
 		return err
 	}
-	sr := bls_serverless_signing.SignatureRequests{
-		SecretName:        ageEncryptionSecretNameInSecretManager,
-		SignatureRequests: aegis_inmemdbs.EthereumBLSKeySignatureRequests{Map: make(map[string]aegis_inmemdbs.EthereumBLSKeySignatureRequest)},
-	}
-
-	fmt.Println(ageEncryptionSecretNameInSecretManager)
 	filter := &strings_filter.FilterOpts{StartsWith: "deposit_data", DoesNotInclude: []string{"keystores.tar.gz.age", ".DS_Store", "keystore.zip"}}
 	keystoresPath.FilterFiles = filter
 	dpSlice, err := signing_automation_ethereum.ParseValidatorDepositSliceJSON(ctx, keystoresPath)
 	if err != nil {
 		return err
 	}
+	return VerifyLambdaSignerFromDepositDataSlice(ctx, auth, dpSlice, funcUrl, ageEncryptionSecretNameInSecretManager)
+}
 
+func VerifyLambdaSignerFromDepositDataSlice(ctx context.Context, auth aegis_aws_auth.AuthAWS, dpSlice signing_automation_ethereum.ValidatorDepositSlice, funcUrl string, ageEncryptionSecretNameInSecretManager string) error {
+	err := bls_signer.InitEthBLS()
+	if err != nil {
+		return err
+	}
+	sr := bls_serverless_signing.SignatureRequests{
+		SecretName:        ageEncryptionSecretNameInSecretManager,
+		SignatureRequests: aegis_inmemdbs.EthereumBLSKeySignatureRequests{Map: make(map[string]aegis_inmemdbs.EthereumBLSKeySignatureRequest)},
+	}
+	fmt.Println(ageEncryptionSecretNameInSecretManager)
 	sliceGroup := signing_automation_ethereum.ValidatorDepositSlice{}
 	for _, dp := range dpSlice {
 		hexMessage, herr := aegis_inmemdbs.RandomHex(10)
