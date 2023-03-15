@@ -26,23 +26,6 @@ func (l *LambdaClientAWS) MakeEthereumSignerFuncPublic(ctx context.Context) (*la
 	return resp, err
 }
 
-// MakeEthereumSignerFuncAuthIAM uses the EthereumSignerFunctionName to make the function public
-func (l *LambdaClientAWS) MakeEthereumSignerFuncAuthIAM(ctx context.Context) (*lambda.AddPermissionOutput, error) {
-	input := &lambda.AddPermissionInput{
-		Action:              aws.String("lambda:InvokeFunctionUrl"),
-		FunctionName:        aws.String(EthereumSignerFunctionName),
-		Principal:           aws.String("*"),
-		StatementId:         aws.String("FunctionURLAllowAuthIAMAccess"),
-		FunctionUrlAuthType: types.FunctionUrlAuthTypeAwsIam,
-	}
-	resp, err := l.AddPermission(ctx, input)
-	if err != nil {
-		log.Ctx(ctx).Err(err).Msg("LambdaClientAWS: MakeEthereumSignerFuncAuthIAM: error making function iam")
-		return resp, err
-	}
-	return resp, err
-}
-
 func (l *LambdaClientAWS) GetLambdaConfigURL(ctx context.Context, functionName string) (*lambda.GetFunctionUrlConfigOutput, error) {
 	input := &lambda.GetFunctionUrlConfigInput{
 		FunctionName: aws.String(functionName),

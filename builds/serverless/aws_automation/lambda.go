@@ -40,7 +40,7 @@ func CreateLambdaFunction(ctx context.Context, auth aegis_aws_auth.AuthAWS, func
 			return "", err
 		}
 	}
-	_, err = lm.MakeEthereumSignerFuncAuthIAM(ctx)
+	_, err = lm.MakeLambdaFuncAuthIAM(ctx, functionName)
 	if err != nil {
 		if strings.Contains(err.Error(), "already exists") {
 			log.Ctx(ctx).Info().Msg("INFO: lambda function iam auth config already exists, skipping creation")
