@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"strings"
 
 	spec "github.com/attestantio/go-eth2-client/spec/phase0"
 	"github.com/aws/aws-lambda-go/events"
@@ -13,6 +14,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
 	"github.com/go-resty/resty/v2"
 	"github.com/rs/zerolog/log"
+	"github.com/zeus-fyi/gochain/web3/web3_actions"
 	bls_serverless_signing "github.com/zeus-fyi/zeus/pkg/aegis/aws/serverless_signing"
 	signing_automation_ethereum "github.com/zeus-fyi/zeus/pkg/artemis/signing_automation/ethereum"
 )
@@ -92,7 +94,11 @@ func HandleValidatorDepositsGen(ctx context.Context, event events.APIGatewayProx
 	var er error
 	var wc []byte
 	w3Client := signing_automation_ethereum.Web3SignerClient{}
-	if sr.Network == "ephemery" {
+	if strings.ToLower(sr.Network) == "ephemery" {
+		w3Client = signing_automation_ethereum.Web3SignerClient{Web3Actions: web3_actions.Web3Actions{
+			NodeURL: signing_automation_ethereum.EphemeralBeacon,
+			Network: sr.Network,
+		}}
 		if len(sr.WithdrawalAddress) <= 0 {
 			dp, er = w3Client.GenerateEphemeryDepositDataWithDefaultWd(ctx, vdg)
 			if er != nil {
@@ -113,10 +119,24 @@ func HandleValidatorDepositsGen(ctx context.Context, event events.APIGatewayProx
 				ApiResponse = events.APIGatewayProxyResponse{Body: event.Body, StatusCode: 500}
 				return ApiResponse, er
 			}
-			dp, er = w3Client.GenerateDepositDataWithForWdAddr(ctx, vdg, wc, fv)
+			dp, err = w3Client.GenerateDepositDataWithForWdAddr(ctx, vdg, wc, fv)
+			if err != nil {
+				log.Ctx(ctx).Err(err)
+				ApiResponse = events.APIGatewayProxyResponse{Body: event.Body, StatusCode: 500}
+				return ApiResponse, err
+			}
 		}
 	} else {
-		if len(sr.BeaconURL) > 0 {
+		if len(sr.BeaconURL) <= 0 {
+			log.Ctx(ctx).Err(er)
+			ApiResponse = events.APIGatewayProxyResponse{Body: event.Body, StatusCode: 500}
+			return ApiResponse, er
+		}
+		w3Client = signing_automation_ethereum.Web3SignerClient{Web3Actions: web3_actions.Web3Actions{
+			NodeURL: sr.BeaconURL,
+			Network: sr.Network,
+		}}
+		if sr.ForkVersion == nil {
 			fv, er = signing_automation_ethereum.GetForkVersion(ctx, sr.BeaconURL)
 			if er != nil {
 				log.Ctx(ctx).Err(er)
@@ -131,6 +151,11 @@ func HandleValidatorDepositsGen(ctx context.Context, event events.APIGatewayProx
 		}
 		if len(sr.WithdrawalAddress) >= 0 {
 			dp, err = w3Client.GenerateDepositDataWithDefaultWd(ctx, vdg, sr.ForkVersion)
+			if err != nil {
+				log.Ctx(ctx).Err(err)
+				ApiResponse = events.APIGatewayProxyResponse{Body: event.Body, StatusCode: 500}
+				return ApiResponse, err
+			}
 		} else {
 			wc, er = json.Marshal(sr.WithdrawalAddress)
 			if er != nil {
@@ -139,6 +164,11 @@ func HandleValidatorDepositsGen(ctx context.Context, event events.APIGatewayProx
 				return ApiResponse, er
 			}
 			dp, err = w3Client.GenerateDepositDataWithForWdAddr(ctx, vdg, wc, sr.ForkVersion)
+			if err != nil {
+				log.Ctx(ctx).Err(err)
+				ApiResponse = events.APIGatewayProxyResponse{Body: event.Body, StatusCode: 500}
+				return ApiResponse, err
+			}
 		}
 	}
 	b, er = json.Marshal(dp)
