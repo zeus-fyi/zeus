@@ -1,6 +1,8 @@
 package signing_automation_ethereum
 
 import (
+	"encoding/base64"
+
 	age_encryption "github.com/zeus-fyi/zeus/pkg/crypto/age"
 	"github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/memfs"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
@@ -64,4 +66,11 @@ func (t *Web3SignerClientTestSuite) TestAgeEncryptedKeystoresGen() {
 	b, err := vdg.GenerateAgeEncryptedValidatorKeysInMemZipFile(ctx, inMemFs, enc)
 	t.Require().Nil(err)
 	t.Require().NotNil(b)
+	base64EncodedData := base64.StdEncoding.EncodeToString(b)
+	vdg.Fp.DirOut = "/Users/alex/go/Olympus/Zeus/pkg/artemis/signing_automation/ethereum/"
+	vdg.Fp.FnOut = "keystores.zip"
+	dst := make([]byte, base64.StdEncoding.DecodedLen(len(base64EncodedData)))
+	_, err = base64.StdEncoding.Decode(dst, []byte(base64EncodedData))
+	err = vdg.Fp.WriteToFileOutPath(dst)
+	t.Require().Nil(err)
 }

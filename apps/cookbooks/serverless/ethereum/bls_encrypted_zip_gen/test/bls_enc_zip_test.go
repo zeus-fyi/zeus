@@ -53,7 +53,6 @@ func (s *ServerlessEncKeysZipGenTestSuite) TestServerlessSigningFunc() {
 	fp := filepaths.Path{DirOut: "/Users/alex/go/Olympus/Zeus/apps/cookbooks/serverless/ethereum/bls_encrypted_zip_gen/test", FnOut: "keystores.zip"}
 	err = fp.WriteToFileOutPath(resp.Body())
 	s.Require().NoError(err)
-
 }
 
 func TestServerlessKeygenTestSuite(t *testing.T) {
