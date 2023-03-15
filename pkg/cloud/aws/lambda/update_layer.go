@@ -9,17 +9,17 @@ import (
 	"github.com/zeus-fyi/zeus/builds"
 )
 
-func (l *LambdaClientAWS) UpdateServerlessBLSLambdaFnKeystoreLayer(ctx context.Context) (*lambda.UpdateFunctionConfigurationOutput, error) {
+func (l *LambdaClientAWS) UpdateServerlessBLSLambdaFnKeystoreLayer(ctx context.Context, functionName, keystoresLayerName string) (*lambda.UpdateFunctionConfigurationOutput, error) {
 	builds.ChangeToBuildsDir()
 
-	layerVersion, err := l.GetKeystoreLayerInfo(ctx)
+	layerVersion, err := l.GetKeystoreLayerInfo(ctx, keystoresLayerName)
 	if err != nil || layerVersion == nil {
 		log.Ctx(ctx).Err(err).Msg("CreateNewLambdaFn: error getting lambda function keystore layer info")
 		return nil, err
 	}
 
 	input := &lambda.UpdateFunctionConfigurationInput{
-		FunctionName: aws.String(EthereumSignerFunctionName),
+		FunctionName: aws.String(functionName),
 		Layers:       []string{l.GetLambdaExtensionARN(), *layerVersion.LayerVersions[0].LayerVersionArn},
 	}
 	ly, err := l.UpdateFunctionConfiguration(ctx, input)

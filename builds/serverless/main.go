@@ -45,6 +45,8 @@ var (
 		DirIn:  "",
 		DirOut: "",
 	}
+	blsSignerFuncName    = "ethereumSignerBLS"
+	keystoresLayerName   = "blsKeystores"
 	keyGenSecrets        bool
 	genValidatorDeposits bool
 	sendDeposits         bool
@@ -243,7 +245,7 @@ var Cmd = &cobra.Command{
 				}
 				fmt.Println(s)
 			case "updateLambdaKeystoresLayerToLatest":
-				err := serverless_aws_automation.UpdateLambdaFunctionKeystoresLayer(ctx, awsAuth)
+				err := serverless_aws_automation.UpdateLambdaFunctionKeystoresLayer(ctx, awsAuth, blsSignerFuncName, keystoresLayerName)
 				if err != nil {
 					panic(err)
 				}
@@ -317,13 +319,13 @@ var Cmd = &cobra.Command{
 				}
 			case "4", "createLambdaFunctionKeystoresLayer":
 				fmt.Println("INFO: creating lambda keystore layer using your encrypted keystores from step 3")
-				err := serverless_aws_automation.CreateLambdaFunctionKeystoresLayer(ctx, awsAuth, keystoresPath)
+				err := serverless_aws_automation.CreateLambdaFunctionKeystoresLayer(ctx, awsAuth, keystoresPath, keystoresLayerName)
 				if err != nil {
 					panic(err)
 				}
 			case "5", "createLambdaFunction":
 				fmt.Println("INFO: creating lambda function")
-				lambdaFnUrl, err := serverless_aws_automation.CreateLambdaFunction(ctx, awsAuth)
+				lambdaFnUrl, err := serverless_aws_automation.CreateLambdaFunction(ctx, awsAuth, blsSignerFuncName, keystoresLayerName)
 				if err != nil {
 					panic(err)
 				}
@@ -358,7 +360,7 @@ var Cmd = &cobra.Command{
 			case "7", "verifyLambdaFunction":
 				if externalAwsAuth.ServiceURL == "" {
 					fmt.Println("INFO: no lambda fn url, looking up url if exists")
-					url, err := serverless_aws_automation.GetLambdaFunctionUrl(ctx, awsAuth)
+					url, err := serverless_aws_automation.GetLambdaFunctionUrl(ctx, awsAuth, blsSignerFuncName)
 					if err != nil {
 						panic(err)
 					}
@@ -427,7 +429,7 @@ var Cmd = &cobra.Command{
 				}
 				if externalAwsAuth.ServiceURL == "" {
 					fmt.Println("INFO: no lambda fn url, looking up url if exists")
-					externalAwsAuth.ServiceURL, err = serverless_aws_automation.GetLambdaFunctionUrl(ctx, awsAuth)
+					externalAwsAuth.ServiceURL, err = serverless_aws_automation.GetLambdaFunctionUrl(ctx, awsAuth, blsSignerFuncName)
 					if err != nil {
 						panic(err)
 					}
