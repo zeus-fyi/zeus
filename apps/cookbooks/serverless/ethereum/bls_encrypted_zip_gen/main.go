@@ -16,7 +16,6 @@ import (
 	signing_automation_ethereum "github.com/zeus-fyi/zeus/pkg/artemis/signing_automation/ethereum"
 	age_encryption "github.com/zeus-fyi/zeus/pkg/crypto/age"
 	"github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/memfs"
-	serverless_inmemfs "github.com/zeus-fyi/zeus/serverless/ethereum/signatures/inmemfs"
 )
 
 const (
@@ -29,7 +28,7 @@ func HandleValidatorEncryptedKeystoreZipGenRequest(ctx context.Context, event ev
 	ApiResponse := events.APIGatewayProxyResponse{}
 	m := make(map[string]any)
 
-	sr := bls_serverless_signing.EthereumValidatorEncryptedZipKeysRequests{}
+	zipReq := bls_serverless_signing.EthereumValidatorEncryptedZipKeysRequests{}
 	err := json.Unmarshal([]byte(event.Body), &m)
 	if err != nil {
 		log.Ctx(ctx).Err(err)
@@ -43,7 +42,7 @@ func HandleValidatorEncryptedKeystoreZipGenRequest(ctx context.Context, event ev
 		ApiResponse = events.APIGatewayProxyResponse{Body: event.Body, StatusCode: 500}
 		return ApiResponse, err
 	}
-	err = json.Unmarshal(b, &sr)
+	err = json.Unmarshal(b, &zipReq)
 	if err != nil {
 		log.Ctx(ctx).Err(err)
 		ApiResponse = events.APIGatewayProxyResponse{Body: event.Body, StatusCode: 500}
@@ -51,7 +50,7 @@ func HandleValidatorEncryptedKeystoreZipGenRequest(ctx context.Context, event ev
 	}
 	headerValue := os.Getenv(SessionToken)
 	r := resty.New()
-	url := fmt.Sprintf("http://localhost:%d/secretsmanager/get?secretId=%s", SecretsPortHTTP, sr.AgeSecretName)
+	url := fmt.Sprintf("http://localhost:%d/secretsmanager/get?secretId=%s", SecretsPortHTTP, zipReq.AgeSecretName)
 	resp, err := r.R().
 		SetHeader(SecretsHeader, headerValue).
 		Get(url)
@@ -83,19 +82,13 @@ func HandleValidatorEncryptedKeystoreZipGenRequest(ctx context.Context, event ev
 	}
 
 	var enc age_encryption.Age
-	// init inmemfs, m should only have one age key in it
+	// m should only have one age key in it
 	for pubkey, privkey := range m {
 		enc = age_encryption.NewAge(privkey.(string), pubkey)
-		err = serverless_inmemfs.ImportIntoInMemFs(ctx, enc)
-		if err != nil {
-			log.Ctx(ctx).Err(err)
-			ApiResponse = events.APIGatewayProxyResponse{Body: event.Body, StatusCode: 500}
-			return ApiResponse, err
-		}
 	}
 
 	// gets validator mnemonic to generate deposit data & encrypted keystore zip file
-	url = fmt.Sprintf("http://localhost:%d/secretsmanager/get?secretId=%s", SecretsPortHTTP, sr.MnemonicAndHDWalletSecretName)
+	url = fmt.Sprintf("http://localhost:%d/secretsmanager/get?secretId=%s", SecretsPortHTTP, zipReq.MnemonicAndHDWalletSecretName)
 	resp, err = r.R().
 		SetHeader(SecretsHeader, headerValue).
 		Get(url)
@@ -126,18 +119,18 @@ func HandleValidatorEncryptedKeystoreZipGenRequest(ctx context.Context, event ev
 	mnemonic := m["mnemonic"]
 	hdWalletPassword := m["hdWalletPassword"]
 
+	// network doesn"t matter here, just need to generate encrypted key pairs
 	vdg := signing_automation_ethereum.ValidatorDepositGenerationParams{
 		Mnemonic:             mnemonic.(string),
 		Pw:                   hdWalletPassword.(string),
-		ValidatorIndexOffset: sr.HdOffset,
-		NumValidators:        sr.ValidatorCount,
-		Network:              "ephemery",
+		ValidatorIndexOffset: zipReq.HdOffset,
+		NumValidators:        zipReq.ValidatorCount,
 	}
 	inMemFs := memfs.NewMemFs()
 	zipFileData, err := vdg.GenerateAgeEncryptedValidatorKeysInMemZipFile(ctx, inMemFs, enc)
 	if err != nil {
 		log.Ctx(ctx).Err(err)
-		ApiResponse = events.APIGatewayProxyResponse{Body: event.Body, StatusCode: 500}
+		ApiResponse = events.APIGatewayProxyResponse{Body: event.Body, StatusCode: 501}
 		return ApiResponse, err
 	}
 	base64EncodedData := base64.StdEncoding.EncodeToString(zipFileData)
