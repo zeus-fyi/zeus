@@ -28,6 +28,6 @@ type EthereumValidatorDepositsGenRequests struct {
 	HdOffset                      int    `json:"hdOffset,omitempty"`
 
 	Network     string        `json:"network"`
-	ForkVersion *spec.Version `json:"forkVersion"`
+	ForkVersion *spec.Version `json:"forkVersion,omitempty"`
 	BeaconURL   string        `json:"beaconURL,omitempty"`
 }
