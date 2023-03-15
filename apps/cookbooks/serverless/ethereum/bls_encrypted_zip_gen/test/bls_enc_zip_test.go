@@ -10,6 +10,7 @@ import (
 	serverless_aws_automation "github.com/zeus-fyi/zeus/builds/serverless/aws_automation"
 	aegis_aws_auth "github.com/zeus-fyi/zeus/pkg/aegis/aws/auth"
 	bls_serverless_signing "github.com/zeus-fyi/zeus/pkg/aegis/aws/serverless_signing"
+	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 	"github.com/zeus-fyi/zeus/test/configs"
 
 	"github.com/zeus-fyi/zeus/test/test_suites"
@@ -49,6 +50,10 @@ func (s *ServerlessEncKeysZipGenTestSuite) TestServerlessSigningFunc() {
 	s.Require().NoError(err)
 	s.Require().Equal(http.StatusOK, resp.StatusCode())
 	s.Assert().NotEmpty(resp.Body())
+	fp := filepaths.Path{DirOut: "/Users/alex/go/Olympus/Zeus/apps/cookbooks/serverless/ethereum/bls_encrypted_zip_gen/test", FnOut: "keystores.zip"}
+	err = fp.WriteToFileOutPath(resp.Body())
+	s.Require().NoError(err)
+
 }
 
 func TestServerlessKeygenTestSuite(t *testing.T) {
