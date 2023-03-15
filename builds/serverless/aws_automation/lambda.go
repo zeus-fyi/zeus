@@ -27,7 +27,7 @@ func CreateLambdaFunction(ctx context.Context, auth aegis_aws_auth.AuthAWS, func
 		}
 	}
 	fmt.Println("INFO: creating lambda function url")
-	lfUrl, err := lm.MakeEthereumSignerURL(ctx)
+	lfUrl, err := lm.MakeLambdaURL(ctx, functionName)
 	if err != nil {
 		if strings.Contains(err.Error(), " FunctionUrlConfig exists for this Lambda function") {
 			log.Ctx(ctx).Info().Msg("INFO: lambda function url already exists, skipping creation")
