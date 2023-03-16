@@ -1,6 +1,7 @@
 package signing_automation_ethereum
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"errors"
@@ -105,7 +106,7 @@ func (vd *ValidatorDepositGenerationParams) GenerateAndEncryptValidatorKeysFromS
 }
 
 // GenerateAgeEncryptedValidatorKeysInMemZipFile generates a zip file of validator keys encrypted with age, the unzipped contents are keystores/keystores.tar.gz.age
-func (vd *ValidatorDepositGenerationParams) GenerateAgeEncryptedValidatorKeysInMemZipFile(ctx context.Context, inMemFs memfs.MemFS, age age_encryption.Age) ([]byte, error) {
+func (vd *ValidatorDepositGenerationParams) GenerateAgeEncryptedValidatorKeysInMemZipFile(ctx context.Context, inMemFs memfs.MemFS, age age_encryption.Age) (*bytes.Buffer, error) {
 	initErr := bls_signer.InitEthBLS()
 	if initErr != nil {
 		log.Ctx(ctx).Err(initErr)
