@@ -40,11 +40,6 @@ func (a *Age) EncryptFromInMemFS(inMemFs memfs.MemFS, p *filepaths.Path) error {
 		log.Err(werr)
 		return werr
 	}
-	_, err = io.Copy(w, outFile)
-	if err != nil {
-		log.Err(err)
-		return err
-	}
 	if cerr := w.Close(); cerr != nil {
 		log.Err(cerr)
 		return cerr

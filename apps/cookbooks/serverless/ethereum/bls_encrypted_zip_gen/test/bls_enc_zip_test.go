@@ -52,7 +52,7 @@ func (s *ServerlessEncKeysZipGenTestSuite) TestServerlessSigningFunc() {
 
 	s.Require().NoError(err)
 	s.Require().Equal(http.StatusOK, resp.StatusCode())
-	s.Assert().NotEmpty(resp.Body())
+	s.Require().NotZero(len(resp.Body()))
 	forceDirToTestSuite()
 	fp := filepaths.Path{DirOut: ".", FnOut: "keystores.zip"}
 	err = fp.WriteToFileOutPath(resp.Body())

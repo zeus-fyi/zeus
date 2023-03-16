@@ -6,6 +6,9 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"os"
+	"path"
+	"runtime"
 	"strings"
 
 	"github.com/google/uuid"
@@ -114,9 +117,9 @@ func (vd *ValidatorDepositGenerationParams) GenerateAgeEncryptedValidatorKeysInM
 	}
 	p := filepaths.Path{DirIn: "./keystores", DirOut: "./gzip", FnOut: "keystores.tar.gz"}
 	for i := vd.ValidatorIndexOffset; i < vd.NumValidators+vd.ValidatorIndexOffset; i++ {
-		path := fmt.Sprintf("m/12381/3600/%d/0/0", i)
+		derPath := fmt.Sprintf("m/12381/3600/%d/0/0", i)
 
-		sk, err := vd.DerivedKey(ctx, path)
+		sk, err := vd.DerivedKey(ctx, derPath)
 		if err != nil {
 			panic(err)
 		}
@@ -141,12 +144,11 @@ func (vd *ValidatorDepositGenerationParams) GenerateAgeEncryptedValidatorKeysInM
 	}
 	p.FnIn = "keystores.tar.gz"
 	p.DirIn = "./gzip"
-	p.DirOut = "./keystores"
+	p.DirOut = "./gzip"
 	err = age.EncryptFromInMemFS(inMemFs, &p)
 	if err != nil {
 		return nil, err
 	}
-	p.DirIn = "./keystores"
 	zipBytes, err := compression.ZipKeystoreFileInMemory(p, inMemFs)
 	if err != nil {
 		return nil, err
@@ -192,4 +194,13 @@ func (vd *ValidatorDepositGenerationParams) EthDepositEncryptionAndAddMetadata(c
 	m["pubkey"] = bls_signer.ConvertBytesToString(sk.PublicKey().Marshal())
 	m["version"] = "4"
 	return m, err
+}
+func forceDirToTestSuite() string {
+	_, filename, _, _ := runtime.Caller(0)
+	dir := path.Join(path.Dir(filename), "")
+	err := os.Chdir(dir)
+	if err != nil {
+		panic(err.Error())
+	}
+	return dir
 }

@@ -1,8 +1,10 @@
 package signing_automation_ethereum
 
 import (
-	"encoding/base64"
+	"encoding/json"
 
+	aws_aegis_auth "github.com/zeus-fyi/zeus/pkg/aegis/aws/auth"
+	aegis_aws_secretmanager "github.com/zeus-fyi/zeus/pkg/aegis/aws/secretmanager"
 	age_encryption "github.com/zeus-fyi/zeus/pkg/crypto/age"
 	"github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/memfs"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
@@ -51,8 +53,35 @@ func (t *Web3SignerClientTestSuite) TestEphemeralDepositsFromMnemonicInEth2Keyst
 func (t *Web3SignerClientTestSuite) TestAgeEncryptedKeystoresGen() {
 	t.Tc = configs.InitLocalTestConfigs()
 	configs.ForceDirToConfigLocation()
+
+	t.Tc = configs.InitLocalTestConfigs()
+
+	region := "us-west-1"
+	a := aws_aegis_auth.AuthAWS{
+		AccessKey: t.Tc.AccessKeyAWS,
+		SecretKey: t.Tc.SecretKeyAWS,
+		Region:    region,
+	}
+	sm, err := aegis_aws_secretmanager.InitSecretsManager(ctx, a)
+	t.Require().Nil(err)
+	t.Require().NotNil(sm)
+
+	secretInfo := aegis_aws_secretmanager.SecretInfo{
+		Region: region,
+		Name:   "ageEncryptionKeyEphemery",
+	}
+	b, err := sm.GetSecretBinary(ctx, secretInfo)
+	t.Require().Nil(err)
+
+	m := make(map[string]any)
+	err = json.Unmarshal(b, &m)
+	t.Require().Nil(err)
+	var enc age_encryption.Age
+	for pubkey, privkey := range m {
+		enc = age_encryption.NewAge(privkey.(string), pubkey)
+	}
 	offset := 0
-	numKeys := 3
+	numKeys := 10
 
 	vdg := ValidatorDepositGenerationParams{
 		Fp:                   depositDataPath,
@@ -62,15 +91,13 @@ func (t *Web3SignerClientTestSuite) TestAgeEncryptedKeystoresGen() {
 		NumValidators:        numKeys,
 	}
 	inMemFs := memfs.NewMemFs()
-	enc := age_encryption.NewAge(t.Tc.AgePrivKey, t.Tc.AgePubKey)
-	b, err := vdg.GenerateAgeEncryptedValidatorKeysInMemZipFile(ctx, inMemFs, enc)
+	zipBytes, err := vdg.GenerateAgeEncryptedValidatorKeysInMemZipFile(ctx, inMemFs, enc)
 	t.Require().Nil(err)
-	t.Require().NotNil(b)
-	base64EncodedData := base64.StdEncoding.EncodeToString(b)
-	vdg.Fp.DirOut = "/Users/alex/go/Olympus/Zeus/pkg/artemis/signing_automation/ethereum/"
-	vdg.Fp.FnOut = "keystores.zip"
-	dst := make([]byte, base64.StdEncoding.DecodedLen(len(base64EncodedData)))
-	_, err = base64.StdEncoding.Decode(dst, []byte(base64EncodedData))
-	err = vdg.Fp.WriteToFileOutPath(dst)
-	t.Require().Nil(err)
+	t.Require().NotEmpty(zipBytes)
+
+	//p := filepaths.Path{}
+	//p.DirOut = "./"
+	//p.FnOut = "keystores.zip"
+	//err = p.WriteToFileOutPath(zipBytes.Bytes())
+	//t.Require().Nil(err)
 }
