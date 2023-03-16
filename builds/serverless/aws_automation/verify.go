@@ -63,7 +63,10 @@ func VerifyLambdaSignerFromDepositDataSlice(ctx context.Context, auth aegis_aws_
 		}
 	}
 	if len(sliceGroup) > 0 {
-		_, err = sendVerify(ctx, auth, funcUrl, sr, sliceGroup)
+		sliceGroup, err = sendVerify(ctx, auth, funcUrl, sr, sliceGroup)
+	}
+	if len(sliceGroup) > 0 {
+		return errors.New("some keys were not verified")
 	}
 	return err
 }
