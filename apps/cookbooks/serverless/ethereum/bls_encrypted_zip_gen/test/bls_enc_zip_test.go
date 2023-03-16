@@ -3,6 +3,9 @@ package serverless_keygen
 import (
 	"context"
 	"net/http"
+	"os"
+	"path"
+	"runtime"
 	"testing"
 
 	"github.com/go-resty/resty/v2"
@@ -10,6 +13,7 @@ import (
 	serverless_aws_automation "github.com/zeus-fyi/zeus/builds/serverless/aws_automation"
 	aegis_aws_auth "github.com/zeus-fyi/zeus/pkg/aegis/aws/auth"
 	bls_serverless_signing "github.com/zeus-fyi/zeus/pkg/aegis/aws/serverless_signing"
+	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 	"github.com/zeus-fyi/zeus/test/configs"
 
 	"github.com/zeus-fyi/zeus/test/test_suites"
@@ -35,9 +39,9 @@ func (s *ServerlessEncKeysZipGenTestSuite) TestServerlessSigningFunc() {
 	r.SetBaseURL(fnUrl)
 
 	dgReq := bls_serverless_signing.EthereumValidatorEncryptedZipKeysRequests{
-		AgeSecretName:                 "ageEncryptionKeyGoerli",
-		MnemonicAndHDWalletSecretName: "mnemonicAndHDWalletGoerli",
-		ValidatorCount:                3,
+		AgeSecretName:                 "ageEncryptionKeyEphemery",
+		MnemonicAndHDWalletSecretName: "mnemonicAndHDWalletEphemery",
+		ValidatorCount:                10,
 		HdOffset:                      0,
 	}
 	req, err := auth.CreateV4AuthPOSTReq(ctx, "lambda", fnUrl, dgReq)
@@ -49,11 +53,22 @@ func (s *ServerlessEncKeysZipGenTestSuite) TestServerlessSigningFunc() {
 	s.Require().NoError(err)
 	s.Require().Equal(http.StatusOK, resp.StatusCode())
 	s.Assert().NotEmpty(resp.Body())
-	//fp := filepaths.Path{DirOut: "./serverless/ethereum/bls_encrypted_zip_gen/test", FnOut: "keystores.zip"}
-	//err = fp.WriteToFileOutPath(resp.Body())
-	//s.Require().NoError(err)
+	forceDirToTestSuite()
+	fp := filepaths.Path{DirOut: ".", FnOut: "keystores.zip"}
+	err = fp.WriteToFileOutPath(resp.Body())
+	s.Require().NoError(err)
 }
 
 func TestServerlessKeygenTestSuite(t *testing.T) {
 	suite.Run(t, new(ServerlessEncKeysZipGenTestSuite))
+}
+
+func forceDirToTestSuite() string {
+	_, filename, _, _ := runtime.Caller(0)
+	dir := path.Join(path.Dir(filename), "")
+	err := os.Chdir(dir)
+	if err != nil {
+		panic(err.Error())
+	}
+	return dir
 }

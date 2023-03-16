@@ -2,6 +2,7 @@ package aegis_aws_secretmanager
 
 import (
 	"encoding/json"
+
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
 	aws_aegis_auth "github.com/zeus-fyi/zeus/pkg/aegis/aws/auth"
@@ -22,6 +23,28 @@ func (t *AwsSecretManagerTestSuite) TestCreateSecret() {
 		SecretString: aws.String(t.Tc.AgePrivKey),
 	}
 	err = sm.CreateNewSecret(ctx, si)
+	t.Require().Nil(err)
+}
+func (t *AwsSecretManagerTestSuite) TestGetSecretBinary() {
+	region := "us-west-1"
+	a := aws_aegis_auth.AuthAWS{
+		AccessKey: t.Tc.AccessKeyAWS,
+		SecretKey: t.Tc.SecretKeyAWS,
+		Region:    region,
+	}
+	sm, err := InitSecretsManager(ctx, a)
+	t.Require().Nil(err)
+	t.Require().NotNil(sm)
+
+	secretInfo := SecretInfo{
+		Region: region,
+		Name:   "ageEncryptionKeyEphemery",
+	}
+	b, err := sm.GetSecretBinary(ctx, secretInfo)
+	t.Require().Nil(err)
+
+	m := make(map[string]any)
+	err = json.Unmarshal(b, &m)
 	t.Require().Nil(err)
 }
 
