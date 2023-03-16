@@ -133,8 +133,7 @@ func HandleValidatorEncryptedKeystoreZipGenRequest(ctx context.Context, event ev
 		return ApiResponse, err
 	}
 	headers := map[string]string{
-		"Content-Type":        "application/zip",
-		"Content-Disposition": "attachment; filename=keystores.zip",
+		"Content-Type": "application/octet-stream",
 	}
 	ApiResponse = events.APIGatewayProxyResponse{
 		Headers:         headers,
