@@ -2,6 +2,7 @@ package aegis_aws_iam
 
 import (
 	"context"
+
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/rs/zerolog/log"
 	aws_aegis_auth "github.com/zeus-fyi/zeus/pkg/aegis/aws/auth"
@@ -23,8 +24,5 @@ func (i *IAMClientAWS) CreateUserAccessKeys(ctx context.Context, userName string
 	}
 	auth.AccessKey = *createAccessKeyOutput.AccessKey.AccessKeyId
 	auth.SecretKey = *createAccessKeyOutput.AccessKey.SecretAccessKey
-	println("Access Key:", auth.AccessKey)
-	println("Secret Key:", auth.SecretKey)
-
 	return auth, nil
 }
