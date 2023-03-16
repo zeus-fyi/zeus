@@ -97,3 +97,53 @@ func UpdateLambdaFunctionKeystoresLayer(ctx context.Context, auth aegis_aws_auth
 	}
 	return err
 }
+
+func CreateOrUpdateLambdaFunction(ctx context.Context, auth aegis_aws_auth.AuthAWS, functionName, keystoresLayerName string) (string, error) {
+	fmt.Println("INFO: creating lambda function")
+	lm, err := aws_lambda.InitLambdaClient(ctx, auth)
+	if err != nil {
+		return "", err
+	}
+	_, err = lm.CreateServerlessBLSLambdaFn(ctx, functionName, keystoresLayerName)
+	if err != nil {
+		if strings.Contains(err.Error(), "Function already exist") {
+			log.Ctx(ctx).Info().Msg("INFO: lambda function already exists, skipping creation, updating to latest keystore layer")
+			err = nil
+			updateErr := UpdateLambdaFunctionKeystoresLayer(ctx, auth, functionName, keystoresLayerName)
+			if updateErr != nil {
+				log.Ctx(ctx).Err(updateErr).Msg("ERROR: failed to update lambda function keystores layer")
+				return "", updateErr
+			}
+		} else {
+			return "", err
+		}
+	}
+	fmt.Println("INFO: creating lambda function url")
+	lfUrl, err := lm.MakeLambdaURL(ctx, functionName)
+	if err != nil {
+		if strings.Contains(err.Error(), " FunctionUrlConfig exists for this Lambda function") {
+			log.Ctx(ctx).Info().Msg("INFO: lambda function url already exists, skipping creation")
+			lfUrlCfg, lerr := lm.GetLambdaConfigURL(ctx, functionName)
+			if lerr != nil {
+				return "", lerr
+			}
+			lfUrl = &lambda.CreateFunctionUrlConfigOutput{FunctionUrl: lfUrlCfg.FunctionUrl}
+			err = nil
+		} else {
+			return "", err
+		}
+	}
+	_, err = lm.MakeLambdaFuncAuthIAM(ctx, functionName)
+	if err != nil {
+		if strings.Contains(err.Error(), "already exists") {
+			log.Ctx(ctx).Info().Msg("INFO: lambda function iam auth config already exists, skipping creation")
+			err = nil
+		} else {
+			return "", err
+		}
+	}
+	if lfUrl.FunctionUrl == nil {
+		panic("ERROR: lambda function url is nil")
+	}
+	return *lfUrl.FunctionUrl, err
+}
