@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"os"
@@ -135,9 +136,10 @@ func HandleValidatorEncryptedKeystoreZipGenRequest(ctx context.Context, event ev
 	headers := map[string]string{
 		"Content-Type": "application/octet-stream",
 	}
+	base64Zip := base64.StdEncoding.EncodeToString(zipFileData.Bytes())
 	ApiResponse = events.APIGatewayProxyResponse{
 		Headers:         headers,
-		Body:            zipFileData.String(),
+		Body:            base64Zip,
 		StatusCode:      200,
 		IsBase64Encoded: true,
 	}
