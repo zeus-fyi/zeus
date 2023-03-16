@@ -22,6 +22,7 @@ func CreateLambdaFunction(ctx context.Context, auth aegis_aws_auth.AuthAWS, func
 	if err != nil {
 		if strings.Contains(err.Error(), "Function already exist") {
 			log.Ctx(ctx).Info().Msg("INFO: lambda function already exists, skipping creation")
+			err = nil
 		} else {
 			return "", err
 		}
@@ -36,6 +37,7 @@ func CreateLambdaFunction(ctx context.Context, auth aegis_aws_auth.AuthAWS, func
 				return "", lerr
 			}
 			lfUrl = &lambda.CreateFunctionUrlConfigOutput{FunctionUrl: lfUrlCfg.FunctionUrl}
+			err = nil
 		} else {
 			return "", err
 		}
@@ -44,6 +46,7 @@ func CreateLambdaFunction(ctx context.Context, auth aegis_aws_auth.AuthAWS, func
 	if err != nil {
 		if strings.Contains(err.Error(), "already exists") {
 			log.Ctx(ctx).Info().Msg("INFO: lambda function iam auth config already exists, skipping creation")
+			err = nil
 		} else {
 			return "", err
 		}

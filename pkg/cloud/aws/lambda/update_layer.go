@@ -6,12 +6,9 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
 	"github.com/rs/zerolog/log"
-	"github.com/zeus-fyi/zeus/builds"
 )
 
 func (l *LambdaClientAWS) UpdateServerlessBLSLambdaFnKeystoreLayer(ctx context.Context, functionName, keystoresLayerName string) (*lambda.UpdateFunctionConfigurationOutput, error) {
-	builds.ChangeToBuildsDir()
-
 	layerVersion, err := l.GetKeystoreLayerInfo(ctx, keystoresLayerName)
 	if err != nil || layerVersion == nil {
 		log.Ctx(ctx).Err(err).Msg("CreateNewLambdaFn: error getting lambda function keystore layer info")

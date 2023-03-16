@@ -73,6 +73,7 @@ func CreateLambdaFunctionEncryptedKeystoresZip(ctx context.Context, auth aegis_a
 	if err != nil {
 		if strings.Contains(err.Error(), "Function already exist") {
 			log.Ctx(ctx).Info().Msg("INFO: lambda function already exists, skipping creation")
+			err = nil
 		} else {
 			return "", err
 		}
@@ -87,6 +88,7 @@ func CreateLambdaFunctionEncryptedKeystoresZip(ctx context.Context, auth aegis_a
 				return "", lerr
 			}
 			lfUrl = &lambda.CreateFunctionUrlConfigOutput{FunctionUrl: lfUrlCfg.FunctionUrl}
+			err = nil
 		} else {
 			return "", err
 		}
@@ -95,6 +97,7 @@ func CreateLambdaFunctionEncryptedKeystoresZip(ctx context.Context, auth aegis_a
 	if err != nil {
 		if strings.Contains(err.Error(), "already exists") {
 			log.Ctx(ctx).Info().Msg("INFO: lambda function iam auth config already exists, skipping creation")
+			err = nil
 		} else {
 			return "", err
 		}
@@ -119,6 +122,7 @@ func CreateLambdaFunctionDepositGen(ctx context.Context, auth aegis_aws_auth.Aut
 	if err != nil {
 		if strings.Contains(err.Error(), "Function already exist") {
 			log.Ctx(ctx).Info().Msg("INFO: lambda function already exists, skipping creation")
+			err = nil
 		} else {
 			return "", err
 		}
@@ -133,6 +137,7 @@ func CreateLambdaFunctionDepositGen(ctx context.Context, auth aegis_aws_auth.Aut
 				return "", lerr
 			}
 			lfUrl = &lambda.CreateFunctionUrlConfigOutput{FunctionUrl: lfUrlCfg.FunctionUrl}
+			err = nil
 		} else {
 			return "", err
 		}
@@ -141,6 +146,7 @@ func CreateLambdaFunctionDepositGen(ctx context.Context, auth aegis_aws_auth.Aut
 	if err != nil {
 		if strings.Contains(err.Error(), "already exists") {
 			log.Ctx(ctx).Info().Msg("INFO: lambda function iam auth config already exists, skipping creation")
+			err = nil
 		} else {
 			return "", err
 		}
