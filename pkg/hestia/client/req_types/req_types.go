@@ -42,8 +42,8 @@ func ProtocolNetworkIDToString(id int) string {
 }
 
 type CreateValidatorServiceRequest struct {
-	ServiceRequestWrapper
-	ValidatorServiceOrgGroupSlice
+	ServiceRequestWrapper         `json:"serviceRequestWrapper"`
+	ValidatorServiceOrgGroupSlice `json:"validatorServiceOrgGroupSlice"`
 }
 
 type ValidatorServiceOrgGroupSlice []ValidatorServiceOrgGroup
