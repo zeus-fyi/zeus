@@ -11,6 +11,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/iam v1.19.2
 	github.com/aws/aws-sdk-go-v2/service/lambda v1.29.2
 	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.18.2
+	github.com/aws/aws-sdk-go-v2/service/sts v1.18.2
 	github.com/cavaliergopher/grab/v3 v3.0.1
 	github.com/cbergoon/merkletree v0.2.0
 	github.com/ferranbt/fastssz v0.1.2
@@ -58,7 +59,6 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.21 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sso v1.12.0 // indirect
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.14.0 // indirect
-	github.com/aws/aws-sdk-go-v2/service/sts v1.18.2 // indirect
 	github.com/aws/smithy-go v1.13.5 // indirect
 	github.com/btcsuite/btcd v0.21.0-beta // indirect
 	github.com/cespare/xxhash v1.1.0 // indirect

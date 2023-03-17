@@ -7,6 +7,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.18.2
 	github.com/go-resty/resty/v2 v2.7.0
 	github.com/rs/zerolog v1.29.0
+	github.com/stretchr/testify v1.8.2
 )
 
 require (
