@@ -42,7 +42,7 @@ func (t *EthereumAutomationCookbookTestSuite) TestFullDepositAutomation() {
 
 func (t *EthereumAutomationCookbookTestSuite) TestDepositGenerationAutomation() []*signing_automation_ethereum.DepositDataParams {
 	offset := 0
-	numKeys := 100
+	numKeys := 10
 
 	vdg := signing_automation_ethereum.ValidatorDepositGenerationParams{
 		Fp:                   depositDataPath,
@@ -59,8 +59,14 @@ func (t *EthereumAutomationCookbookTestSuite) TestDepositGenerationAutomation() 
 	t.Require().Nil(err)
 
 	jsonSlice := signing_automation_ethereum.DepositDataParamsJSON(dpSlice)
-	b, err := json.Marshal(jsonSlice)
+	b, err := json.MarshalIndent(jsonSlice, "", "\t")
+	t.Require().Nil(err)
+
 	fmt.Println("response json")
+	depositDataPath.FnOut = "deposit_data.json"
+	err = depositDataPath.WriteToFileOutPath(b)
+	t.Require().Nil(err)
+
 	respJSON := pretty.Pretty(b)
 	respJSON = pretty.Color(respJSON, pretty.TerminalStyle)
 	fmt.Println(string(respJSON))
