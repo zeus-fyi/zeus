@@ -2,16 +2,15 @@ package serverless_keygen
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 	"testing"
 
 	"github.com/go-resty/resty/v2"
 	"github.com/stretchr/testify/suite"
-	"github.com/tidwall/pretty"
 	serverless_aws_automation "github.com/zeus-fyi/zeus/builds/serverless/aws_automation"
 	aegis_aws_auth "github.com/zeus-fyi/zeus/pkg/aegis/aws/auth"
 	bls_serverless_signing "github.com/zeus-fyi/zeus/pkg/aegis/aws/serverless_signing"
+	signing_automation_ethereum "github.com/zeus-fyi/zeus/pkg/artemis/signing_automation/ethereum"
 	"github.com/zeus-fyi/zeus/test/configs"
 
 	"github.com/zeus-fyi/zeus/test/test_suites"
@@ -46,18 +45,19 @@ func (s *ServerlessDepositsGenTestSuite) TestServerlessSigningFunc() {
 	req, err := auth.CreateV4AuthPOSTReq(ctx, "lambda", fnUrl, dgReq)
 	s.Require().Nil(err)
 
-	//depParams := make([]signing_automation_ethereum.DepositDataParams, validatorCount)
+	depParams := make([]signing_automation_ethereum.DepositDataJSON, validatorCount)
 	resp, err := r.R().
+		SetResult(&depParams).
 		SetHeaderMultiValues(req.Header).
 		SetBody(dgReq).Post("/")
 
 	s.Require().NoError(err)
 	s.Require().Equal(http.StatusOK, resp.StatusCode())
-
-	fmt.Println("response json")
-	respJSON := pretty.Pretty(resp.Body())
-	respJSON = pretty.Color(respJSON, pretty.TerminalStyle)
-	fmt.Println(string(respJSON))
+	s.Require().Equal(validatorCount, len(depParams))
+	//fmt.Println("response json")
+	//respJSON := pretty.Pretty(resp.Body())
+	//respJSON = pretty.Color(respJSON, pretty.TerminalStyle)
+	//fmt.Println(string(respJSON))
 }
 
 func TestServerlessDepositsGenTestSuite(t *testing.T) {
