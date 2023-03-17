@@ -17,10 +17,10 @@ import (
 )
 
 type DepositDataParams struct {
-	*spec.DepositData
-	DepositDataRoot    [32]byte
-	DepositMessageRoot [32]byte
-	ForkVersion        *spec.Version
+	*spec.DepositData  `json:"deposit_data"`
+	DepositDataRoot    [32]byte      `json:"deposit_data_root"`
+	DepositMessageRoot [32]byte      `json:"deposit_message_root"`
+	ForkVersion        *spec.Version `json:"fork_version"`
 }
 
 type DepositDataJSON struct {
@@ -58,6 +58,14 @@ func PrintJSONSlice(p filepaths.Path, dpParamSlice []*DepositDataParams, network
 	if err != nil {
 		panic(err)
 	}
+}
+func DepositDataParamsJSON(dpParamSlice []*DepositDataParams) []DepositDataJSON {
+	dpJSON := make([]DepositDataJSON, len(dpParamSlice))
+
+	for i, val := range dpParamSlice {
+		dpJSON[i] = val.FormatJSON()
+	}
+	return dpJSON
 }
 
 func (dd *DepositDataParams) FormatJSON() DepositDataJSON {

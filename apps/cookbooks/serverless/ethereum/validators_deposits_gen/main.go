@@ -171,7 +171,8 @@ func HandleValidatorDepositsGen(ctx context.Context, event events.APIGatewayProx
 			}
 		}
 	}
-	b, er = json.Marshal(dp)
+	dpSlice := signing_automation_ethereum.DepositDataParamsJSON(dp)
+	b, er = json.Marshal(dpSlice)
 	if er != nil {
 		log.Ctx(ctx).Err(er)
 		ApiResponse = events.APIGatewayProxyResponse{Body: event.Body, StatusCode: 500}

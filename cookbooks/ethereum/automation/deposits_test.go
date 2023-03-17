@@ -2,9 +2,11 @@ package ethereum_automation_cookbook
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 
 	"github.com/gochain/gochain/v4/core/types"
+	"github.com/tidwall/pretty"
 	"github.com/wealdtech/go-ed25519hd"
 	util "github.com/wealdtech/go-eth2-util"
 	signing_automation_ethereum "github.com/zeus-fyi/zeus/pkg/artemis/signing_automation/ethereum"
@@ -56,6 +58,12 @@ func (t *EthereumAutomationCookbookTestSuite) TestDepositGenerationAutomation() 
 	dpSlice, err := t.Web3SignerClientTestClient.GenerateEphemeryDepositDataWithDefaultWd(ctx, vdg)
 	t.Require().Nil(err)
 
+	jsonSlice := signing_automation_ethereum.DepositDataParamsJSON(dpSlice)
+	b, err := json.Marshal(jsonSlice)
+	fmt.Println("response json")
+	respJSON := pretty.Pretty(b)
+	respJSON = pretty.Color(respJSON, pretty.TerminalStyle)
+	fmt.Println(string(respJSON))
 	signing_automation_ethereum.PrintJSONSlice(depositDataPath, dpSlice, vdg.Network)
 	return dpSlice
 }
