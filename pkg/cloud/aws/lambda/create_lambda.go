@@ -175,7 +175,7 @@ var (
 		Publish:           false,
 		Runtime:           types.RuntimeGo1x,
 		Tags:              make(map[string]string),
-		Timeout:           aws.Int32(1000),
+		Timeout:           aws.Int32(900),
 		TracingConfig:     nil,
 	}
 )
