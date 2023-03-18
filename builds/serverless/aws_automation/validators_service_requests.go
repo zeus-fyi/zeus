@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/zeus-fyi/zeus/builds"
 	signing_automation_ethereum "github.com/zeus-fyi/zeus/pkg/artemis/signing_automation/ethereum"
 	hestia_client "github.com/zeus-fyi/zeus/pkg/hestia/client"
 	hestia_req_types "github.com/zeus-fyi/zeus/pkg/hestia/client/req_types"
@@ -16,7 +15,6 @@ import (
 func CreateHestiaValidatorsServiceRequest(ctx context.Context, keystoresPath filepaths.Path, sr hestia_req_types.ServiceRequestWrapper, bearerToken, feeRecipientAddr string) {
 	fmt.Println("INFO: Creating Hestia Validators Service Request...")
 	hc := hestia_client.NewDefaultHestiaClient(bearerToken)
-	builds.ChangeToBuildsDir()
 	filter := &strings_filter.FilterOpts{StartsWith: "deposit_data", DoesNotInclude: []string{"keystores.tar.gz.age", ".DS_Store"}}
 	keystoresPath.FilterFiles = filter
 	dpSlice, err := signing_automation_ethereum.ParseValidatorDepositSliceJSON(ctx, keystoresPath)

@@ -6,11 +6,9 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
 	"github.com/rs/zerolog/log"
-	"github.com/zeus-fyi/zeus/builds"
 )
 
 func (l *LambdaClientAWS) UpdateServerlessBLSLambdaFnBinary(ctx context.Context, functionName string) (*lambda.UpdateFunctionCodeOutput, error) {
-	builds.ChangeToBuildsDir()
 	update := &lambda.UpdateFunctionCodeInput{
 		FunctionName: aws.String(functionName),
 		ZipFile:      blsMainZipFilePath.ReadFileInPath(),

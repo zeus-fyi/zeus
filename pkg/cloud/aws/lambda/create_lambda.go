@@ -8,7 +8,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
 	"github.com/aws/aws-sdk-go-v2/service/lambda/types"
 	"github.com/rs/zerolog/log"
-	"github.com/zeus-fyi/zeus/builds"
 	aegis_aws_iam "github.com/zeus-fyi/zeus/pkg/aegis/aws/iam"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 )
@@ -65,7 +64,6 @@ func (l *LambdaClientAWS) GetLambdaKeystoreLayerARN(keystoresLayerName, version 
 }
 
 func (l *LambdaClientAWS) CreateServerlessBLSLambdaFn(ctx context.Context, functionName, keystoresLayerName string) (*lambda.CreateFunctionOutput, error) {
-	builds.ChangeToBuildsDir()
 	blsFnParams.FunctionName = aws.String(functionName)
 	blsFnParams.Role = aws.String(l.GetLambdaRole())
 	blsFnParams.Code.ZipFile = blsMainZipFilePath.ReadFileInPath()
@@ -108,7 +106,6 @@ var (
 )
 
 func (l *LambdaClientAWS) CreateServerlessBlsSecretsKeyGenLambdaFn(ctx context.Context) (*lambda.CreateFunctionOutput, error) {
-	builds.ChangeToBuildsDir()
 	evSecGenFnParams.Role = aws.String(l.GetLambdaRole())
 	evSecGenFnParams.Code.ZipFile = evSecretsGenZipFilePath.ReadFileInPath()
 	lf, err := l.CreateFunction(ctx, evSecGenFnParams)
@@ -144,7 +141,6 @@ var (
 )
 
 func (l *LambdaClientAWS) CreateServerlessBlsEncryptedKeystoresZipLambdaFn(ctx context.Context) (*lambda.CreateFunctionOutput, error) {
-	builds.ChangeToBuildsDir()
 	encSecGenFnParams.Role = aws.String(l.GetLambdaRole())
 	encSecGenFnParams.Code.ZipFile = encSecretsGenZipFilePath.ReadFileInPath()
 	encSecGenFnParams.Layers = []string{l.GetLambdaExtensionARN()}
@@ -181,7 +177,6 @@ var (
 )
 
 func (l *LambdaClientAWS) CreateServerlessValidatorDepositsGenLambdaFn(ctx context.Context) (*lambda.CreateFunctionOutput, error) {
-	builds.ChangeToBuildsDir()
 	vdgSecGenFnParams.Role = aws.String(l.GetLambdaRole())
 	vdgSecGenFnParams.Code.ZipFile = vdgSecretsGenZipFilePath.ReadFileInPath()
 	vdgSecGenFnParams.Layers = []string{l.GetLambdaExtensionARN()}
