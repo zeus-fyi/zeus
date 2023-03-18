@@ -9,9 +9,10 @@ import (
 	"github.com/rs/zerolog/log"
 	aegis_aws_auth "github.com/zeus-fyi/zeus/pkg/aegis/aws/auth"
 	aws_lambda "github.com/zeus-fyi/zeus/pkg/cloud/aws/lambda"
+	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 )
 
-func CreateLambdaFunctionSecretsKeyGen(ctx context.Context, auth aegis_aws_auth.AuthAWS) (string, error) {
+func CreateLambdaFunctionSecretsKeyGen(ctx context.Context, auth aegis_aws_auth.AuthAWS, p filepaths.Path) (string, error) {
 	fmt.Println("INFO: creating lambda function")
 	lm, err := aws_lambda.InitLambdaClient(ctx, auth)
 	if err != nil {
@@ -23,7 +24,7 @@ func CreateLambdaFunctionSecretsKeyGen(ctx context.Context, auth aegis_aws_auth.
 		return *fnUrl.FunctionUrl, nil
 	}
 
-	_, err = lm.CreateServerlessBlsSecretsKeyGenLambdaFn(ctx)
+	_, err = lm.CreateServerlessBlsSecretsKeyGenLambdaFn(ctx, p)
 	if err != nil {
 		if strings.Contains(err.Error(), "Function already exist") {
 			log.Ctx(ctx).Info().Msg("INFO: lambda function already exists, skipping creation")
@@ -59,7 +60,7 @@ func CreateLambdaFunctionSecretsKeyGen(ctx context.Context, auth aegis_aws_auth.
 	return *lfUrl.FunctionUrl, err
 }
 
-func CreateLambdaFunctionEncryptedKeystoresZip(ctx context.Context, auth aegis_aws_auth.AuthAWS) (string, error) {
+func CreateLambdaFunctionEncryptedKeystoresZip(ctx context.Context, auth aegis_aws_auth.AuthAWS, p filepaths.Path) (string, error) {
 	fmt.Println("INFO: creating lambda function")
 	lm, err := aws_lambda.InitLambdaClient(ctx, auth)
 	if err != nil {
@@ -69,7 +70,7 @@ func CreateLambdaFunctionEncryptedKeystoresZip(ctx context.Context, auth aegis_a
 	if fnUrl != nil && fnUrl.FunctionUrl != nil {
 		return *fnUrl.FunctionUrl, nil
 	}
-	_, err = lm.CreateServerlessBlsEncryptedKeystoresZipLambdaFn(ctx)
+	_, err = lm.CreateServerlessBlsEncryptedKeystoresZipLambdaFn(ctx, p)
 	if err != nil {
 		if strings.Contains(err.Error(), "Function already exist") {
 			log.Ctx(ctx).Info().Msg("INFO: lambda function already exists, skipping creation")
@@ -108,7 +109,7 @@ func CreateLambdaFunctionEncryptedKeystoresZip(ctx context.Context, auth aegis_a
 	return *lfUrl.FunctionUrl, err
 }
 
-func CreateLambdaFunctionDepositGen(ctx context.Context, auth aegis_aws_auth.AuthAWS) (string, error) {
+func CreateLambdaFunctionDepositGen(ctx context.Context, auth aegis_aws_auth.AuthAWS, p filepaths.Path) (string, error) {
 	fmt.Println("INFO: creating lambda function")
 	lm, err := aws_lambda.InitLambdaClient(ctx, auth)
 	if err != nil {
@@ -118,7 +119,7 @@ func CreateLambdaFunctionDepositGen(ctx context.Context, auth aegis_aws_auth.Aut
 	if fnUrl != nil && fnUrl.FunctionUrl != nil {
 		return *fnUrl.FunctionUrl, nil
 	}
-	_, err = lm.CreateServerlessValidatorDepositsGenLambdaFn(ctx)
+	_, err = lm.CreateServerlessValidatorDepositsGenLambdaFn(ctx, p)
 	if err != nil {
 		if strings.Contains(err.Error(), "Function already exist") {
 			log.Ctx(ctx).Info().Msg("INFO: lambda function already exists, skipping creation")

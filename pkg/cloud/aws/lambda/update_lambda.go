@@ -6,12 +6,13 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
 	"github.com/rs/zerolog/log"
+	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 )
 
-func (l *LambdaClientAWS) UpdateServerlessBLSLambdaFnBinary(ctx context.Context, functionName string) (*lambda.UpdateFunctionCodeOutput, error) {
+func (l *LambdaClientAWS) UpdateServerlessBLSLambdaFnBinary(ctx context.Context, functionName string, p filepaths.Path) (*lambda.UpdateFunctionCodeOutput, error) {
 	update := &lambda.UpdateFunctionCodeInput{
 		FunctionName: aws.String(functionName),
-		ZipFile:      blsMainZipFilePath.ReadFileInPath(),
+		ZipFile:      p.ReadFileInPath(),
 	}
 	lf, err := l.UpdateFunctionCode(ctx, update)
 	if err != nil {

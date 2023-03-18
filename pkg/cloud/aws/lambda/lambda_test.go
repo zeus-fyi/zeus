@@ -7,6 +7,7 @@ import (
 
 	"github.com/stretchr/testify/suite"
 	aws_aegis_auth "github.com/zeus-fyi/zeus/pkg/aegis/aws/auth"
+	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 	"github.com/zeus-fyi/zeus/test/test_suites"
 )
 
@@ -32,14 +33,16 @@ func (t *AwsLambdaTestSuite) TestClientInit() {
 
 func (t *AwsLambdaTestSuite) TestLambdaFnCreation() {
 	t.TestClientInit()
-	lf, err := t.LambdaClientAWS.CreateServerlessBLSLambdaFn(ctx, EthereumSignerFunctionName, "blsKeystores")
+	blsMainZipFilePath = filepaths.Path{DirIn: "../../../../builds/serverless/bls_signatures", FnIn: "main.zip"}
+	lf, err := t.LambdaClientAWS.CreateServerlessBLSLambdaFn(ctx, EthereumSignerFunctionName, "blsKeystores", blsMainZipFilePath)
 	t.Require().Nil(err)
 	t.Assert().NotEmpty(lf)
 }
 
 func (t *AwsLambdaTestSuite) TestUpdateSignerLambdaFnBinary() {
 	t.TestClientInit()
-	lf, err := t.LambdaClientAWS.UpdateServerlessBLSLambdaFnBinary(ctx, EthereumSignerFunctionName)
+	p := blsMainZipFilePath
+	lf, err := t.LambdaClientAWS.UpdateServerlessBLSLambdaFnBinary(ctx, EthereumSignerFunctionName, p)
 	t.Require().Nil(err)
 	t.Assert().NotEmpty(lf)
 }
@@ -54,7 +57,7 @@ func (t *AwsLambdaTestSuite) TestKeystoresLayerCreation() {
 
 func (t *AwsLambdaTestSuite) TestMakeLambdaFnURL() {
 	t.TestClientInit()
-	lf, err := t.LambdaClientAWS.MakeEthereumSignerURL(ctx)
+	lf, err := t.LambdaClientAWS.MakeLambdaURL(ctx, EthereumSignerFunctionName)
 	t.Require().Nil(err)
 	t.Assert().NotEmpty(lf)
 	fmt.Print(lf.FunctionUrl)

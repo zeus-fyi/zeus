@@ -325,7 +325,8 @@ var Cmd = &cobra.Command{
 				}
 			case "5", "createLambdaFunction":
 				fmt.Println("INFO: creating lambda function")
-				lambdaFnUrl, err := serverless_aws_automation.CreateLambdaFunction(ctx, awsAuth, blsSignerFuncName, keystoresLayerName)
+				p := filepaths.Path{DirIn: "./serverless/bls_signatures", FnIn: "main.zip"}
+				lambdaFnUrl, err := serverless_aws_automation.CreateLambdaFunction(ctx, awsAuth, blsSignerFuncName, keystoresLayerName, p)
 				if err != nil {
 					panic(err)
 				}

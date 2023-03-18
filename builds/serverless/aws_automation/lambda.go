@@ -12,13 +12,13 @@ import (
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 )
 
-func CreateLambdaFunction(ctx context.Context, auth aegis_aws_auth.AuthAWS, functionName, keystoresLayerName string) (string, error) {
+func CreateLambdaFunction(ctx context.Context, auth aegis_aws_auth.AuthAWS, functionName, keystoresLayerName string, p filepaths.Path) (string, error) {
 	fmt.Println("INFO: creating lambda function")
 	lm, err := aws_lambda.InitLambdaClient(ctx, auth)
 	if err != nil {
 		return "", err
 	}
-	_, err = lm.CreateServerlessBLSLambdaFn(ctx, functionName, keystoresLayerName)
+	_, err = lm.CreateServerlessBLSLambdaFn(ctx, functionName, keystoresLayerName, p)
 	if err != nil {
 		if strings.Contains(err.Error(), "Function already exist") {
 			log.Ctx(ctx).Info().Msg("INFO: lambda function already exists, skipping creation")
@@ -98,13 +98,13 @@ func UpdateLambdaFunctionKeystoresLayer(ctx context.Context, auth aegis_aws_auth
 	return err
 }
 
-func CreateOrUpdateLambdaFunction(ctx context.Context, auth aegis_aws_auth.AuthAWS, functionName, keystoresLayerName string) (string, error) {
+func CreateOrUpdateLambdaFunction(ctx context.Context, auth aegis_aws_auth.AuthAWS, functionName, keystoresLayerName string, p filepaths.Path) (string, error) {
 	fmt.Println("INFO: creating lambda function")
 	lm, err := aws_lambda.InitLambdaClient(ctx, auth)
 	if err != nil {
 		return "", err
 	}
-	_, err = lm.CreateServerlessBLSLambdaFn(ctx, functionName, keystoresLayerName)
+	_, err = lm.CreateServerlessBLSLambdaFn(ctx, functionName, keystoresLayerName, p)
 	if err != nil {
 		if strings.Contains(err.Error(), "Function already exist") {
 			log.Ctx(ctx).Info().Msg("INFO: lambda function already exists, skipping creation, updating to latest keystore layer")

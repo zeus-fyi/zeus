@@ -63,10 +63,10 @@ func (l *LambdaClientAWS) GetLambdaKeystoreLayerARN(keystoresLayerName, version 
 	return fmt.Sprintf("arn:aws:lambda:%s:%s:layer:%s:%s", l.Region, l.AccountNumber, keystoresLayerName, version)
 }
 
-func (l *LambdaClientAWS) CreateServerlessBLSLambdaFn(ctx context.Context, functionName, keystoresLayerName string) (*lambda.CreateFunctionOutput, error) {
+func (l *LambdaClientAWS) CreateServerlessBLSLambdaFn(ctx context.Context, functionName, keystoresLayerName string, p filepaths.Path) (*lambda.CreateFunctionOutput, error) {
 	blsFnParams.FunctionName = aws.String(functionName)
 	blsFnParams.Role = aws.String(l.GetLambdaRole())
-	blsFnParams.Code.ZipFile = blsMainZipFilePath.ReadFileInPath()
+	blsFnParams.Code.ZipFile = p.ReadFileInPath()
 	layerVersion, err := l.GetKeystoreLayerInfo(ctx, keystoresLayerName)
 	if err != nil || layerVersion == nil {
 		log.Ctx(ctx).Err(err).Msg("CreateNewLambdaFn: error getting lambda function keystore layer info")
@@ -105,9 +105,9 @@ var (
 	}
 )
 
-func (l *LambdaClientAWS) CreateServerlessBlsSecretsKeyGenLambdaFn(ctx context.Context) (*lambda.CreateFunctionOutput, error) {
+func (l *LambdaClientAWS) CreateServerlessBlsSecretsKeyGenLambdaFn(ctx context.Context, p filepaths.Path) (*lambda.CreateFunctionOutput, error) {
 	evSecGenFnParams.Role = aws.String(l.GetLambdaRole())
-	evSecGenFnParams.Code.ZipFile = evSecretsGenZipFilePath.ReadFileInPath()
+	evSecGenFnParams.Code.ZipFile = p.ReadFileInPath()
 	lf, err := l.CreateFunction(ctx, evSecGenFnParams)
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("CreateServerlessBlsSecretsKeyGenLambdaFn: error creating lambda function")
@@ -140,9 +140,9 @@ var (
 	}
 )
 
-func (l *LambdaClientAWS) CreateServerlessBlsEncryptedKeystoresZipLambdaFn(ctx context.Context) (*lambda.CreateFunctionOutput, error) {
+func (l *LambdaClientAWS) CreateServerlessBlsEncryptedKeystoresZipLambdaFn(ctx context.Context, p filepaths.Path) (*lambda.CreateFunctionOutput, error) {
 	encSecGenFnParams.Role = aws.String(l.GetLambdaRole())
-	encSecGenFnParams.Code.ZipFile = encSecretsGenZipFilePath.ReadFileInPath()
+	encSecGenFnParams.Code.ZipFile = p.ReadFileInPath()
 	encSecGenFnParams.Layers = []string{l.GetLambdaExtensionARN()}
 	lf, err := l.CreateFunction(ctx, encSecGenFnParams)
 	if err != nil {
@@ -176,9 +176,9 @@ var (
 	}
 )
 
-func (l *LambdaClientAWS) CreateServerlessValidatorDepositsGenLambdaFn(ctx context.Context) (*lambda.CreateFunctionOutput, error) {
+func (l *LambdaClientAWS) CreateServerlessValidatorDepositsGenLambdaFn(ctx context.Context, p filepaths.Path) (*lambda.CreateFunctionOutput, error) {
 	vdgSecGenFnParams.Role = aws.String(l.GetLambdaRole())
-	vdgSecGenFnParams.Code.ZipFile = vdgSecretsGenZipFilePath.ReadFileInPath()
+	vdgSecGenFnParams.Code.ZipFile = p.ReadFileInPath()
 	vdgSecGenFnParams.Layers = []string{l.GetLambdaExtensionARN()}
 	lf, err := l.CreateFunction(ctx, vdgSecGenFnParams)
 	if err != nil {
