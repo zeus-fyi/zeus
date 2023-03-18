@@ -9,13 +9,15 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+const cmExecClient = "cm-exec-client"
+
 var ExecClientGoerliSkeletonBaseConfig = zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
 	SkeletonBaseChart:         zeus_req_types.TopologyCreateRequest{},
 	SkeletonBaseNameChartPath: BeaconExecClientChartPath,
 	TopologyConfigDriver: &zeus_topology_config_drivers.TopologyConfigDriver{
 		ConfigMapDriver: &zeus_topology_config_drivers.ConfigMapDriver{
 			ConfigMap: v1Core.ConfigMap{
-				ObjectMeta: metav1.ObjectMeta{Name: "cm-exec-client"},
+				ObjectMeta: metav1.ObjectMeta{Name: cmExecClient},
 			},
 			SwapKeys: map[string]string{
 				"start.sh": GethGoerli + ".sh",

@@ -2,12 +2,15 @@ package aws_lambda
 
 import (
 	"context"
+	"net/http"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
 	"github.com/aws/aws-sdk-go-v2/service/lambda/types"
 	"github.com/rs/zerolog/log"
 )
+
+const zeusCloudOrigin = "https://cloud.zeus.fyi"
 
 // MakeEthereumSignerFuncPublic uses the EthereumSignerFunctionName to make the function public
 func (l *LambdaClientAWS) MakeEthereumSignerFuncPublic(ctx context.Context) (*lambda.AddPermissionOutput, error) {
@@ -42,6 +45,12 @@ func (l *LambdaClientAWS) MakeLambdaURL(ctx context.Context, lambdaName string) 
 	input := &lambda.CreateFunctionUrlConfigInput{
 		AuthType:     types.FunctionUrlAuthTypeAwsIam,
 		FunctionName: aws.String(lambdaName),
+		Cors: &types.Cors{
+			AllowCredentials: aws.Bool(true),
+			AllowHeaders:     []string{"*"},
+			AllowMethods:     []string{http.MethodPost},
+			AllowOrigins:     []string{zeusCloudOrigin},
+		},
 	}
 	resp, err := l.CreateFunctionUrlConfig(ctx, input)
 	if err != nil {
