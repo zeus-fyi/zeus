@@ -23,7 +23,7 @@ spec:
           imagePullPolicy: IfNotPresent
           command: [ "/bin/sh" ]
           ports:
-            - name: "mev"
+            - name: "http"
               containerPort: 18550
               protocol: "TCP"
           livenessProbe:
