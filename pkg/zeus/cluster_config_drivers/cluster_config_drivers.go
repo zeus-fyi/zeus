@@ -9,6 +9,7 @@ import (
 
 	"github.com/rs/zerolog/log"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
+	strings_filter "github.com/zeus-fyi/zeus/pkg/utils/strings"
 	zeus_client "github.com/zeus-fyi/zeus/pkg/zeus/client"
 	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_common_types"
 	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_req_types"
@@ -18,9 +19,10 @@ import (
 )
 
 type ClusterDefinition struct {
-	ClusterClassName string
-	CloudCtxNs       zeus_common_types.CloudCtxNs
-	ComponentBases   map[string]ComponentBaseDefinition
+	ClusterClassName          string
+	CloudCtxNs                zeus_common_types.CloudCtxNs
+	ComponentBases            map[string]ComponentBaseDefinition
+	FilterSkeletonBaseUploads *strings_filter.FilterOpts
 }
 
 type ComponentBaseDefinition struct {
@@ -45,6 +47,10 @@ func (c *ClusterDefinition) UploadChartsFromClusterDefinition(ctx context.Contex
 	}
 	responses := make([]zeus_resp_types.TopologyCreateResponse, len(sbs))
 	for i, sb := range sbs {
+		if !strings_filter.FilterStringWithOpts(sb.SkeletonBaseChart.SkeletonBaseName, c.FilterSkeletonBaseUploads) {
+			i -= 1
+			continue
+		}
 		resp, rerr := z.UploadChart(ctx, sb.SkeletonBaseNameChartPath, sb.SkeletonBaseChart)
 		if rerr != nil {
 			log.Ctx(ctx).Err(err)

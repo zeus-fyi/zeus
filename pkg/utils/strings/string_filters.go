@@ -2,6 +2,7 @@ package strings_filter
 
 import "strings"
 
+// FilterStringWithOpts returns true if the word passes the filter
 func FilterStringWithOpts(word string, filter *FilterOpts) bool {
 	// empty doesNotContain in means ignore, also must have at least one letter
 	if filter == nil {
