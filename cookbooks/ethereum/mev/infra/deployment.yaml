@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: "zeus-mev"
-          image: "flashbots/mev-boost:v1.5.0"
+          image: "flashbots/mev-boost:1.5.0"
           imagePullPolicy: IfNotPresent
           command: [ "/bin/sh" ]
           ports:
