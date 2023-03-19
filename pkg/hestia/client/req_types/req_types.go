@@ -57,6 +57,7 @@ type ServiceRequestWrapper struct {
 	GroupName         string            `json:"groupName"`
 	ProtocolNetworkID int               `json:"protocolNetworkID"`
 	Enabled           bool              `json:"enabled"`
+	MevEnabled        bool              `json:"mevEnabled"`
 	ServiceAuth       ServiceAuthConfig `json:"serviceAuth"`
 }
 
