@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: "zeus-mev"
+  labels:
+    app.kubernetes.io/instance: "zeus-mev"
+    app.kubernetes.io/name: "zeus-mev"
+    app.kubernetes.io/managed-by: "zeus"
+spec:
+  type: ClusterIP
+  ports:
+    - port: 18550
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/instance: "zeus-mev"
+    app.kubernetes.io/name: "zeus-mev"
+

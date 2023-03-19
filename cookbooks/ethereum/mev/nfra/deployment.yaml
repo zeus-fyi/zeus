@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "zeus-mev"
+  labels:
+    app.kubernetes.io/instance: "zeus-mev"
+    app.kubernetes.io/name: "zeus-mev"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "zeus-mev"
+      app.kubernetes.io/instance: "zeus-mev"
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: "zeus-mev"
+        app.kubernetes.io/instance: "zeus-mev"
+    spec:
+      containers:
+        - name: "zeus-mev"
+          image: "flashbots/mev-boost:v1.5.0"
+          imagePullPolicy: IfNotPresent
+          command: [ "/bin/sh" ]
+          ports:
+            - name: "mev"
+              containerPort: 18550
+              protocol: "TCP"
+          livenessProbe:
+            httpGet:
+              path: "/eth/v1/builder/status"
+              port: "http"
+          readinessProbe:
+            httpGet:
+              path: "/eth/v1/builder/status"
+              port: "http"
+          resources:
+            {}
+      volumes:
+      nodeSelector:
+        {}
+      affinity:
+        {}
+      tolerations:
+        []
