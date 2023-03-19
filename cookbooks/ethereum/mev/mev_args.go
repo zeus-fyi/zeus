@@ -15,7 +15,7 @@ func GetMevBoostArgs(ctx context.Context, network string, relays RelaysEnabled) 
 	baseCmd := fmt.Sprintf("/app/mev-boost -%s -json -addr=0.0.0.0:18550", strings.ToLower(network))
 	relayURLs := relays.GetRelays(network)
 	if relayURLs != nil {
-		baseCmd += " -relays=" + fmt.Sprintf("'%s'", strings.Join(relayURLs, ","))
+		baseCmd += " -relays=" + fmt.Sprintf("'%s'", strings.Join(relayURLs, ",")) + "\""
 		baseArgs = append(baseArgs, baseCmd)
 	}
 	return baseArgs
