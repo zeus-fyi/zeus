@@ -23,6 +23,7 @@ type LighthouseWeb3SignerRequest struct {
 	Url                   string `json:"url,omitempty" yaml:"url,omitempty"`
 	RootCertificatePath   string `json:"root_certificate_path,omitempty" yaml:"root_certificate_path,omitempty"`
 	RequestTimeoutMs      int    `json:"request_timeout_ms,omitempty" yaml:"request_timeout_ms,omitempty"`
+	BuilderProposals      bool   `json:"builder_proposals,omitempty" yaml:"builder_proposals,omitempty"`
 }
 
 type LighthouseWeb3SignerRequests struct {
