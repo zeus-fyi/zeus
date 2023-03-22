@@ -88,8 +88,7 @@ func fromHexStringTo32Byte(str string) ([32]byte, error) {
 }
 
 func GetValidatorDepositPayloadV2(ctx context.Context, depositParams ExtendedDepositParams) (web3_actions.SendContractTxPayload, error) {
-	ForceDirToEthSigningDirLocation()
-	abiFile, err := ABIOpenFile(ctx, validatorAbiFileLocation)
+	abiFile, err := ABIOpenFile(ctx, "./"+validatorAbiFileLocation)
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("Web3SignerClient: SignValidatorDeposit: ABIOpenFile")
 		return web3_actions.SendContractTxPayload{}, err

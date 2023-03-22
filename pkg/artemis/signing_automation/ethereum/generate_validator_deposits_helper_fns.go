@@ -93,14 +93,14 @@ func (vd *ValidatorDepositGenerationParams) GenerateAndEncryptValidatorKeysFromS
 		return initErr
 	}
 	for i := vd.ValidatorIndexOffset; i < vd.NumValidators+vd.ValidatorIndexOffset; i++ {
-		path := fmt.Sprintf("m/12381/3600/%d/0/0", i)
-		enc, err := vd.EthDepositEncryptionAndAddMetadata(ctx, path)
+		derPath := fmt.Sprintf("m/12381/3600/%d/0/0", i)
+		enc, err := vd.EthDepositEncryptionAndAddMetadata(ctx, derPath)
 		b, err := json.MarshalIndent(enc, "", "\t")
 		if err != nil {
 			log.Ctx(ctx).Err(err)
 			return err
 		}
-		slashSplit := strings.Split(path, "/")
+		slashSplit := strings.Split(derPath, "/")
 		underScoreStr := strings.Join(slashSplit, "_")
 		vd.Fp.FnOut = fmt.Sprintf("keystore-%s-%s.json", vd.Network, underScoreStr)
 		err = vd.Fp.WriteToFileOutPath(b)
