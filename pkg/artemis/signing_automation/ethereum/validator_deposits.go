@@ -89,9 +89,9 @@ func fromHexStringTo32Byte(str string) ([32]byte, error) {
 }
 
 func GetValidatorDepositPayloadV2(ctx context.Context, depositParams ExtendedDepositParams) (web3_actions.SendContractTxPayload, error) {
-	abiFile, err := ABIOpenFile(ctx, validatorAbiFileLocation)
+	abiFile, err := ReadAbi(ctx, strings.NewReader(signing_automation_ethereum_smart_contracts.ValidatorDepositABI))
 	if err != nil {
-		log.Ctx(ctx).Err(err).Msg("Web3SignerClient: SignValidatorDeposit: ABIOpenFile")
+		log.Ctx(ctx).Err(err).Msg("Web3SignerClient: SignValidatorDeposit: ReadAbi")
 		return web3_actions.SendContractTxPayload{}, err
 	}
 
