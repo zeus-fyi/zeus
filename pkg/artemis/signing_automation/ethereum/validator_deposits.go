@@ -8,6 +8,7 @@ import (
 	"github.com/gochain/gochain/v4/core/types"
 	"github.com/rs/zerolog/log"
 	"github.com/zeus-fyi/gochain/web3/web3_actions"
+	signing_automation_ethereum_smart_contracts "github.com/zeus-fyi/zeus/pkg/artemis/signing_automation/ethereum/smart_contracts"
 )
 
 const (
@@ -129,7 +130,8 @@ func GetValidatorDepositPayloadV2(ctx context.Context, depositParams ExtendedDep
 
 func GetValidatorDepositPayload(ctx context.Context, depositParams *DepositDataParams) (web3_actions.SendContractTxPayload, error) {
 	ForceDirToEthSigningDirLocation()
-	abiFile, err := ABIOpenFile(ctx, validatorAbiFileLocation)
+	abiContents := signing_automation_ethereum_smart_contracts.ValidatorDepositABI
+	abiFile, err := ABIOpenFile(ctx, abiContents)
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("Web3SignerClient: SignValidatorDeposit: ABIOpenFile")
 		return web3_actions.SendContractTxPayload{}, err
