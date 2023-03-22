@@ -6,9 +6,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"os"
-	"path"
-	"runtime"
 	"strings"
 
 	"github.com/google/uuid"
@@ -194,13 +191,4 @@ func (vd *ValidatorDepositGenerationParams) EthDepositEncryptionAndAddMetadata(c
 	m["pubkey"] = bls_signer.ConvertBytesToString(sk.PublicKey().Marshal())
 	m["version"] = "4"
 	return m, err
-}
-func forceDirToTestSuite() string {
-	_, filename, _, _ := runtime.Caller(0)
-	dir := path.Join(path.Dir(filename), "")
-	err := os.Chdir(dir)
-	if err != nil {
-		panic(err.Error())
-	}
-	return dir
 }

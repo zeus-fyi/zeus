@@ -89,7 +89,7 @@ func fromHexStringTo32Byte(str string) ([32]byte, error) {
 }
 
 func GetValidatorDepositPayloadV2(ctx context.Context, depositParams ExtendedDepositParams) (web3_actions.SendContractTxPayload, error) {
-	abiFile, err := ABIOpenFile(ctx, validatorAbiFileLocation)
+	abiFile, err := ABIOpenFile(ctx, signing_automation_ethereum_smart_contracts.ValidatorDepositABI)
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("Web3SignerClient: SignValidatorDeposit: ABIOpenFile")
 		return web3_actions.SendContractTxPayload{}, err
