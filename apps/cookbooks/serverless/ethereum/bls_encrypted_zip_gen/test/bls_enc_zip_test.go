@@ -13,6 +13,7 @@ import (
 	serverless_aws_automation "github.com/zeus-fyi/zeus/builds/serverless/aws_automation"
 	aegis_aws_auth "github.com/zeus-fyi/zeus/pkg/aegis/aws/auth"
 	bls_serverless_signing "github.com/zeus-fyi/zeus/pkg/aegis/aws/serverless_signing"
+	aws_lambda "github.com/zeus-fyi/zeus/pkg/cloud/aws/lambda"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 	"github.com/zeus-fyi/zeus/test/configs"
 
@@ -33,7 +34,7 @@ func (s *ServerlessEncKeysZipGenTestSuite) TestServerlessSigningFunc() {
 		AccessKey: s.Tc.AccessKeyAWS,
 		SecretKey: s.Tc.SecretKeyAWS,
 	}
-	fnUrl, err := serverless_aws_automation.CreateLambdaFunctionEncryptedKeystoresZip(ctx, auth)
+	fnUrl, err := serverless_aws_automation.GetLambdaFunctionUrl(ctx, auth, aws_lambda.EthereumValidatorsEncryptedSecretsZipGenFunctionName)
 	s.Require().Nil(err)
 	s.Require().NotEmpty(fnUrl)
 	r.SetBaseURL(fnUrl)

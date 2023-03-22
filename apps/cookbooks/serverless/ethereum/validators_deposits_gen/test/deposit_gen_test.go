@@ -11,6 +11,7 @@ import (
 	aegis_aws_auth "github.com/zeus-fyi/zeus/pkg/aegis/aws/auth"
 	bls_serverless_signing "github.com/zeus-fyi/zeus/pkg/aegis/aws/serverless_signing"
 	signing_automation_ethereum "github.com/zeus-fyi/zeus/pkg/artemis/signing_automation/ethereum"
+	aws_lambda "github.com/zeus-fyi/zeus/pkg/cloud/aws/lambda"
 	"github.com/zeus-fyi/zeus/test/configs"
 
 	"github.com/zeus-fyi/zeus/test/test_suites"
@@ -22,7 +23,7 @@ type ServerlessDepositsGenTestSuite struct {
 
 var ctx = context.Background()
 
-func (s *ServerlessDepositsGenTestSuite) TestServerlessSigningFunc() {
+func (s *ServerlessDepositsGenTestSuite) TestDepositsGenFn() {
 	s.Tc = configs.InitLocalTestConfigs()
 	r := resty.New()
 	auth := aegis_aws_auth.AuthAWS{
@@ -30,7 +31,7 @@ func (s *ServerlessDepositsGenTestSuite) TestServerlessSigningFunc() {
 		AccessKey: s.Tc.AccessKeyAWS,
 		SecretKey: s.Tc.SecretKeyAWS,
 	}
-	fnUrl, err := serverless_aws_automation.CreateLambdaFunctionDepositGen(ctx, auth)
+	fnUrl, err := serverless_aws_automation.GetLambdaFunctionUrl(ctx, auth, aws_lambda.EthereumCreateValidatorsDepositsFunctionName)
 	s.Require().Nil(err)
 	s.Require().NotEmpty(fnUrl)
 	r.SetBaseURL(fnUrl)

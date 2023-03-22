@@ -2,6 +2,8 @@ package bls_serverless_signatures
 
 import (
 	"context"
+	"testing"
+
 	"github.com/go-resty/resty/v2"
 	"github.com/stretchr/testify/suite"
 	aegis_aws_auth "github.com/zeus-fyi/zeus/pkg/aegis/aws/auth"
@@ -9,7 +11,6 @@ import (
 	aegis_inmemdbs "github.com/zeus-fyi/zeus/pkg/aegis/inmemdbs"
 	bls_signer "github.com/zeus-fyi/zeus/pkg/crypto/bls"
 	"github.com/zeus-fyi/zeus/test/test_suites"
-	"testing"
 )
 
 type ServerlessInMemFSTestSuite struct {
@@ -26,10 +27,10 @@ func (s *ServerlessInMemFSTestSuite) TestServerlessSigningFunc() {
 		Map: respMsgMap,
 	}
 	sr := bls_serverless_signing.SignatureRequests{
-		SecretName:        s.Tc.ServerlessSignerFuncSecretName,
+		SecretName:        "ageEncryptionKeyEphemery",
 		SignatureRequests: aegis_inmemdbs.EthereumBLSKeySignatureRequests{Map: make(map[string]aegis_inmemdbs.EthereumBLSKeySignatureRequest)},
 	}
-	key := "0x8a7addbf2857a72736205d861169c643545283a74a1ccb71c95dd2c9652acb89de226ca26d60248c4ef9591d7e010288"
+	key := "0x8488f29fcbabea243a9d65923cd6e865c450860a8e4e91b08318f564ac40480214debaa6f71d29b05d5443bceca62d01"
 	hexMessage, err := aegis_inmemdbs.RandomHex(10)
 	s.Require().Nil(err)
 	signMsg := aegis_inmemdbs.EthereumBLSKeySignatureRequest{Message: hexMessage}

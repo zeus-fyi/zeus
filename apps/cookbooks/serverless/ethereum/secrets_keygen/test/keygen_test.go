@@ -12,6 +12,7 @@ import (
 	aegis_aws_auth "github.com/zeus-fyi/zeus/pkg/aegis/aws/auth"
 	aegis_aws_secretmanager "github.com/zeus-fyi/zeus/pkg/aegis/aws/secretmanager"
 	bls_serverless_signing "github.com/zeus-fyi/zeus/pkg/aegis/aws/serverless_signing"
+	aws_lambda "github.com/zeus-fyi/zeus/pkg/cloud/aws/lambda"
 	"github.com/zeus-fyi/zeus/test/configs"
 
 	"github.com/zeus-fyi/zeus/test/test_suites"
@@ -23,7 +24,7 @@ type ServerlessKeygenTestSuite struct {
 
 var ctx = context.Background()
 
-func (s *ServerlessKeygenTestSuite) TestServerlessSigningFunc() {
+func (s *ServerlessKeygenTestSuite) TestServerlessKeyGenFunc() {
 	s.Tc = configs.InitLocalTestConfigs()
 	r := resty.New()
 	auth := aegis_aws_auth.AuthAWS{
@@ -31,7 +32,7 @@ func (s *ServerlessKeygenTestSuite) TestServerlessSigningFunc() {
 		AccessKey: s.Tc.AccessKeyAWS,
 		SecretKey: s.Tc.SecretKeyAWS,
 	}
-	fnUrl, err := serverless_aws_automation.CreateLambdaFunctionSecretsKeyGen(ctx, auth)
+	fnUrl, err := serverless_aws_automation.GetLambdaFunctionUrl(ctx, auth, aws_lambda.EthereumValidatorsSecretsGenFunctionName)
 	s.Require().Nil(err)
 	s.Require().NotEmpty(fnUrl)
 	r.SetBaseURL(fnUrl)
