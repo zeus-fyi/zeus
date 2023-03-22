@@ -12,7 +12,7 @@ import (
 
 const (
 	validatorDepositMethodName   = "deposit"
-	validatorAbiFileLocation     = "smart_contracts/eth_deposit_contract.json"
+	validatorAbiFileLocation     = "./smart_contracts/eth_deposit_contract.json"
 	EphemeralDepositContractAddr = "0x4242424242424242424242424242424242424242"
 	EphemeralBeacon              = "https://eth.ephemeral.zeus.fyi"
 	BeaconGenesisPath            = "/eth/v1/beacon/genesis"
@@ -88,7 +88,7 @@ func fromHexStringTo32Byte(str string) ([32]byte, error) {
 }
 
 func GetValidatorDepositPayloadV2(ctx context.Context, depositParams ExtendedDepositParams) (web3_actions.SendContractTxPayload, error) {
-	abiFile, err := ABIOpenFile(ctx, "./"+validatorAbiFileLocation)
+	abiFile, err := ABIOpenFile(ctx, validatorAbiFileLocation)
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("Web3SignerClient: SignValidatorDeposit: ABIOpenFile")
 		return web3_actions.SendContractTxPayload{}, err
