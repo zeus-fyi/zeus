@@ -74,8 +74,8 @@ func (vd *ValidatorDepositGenerationParams) GenerateDerivedWithdrawalKeys(ctx co
 	wdPubkey := make([]string, vd.NumWithdrawalKeys)
 	count := 0
 	for i := vd.WithdrawalKeyIndexOffset; i < vd.NumWithdrawalKeys+vd.WithdrawalKeyIndexOffset; i++ {
-		path := fmt.Sprintf("m/12381/3600/0/%d", i)
-		sk, err := vd.DerivedKey(ctx, path)
+		derPath := fmt.Sprintf("m/12381/3600/0/%d", i)
+		sk, err := vd.DerivedKey(ctx, derPath)
 		if err != nil {
 			log.Ctx(ctx).Err(err)
 			return []string{}, err
