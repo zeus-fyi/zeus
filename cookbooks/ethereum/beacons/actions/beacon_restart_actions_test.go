@@ -1,24 +1,35 @@
 package beacon_actions
 
+import "github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_common_types"
+
 func (t *BeaconActionsTestSuite) TestConsensusClientPodKill() {
-	t.ConsensusClient = "lighthouse"
-	_, err := t.RestartConsensusClientPods(ctx, basePar)
+	t.BeaconActionsClient.BeaconKnsReq.CloudCtxNs = zeus_common_types.CloudCtxNs{
+		CloudProvider: "do",
+		Region:        "sfo3",
+		Context:       "do-sfo3-dev-do-sfo3-zeus",
+		Namespace:     "athena-beacon-goerli",
+		Env:           "",
+	}
+	_, err := t.RestartConsensusClientPods(ctx)
 	t.Assert().Nil(err)
 }
 
 func (t *BeaconActionsTestSuite) TestExecClientPodKill() {
-	t.ExecClient = "geth"
-	_, err := t.RestartExecClientPods(ctx, basePar)
+	t.BeaconActionsClient.BeaconKnsReq.CloudCtxNs = zeus_common_types.CloudCtxNs{
+		CloudProvider: "do",
+		Region:        "sfo3",
+		Context:       "do-sfo3-dev-do-sfo3-zeus",
+		Namespace:     "athena-beacon-goerli",
+		Env:           "",
+	}
+	_, err := t.RestartExecClientPods(ctx)
 	t.Assert().Nil(err)
 }
 
 func (t *BeaconActionsTestSuite) TestRestartBeaconPodKill() {
-	t.ConsensusClient = "lighthouse"
-	t.ExecClient = "geth"
-
-	_, err := t.RestartExecClientPods(ctx, basePar)
+	_, err := t.RestartExecClientPods(ctx)
 	t.Assert().Nil(err)
 
-	_, err = t.RestartConsensusClientPods(ctx, basePar)
+	_, err = t.RestartConsensusClientPods(ctx)
 	t.Assert().Nil(err)
 }

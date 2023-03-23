@@ -15,7 +15,7 @@ func (b *BeaconActionsClient) ReplaceAndRestartConfigsConsensusClient(ctx contex
 		log.Ctx(ctx).Err(err).Msg("ReplaceAndRestartConfigsConsensusClient: ReplaceConfigsConsensusClient")
 		return nil, err
 	}
-	resp, err := b.RestartConsensusClientPods(ctx, par)
+	resp, err := b.RestartConsensusClientPods(ctx)
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("ReplaceAndRestartConfigsConsensusClient: RestartConsensusClientPods")
 		return nil, err
@@ -29,7 +29,7 @@ func (b *BeaconActionsClient) ReplaceAndRestartConfigsExecClient(ctx context.Con
 		log.Ctx(ctx).Err(err).Msg("ReplaceAndRestartConfigsExecClient: ReplaceConfigsExecClient")
 		return nil, err
 	}
-	resp, err := b.RestartExecClientPods(ctx, par)
+	resp, err := b.RestartExecClientPods(ctx)
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("ReplaceAndRestartConfigsExecClient: RestartExecClientPods")
 		return nil, err

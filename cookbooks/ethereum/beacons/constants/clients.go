@@ -6,7 +6,8 @@ func GetAnyClientApiPorts(clientName string) []string {
 		return LighthouseBeaconPorts
 	case Geth:
 		return GethBeaconPorts
+	case Lodestar:
+		return LodestartBeaconPorts
 	}
-
 	return []string{}
 }

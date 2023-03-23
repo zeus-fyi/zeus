@@ -3,6 +3,7 @@ package beacon_actions
 import (
 	"context"
 	"errors"
+
 	"github.com/rs/zerolog/log"
 	client_consts "github.com/zeus-fyi/zeus/cookbooks/ethereum/beacons/constants"
 	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_common_types"
@@ -52,7 +53,7 @@ func (b *BeaconActionsClient) PauseClient(ctx context.Context, cmName, clientNam
 	if client_consts.IsConsensusClient(clientName) {
 		b.ConsensusClient = clientName
 		basePar.TopologyDeployRequest = b.BeaconKnsReq
-		resp, cerr := b.RestartConsensusClientPods(ctx, basePar)
+		resp, cerr := b.RestartConsensusClientPods(ctx)
 		if cerr != nil {
 			log.Ctx(ctx).Err(cerr).Msg("PauseConsensusClient: RestartConsensusClientPods")
 			return nil, cerr
@@ -62,7 +63,7 @@ func (b *BeaconActionsClient) PauseClient(ctx context.Context, cmName, clientNam
 	if client_consts.IsExecClient(clientName) {
 		b.ExecClient = clientName
 		basePar.TopologyDeployRequest = b.BeaconKnsReq
-		resp, cerr := b.RestartExecClientPods(ctx, basePar)
+		resp, cerr := b.RestartExecClientPods(ctx)
 		if cerr != nil {
 			log.Ctx(ctx).Err(cerr).Msg("PauseConsensusClient: RestartExecClientPods")
 			return nil, cerr

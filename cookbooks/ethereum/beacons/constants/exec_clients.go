@@ -2,15 +2,18 @@ package client_consts
 
 // TODO others
 const (
-	Geth       = "geth"
-	Nethermind = "nethermind"
+	ZeusConfigMapExecClient = "cm-exex-client"
+	ZeusExecClient          = "zeus-exec-client"
+	Erigon                  = "erigon"
+	Geth                    = "geth"
+	Nethermind              = "nethermind"
 )
 
 var GethBeaconPorts = []string{"8545:8545"}
 
 func IsExecClient(name string) bool {
 	switch name {
-	case Geth, Nethermind:
+	case Geth, Nethermind, Erigon:
 		return true
 	default:
 		return false

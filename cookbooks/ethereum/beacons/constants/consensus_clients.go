@@ -1,15 +1,18 @@
 package client_consts
 
 const (
-	Lighthouse = "lighthouse"
-	Prysm      = "prysm"
-	Lodestar   = "lodestar"
-	Teku       = "teku"
+	ZeusConfigMapConsensusClient = "cm-consensus-client"
+	ZeusConsensusClient          = "zeus-consensus-client"
+	Lighthouse                   = "lighthouse"
+	Prysm                        = "prysm"
+	Lodestar                     = "lodestar"
+	Teku                         = "teku"
 )
 
 var (
 	LighthouseBeaconPorts          = []string{"5052:5052"}
 	LighthouseValidatorClientPorts = []string{"5062:5062"}
+	LodestartBeaconPorts           = []string{"9596:9596"}
 	// LighthouseValidatorMetricsPorts = []string{"5064:5064"}
 
 	LighthouseWeb3SignerAPIEndpoint = "/lighthouse/validators/web3signer"
@@ -22,7 +25,10 @@ func GetClientBeaconPortsHTTP(clientName string) []string {
 	switch clientName {
 	case Lighthouse:
 		return LighthouseBeaconPorts
+	case Lodestar:
+		return LodestartBeaconPorts
 	}
+
 	return []string{}
 }
 
