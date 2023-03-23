@@ -17,10 +17,10 @@ func ABIOpenFile(ctx context.Context, abiFile string) (*abi.ABI, error) {
 		log.Ctx(ctx).Err(err).Msg("GetABI: ABIOpenFile")
 		return nil, err
 	}
-	return readAbi(ctx, jsonReader)
+	return ReadAbi(ctx, jsonReader)
 }
 
-func readAbi(ctx context.Context, reader io.Reader) (*abi.ABI, error) {
+func ReadAbi(ctx context.Context, reader io.Reader) (*abi.ABI, error) {
 	abiIn, err := abi.JSON(reader)
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("readAbi:  abi.JSON")

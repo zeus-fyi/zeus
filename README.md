@@ -22,9 +22,17 @@ $10/mo solo or large scale enterprise staking for Ethereum per validator.
 
 ### How do I setup validators?
 
-You can use our automation app to setup your own validators in 1 click, or step by step using the config value. Here's our tutorial on Medium. If you fill out the form on our website at: https://www.zeus.fyi, it'll automatically send you a bearer token to your email address for access. Check your spam if you don't see it.
+You can use our UI which is in beta, which takes you from 0 -> deployed & serviced validators using Zeus without any coding, technical know-how, you get the picture. You can set it up within 5 minutes, and you have ZERO ongoing maintenance after setup, which is a first of its kind when it compared with other validator services you can get.
 
-https://medium.com/@zeusfyi/how-to-setup-serverless-ethereum-validators-on-zeus-17f4af917259
+> https://cloud.zeus.fyi/signup
+
+It also comes with an industry first toolkit of ultra secure secrets key generation and deposit data generation. Your keys never get written to disk, or exposed at any point, and all of the secrets operations and storage happen on YOUR account not ours, we're 100% non-custodial for signing key & withdrawal keys. The next best alternative is pure cold storage generation. Read more here.
+
+https://medium.com/zeusfyi/in-depth-overview-serverless-aws-lambda-for-ethereum-staking-with-zeus-6ad87d3be77f
+
+Read our beta users notes: 
+
+https://docs.google.com/document/d/1ciNOEJNEOkKFfhi0bQyhHydhdfp1zi8V0OHm-0oRN04/edit?usp=sharing
 
 Ephemery explorers
 
