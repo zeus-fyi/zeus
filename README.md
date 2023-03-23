@@ -22,7 +22,7 @@ $10/mo solo or large scale enterprise staking for Ethereum per validator.
 
 ### How do I setup validators?
 
-You can use our UI which is in beta, which takes you from 0 -> deployed & serviced validators using Zeus without any coding, technical know-how, you get the picture. You can set it up within 5 minutes, and you have ZERO ongoing maitenance after setup, which is a first of its kind when it comes to validator service setup.
+You can use our UI which is in beta, which takes you from 0 -> deployed & serviced validators using Zeus without any coding, technical know-how, you get the picture. You can set it up within 5 minutes, and you have ZERO ongoing maintenance after setup, which is a first of its kind when it compared with other validator services you can get.
 
 > https://cloud.zeus.fyi/signup
 
