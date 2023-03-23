@@ -30,6 +30,10 @@ It also comes with an industry first toolkit of ultra secure secrets key generat
 
 https://medium.com/zeusfyi/in-depth-overview-serverless-aws-lambda-for-ethereum-staking-with-zeus-6ad87d3be77f
 
+Read our beta users notes: 
+
+https://docs.google.com/document/d/1ciNOEJNEOkKFfhi0bQyhHydhdfp1zi8V0OHm-0oRN04/edit?usp=sharing
+
 Ephemery explorers
 
 > https://beaconchain.ephemery.pk910.de
