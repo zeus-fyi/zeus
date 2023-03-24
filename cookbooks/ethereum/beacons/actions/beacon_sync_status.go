@@ -16,7 +16,7 @@ func (b *BeaconActionsClient) GetConsensusClientSyncStatus(ctx context.Context) 
 		Endpoint:   "eth/v1/node/syncing",
 		Ports:      client_consts.GetClientBeaconPortsHTTP(b.ConsensusClient),
 	}
-	filter := strings_filter.FilterOpts{Contains: b.ConsensusClient}
+	filter := strings_filter.FilterOpts{Contains: client_consts.ZeusConsensusClient}
 	par := zeus_pods_reqs.PodActionRequest{
 		TopologyDeployRequest: b.BeaconKnsReq,
 		Action:                zeus_pods_reqs.PortForwardToAllMatchingPods,
@@ -51,7 +51,7 @@ func (b *BeaconActionsClient) GetExecClientSyncStatus(ctx context.Context) ([]cl
 		EndpointHeaders: headers,
 		Payload:         `{"method":"eth_syncing","params":[],"id":1,"jsonrpc":"2.0"}`,
 	}
-	filter := strings_filter.FilterOpts{Contains: b.ExecClient}
+	filter := strings_filter.FilterOpts{Contains: client_consts.ZeusExecClient}
 	par := zeus_pods_reqs.PodActionRequest{
 		TopologyDeployRequest: b.BeaconKnsReq,
 		Action:                zeus_pods_reqs.PortForwardToAllMatchingPods,
