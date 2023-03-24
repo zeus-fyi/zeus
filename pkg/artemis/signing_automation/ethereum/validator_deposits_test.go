@@ -2,8 +2,8 @@ package signing_automation_ethereum
 
 import (
 	"context"
-	"encoding/hex"
-	"strings"
+
+	spec "github.com/attestantio/go-eth2-client/spec/phase0"
 )
 
 var ctx = context.Background()
@@ -27,8 +27,19 @@ func (t *Web3SignerClientTestSuite) TestFetchEphemeralForkVersion() {
 	versionByteArr, err := GetEphemeralForkVersion(ctx)
 	t.Require().Nil(err)
 	t.Require().NotEmpty(versionByteArr)
-	forkVersion, err := hex.DecodeString(strings.TrimPrefix("0x1000101b", "0x"))
+
+	var expectedVersion spec.Version
+	copy(expectedVersion[:], []byte{0x10, 0x00, 0x10, 0x1b})
+	t.Assert().Equal(expectedVersion, *versionByteArr)
+}
+
+func (t *Web3SignerClientTestSuite) TestFetchGoerliForkVersion() {
+	versionByteArr, err := GetForkVersion(ctx, t.NodeURL)
 	t.Require().Nil(err)
-	t.Assert().Equal(forkVersion, []byte{0x10, 0x00, 0x10, 0x1b})
-	t.Assert().Equal(versionByteArr, []byte{0x10, 0x00, 0x10, 0x1b})
+	t.Require().NotEmpty(versionByteArr)
+	t.Require().Nil(err)
+
+	var expectedVersion spec.Version
+	copy(expectedVersion[:], []byte{0x00, 0x00, 0x10, 0x20})
+	t.Assert().Equal(expectedVersion, *versionByteArr)
 }
