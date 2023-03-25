@@ -2,11 +2,14 @@ package serverless_keygen
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"testing"
 
+	spec "github.com/attestantio/go-eth2-client/spec/phase0"
 	"github.com/go-resty/resty/v2"
 	"github.com/stretchr/testify/suite"
+	"github.com/tidwall/pretty"
 	serverless_aws_automation "github.com/zeus-fyi/zeus/builds/serverless/aws_automation"
 	aegis_aws_auth "github.com/zeus-fyi/zeus/pkg/aegis/aws/auth"
 	bls_serverless_signing "github.com/zeus-fyi/zeus/pkg/aegis/aws/serverless_signing"
@@ -35,13 +38,16 @@ func (s *ServerlessDepositsGenTestSuite) TestDepositsGenFn() {
 	s.Require().Nil(err)
 	s.Require().NotEmpty(fnUrl)
 	r.SetBaseURL(fnUrl)
-
+	var expectedVersion spec.Version
+	copy(expectedVersion[:], []byte{0x00, 0x00, 0x10, 0x20})
 	validatorCount := 3
 	dgReq := bls_serverless_signing.EthereumValidatorDepositsGenRequests{
-		MnemonicAndHDWalletSecretName: "mnemonicAndHDWalletEphemery",
+		MnemonicAndHDWalletSecretName: "mnemonicAndHDWalletGoerli",
 		ValidatorCount:                validatorCount,
 		HdOffset:                      0,
-		Network:                       "ephemery",
+		Network:                       "Goerli",
+		ForkVersion:                   &expectedVersion,
+		BeaconURL:                     s.Tc.GoerliNodeURL,
 	}
 	req, err := auth.CreateV4AuthPOSTReq(ctx, "lambda", fnUrl, dgReq)
 	s.Require().Nil(err)
@@ -55,10 +61,10 @@ func (s *ServerlessDepositsGenTestSuite) TestDepositsGenFn() {
 	s.Require().NoError(err)
 	s.Require().Equal(http.StatusOK, resp.StatusCode())
 	s.Require().Equal(validatorCount, len(depParams))
-	//fmt.Println("response json")
-	//respJSON := pretty.Pretty(resp.Body())
-	//respJSON = pretty.Color(respJSON, pretty.TerminalStyle)
-	//fmt.Println(string(respJSON))
+	fmt.Println("response json")
+	respJSON := pretty.Pretty(resp.Body())
+	respJSON = pretty.Color(respJSON, pretty.TerminalStyle)
+	fmt.Println(string(respJSON))
 }
 
 func TestServerlessDepositsGenTestSuite(t *testing.T) {

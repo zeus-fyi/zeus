@@ -127,7 +127,7 @@ func HandleValidatorDepositsGen(ctx context.Context, event events.APIGatewayProx
 			}
 		}
 	} else {
-		if len(sr.BeaconURL) <= 0 {
+		if len(sr.BeaconURL) <= 0 && sr.ForkVersion == nil {
 			log.Ctx(ctx).Err(er)
 			ApiResponse = events.APIGatewayProxyResponse{Body: event.Body, StatusCode: 500}
 			return ApiResponse, er
@@ -149,7 +149,7 @@ func HandleValidatorDepositsGen(ctx context.Context, event events.APIGatewayProx
 			ApiResponse = events.APIGatewayProxyResponse{Body: event.Body, StatusCode: 500}
 			return ApiResponse, errors.New("fork version is required")
 		}
-		if len(sr.WithdrawalAddress) >= 0 {
+		if len(sr.WithdrawalAddress) <= 0 {
 			dp, err = w3Client.GenerateDepositDataWithDefaultWd(ctx, vdg, sr.ForkVersion)
 			if err != nil {
 				log.Ctx(ctx).Err(err)
