@@ -8,6 +8,7 @@ const (
 
 type IngressDriver struct {
 	v1.Ingress
+	Host         string
 	NginxAuthURL string
 }
 
@@ -28,10 +29,9 @@ func (i *IngressDriver) SetIngressConfigs(ing *v1.Ingress) {
 			ing.Spec.TLS[ind].Hosts = i.Spec.TLS[ind].Hosts
 		}
 	}
-	if i.Ingress.Spec.Rules != nil {
-		for ind, _ := range i.Ingress.Spec.Rules {
-			ing.Spec.Rules[ind].IngressRuleValue.HTTP = i.Ingress.Spec.Rules[ind].IngressRuleValue.HTTP
-			ing.Spec.Rules[ind].Host = i.Ingress.Spec.Rules[ind].Host
+	if len(i.Host) > 0 {
+		for ind, _ := range ing.Spec.Rules {
+			ing.Spec.Rules[ind].Host = i.Host
 		}
 	}
 	ing.Annotations = tmp
