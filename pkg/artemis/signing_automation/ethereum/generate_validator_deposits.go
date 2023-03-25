@@ -104,8 +104,6 @@ func (w *Web3SignerClient) GenerateEphemeryDepositDataWithDefaultWd(ctx context.
 }
 
 func (w *Web3SignerClient) GenerateDepositDataWithDefaultWd(ctx context.Context, vdg ValidatorDepositGenerationParams, fv *spec.Version) ([]*DepositDataParams, error) {
-	w.Dial()
-	defer w.Close()
 	depositSlice := make([]*DepositDataParams, vdg.NumValidators)
 	initErr := bls_signer.InitEthBLS()
 	if initErr != nil {
@@ -136,8 +134,6 @@ func (w *Web3SignerClient) GenerateDepositDataWithDefaultWd(ctx context.Context,
 }
 
 func (w *Web3SignerClient) GenerateDepositDataWithForWdAddr(ctx context.Context, vdg ValidatorDepositGenerationParams, wd []byte, fv *spec.Version) ([]*DepositDataParams, error) {
-	w.Dial()
-	defer w.Close()
 	depositSlice := make([]*DepositDataParams, vdg.NumValidators)
 	initErr := bls_signer.InitEthBLS()
 	if initErr != nil {
@@ -163,8 +159,6 @@ func (w *Web3SignerClient) GenerateDepositDataWithForWdAddr(ctx context.Context,
 }
 
 func (w *Web3SignerClient) GenerateDepositData(ctx context.Context, blsSigner bls_signer.EthBLSAccount, withdrawalAddress []byte, forkVersion *spec.Version) (*DepositDataParams, error) {
-	w.Dial()
-	defer w.Close()
 	dp := &DepositDataParams{ForkVersion: forkVersion}
 	var pubKey spec.BLSPubKey
 	copy(pubKey[:], blsSigner.PublicKey().Marshal())

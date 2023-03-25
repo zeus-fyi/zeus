@@ -158,7 +158,6 @@ func HandleValidatorDepositsGen(ctx context.Context, event events.APIGatewayProx
 				return ApiResponse, err
 			}
 		} else {
-
 			withdrawalAddressBytes, werr := hex.DecodeString(strings.TrimPrefix(sr.WithdrawalAddress, "0x"))
 			if werr != nil {
 				log.Ctx(ctx).Err(werr)
