@@ -51,7 +51,6 @@ func (s *ServerlessDepositsGenTestSuite) TestDepositsGenFn() {
 		HdOffset:                      0,
 		Network:                       "Goerli",
 		ForkVersion:                   &expectedVersion,
-		BeaconURL:                     s.Tc.GoerliNodeURL,
 	}
 
 	req, err := auth.CreateV4AuthPOSTReq(ctx, "lambda", fnUrl, dgReq)
