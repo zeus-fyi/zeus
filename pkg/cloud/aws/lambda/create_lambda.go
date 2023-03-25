@@ -162,7 +162,7 @@ var (
 		FunctionName:      aws.String(EthereumCreateValidatorsDepositsFunctionName),
 		Role:              nil,
 		Architectures:     []types.Architecture{types.ArchitectureX8664},
-		Description:       aws.String("BLS Ethereum Validator Encrypted Zip Secrets Generator Lambda Function"),
+		Description:       aws.String("Ethereum Validator Deposits Generation Lambda Function"),
 		FileSystemConfigs: nil,
 		Handler:           aws.String("main"),
 		Layers:            []string{},
