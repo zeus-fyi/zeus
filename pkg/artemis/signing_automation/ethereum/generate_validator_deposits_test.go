@@ -1,8 +1,13 @@
 package signing_automation_ethereum
 
 import (
+	"encoding/hex"
 	"encoding/json"
+	"fmt"
+	"strings"
 
+	spec "github.com/attestantio/go-eth2-client/spec/phase0"
+	"github.com/tidwall/pretty"
 	aws_aegis_auth "github.com/zeus-fyi/zeus/pkg/aegis/aws/auth"
 	aegis_aws_secretmanager "github.com/zeus-fyi/zeus/pkg/aegis/aws/secretmanager"
 	age_encryption "github.com/zeus-fyi/zeus/pkg/crypto/age"
@@ -43,11 +48,36 @@ func (t *Web3SignerClientTestSuite) TestEphemeralDepositsFromMnemonicInEth2Keyst
 		Pw:                   t.TestHDWalletPassword,
 		ValidatorIndexOffset: offset,
 		NumValidators:        numKeys,
-		Network:              "ephemery",
+		Network:              "Goerli",
 	}
+
 	err := vdg.GenerateAndEncryptValidatorKeysFromSeedAndPath(ctx)
 	t.Require().Nil(err)
 
+	eth1Address := t.TestAccount1.PublicKey()
+	withdrawalAddressBytes, err := hex.DecodeString(strings.TrimPrefix(eth1Address, "0x"))
+	t.Require().Nil(err)
+	t.Require().Len(withdrawalAddressBytes, 20)
+	withdrawalCredentials := make([]byte, 32)
+	withdrawalCredentials[0] = 0x01 // ETH1_ADDRESS_WITHDRAWAL_PREFIX
+	copy(withdrawalCredentials[12:], withdrawalAddressBytes)
+
+	expWcBytes, err := ValidateAndReturnEcdsaPubkeyBytes(eth1Address)
+	t.Require().Nil(err)
+	t.Require().Equal(expWcBytes, withdrawalCredentials)
+
+	var expectedVersion spec.Version
+	copy(expectedVersion[:], []byte{0x00, 0x00, 0x10, 0x20})
+	dp, err := t.Web3SignerClientTestClient.GenerateDepositDataWithForWdAddr(ctx, vdg, withdrawalCredentials, &expectedVersion)
+	t.Require().Nil(err)
+	t.Require().NotEmpty(dp)
+	b, err := json.Marshal(dp)
+	t.Require().Nil(err)
+
+	fmt.Println("response json")
+	respJSON := pretty.Pretty(b)
+	respJSON = pretty.Color(respJSON, pretty.TerminalStyle)
+	fmt.Println(string(respJSON))
 }
 
 func (t *Web3SignerClientTestSuite) TestAgeEncryptedKeystoresGen() {

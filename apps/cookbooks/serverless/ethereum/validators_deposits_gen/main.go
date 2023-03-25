@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -129,7 +130,7 @@ func HandleValidatorDepositsGen(ctx context.Context, event events.APIGatewayProx
 	} else {
 		if len(sr.BeaconURL) <= 0 && sr.ForkVersion == nil {
 			log.Ctx(ctx).Err(er)
-			ApiResponse = events.APIGatewayProxyResponse{Body: event.Body, StatusCode: 500}
+			ApiResponse = events.APIGatewayProxyResponse{Body: event.Body, StatusCode: 520}
 			return ApiResponse, er
 		}
 		w3Client = signing_automation_ethereum.Web3SignerClient{Web3Actions: web3_actions.Web3Actions{
@@ -140,33 +141,55 @@ func HandleValidatorDepositsGen(ctx context.Context, event events.APIGatewayProx
 			fv, er = signing_automation_ethereum.GetForkVersion(ctx, sr.BeaconURL)
 			if er != nil {
 				log.Ctx(ctx).Err(er)
-				ApiResponse = events.APIGatewayProxyResponse{Body: event.Body, StatusCode: 500}
+				ApiResponse = events.APIGatewayProxyResponse{Body: event.Body, StatusCode: 521}
 				return ApiResponse, er
 			}
 			sr.ForkVersion = fv
 		}
 		if len(sr.ForkVersion) <= 0 {
-			ApiResponse = events.APIGatewayProxyResponse{Body: event.Body, StatusCode: 500}
+			ApiResponse = events.APIGatewayProxyResponse{Body: event.Body, StatusCode: 522}
 			return ApiResponse, errors.New("fork version is required")
 		}
 		if len(sr.WithdrawalAddress) <= 0 {
 			dp, err = w3Client.GenerateDepositDataWithDefaultWd(ctx, vdg, sr.ForkVersion)
 			if err != nil {
 				log.Ctx(ctx).Err(err)
-				ApiResponse = events.APIGatewayProxyResponse{Body: event.Body, StatusCode: 500}
+				ApiResponse = events.APIGatewayProxyResponse{Body: event.Body, StatusCode: 523}
 				return ApiResponse, err
 			}
 		} else {
-			wc, er = json.Marshal(sr.WithdrawalAddress)
-			if er != nil {
-				log.Ctx(ctx).Err(er)
-				ApiResponse = events.APIGatewayProxyResponse{Body: event.Body, StatusCode: 500}
-				return ApiResponse, er
+
+			withdrawalAddressBytes, werr := hex.DecodeString(strings.TrimPrefix(sr.WithdrawalAddress, "0x"))
+			if werr != nil {
+				log.Ctx(ctx).Err(werr)
+				ApiResponse = events.APIGatewayProxyResponse{Body: event.Body, StatusCode: 525}
+				return ApiResponse, werr
+			}
+			// must be a valid BLS or ECDSA public key
+			switch len(withdrawalAddressBytes) {
+			case 20:
+				wc, err = signing_automation_ethereum.ValidateAndReturnEcdsaPubkeyBytes(sr.WithdrawalAddress)
+				if err != nil {
+					log.Ctx(ctx).Err(err)
+					ApiResponse = events.APIGatewayProxyResponse{Body: event.Body, StatusCode: 400}
+					return ApiResponse, err
+				}
+			case 48:
+				wc, err = signing_automation_ethereum.ValidateAndReturnBLSPubkeyBytes(sr.WithdrawalAddress)
+				if err != nil {
+					log.Ctx(ctx).Err(err)
+					ApiResponse = events.APIGatewayProxyResponse{Body: event.Body, StatusCode: 400}
+					return ApiResponse, err
+				}
+			default:
+				log.Ctx(ctx).Err(err)
+				ApiResponse = events.APIGatewayProxyResponse{Body: event.Body, StatusCode: 400}
+				return ApiResponse, err
 			}
 			dp, err = w3Client.GenerateDepositDataWithForWdAddr(ctx, vdg, wc, sr.ForkVersion)
 			if err != nil {
 				log.Ctx(ctx).Err(err)
-				ApiResponse = events.APIGatewayProxyResponse{Body: event.Body, StatusCode: 500}
+				ApiResponse = events.APIGatewayProxyResponse{Body: event.Body, StatusCode: 527}
 				return ApiResponse, err
 			}
 		}
