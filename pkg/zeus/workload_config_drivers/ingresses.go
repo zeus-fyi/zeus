@@ -30,6 +30,7 @@ func (i *IngressDriver) SetIngressConfigs(ing *v1.Ingress) {
 	}
 	if i.Ingress.Spec.Rules != nil {
 		for ind, _ := range i.Ingress.Spec.Rules {
+			ing.Spec.Rules[ind].IngressRuleValue = i.Ingress.Spec.Rules[ind].IngressRuleValue
 			ing.Spec.Rules[ind].Host = i.Ingress.Spec.Rules[ind].Host
 		}
 	}
