@@ -40,7 +40,7 @@ func (w *Web3SignerClient) SignValidatorDepositTxToBroadcastFromJSON(ctx context
 		panic(err)
 	}
 	params.GasPrice = est
-	params.GasLimit = 100000
+	params.GasLimit = 500000
 	signedTx, err := w.GetSignedTxToCallFunctionWithArgs(ctx, &params)
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("Web3SignerClient: SignValidatorDepositTxToBroadcast")
