@@ -39,7 +39,14 @@ func (w *Web3SignerClient) SignValidatorDepositTxToBroadcastFromJSON(ctx context
 	if err != nil {
 		panic(err)
 	}
+	gasPrice, err := w.GetGasPrice(ctx)
+	if err != nil {
+		panic(err)
+	}
 	params.GasPrice = est
+	if gasPrice.Cmp(est) > 0 {
+		params.GasPrice = gasPrice
+	}
 	params.GasLimit = 500000
 	signedTx, err := w.GetSignedTxToCallFunctionWithArgs(ctx, &params)
 	if err != nil {
@@ -66,7 +73,14 @@ func (w *Web3SignerClient) SignValidatorDepositTxToBroadcast(ctx context.Context
 	if err != nil {
 		panic(err)
 	}
+	gasPrice, err := w.GetGasPrice(ctx)
+	if err != nil {
+		panic(err)
+	}
 	params.GasPrice = est
+	if gasPrice.Cmp(est) > 0 {
+		params.GasPrice = gasPrice
+	}
 	params.GasLimit = 500000
 	signedTx, err := w.GetSignedTxToCallFunctionWithArgs(ctx, &params)
 	if err != nil {
