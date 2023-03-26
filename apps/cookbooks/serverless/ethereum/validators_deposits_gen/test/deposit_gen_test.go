@@ -48,9 +48,8 @@ func (s *ServerlessDepositsGenTestSuite) TestDepositsGenFn() {
 		MnemonicAndHDWalletSecretName: "mnemonicAndHDWalletGoerli",
 		WithdrawalAddress:             eth1Account.PublicKey(),
 		ValidatorCount:                validatorCount,
-		HdOffset:                      0,
-		Network:                       "Goerli",
-		ForkVersion:                   &expectedVersion,
+		HdOffset:                      1,
+		Network:                       "ephemery",
 	}
 
 	req, err := auth.CreateV4AuthPOSTReq(ctx, "lambda", fnUrl, dgReq)
