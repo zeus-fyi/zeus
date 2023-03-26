@@ -15,6 +15,8 @@ const (
 	validatorDepositMethodName   = "deposit"
 	validatorAbiFileLocation     = "eth_deposit_contract.json"
 	EphemeralDepositContractAddr = "0x4242424242424242424242424242424242424242"
+	MainnetDepositContractAddr   = "0x00000000219ab540356cBB839Cbe05303d7705Fa"
+	GoerliDepositContractAddr    = "0xff50ed3d0ec03aC01D4C79aAd74928BFF48a7b2b"
 	EphemeralBeacon              = "https://eth.ephemeral.zeus.fyi"
 	BeaconGenesisPath            = "/eth/v1/beacon/genesis"
 	BeaconForkPath               = "/eth/v1/beacon/states/head/fork"
@@ -113,8 +115,15 @@ func GetValidatorDepositPayloadV2(ctx context.Context, depositParams ExtendedDep
 	if err != nil {
 		panic(err)
 	}
+	scAddr := MainnetDepositContractAddr
+	switch depositParams.NetworkName {
+	case "goerli":
+		scAddr = GoerliDepositContractAddr
+	case "ephemery", "ephemeral":
+		scAddr = EphemeralDepositContractAddr
+	}
 	params := web3_actions.SendContractTxPayload{
-		SmartContractAddr: EphemeralDepositContractAddr,
+		SmartContractAddr: scAddr,
 		ContractABI:       abiFile,
 		MethodName:        validatorDepositMethodName,
 		SendEtherPayload: web3_actions.SendEtherPayload{
