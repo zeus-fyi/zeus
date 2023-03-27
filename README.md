@@ -14,6 +14,8 @@ https://medium.com/@zeusfyi/zeus-k8s-infra-as-code-concepts-47e690c6e3c5
 
 ### Ethereum staking from your wallets & private secret managers.
 
+Staking, in fact all of web3 is in fact only one thing, and that thing is the ability to sign & transmit signed messages with your keys. We've decoupled that everything else, the high technical barriers, and high costs, so that it no longer requires you to give up access to your validator keys to participate in staking, taking a step towards making validators, defined by their signing keys decentralized at scale. 
+
 Event driven signature automation for Ethereum staking using our synthetic staking beacon, which bundles middleware like slashing protection and mev into the service which streams validator messages to you on demand to serverless functions, hosted signers, or mobile apps, with the benefit of letting you stake from your wallet without anyone having access to your signing or withdrawal keys and without any infrastructure setup, with only a few lines of code.
 
 ### How much will staking services cost for Ethereum?
