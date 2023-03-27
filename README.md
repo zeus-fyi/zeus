@@ -26,6 +26,12 @@ You can use our UI which is in beta, which takes you from 0 -> deployed & servic
 
 > https://cloud.zeus.fyi/signup
 
+Testnets supported:
+
+> Mainnet - Request access. Includes MEV.
+> Goerli - Request access. Includes MEV. 
+> Ephemery - All users have access by default.
+
 It also comes with an industry first toolkit of ultra secure secrets key generation and deposit data generation. Your keys never get written to disk, or exposed at any point, and all of the secrets operations and storage happen on YOUR account not ours, we're 100% non-custodial for signing key & withdrawal keys. The next best alternative is pure cold storage generation. Read more here.
 
 https://medium.com/zeusfyi/in-depth-overview-serverless-aws-lambda-for-ethereum-staking-with-zeus-6ad87d3be77f
