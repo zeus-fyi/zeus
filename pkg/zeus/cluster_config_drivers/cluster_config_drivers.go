@@ -23,6 +23,7 @@ type ClusterDefinition struct {
 	CloudCtxNs                zeus_common_types.CloudCtxNs
 	ComponentBases            map[string]ComponentBaseDefinition
 	FilterSkeletonBaseUploads *strings_filter.FilterOpts
+	DisablePrint              bool
 }
 
 type ComponentBaseDefinition struct {
@@ -99,22 +100,24 @@ func (c *ClusterDefinition) GenerateSkeletonBaseCharts() ([]ClusterSkeletonBaseD
 			// This will customize your config with the supplied workload override supplied
 			if sb.TopologyConfigDriver != nil {
 				sb.TopologyConfigDriver.SetCustomConfig(&inf)
-				tmp := sb.SkeletonBaseNameChartPath.DirOut
-				dir, _ := filepath.Split(sb.SkeletonBaseNameChartPath.DirIn)
-				lastDir := strings.Split(dir, "/")[len(strings.Split(dir, "/"))-1]
-				newPath := fmt.Sprintf("%scustom_%s", dir[:len(dir)-len(lastDir)], sbName)
-				sb.SkeletonBaseNameChartPath.DirOut = newPath
-				err = inf.PrintWorkload(sb.SkeletonBaseNameChartPath)
-				if err != nil {
-					log.Err(err)
-					return []ClusterSkeletonBaseDefinition{}, err
-				}
-				sb.SkeletonBaseNameChartPath.DirOut = tmp
-				sb.SkeletonBaseNameChartPath.DirIn = newPath
-				err = sb.SkeletonBaseNameChartPath.WalkAndApplyFuncToFileType(".yaml", inf.DecodeK8sWorkload)
-				if err != nil {
-					log.Err(err)
-					return []ClusterSkeletonBaseDefinition{}, err
+				if !c.DisablePrint {
+					tmp := sb.SkeletonBaseNameChartPath.DirOut
+					dir, _ := filepath.Split(sb.SkeletonBaseNameChartPath.DirIn)
+					lastDir := strings.Split(dir, "/")[len(strings.Split(dir, "/"))-1]
+					newPath := fmt.Sprintf("%scustom_%s", dir[:len(dir)-len(lastDir)], sbName)
+					sb.SkeletonBaseNameChartPath.DirOut = newPath
+					err = inf.PrintWorkload(sb.SkeletonBaseNameChartPath)
+					if err != nil {
+						log.Err(err)
+						return []ClusterSkeletonBaseDefinition{}, err
+					}
+					sb.SkeletonBaseNameChartPath.DirOut = tmp
+					sb.SkeletonBaseNameChartPath.DirIn = newPath
+					err = sb.SkeletonBaseNameChartPath.WalkAndApplyFuncToFileType(".yaml", inf.DecodeK8sWorkload)
+					if err != nil {
+						log.Err(err)
+						return []ClusterSkeletonBaseDefinition{}, err
+					}
 				}
 			}
 			sbDef := ClusterSkeletonBaseDefinition{
@@ -131,7 +134,7 @@ func (c *ClusterDefinition) GenerateSkeletonBaseCharts() ([]ClusterSkeletonBaseD
 				SkeletonBaseNameChartPath: sb.SkeletonBaseNameChartPath,
 				Workload:                  inf,
 			}
-
+			c.ComponentBases[cbName].SkeletonBases[sbName] = sbDef
 			sbDefinitons = append(sbDefinitons, sbDef)
 		}
 	}
