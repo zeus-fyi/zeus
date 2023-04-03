@@ -7,11 +7,12 @@ import (
 )
 
 type PersistentVolumeClaimsConfigDriver struct {
+	AppendPVC                    map[string]bool
 	PersistentVolumeClaimDrivers map[string]v1.PersistentVolumeClaim
 }
 
 func (p *PersistentVolumeClaimsConfigDriver) CustomPVCS(pvcs []v1.PersistentVolumeClaim) []v1.PersistentVolumeClaim {
-	if pvcs == nil {
+	if p.PersistentVolumeClaimDrivers == nil {
 		return pvcs
 	}
 	for j, pvc := range pvcs {
@@ -27,6 +28,12 @@ func (p *PersistentVolumeClaimsConfigDriver) CustomPVCS(pvcs []v1.PersistentVolu
 					panic(err)
 				}
 			}
+		}
+	}
+
+	for k, _ := range p.PersistentVolumeClaimDrivers {
+		if v, ok := p.AppendPVC[k]; ok && v {
+			pvcs = append(pvcs, p.PersistentVolumeClaimDrivers[k])
 		}
 	}
 	return pvcs

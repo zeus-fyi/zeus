@@ -52,9 +52,12 @@ func (s *StatefulSetDriver) SetStatefulSetConfigs(sts *v1.StatefulSet) {
 		}
 	}
 	// pvcs
+	if sts.Spec.VolumeClaimTemplates == nil {
+		sts.Spec.VolumeClaimTemplates = []v1core.PersistentVolumeClaim{}
+	}
 	if s.PVCDriver != nil {
 		tmp := sts.Spec.VolumeClaimTemplates
-		s.PVCDriver.CustomPVCS(tmp)
+		tmp = s.PVCDriver.CustomPVCS(tmp)
 		sts.Spec.VolumeClaimTemplates = tmp
 	}
 }
