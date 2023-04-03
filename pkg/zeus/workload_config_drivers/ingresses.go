@@ -34,5 +34,11 @@ func (i *IngressDriver) SetIngressConfigs(ing *v1.Ingress) {
 			ing.Spec.Rules[ind].Host = i.Host
 		}
 	}
+	if i.Spec.Rules != nil {
+		for ind, _ := range i.Spec.Rules {
+			ing.Spec.Rules[ind].Host = i.Spec.Rules[ind].Host
+			ing.Spec.Rules[ind].HTTP = i.Spec.Rules[ind].HTTP
+		}
+	}
 	ing.Annotations = tmp
 }
