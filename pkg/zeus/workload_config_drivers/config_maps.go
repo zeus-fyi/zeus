@@ -20,4 +20,10 @@ func (cm *ConfigMapDriver) SetConfigMaps(cmap *v1.ConfigMap) {
 			}
 		}
 	}
+	if cmap.Data == nil {
+		cmap.Data = make(map[string]string)
+	}
+	for k, v := range cm.Data {
+		cmap.Data[k] = v
+	}
 }
