@@ -5,6 +5,7 @@ import (
 )
 
 type ContainerDriver struct {
+	IsInitContainer bool
 	v1Core.Container
 	AppendEnvVars []v1Core.EnvVar
 }
