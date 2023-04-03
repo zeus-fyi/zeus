@@ -24,6 +24,7 @@ type ClusterDefinition struct {
 	ComponentBases            map[string]ComponentBaseDefinition
 	FilterSkeletonBaseUploads *strings_filter.FilterOpts
 	DisablePrint              bool
+	UseEmbeddedWorkload       bool
 }
 
 type ComponentBaseDefinition struct {
@@ -92,10 +93,14 @@ func (c *ClusterDefinition) GenerateSkeletonBaseCharts() ([]ClusterSkeletonBaseD
 	for cbName, cb := range c.ComponentBases {
 		for sbName, sb := range cb.SkeletonBases {
 			inf := topology_workloads.NewTopologyBaseInfraWorkload()
-			err := sb.SkeletonBaseNameChartPath.WalkAndApplyFuncToFileType(".yaml", inf.DecodeK8sWorkload)
-			if err != nil {
-				log.Err(err)
-				return []ClusterSkeletonBaseDefinition{}, err
+			if c.UseEmbeddedWorkload {
+				inf = sb.Workload
+			} else {
+				err := sb.SkeletonBaseNameChartPath.WalkAndApplyFuncToFileType(".yaml", inf.DecodeK8sWorkload)
+				if err != nil {
+					log.Err(err)
+					return []ClusterSkeletonBaseDefinition{}, err
+				}
 			}
 			// This will customize your config with the supplied workload override supplied
 			if sb.TopologyConfigDriver != nil {
@@ -106,7 +111,7 @@ func (c *ClusterDefinition) GenerateSkeletonBaseCharts() ([]ClusterSkeletonBaseD
 					lastDir := strings.Split(dir, "/")[len(strings.Split(dir, "/"))-1]
 					newPath := fmt.Sprintf("%scustom_%s", dir[:len(dir)-len(lastDir)], sbName)
 					sb.SkeletonBaseNameChartPath.DirOut = newPath
-					err = inf.PrintWorkload(sb.SkeletonBaseNameChartPath)
+					err := inf.PrintWorkload(sb.SkeletonBaseNameChartPath)
 					if err != nil {
 						log.Err(err)
 						return []ClusterSkeletonBaseDefinition{}, err
