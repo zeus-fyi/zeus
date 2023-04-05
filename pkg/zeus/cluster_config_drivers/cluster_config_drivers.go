@@ -35,6 +35,7 @@ type ClusterSkeletonBaseDefinition struct {
 	SkeletonBaseChart         zeus_req_types.TopologyCreateRequest
 	SkeletonBaseNameChartPath filepaths.Path
 
+	TopologyID           int
 	Workload             topology_workloads.TopologyBaseInfraWorkload
 	TopologyConfigDriver *zeus_topology_config_drivers.TopologyConfigDriver
 }
