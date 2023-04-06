@@ -36,6 +36,9 @@ func (cd *ContainerDriver) SetContainerConfigs(cont *v1Core.Container) {
 	if cd.Resources.Requests != nil {
 		cont.Resources.Requests = cd.Resources.Requests
 	}
+	if cd.ImagePullPolicy != "" {
+		cont.ImagePullPolicy = cd.ImagePullPolicy
+	}
 }
 
 func (cd *ContainerDriver) CreateEnvVarKeyValue(k, v string) v1Core.EnvVar {
