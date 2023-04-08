@@ -6,6 +6,9 @@ data:
   start.sh: |-
     #!/bin/sh
     exec /avalanchego/build/avalanchego --db-dir=/data --http-host=0.0.0.0
+  startFuji.sh: |-
+    #!/bin/sh
+    exec /avalanchego/build/avalanchego --db-dir=/data --http-host=0.0.0.0 --network-id=fuji
   download.sh: |-
     #!/bin/sh
     exec snapshots --downloadURL="" --clientName=""
