@@ -66,37 +66,9 @@ This client uses the OpenAI API to generate code with AI. This service is availa
 
 Hades is used to interact with kubernetes workloads via API, and can apply saved Zeus workloads & cookbooks onto your own in house infrastructure.
 
-## Zeus Users ##
-
-### Beacon API ###
-
-Our ephemeral ethereum testnet beacon is open to anyone, no auth is required. Large Eth quantities for testing is available on request.
-
-### https://eth.ephemeral.zeus.fyi
-
-Snapshot download urls for mainnet geth & lighthouse available on request.
-
 ## Infra configuration is in the 14th century. Introducing the 21st century printing press
 
-By unifying the infra ecosystem tools of today it allows the acceleration of infra development exponentially over time with each new open source cookbook & system template allowing you to glue sophisticated distributed systems together in zero time, which lets decentralized solo & small team builders compete directly against large incumbents at the edge of technology by erasing the need for large investment in infra & devops departments that are needed now to even get started.
-
-Lastly, by solving infra configuration, mobility, and orchestration through remote API driven configuration, it allows you to run sophisticated web apps in virtually zero time on far more cost efficient bare metal cloud providers using commoditized managed kubernetes services and simple middleware we provide, which is up to 6x more cost efficient than AWS, GCP, and comparable cloud companies. Take a look for yourself and decide for yourself.
-
-#### You have alternatives
-
-##### https://www.ibm.com/cloud/kubernetes-service
-##### https://us.ovhcloud.com/public-cloud/kubernetes
-##### https://www.linode.com/products/kubernetes
-##### https://www.digitalocean.com/products/kubernetes
-##### https://www.vultr.com/kubernetes
-
-#### It doesn't take long to figure it out, here's some pricing links to help you out
-
-##### https://www.ovhcloud.com/en/public-cloud/prices/
-##### https://www.ibm.com/cloud/virtual-servers/pricing
-##### https://instances.vantage.sh/
-
-AWS, GCP, Azure, type cloud companies purposely have highly confusing pricing models to mislead you on costs using data transfer bills, among other sales tactics like free initial cloud usage until you're locked into their ecosystem complexity, exactly when you realize the cloud spend is outrageous. The vast majority of enterprise users simply need RAM, CPU, Bandwidth Traffic, and a few disk options like RAID setups, and HDD, SSD, NVMes. All major cloud companies have similar performance & online SLAs. Why would you want to spend 100+ engineering hours figuring out some obscure EC2 instance number that they deprecate in a year anyway? The 0.001% of people that have that need already know what they want.
+We've merged Kubernetes & Temporal orchestration and added state management using a relational database to manage distributed infra setups. We exposed control of this system orchestrator to an SDK and UI that allows you to glue sophisticated distributed systems together in a fraction of the time it took previous which lets you focus on research and product development instead of figuring out how to build a distributed system or understand Kubernetes.
 
 ### Overview 
 
