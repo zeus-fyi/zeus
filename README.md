@@ -18,71 +18,11 @@ Here we overview the core concepts needed to understand how you can build, deplo
 
 https://medium.com/@zeusfyi/zeus-k8s-infra-as-code-concepts-47e690c6e3c5
 
-### Ethereum staking from your wallets & private secret managers.
-
-Staking, in fact all of web3 is in fact only one thing, and that thing is the ability to sign & transmit signed messages with your keys. We've decoupled that everything else, the high technical barriers, and high costs, so that it no longer requires you to give up access to your validator keys to participate in staking, taking a step towards making validators, defined by their signing keys decentralized at scale. 
-
-Event driven signature automation for Ethereum staking using our synthetic staking beacon, which bundles middleware like slashing protection and mev into the service which streams validator messages to you on demand to serverless functions, hosted signers, or mobile apps, with the benefit of letting you stake from your wallet without anyone having access to your signing or withdrawal keys and without any infrastructure setup, with only a few lines of code.
-
-### How much will staking services cost for Ethereum?
-
-$10/mo solo or large scale enterprise staking for Ethereum per validator.
-
-### How do I setup validators?
-
-You can use our UI which is in beta, which takes you from 0 -> deployed & serviced validators using Zeus without any coding, technical know-how, you get the picture. You can set it up within 5 minutes, and you have ZERO ongoing maintenance after setup, which is a first of its kind when it compared with other validator services you can get.
-
-> https://cloud.zeus.fyi/signup
-
-Networks supported:
-
-#### Mainnet - Request access. Includes MEV.
-#### Goerli - Request access. Includes MEV. 
-#### Ephemery - All users have access by default.
-
-It also comes with an industry first toolkit of secure secrets key generation and deposit data generation. Your keys never get written to disk, or exposed at any point, and all of the secrets operations and storage happen on YOUR account not ours, we're 100% non-custodial for signing key & withdrawal keys. The next best alternative is pure cold storage generation. Read more here.
-
-https://medium.com/zeusfyi/in-depth-overview-serverless-aws-lambda-for-ethereum-staking-with-zeus-6ad87d3be77f
-
-Read our beta users notes: 
-
-https://docs.google.com/document/d/1ciNOEJNEOkKFfhi0bQyhHydhdfp1zi8V0OHm-0oRN04/edit?usp=sharing
-
-Ephemery explorers
-
-> https://beaconchain.ephemery.pk910.de
-
-> https://explorer.ephemery.pk910.de
-
 ## Cookbooks ##
 
 Contains common web2 & web3 building components like ethereum infra setups with customization driven through code, blurring the line between infra configuration and app development, and contains microservice designs & patterns like api servers and injectable choreography, their setups in kubernetes, golang, docker, and startup commands, and useful tools for debugging, interacting, and automating actions.
 
 ### Cookbook Structure ###
-
-#### Ethereum ####
-
-#### ```protocol/components```
-
-Contains smart contract automation kits. This testcase shows a full end-end seed, create, and deposits validators on the Ethereum ephemery testnet.
-
-#### ```cookbooks/ethereum/automation```
-#### ```cookbooks/ethereum/automation/deposits_test.go ```
-
-Cookbook items listed by protocol & component class. Eg. Ethereum has a beacon component group. Contains Kubernetes config setup templates. Here's a few example paths. Also contains an actions folder, which does log dumps, pod restarts, configuration changes on demand for k8s applications, and more.
-
-#### ```cookbooks/ethereum/beacons/infra/consensus_client```
-#### ```cookbooks/ethereum/beacons/infra/exec_client```
-#### ```cookbooks/ethereum/validators/infra/validators```
-#### ```cookbooks/ethereum/web3signers/infra/consensys_web3signer```
-
-Complete, and powerful Ethereum infra automation 
-
-#### ```zeus/cookbooks/ethereum/beacons/beacon_cluster_test.go ```
-#### ```zeus/cookbooks/ethereum/validators/validator_cluster_test.go ```
-#### ```zeus/cookbooks/ethereum/web3signers/web3signer_cluster_test.go ```
-
-See this test case to see how a beacon cluster class was created, and then extended to support choreography to reset configs on a scheduled interval for the Ephemery testnet, and then added validator clients, and then again to add web3signing integration.
 
 #### Microservices ###
 
@@ -120,36 +60,6 @@ use the demo code to create your first api request in seconds
 
 This client uses the OpenAI API to generate code with AI. This service is available at OpenAI cost, so just pay for the token cost, otherwise it is free to use.
 
-### Artemis ###
-
-#### ```artemis.zeus.fyi``` ####
-#### ```pkg/artemis/client```
-
-Artemis is a tx orchestrator. It reliably submits & confirms ethereum transactions and logs their receipts. Chain with 
-the in memory db for storing web3 signer keys to build highly reliable web3 api actions with other users and smart contracts. You'll need
-a bearer token to use this client. A more advanced orchestrator that can handle high volume DeFi trading, which manages nonce sequences, sets up event triggers & scheduling, and has queriable event artifacts is in works, targeted release by end of March.
-
-### Aegis ###
-
-#### ```pkg/aegis/inmemdbs```
-#### ```pkg/crypto```
-
-Aegis is a library for securely managing crypto keys. It currently contains an in memory database for storing ethereum validators
-and for storing ecdsa, eth1 wallet keys. 
-
-### Hercules ###
-
-#### ```apps/hercules``` ####
-#### ```pkg/hercules/client```
-
-Hercules is web3 middleware that manages web3 infrastructure and connections to other middleware packages. It also contains useful apis to debug and troubleshoot web3 infrastructure.
-
-### Snapshots ###
-
-#### ```apps/snapshots``` ####
-
-Snapshot app is embedded into the hercules docker app, and it can be used as an init container to download snapshot data on new node creation.
-
 ### Hades Library
 
 #### ```pkg/hades```
@@ -170,7 +80,7 @@ Snapshot download urls for mainnet geth & lighthouse available on request.
 
 By unifying the infra ecosystem tools of today it allows the acceleration of infra development exponentially over time with each new open source cookbook & system template allowing you to glue sophisticated distributed systems together in zero time, which lets decentralized solo & small team builders compete directly against large incumbents at the edge of technology by erasing the need for large investment in infra & devops departments that are needed now to even get started.
 
-Lastly, by solving infra configuration, mobility, and orchestration through remote API driven configuration, it allows you to run sophisticated web apps in virtually zero time on far more cost efficient bare metal cloud providers using commoditized managed kubernetes services and simple middleware we provide, which is up to 6x more cost efficient than AWS, GCP, and comparable cloud companies. Take a look for yourself, then ask yourself why you want to make Jeff Bezos richer than he already is?
+Lastly, by solving infra configuration, mobility, and orchestration through remote API driven configuration, it allows you to run sophisticated web apps in virtually zero time on far more cost efficient bare metal cloud providers using commoditized managed kubernetes services and simple middleware we provide, which is up to 6x more cost efficient than AWS, GCP, and comparable cloud companies. Take a look for yourself and decide for yourself.
 
 #### You have alternatives
 
@@ -255,3 +165,86 @@ An abstract atomic configuration base that needs an Infrastructure Base and Skel
 ### Skeleton Base ###
 An abstract atomic component base that needs additional pieces to create deployable infrastructure like config map, docker image links, etc. Needs an Infrastructure and Configuration Base to create a Base Topology
 
+### Web3 Cookbook 
+
+### Artemis ###
+
+#### ```artemis.zeus.fyi``` ####
+#### ```pkg/artemis/client```
+
+Artemis is a tx orchestrator. It reliably submits & confirms ethereum transactions and logs their receipts. Chain with 
+the in memory db for storing web3 signer keys to build highly reliable web3 api actions with other users and smart contracts. You'll need
+a bearer token to use this client. A more advanced orchestrator that can handle high volume DeFi trading, which manages nonce sequences, sets up event triggers & scheduling, and has queriable event artifacts is in works, targeted release by end of March.
+
+### Hercules ###
+
+#### ```apps/hercules``` ####
+#### ```pkg/hercules/client```
+
+Hercules is web3 middleware that manages web3 infrastructure and connections to other middleware packages. It also contains useful apis to debug and troubleshoot web3 infrastructure.
+
+### Snapshots ###
+
+#### ```apps/snapshots``` ####
+
+Snapshot app is embedded into the hercules docker app, and it can be used as an init container to download snapshot data on new node creation.
+
+#### Ethereum ####
+
+#### ```protocol/components```
+
+Contains smart contract automation kits. This testcase shows a full end-end seed, create, and deposits validators on the Ethereum ephemery testnet.
+
+#### ```cookbooks/ethereum/automation```
+#### ```cookbooks/ethereum/automation/deposits_test.go ```
+
+Cookbook items listed by protocol & component class. Eg. Ethereum has a beacon component group. Contains Kubernetes config setup templates. Here's a few example paths. Also contains an actions folder, which does log dumps, pod restarts, configuration changes on demand for k8s applications, and more.
+
+#### ```cookbooks/ethereum/beacons/infra/consensus_client```
+#### ```cookbooks/ethereum/beacons/infra/exec_client```
+#### ```cookbooks/ethereum/validators/infra/validators```
+#### ```cookbooks/ethereum/web3signers/infra/consensys_web3signer```
+
+Complete, and powerful Ethereum infra automation 
+
+#### ```zeus/cookbooks/ethereum/beacons/beacon_cluster_test.go ```
+#### ```zeus/cookbooks/ethereum/validators/validator_cluster_test.go ```
+#### ```zeus/cookbooks/ethereum/web3signers/web3signer_cluster_test.go ```
+
+See this test case to see how a beacon cluster class was created, and then extended to support choreography to reset configs on a scheduled interval for the Ephemery testnet, and then added validator clients, and then again to add web3signing integration.
+
+### Ethereum staking from your wallets & private secret managers.
+
+Staking, in fact all of web3 is in fact only one thing, and that thing is the ability to sign & transmit signed messages with your keys. We've decoupled that everything else, the high technical barriers, and high costs, so that it no longer requires you to give up access to your validator keys to participate in staking, taking a step towards making validators, defined by their signing keys decentralized at scale. 
+
+Event driven signature automation for Ethereum staking using our synthetic staking beacon, which bundles middleware like slashing protection and mev into the service which streams validator messages to you on demand to serverless functions, hosted signers, or mobile apps, with the benefit of letting you stake from your wallet without anyone having access to your signing or withdrawal keys and without any infrastructure setup, with only a few lines of code.
+
+### How much will staking services cost for Ethereum?
+
+$10/mo solo or large scale enterprise staking for Ethereum per validator.
+
+### How do I setup validators?
+
+You can use our UI which is in beta, which takes you from 0 -> deployed & serviced validators using Zeus without any coding, technical know-how, you get the picture. You can set it up within 5 minutes, and you have ZERO ongoing maintenance after setup, which is a first of its kind when it compared with other validator services you can get.
+
+> https://cloud.zeus.fyi/signup
+
+Networks supported:
+
+#### Mainnet - Request access. Includes MEV.
+#### Goerli - Request access. Includes MEV. 
+#### Ephemery - All users have access by default.
+
+It also comes with an industry first toolkit of secure secrets key generation and deposit data generation. Your keys never get written to disk, or exposed at any point, and all of the secrets operations and storage happen on YOUR account not ours, we're 100% non-custodial for signing key & withdrawal keys. The next best alternative is pure cold storage generation. Read more here.
+
+https://medium.com/zeusfyi/in-depth-overview-serverless-aws-lambda-for-ethereum-staking-with-zeus-6ad87d3be77f
+
+Read our beta users notes: 
+
+https://docs.google.com/document/d/1ciNOEJNEOkKFfhi0bQyhHydhdfp1zi8V0OHm-0oRN04/edit?usp=sharing
+
+Ephemery explorers
+
+> https://beaconchain.ephemery.pk910.de
+
+> https://explorer.ephemery.pk910.de
