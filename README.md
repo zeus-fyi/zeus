@@ -68,7 +68,7 @@ Hades is used to interact with kubernetes workloads via API, and can apply saved
 
 ## Infra configuration is in the 14th century. Introducing the 21st century printing press
 
-We've merged Kubernetes & Temporal orchestration and added state management using a relational database to manage distributed infra setups. We exposed control of this system orchestrator to an SDK and UI that allows you to glue sophisticated distributed systems together in a fraction of the time it took previous which lets you focus on research and product development instead of figuring out how to build a distributed system or understand Kubernetes.
+We've merged Kubernetes & Temporal orchestration and added state management using a relational database to manage distributed infra setups. We exposed control of this system orchestrator to an SDK and UI that allows you to glue sophisticated distributed systems together in a fraction of the time it took previously which lets you focus on research and product development instead of figuring out how to build a distributed system or understand Kubernetes.
 
 ### Overview 
 
