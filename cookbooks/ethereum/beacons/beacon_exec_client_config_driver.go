@@ -19,7 +19,7 @@ const (
 	GethGoerli        = "gethGoerli"
 
 	downloadGethEphemeral = "downloadGethEphemeral"
-	gethDockerImage       = "ethereum/client-go:v1.11.4"
+	gethDockerImage       = "ethereum/client-go:v1.11.5"
 
 	gethDockerImageCapella = "ethpandaops/geth:master"
 )

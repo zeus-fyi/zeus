@@ -72,7 +72,7 @@ spec:
             tcpSocket:
               port: hercules
         - name: zeus-exec-client
-          image: "ethereum/client-go:v1.10.23"
+          image: "ethereum/client-go:v1.11.5"
           imagePullPolicy: IfNotPresent
           command: [ "/bin/sh" ]
           args: [ "-c","/scripts/start.sh" ]

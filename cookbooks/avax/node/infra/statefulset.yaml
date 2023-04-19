@@ -70,7 +70,7 @@ spec:
             tcpSocket:
               port: hercules
         - name: zeus-avax-client
-          image: "avaplatform/avalanchego:v1.9.10"
+          image: "avaplatform/avalanchego:v1.9.16"
           imagePullPolicy: IfNotPresent
           command: [ "/bin/sh" ]
           args: [ "-c","/scripts/start.sh" ]
