@@ -25,10 +25,10 @@ func (t *BeaconCookbookTestSuite) TestClusterDeployV2() {
 	cd := BeaconClusterDefinition
 	_, err := cd.UploadChartsFromClusterDefinition(ctx, t.ZeusTestClient, true)
 	t.Require().Nil(err)
-	//
-	//cdep := cd.GenerateDeploymentRequest()
-	//_, err = t.ZeusTestClient.DeployCluster(ctx, cdep)
-	//t.Require().Nil(err)
+
+	cdep := cd.GenerateDeploymentRequest()
+	_, err = t.ZeusTestClient.DeployCluster(ctx, cdep)
+	t.Require().Nil(err)
 }
 
 func (t *BeaconCookbookTestSuite) TestClusterSetupV2() {
