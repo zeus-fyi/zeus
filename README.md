@@ -12,6 +12,10 @@ We’ve built technology significantly improving Kubernetes in both scalability 
 
 ![Screenshot 2023-04-05 at 2 11 33 PM](https://user-images.githubusercontent.com/17446735/231288689-f970cd81-76b3-4b85-9241-3f30ad7c80b9.png)
 
+### Zeus UI Tutorial: No Code Kubernetes: Create an Authenticated API Within 5 Minutes
+
+https://medium.com/@zeusfyi/zeus-ui-no-code-kubernetes-authenticated-api-tutorial-c468d5ef0446
+
 ### Zeus K8s Infra as Code Concepts
 
 Here we overview the core concepts needed to understand how you can build, deploy, configure K8s apps using Zeus, with a full walkthrough example of how we created an Ethereum beacon.
