@@ -135,8 +135,6 @@ func (t *BeaconCookbookTestSuite) TestCreateClusterBase() {
 }
 
 func (t *BeaconCookbookTestSuite) TestCreateClusterSkeletonBases() {
-	ctx := context.Background()
-
 	cc := zeus_req_types.TopologyCreateOrAddSkeletonBasesToClassesRequest{
 		ClusterClassName:  clusterClassName,
 		ComponentBaseName: "executionClient",

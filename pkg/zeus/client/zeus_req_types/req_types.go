@@ -15,8 +15,8 @@ type TopologyCreateRequest struct {
 }
 
 type TopologyDeployRequest struct {
-	TopologyID int `json:"topologyID"`
-	zeus_common_types.CloudCtxNs
+	TopologyID                   int `json:"topologyID"`
+	zeus_common_types.CloudCtxNs `json:"cloudCtxNs"`
 
 	RequestChoreographySecretDeploy bool `json:"requestChoreographySecretDeploy,omitempty"`
 }
@@ -30,9 +30,9 @@ type TopologyCloudCtxNsQueryRequest struct {
 }
 
 type ClusterTopologyDeployRequest struct {
-	ClusterClassName    string   `json:"clusterClassName"`
-	SkeletonBaseOptions []string `json:"skeletonBaseOptions"`
-	zeus_common_types.CloudCtxNs
+	ClusterClassName             string   `json:"clusterClassName"`
+	SkeletonBaseOptions          []string `json:"skeletonBaseOptions"`
+	zeus_common_types.CloudCtxNs `json:"cloudCtxNs"`
 }
 
 type ClusterTopology struct {

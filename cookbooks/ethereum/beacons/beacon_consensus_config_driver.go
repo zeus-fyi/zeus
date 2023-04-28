@@ -16,11 +16,11 @@ const (
 	LighthouseEphemeral         = "lighthouseEphemeral"
 	downloadLighthouseEphemeral = "downloadLighthouseEphemeral"
 
-	lighthouseDockerImage        = "sigp/lighthouse:v3.3.0-modern"
+	lighthouseDockerImage        = "sigp/lighthouse:v4.1.0"
 	lighthouseDockerImageCapella = "sigp/lighthouse:capella"
 
 	LodestarGoerli      = "lodestarGoerli"
-	lodestarDockerImage = "chainsafe/lodestar:v1.5.1"
+	lodestarDockerImage = "chainsafe/lodestar:v1.7.2"
 )
 
 func EphemeralConsensusClientLighthouseConfig(inf topology_workloads.TopologyBaseInfraWorkload) {
