@@ -3,6 +3,7 @@ package snapshot_init
 import (
 	"context"
 
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -19,6 +20,7 @@ var (
 
 func StartUp() {
 	ctx := context.Background()
+	log.Ctx(ctx).Info().Interface("workload", Workload).Msg("Downloader: WorkloadInfo")
 	InitWorkloadAction(ctx, Workload)
 	ChainDownload(ctx, Workload)
 }
@@ -27,6 +29,8 @@ func init() {
 	viper.AutomaticEnv()
 	Cmd.Flags().StringVar(&Workload.DataDir.DirIn, "dataDir", "/data", "data directory location")
 	Cmd.Flags().StringVar(&Workload.WorkloadType, "workload-type", "", "workloadType") // eg validatorClient
+	Cmd.Flags().StringVar(&Workload.Network, "network", "", "network")                 // eg mainnet, testnet
+	Cmd.Flags().StringVar(&Workload.Protocol, "protocol", "", "protocol")              // eg eth, cosmos, etc
 
 	Cmd.Flags().StringVar(&preSignedURL, "downloadURL", "", "use a presigned bucket url")
 	Cmd.Flags().BoolVar(&onlyIfEmptyDir, "onlyIfEmptyDir", true, "only download & extract if the datadir is empty")

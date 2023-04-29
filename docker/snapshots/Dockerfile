@@ -1,5 +1,4 @@
 #syntax=docker/dockerfile:1.4
-
 FROM golang:1.20.1-buster as snapshot_builder
 
 WORKDIR /app
@@ -32,6 +31,7 @@ WORKDIR /app
 ARG VERSION
 
 RUN wget https://github.com/cosmos/gaia/releases/download/${VERSION}/gaiad-${VERSION}-linux-amd64 -O gaiad
+RUN chmod +x gaiad
 
 FROM ubuntu:22.04 AS gaiad-genesis
 RUN apt-get update && apt-get install -y wget
@@ -46,7 +46,7 @@ RUN apt-get update && apt-get install -y ca-certificates
 COPY --from=snapshot_builder /app/snapshots /usr/bin/snapshots
 COPY --from=rclone_builder /usr/bin/rclone /usr/bin/rclone
 
-COPY --from=gaiad-builder /app/gaiad $HOME/go/bin/
+COPY --from=gaiad-builder /app/gaiad /usr/local/go/bin/
 COPY --from=gaiad-genesis /app/genesis.json /etc/gaiad/genesis.json
 
 RUN mkdir -p ~/.config/rclone
