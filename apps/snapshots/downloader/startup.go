@@ -19,10 +19,12 @@ var (
 )
 
 func StartUp() {
+	log.Info().Msg("Snapshots: starting")
 	ctx := context.Background()
-	log.Ctx(ctx).Info().Interface("workload", Workload).Msg("Downloader: WorkloadInfo")
+	log.Info().Interface("workload", Workload).Msg("Downloader: WorkloadInfo")
 	InitWorkloadAction(ctx, Workload)
 	ChainDownload(ctx, Workload)
+	log.Info().Msg("Snapshots: done")
 }
 
 func init() {
