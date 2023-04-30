@@ -25,6 +25,7 @@ const (
 	cosmostMainnetStateSyncRPC   = "https://cosmos-rpc.polkachu.com:443,https://rpc-cosmoshub-ia.cosmosia.notional.ventures:443,https://rpc.cosmos.network:443"
 	cosmosTestnetStateSyncRPC    = "https://rpc.state-sync-01.theta-testnet.polypore.xyz:443,https://rpc.state-sync-02.theta-testnet.polypore.xyz:443"
 	cosmosTestnetSeedPeers       = "639d50339d7045436c756a042906b9a69970913f@seed-01.theta-testnet.polypore.xyz:26656,3e506472683ceb7ed75c1578d092c79785c27857@seed-02.theta-testnet.polypore.xyz:26656"
+	cosmosAddrBookURL            = "https://dl2.quicksync.io/json/addrbook.cosmos.json"
 )
 
 func CosmosStartup(ctx context.Context, w WorkloadInfo) {
@@ -100,6 +101,7 @@ func CosmosStartup(ctx context.Context, w WorkloadInfo) {
 			if err != nil {
 				panic(err)
 			}
+
 			p = filepaths.Path{
 				DirIn: "/config",
 				FnIn:  "config.toml",
@@ -206,6 +208,28 @@ func CosmosStartup(ctx context.Context, w WorkloadInfo) {
 				panic(err)
 			}
 			err = replaceLineIfStartsWith("/config/config.toml", "seeds = \"\"", fmt.Sprintf("seeds = \"%s\"", cosmosTestnetSeedPeers))
+			if err != nil {
+				panic(err)
+			}
+
+			p = filepaths.Path{
+				DirIn: "/config",
+				FnIn:  "addrbook.json",
+			}
+			err = p.RemoveFileInPath()
+			if err != nil {
+				panic(err)
+			}
+			p = filepaths.Path{
+				DirOut: "/config",
+				FnOut:  "addrbook.json",
+			}
+			r := resty.New()
+			resp, err := r.R().Get(cosmosAddrBookURL)
+			if err != nil {
+				panic(err)
+			}
+			err = p.WriteToFileOutPath(resp.Body())
 			if err != nil {
 				panic(err)
 			}

@@ -13,10 +13,6 @@ spec:
       targetPort: hercules
       protocol: TCP
       name: hercules
-    - port: 26656
-      targetPort: p2p-tcp
-      protocol: TCP
-      name: p2p-tcp
     - port: 26657
       targetPort: http-rpc
       protocol: TCP
