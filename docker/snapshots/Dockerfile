@@ -48,7 +48,7 @@ RUN wget https://raw.githubusercontent.com/cosmos/mainnet/master/genesis/genesis
 RUN gzip -d genesis.cosmoshub-4.json.gz
 RUN mv genesis.cosmoshub-4.json genesis.json
 
-FROM golang:1.18.5-buster
+FROM golang:1.20.3-buster
 RUN apt-get update && apt-get install -y ca-certificates
 
 COPY --from=snapshot_builder /app/snapshots /usr/bin/snapshots
