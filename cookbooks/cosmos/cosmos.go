@@ -1,4 +1,4 @@
-package avax_node_cookbooks
+package cosmos_cookbooks
 
 import (
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"

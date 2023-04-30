@@ -1,4 +1,4 @@
-package avax_node_cookbooks
+package cosmos_cookbooks
 
 import (
 	"context"
