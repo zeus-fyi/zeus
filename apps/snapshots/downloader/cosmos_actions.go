@@ -19,6 +19,7 @@ import (
 const (
 	comsosGenesisFilePath     = "/etc/gaiad/genesis.json"
 	cosmosTestnetStateSyncRPC = "https://rpc.state-sync-01.theta-testnet.polypore.xyz:443,https://rpc.state-sync-02.theta-testnet.polypore.xyz:443"
+	cosmosTestnetSeedPeers    = "639d50339d7045436c756a042906b9a69970913f@seed-01.theta-testnet.polypore.xyz:26656,3e506472683ceb7ed75c1578d092c79785c27857@seed-02.theta-testnet.polypore.xyz:26656"
 )
 
 func CosmosStartup(ctx context.Context, w WorkloadInfo) {
@@ -106,6 +107,10 @@ func CosmosStartup(ctx context.Context, w WorkloadInfo) {
 				panic(err)
 			}
 			err = replaceLineIfStartsWith("/config/config.toml", "trust_period = \"0s\"", fmt.Sprintf("trust_period = \"%s\"", "8h0m0s"))
+			if err != nil {
+				panic(err)
+			}
+			err = replaceLineIfStartsWith("/config/config.toml", "seeds = \"\"", fmt.Sprintf("seeds = \"%s\"", cosmosTestnetSeedPeers))
 			if err != nil {
 				panic(err)
 			}
