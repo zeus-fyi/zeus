@@ -25,7 +25,7 @@ const (
 	avaxCPURequest = "8"
 	avaxRAMRequest = "12Gi"
 
-	avaxFujiDiskSize   = "1Ti"
+	avaxFujiDiskSize   = "100Gi"
 	avaxFujiCPURequest = "6"
 	avaxFujiRAMRequest = "10Gi"
 )

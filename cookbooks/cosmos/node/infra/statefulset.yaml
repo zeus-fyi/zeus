@@ -1,0 +1,136 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: zeus-cosmos-client
+  labels:
+    app.kubernetes.io/name: zeus-cosmos-client
+    app.kubernetes.io/instance: zeus-cosmos-client
+    app.kubernetes.io/managed-by: zeus
+  annotations:
+    {}
+spec:
+  podManagementPolicy: OrderedReady
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: zeus-cosmos-client
+      app.kubernetes.io/instance: zeus-cosmos-client
+  serviceName: zeus-cosmos-client
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: zeus-cosmos-client
+        app.kubernetes.io/instance: zeus-cosmos-client
+    spec:
+      initContainers:
+        - name: init-chown-data
+          image: "busybox:1.34.0"
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            runAsNonRoot: false
+            runAsUser: 0
+          command: ["chown", "-R", "10001:10001", "/data"]
+          resources:
+            {}
+          volumeMounts:
+            - name: cosmos-client-storage
+              mountPath: "/data"
+        - name: init-snapshots
+          image: "zeusfyi/snapshots:latest"
+          imagePullPolicy: Always
+          command: [ "/bin/sh" ]
+          args: [ "-c","/scripts/download.sh" ]
+          resources:
+            {}
+          volumeMounts:
+            - name: cm-cosmos-client
+              mountPath: "/scripts"
+            - name: cosmos-client-storage
+              mountPath: "/data"
+            - name: cosmos-client-storage
+              mountPath: "/config"
+      containers:
+        - name: hercules
+          image: "zeusfyi/hercules:latest"
+          imagePullPolicy: Always
+          command: [ "/bin/sh" ]
+          args: [ "-c","/scripts/hercules.sh" ]
+          volumeMounts:
+            - name: cm-cosmos-client
+              mountPath: "/scripts"
+            - name: cosmos-client-storage
+              mountPath: "/data"
+            - name: cosmos-client-storage
+              mountPath: "/config"
+          ports:
+            - name: hercules
+              containerPort: 9003
+              protocol: TCP
+          livenessProbe:
+            initialDelaySeconds: 60
+            periodSeconds: 120
+            tcpSocket:
+              port: hercules
+        - name: zeus-cosmos-client
+          image: "zeusfyi/cosmos:latest"
+          imagePullPolicy: Always
+          command: [ "/bin/sh" ]
+          args: [ "-c","/scripts/start.sh" ]
+          volumeMounts:
+            - name: cm-cosmos-client
+              mountPath: "/scripts"
+            - name: cosmos-client-storage
+              mountPath: "/data"
+            - name: cosmos-client-storage
+              mountPath: "/config"
+          ports:
+            - name: p2p-tcp
+              containerPort: 26656
+              protocol: TCP
+            - name: http-rpc
+              containerPort: 26657
+              protocol: TCP
+            - name: http-abci
+              containerPort: 1317
+              protocol: TCP
+            - name: metrics
+              containerPort: 9090
+              protocol: TCP
+          livenessProbe:
+            initialDelaySeconds: 60
+            periodSeconds: 120
+            tcpSocket:
+              port: http-abci
+          resources:
+            limits:
+              cpu: "7"
+              memory: "15Gi"
+            requests:
+              cpu: "7"
+              memory: "15Gi"
+      nodeSelector:
+        {}
+      affinity:
+        {}
+      tolerations:
+        []
+      volumes:
+        - name: cm-cosmos-client
+          configMap:
+            name: cm-cosmos-client
+            defaultMode: 0744
+  volumeClaimTemplates:
+    - metadata:
+        name: cosmos-client-storage
+        annotations:
+          {}
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: "1Ti"
+
+
