@@ -8,7 +8,7 @@ import (
 
 var (
 	CosmosTestnetNodeClusterDefinition = zeus_cluster_config_drivers.ClusterDefinition{
-		ClusterClassName: "cosmosTestnetNode",
+		ClusterClassName: "cosmosNode",
 		ComponentBases:   CosmosNodeComponentBases,
 	}
 	CosmosNodeComponentBases = map[string]zeus_cluster_config_drivers.ComponentBaseDefinition{
