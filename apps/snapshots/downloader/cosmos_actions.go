@@ -1,18 +1,17 @@
 package snapshot_init
 
 import (
-	"bytes"
+	"bufio"
 	"context"
 	"encoding/json"
 	"fmt"
 	"io"
 	"os"
 	"os/exec"
-	"regexp"
 	"strconv"
+	"strings"
 
 	"github.com/go-resty/resty/v2"
-	"github.com/pelletier/go-toml"
 	"github.com/rs/zerolog/log"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 )
@@ -85,40 +84,43 @@ func CosmosStartup(ctx context.Context, w WorkloadInfo) {
 			if err != nil {
 				panic(err)
 			}
-			err = cosmosTomlOverride("/config/app.toml", "minimum-gas-prices", "0.0025uatom")
+			err = replaceLineIfStartsWith("/config/app.toml", "minimum-gas-prices = \"\"", "minimum-gas-prices = \"0.0025uatom\"")
 			if err != nil {
 				panic(err)
 			}
 			si := GetStateSyncInfoTestnet(ctx)
-			err = applyCosmosTomlOverridesByRegex(si, "", cosmosTestnetStateSyncRPC)
+			err = replaceLineIfStartsWith("/config/config.toml", "enable = false", "enable = true")
 			if err != nil {
 				panic(err)
 			}
+			err = replaceLineIfStartsWith("/config/config.toml", "rpc_servers = \"\"", fmt.Sprintf("rpc_servers = \"%s\"", cosmosTestnetStateSyncRPC))
+			if err != nil {
+				panic(err)
+			}
+			err = replaceLineIfStartsWith("/config/config.toml", "trust_height = 0", fmt.Sprintf("trust_height = %s", si.TrustHeight))
+			if err != nil {
+				panic(err)
+			}
+			err = replaceLineIfStartsWith("/config/config.toml", "trust_hash = \"\"", fmt.Sprintf("trust_hash = \"%s\"", si.TrustHash))
+			if err != nil {
+				panic(err)
+			}
+			err = replaceLineIfStartsWith("/config/config.toml", "trust_period = \"0s\"", fmt.Sprintf("trust_period = \"%s\"", "8h0m0s"))
+			if err != nil {
+				panic(err)
+			}
+			p = filepaths.Path{
+				DirIn: "/config",
+				FnIn:  "config.toml",
+			}
+			log.Info().Interface("config.toml", string(p.ReadFileInPath())).Msg("config.toml")
+			p = filepaths.Path{
+				DirIn: "/config",
+				FnIn:  "app.toml",
+			}
+			log.Info().Interface("app.toml", string(p.ReadFileInPath())).Msg("config.toml")
 		}
 	}
-}
-
-func cosmosTomlOverride(filename, key, newValue string) error {
-	data, err := os.ReadFile(filename)
-	if err != nil {
-		return err
-	}
-	tree, err := toml.LoadBytes(data)
-	if err != nil {
-		return err
-	}
-	tree.Set(key, newValue)
-	var buffer bytes.Buffer
-	encoder := toml.NewEncoder(&buffer)
-	err = encoder.Encode(tree)
-	if err != nil {
-		return err
-	}
-	err = os.WriteFile(filename, buffer.Bytes(), 0644)
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 type StateSyncInfo struct {
@@ -169,49 +171,28 @@ func GetStateSyncInfoTestnet(ctx context.Context) StateSyncInfo {
 	return si
 }
 
-func cosmosTomlOverrideRegex(filename, key, newValue string, useQuotes bool) error {
-	data, err := os.ReadFile(filename)
+func replaceLineIfStartsWith(inputFilePath, searchString, replacementString string) error {
+	inputFile, err := os.Open(inputFilePath)
 	if err != nil {
-		panic(err)
+		return fmt.Errorf("error opening input file: %v", err)
 	}
-	keyRegex := regexp.MustCompile(`(` + key + `\s*=\s*)(\S.*)`)
-	newValueString := newValue
-	if useQuotes {
-		newValueString = `"` + newValueString + `"`
+	defer inputFile.Close()
+	scanner := bufio.NewScanner(inputFile)
+	var lines []string
+	for scanner.Scan() {
+		line := scanner.Text()
+		if strings.HasPrefix(line, searchString) {
+			lines = append(lines, replacementString)
+		} else {
+			lines = append(lines, line)
+		}
 	}
-	replaced := keyRegex.ReplaceAllString(string(data), `$1`+newValueString)
-
-	if replaced == string(data) {
-		panic(err)
+	if err = scanner.Err(); err != nil {
+		return fmt.Errorf("error scanning input file: %v", err)
 	}
-
-	err = os.WriteFile(filename, []byte(replaced), 0644)
-	if err != nil {
-		panic(err)
-	}
-	return nil
-}
-
-func applyCosmosTomlOverridesByRegex(si StateSyncInfo, nodeHome, syncRPC string) error {
-	err := cosmosTomlOverrideRegex(nodeHome+"/config/config.toml", "enable", "true", false)
-	if err != nil {
-		return err
-	}
-	err = cosmosTomlOverrideRegex(nodeHome+"/config/config.toml", "trust_period", "8h0m0s", true)
-	if err != nil {
-		return err
-	}
-	err = cosmosTomlOverrideRegex(nodeHome+"/config/config.toml", "trust_height", si.TrustHeight, false)
-	if err != nil {
-		return err
-	}
-	err = cosmosTomlOverrideRegex(nodeHome+"/config/config.toml", "trust_hash", si.TrustHash, true)
-	if err != nil {
-		return err
-	}
-	err = cosmosTomlOverrideRegex(nodeHome+"/config/config.toml", "rpc_servers", syncRPC, true)
-	if err != nil {
-		return err
+	output := strings.Join(lines, "\n") + "\n"
+	if err = os.WriteFile(inputFilePath, []byte(output), 0644); err != nil {
+		return fmt.Errorf("error writing to input file: %v", err)
 	}
 	return nil
 }
