@@ -18,9 +18,18 @@ type CosmosStartupTestSuite struct {
 func (t *CosmosStartupTestSuite) SetupTest() {
 }
 
-func (t *CosmosStartupTestSuite) TestGetTestnetBlockHeight() {
+func (t *CosmosStartupTestSuite) TestGetMainnetPersistentPeers() {
+	peers := GetMainnetPersistentPeers(ctx)
+	t.Assert().NotEmpty(peers)
+	fmt.Println(peers)
+}
+
+func (t *CosmosStartupTestSuite) TestGetStateSyncInfo() {
 	testRPC := "https://rpc.sentry-01.theta-testnet.polypore.xyz"
 	si := GetStateSyncInfo(ctx, testRPC)
+	t.Assert().NotEmpty(si)
+
+	si = GetStateSyncInfoMainnet(ctx)
 	t.Assert().NotEmpty(si)
 }
 

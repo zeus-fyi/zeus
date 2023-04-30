@@ -6,18 +6,10 @@ metadata:
     app.kubernetes.io/instance: zeus-cosmos-client
     app.kubernetes.io/managed-by: zeus
     app.kubernetes.io/name: zeus-cosmos-client
-    version: version-1682819819328231022
+    version: version-1682829337126698913
   name: zeus-cosmos-client
 spec:
   ports:
-  - name: p2p-tcp
-    port: 26656
-    protocol: TCP
-    targetPort: p2p-tcp
-  - name: http-rpc
-    port: 26657
-    protocol: TCP
-    targetPort: http-rpc
   - name: http-abci
     port: 1317
     protocol: TCP
@@ -30,6 +22,14 @@ spec:
     port: 9003
     protocol: TCP
     targetPort: hercules
+  - name: p2p-tcp
+    port: 26656
+    protocol: TCP
+    targetPort: p2p-tcp
+  - name: http-rpc
+    port: 26657
+    protocol: TCP
+    targetPort: http-rpc
   selector:
     app.kubernetes.io/instance: zeus-cosmos-client
     app.kubernetes.io/name: zeus-cosmos-client

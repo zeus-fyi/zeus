@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/instance: zeus-cosmos-client
     app.kubernetes.io/managed-by: zeus
     app.kubernetes.io/name: zeus-cosmos-client
-    version: version-1682819819328119085
+    version: version-1682829337126621635
   name: zeus-cosmos-client
 spec:
   podManagementPolicy: OrderedReady
@@ -22,7 +22,7 @@ spec:
       labels:
         app.kubernetes.io/instance: zeus-cosmos-client
         app.kubernetes.io/name: zeus-cosmos-client
-        version: version-1682819819328227420
+        version: version-1682829337126695788
     spec:
       containers:
       - args:
@@ -84,11 +84,11 @@ spec:
           protocol: TCP
         resources: {}
         volumeMounts:
+        - mountPath: /config
+          name: cosmos-client-storage
         - mountPath: /scripts
           name: cm-cosmos-client
         - mountPath: /data
-          name: cosmos-client-storage
-        - mountPath: /config
           name: cosmos-client-storage
       initContainers:
       - args:
