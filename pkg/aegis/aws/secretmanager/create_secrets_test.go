@@ -2,6 +2,7 @@ package aegis_aws_secretmanager
 
 import (
 	"encoding/json"
+	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
@@ -38,7 +39,7 @@ func (t *AwsSecretManagerTestSuite) TestGetSecretBinary() {
 
 	secretInfo := SecretInfo{
 		Region: region,
-		Name:   "ageEncryptionKeyEphemery",
+		Name:   "mnemonicAndHDWalletGoerli",
 	}
 	b, err := sm.GetSecretBinary(ctx, secretInfo)
 	t.Require().Nil(err)
@@ -46,6 +47,8 @@ func (t *AwsSecretManagerTestSuite) TestGetSecretBinary() {
 	m := make(map[string]any)
 	err = json.Unmarshal(b, &m)
 	t.Require().Nil(err)
+
+	fmt.Println(string(b))
 }
 
 func (t *AwsSecretManagerTestSuite) TestCreateSecretBinary() {

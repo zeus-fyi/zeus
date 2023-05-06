@@ -2,7 +2,7 @@ package signing_automation_ethereum
 
 import (
 	"context"
-	"fmt"
+	"strconv"
 
 	spec "github.com/attestantio/go-eth2-client/spec/phase0"
 	"github.com/pkg/errors"
@@ -13,22 +13,27 @@ import (
 )
 
 // GenerateVoluntaryExit TODO generateVoluntaryExit needs current fork version
-func (w *Web3SignerClient) GenerateVoluntaryExit(ctx context.Context, blsSigner bls_signer.EthBLSAccount, forkVersion *spec.Version) error {
+func (w *Web3SignerClient) GenerateVoluntaryExit(ctx context.Context, blsSigner bls_signer.EthBLSAccount, forkVersion *spec.Version, genesisForkVersion [32]byte, validatorIndex string) (*spec.SignedVoluntaryExit, error) {
+	vi, err := strconv.Atoi(validatorIndex)
+	if err != nil {
+		log.Ctx(ctx).Err(err)
+		return nil, errors.Wrap(err, "failed to convert validator index to int")
+	}
 	exitMessage := &spec.VoluntaryExit{
-		Epoch:          spec.Epoch(0),
-		ValidatorIndex: spec.ValidatorIndex(0),
+		Epoch:          spec.Epoch(162304),
+		ValidatorIndex: spec.ValidatorIndex(uint64(vi)),
 	}
 	root, err := exitMessage.HashTreeRoot()
 	if err != nil {
 		log.Ctx(ctx).Err(err)
-		return errors.Wrap(err, "failed to generate voluntary exit message root")
+		return nil, errors.Wrap(err, "failed to generate voluntary exit message root")
 	}
 	var exitMessageRoot spec.Root
 	copy(exitMessageRoot[:], root[:])
-	domain, err := generateVoluntaryExitDomain(ctx, forkVersion)
+	domain, err := generateVoluntaryExitDomain(ctx, forkVersion, genesisForkVersion)
 	if err != nil {
 		log.Ctx(ctx).Err(err)
-		return errors.Wrap(err, "failed to generate voluntary exit domain")
+		return nil, errors.Wrap(err, "failed to generate voluntary exit domain")
 	}
 	container := &ssz.Container{
 		Root:   root[:],
@@ -37,31 +42,33 @@ func (w *Web3SignerClient) GenerateVoluntaryExit(ctx context.Context, blsSigner 
 	signingRoot, err := container.HashTreeRoot()
 	if err != nil {
 		log.Ctx(ctx).Err(err)
-		return errors.Wrap(err, "failed to generate hash tree root")
+		return nil, errors.Wrap(err, "failed to generate hash tree root")
 	}
 	var blsFormatted spec.BLSSignature
-	// TODO inject from remote serverless signer
 	sig := blsSigner.Sign(signingRoot[:])
 	copy(blsFormatted[:], sig.Marshal())
-	// TODO get validator index
-	voluntaryExitData := &spec.VoluntaryExit{
-		Epoch:          0,
-		ValidatorIndex: 0,
-	}
-	ht, err := voluntaryExitData.HashTreeRoot()
 	if err != nil {
 		log.Ctx(ctx).Err(err)
-		return errors.Wrap(err, "failed to generate hash tree root")
+		return nil, errors.Wrap(err, "failed to generate hash tree root")
 	}
-	// TODO submit exit to beacon
-	fmt.Println("voluntary exit data hash tree root:", ht)
-	return err
+	signedExit := &spec.SignedVoluntaryExit{
+		Message:   exitMessage,
+		Signature: blsFormatted,
+	}
+	return signedExit, err
 }
 
-// TODO generateVoluntaryExitDomain needs current fork version
-func generateVoluntaryExitDomain(ctx context.Context, forkVersion *spec.Version) (*spec.Domain, error) {
+type VoluntaryExitMessage struct {
+	Message struct {
+		Epoch          string `json:"epoch"`
+		ValidatorIndex string `json:"validator_index"`
+	} `json:"message"`
+	Signature string `json:"signature"`
+}
+
+func generateVoluntaryExitDomain(ctx context.Context, forkVersion *spec.Version, genesisForkVersion [32]byte) (*spec.Domain, error) {
 	domainData := &spec.Domain{}
-	res, err := e2types.ComputeDomain(e2types.DomainVoluntaryExit, forkVersion[:], e2types.ZeroGenesisValidatorsRoot)
+	res, err := e2types.ComputeDomain(e2types.DomainVoluntaryExit, forkVersion[:], genesisForkVersion[:])
 	if err != nil {
 		log.Ctx(ctx).Err(err)
 		return nil, errors.Wrap(err, "failed to generate domain value")
