@@ -20,6 +20,7 @@ const (
 	EphemeralBeacon              = "https://eth.ephemeral.zeus.fyi"
 	BeaconGenesisPath            = "/eth/v1/beacon/genesis"
 	BeaconForkPath               = "/eth/v1/beacon/states/head/fork"
+	BeaconVoluntaryExitPath      = "/eth/v1/beacon/pool/voluntary_exits"
 )
 
 func (w *Web3SignerClient) SignValidatorDepositTxToBroadcastFromJSON(ctx context.Context, depositParams ExtendedDepositParams) (*types.Transaction, error) {

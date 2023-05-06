@@ -192,3 +192,19 @@ func (vd *ValidatorDepositGenerationParams) EthDepositEncryptionAndAddMetadata(c
 	m["version"] = "4"
 	return m, err
 }
+
+func (vd *ValidatorDepositGenerationParams) GenerateDerivedKeySigner(ctx context.Context, offset int) (bls_signer.EthBLSAccount, error) {
+	initErr := bls_signer.InitEthBLS()
+	if initErr != nil {
+		log.Ctx(ctx).Err(initErr)
+		return bls_signer.EthBLSAccount{}, initErr
+	}
+	path := fmt.Sprintf("m/12381/3600/%d/0/0", offset)
+	sk, err := vd.DerivedKey(ctx, path)
+	if err != nil {
+		log.Ctx(ctx).Err(err)
+		return bls_signer.EthBLSAccount{}, err
+	}
+	signer := bls_signer.NewEthSignerBLSFromExistingKeyBytes(sk.Marshal())
+	return signer, nil
+}
