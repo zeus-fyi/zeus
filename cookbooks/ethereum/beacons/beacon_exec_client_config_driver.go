@@ -37,6 +37,7 @@ func GetExecClientNetworkConfig(execClient, network string) zeus_cluster_config_
 	cmConfig := ""
 	diskSize := ""
 	herculesStartup := hercules + ".sh"
+	downloadStartup := download + ".sh"
 	switch execClient {
 	case client_consts.Geth:
 		switch network {
@@ -45,6 +46,7 @@ func GetExecClientNetworkConfig(execClient, network string) zeus_cluster_config_
 			diskSize = execClientDiskSizeEphemeral
 			cmConfig = GethEphemeral
 			herculesStartup = herculesEphemeral + ".sh"
+			downloadStartup = downloadGethEphemeral + ".sh"
 		}
 	}
 	cp := filepaths.Path{
@@ -66,7 +68,7 @@ func GetExecClientNetworkConfig(execClient, network string) zeus_cluster_config_
 				SwapKeys: map[string]string{
 					"start.sh":       cmConfig + ".sh",
 					hercules + ".sh": herculesStartup,
-					download + ".sh": herculesStartup,
+					download + ".sh": downloadStartup,
 				},
 			},
 			StatefulSetDriver: &zeus_topology_config_drivers.StatefulSetDriver{
