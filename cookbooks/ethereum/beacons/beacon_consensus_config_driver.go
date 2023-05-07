@@ -8,11 +8,12 @@ import (
 )
 
 const (
-	consensusClient                   = "zeus-consensus-client"
+	zeusConsensusClient               = "zeus-consensus-client"
 	consensusStorageDiskName          = "consensus-client-storage"
 	consensusStorageDiskSizeEphemeral = "2Gi"
 	consensusStorageDiskSizeGoerli    = "100Gi"
 
+	LodestarEphemeral           = "lodestarEphemeral"
 	LighthouseEphemeral         = "lighthouseEphemeral"
 	downloadLighthouseEphemeral = "downloadLighthouseEphemeral"
 
@@ -51,7 +52,7 @@ func EphemeralConsensusClientLighthouseConfig(inf topology_workloads.TopologyBas
 	}
 	if inf.StatefulSet != nil {
 		for i, c := range inf.StatefulSet.Spec.Template.Spec.Containers {
-			if c.Name == consensusClient {
+			if c.Name == zeusConsensusClient {
 				inf.StatefulSet.Spec.Template.Spec.Containers[i].Image = lighthouseDockerImageCapella
 			}
 		}

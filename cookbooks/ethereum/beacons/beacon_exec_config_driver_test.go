@@ -21,7 +21,7 @@ func (t *BeaconCookbookTestSuite) TestExecClientBeaconConfigDriver() {
 
 	count := 0 // verifies execClient key is found
 	for _, c := range inf.StatefulSet.Spec.Template.Spec.Containers {
-		if c.Name == execClient {
+		if c.Name == zeusExecClient {
 			t.Assert().Equal(gethDockerImage, c.Image)
 			count += 1
 		}

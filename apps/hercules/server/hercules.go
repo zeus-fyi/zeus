@@ -5,7 +5,6 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	hercules_router "github.com/zeus-fyi/hercules/api"
-	aegis_inmemdbs "github.com/zeus-fyi/zeus/pkg/aegis/inmemdbs"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 )
 
@@ -23,7 +22,6 @@ func Hercules() {
 	log.Info().Msg("Hercules: server starting")
 
 	srv.E = hercules_router.Routes(srv.E)
-	aegis_inmemdbs.InitValidatorDB()
 	StartAndConfigClientNetworkSettings(clientName, network)
 	srv.Start()
 }

@@ -19,12 +19,12 @@ func InitWorkloadAction(ctx context.Context, w WorkloadInfo) {
 	switch w.Protocol {
 	case "cosmos":
 		CosmosStartup(ctx, w)
-	case "eth":
+	case "eth", "ethereum":
 		if useDefaultToken {
 			_ = init_jwt.SetTokenToDefault(Workload.DataDir, "jwt.hex", jwtToken)
 		}
 		switch w.Network {
-		case "ephemery":
+		case "ephemery", "ephemeral":
 			// do something
 			ephemery_reset.ExtractAndDecEphemeralTestnetConfig(Workload.DataDir, clientName)
 		}
