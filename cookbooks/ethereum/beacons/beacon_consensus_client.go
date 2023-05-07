@@ -28,6 +28,7 @@ func GetConsensusClientNetworkConfig(consensusClient, network string) zeus_clust
 	cmConfig := ""
 	diskSize := ""
 	downloadStartup := download + ".sh"
+	herculesStartup := hercules + ".sh"
 	var ports []v1Core.ContainerPort
 	var svcDriver *zeus_topology_config_drivers.ServiceDriver
 	switch consensusClient {
@@ -87,7 +88,8 @@ func GetConsensusClientNetworkConfig(consensusClient, network string) zeus_clust
 			dockerImage = lodestarDockerImage
 			cmConfig = LodestarEphemeral
 			diskSize = consensusStorageDiskSizeEphemeral
-			downloadStartup = "herculesEphemeralLodestar.sh"
+			downloadStartup = "downloadLodestarEphemeral.sh"
+			herculesStartup = "herculesLodestarEphemeral.sh"
 		}
 	case client_consts.Lighthouse:
 		switch network {
@@ -95,7 +97,8 @@ func GetConsensusClientNetworkConfig(consensusClient, network string) zeus_clust
 			dockerImage = lighthouseDockerImageCapella
 			cmConfig = LighthouseEphemeral
 			diskSize = consensusStorageDiskSizeEphemeral
-			downloadStartup = "herculesEphemeral.sh"
+			downloadStartup = "downloadLighthouseEphemeral.sh"
+			herculesStartup = "herculesLighthouseEphemeral.sh"
 		}
 	}
 	cp := filepaths.Path{
@@ -117,6 +120,7 @@ func GetConsensusClientNetworkConfig(consensusClient, network string) zeus_clust
 				SwapKeys: map[string]string{
 					"start.sh":       cmConfig + ".sh",
 					download + ".sh": downloadStartup,
+					hercules + ".sh": herculesStartup,
 				},
 			},
 			ServiceDriver: svcDriver,

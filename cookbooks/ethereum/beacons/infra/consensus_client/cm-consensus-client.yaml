@@ -23,7 +23,7 @@ data:
               --execution-endpoint="http://zeus-exec-client:8551"
   download.sh: |-
     #!/bin/sh
-    exec snapshots --downloadURL="" --clientName="lighthouse"
+    exec snapshots --downloadURL="" --clientName="lighthouse" --protocol="eth" --network="mainnet" --workload-type="beacon"
   pause.sh: |-
     #!/bin/sh
     exec sleep 100000000000000000
@@ -32,6 +32,20 @@ data:
     exec node /usr/app/node_modules/.bin/lodestar beacon \
               --dataDir /data \
               --network goerli \
+              --rest \
+              --execution.urls http://zeus-exec-client:8551 \
+              --rest.address 0.0.0.0 \
+              --rest.namespace '*' \
+              --rest.port 9596 \
+              --metrics --logFile /logs/beacon.log \
+              --logFileLevel debug \
+              --logFileDailyRotate 5 \
+              --jwt-secret /data/jwt.hex
+  lodestarEphemeral.sh: |-
+    #!/bin/sh
+    exec node /usr/app/node_modules/.bin/lodestar beacon \
+              --dataDir /data \
+              --paramsFile=/data/testnet/config.yaml \
               --rest \
               --execution.urls http://zeus-exec-client:8551 \
               --rest.address 0.0.0.0 \
@@ -65,9 +79,18 @@ data:
   herculesEphemeral.sh: |-
     #!/bin/sh 
     hercules --network="ephemery" --clientName="lighthouse"
+  herculesLighthouseEphemeral.sh: |-
+    #!/bin/sh 
+    hercules --network="ephemery" --clientName="lighthouse"
+  herculesLodestarEphemeral.sh: |-
+    #!/bin/sh 
+    hercules --network="ephemery" --clientName="lodestar"
   downloadLighthouseEphemeral.sh: |-
     #!/bin/sh
-    exec snapshots --downloadURL="" --clientName="lighthouseEphemeral"
+    exec snapshots --downloadURL="" --clientName="lighthouseEphemeral" --network="ephemery" --protocol="eth"
+  downloadLodestarEphemeral.sh: |-
+    #!/bin/sh
+    exec snapshots --downloadURL="" --clientName="lodestarEphemeral" --network="ephemery" --protocol="eth"
   lighthouseEphemeral.sh: |-
     #!/bin/sh
     exec lighthouse beacon_node \

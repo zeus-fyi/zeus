@@ -29,7 +29,7 @@ data:
     exec snapshots --downloadURL="" --clientName="geth"
   downloadGethEphemeral.sh: |-
     #!/bin/sh
-    exec snapshots --downloadURL="" --clientName="gethEphemeral"
+    exec snapshots --downloadURL="" --clientName="gethEphemeral" --network="ephemery" --protocol="eth" --workload-type="beacon"
   pause.sh: |-
     #!/bin/sh
     exec sleep 100000000000000000
