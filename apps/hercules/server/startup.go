@@ -11,7 +11,7 @@ import (
 )
 
 func StartAndConfigClientNetworkSettings(clientName, network string) {
-	if network == "ephemery" {
+	if network == "ephemery" || network == "ephemeral" {
 		genesisPath := dataDir.DirIn
 		switch clientName {
 		case client_consts.Lighthouse:
