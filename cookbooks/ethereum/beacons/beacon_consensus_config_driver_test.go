@@ -19,9 +19,9 @@ func (t *BeaconCookbookTestSuite) TestConsensusClientBeaconConfigDriver() {
 
 	t.Require().NotEmpty(inf.StatefulSet)
 
-	count := 0 // verifies consensusClient key is found
+	count := 0 // verifies zeusConsensusClient key is found
 	for _, c := range inf.StatefulSet.Spec.Template.Spec.Containers {
-		if c.Name == consensusClient {
+		if c.Name == zeusConsensusClient {
 			t.Assert().Equal(lighthouseDockerImage, c.Image)
 			count += 1
 		}

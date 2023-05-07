@@ -10,11 +10,13 @@ import (
 	"github.com/zeus-fyi/zeus/pkg/utils/ephemery_reset"
 )
 
-func StartAndConfigClientNetworkSettings(client, network string) {
+func StartAndConfigClientNetworkSettings(clientName, network string) {
 	if network == "ephemery" {
 		genesisPath := dataDir.DirIn
 		switch clientName {
 		case client_consts.Lighthouse:
+			genesisPath = path.Join(genesisPath, "/testnet")
+		case client_consts.Lodestar:
 			genesisPath = path.Join(genesisPath, "/testnet")
 		default:
 		}

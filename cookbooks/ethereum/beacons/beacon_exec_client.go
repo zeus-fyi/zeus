@@ -34,9 +34,9 @@ var ExecClientSkeletonBaseConfig = zeus_cluster_config_drivers.ClusterSkeletonBa
 		},
 		StatefulSetDriver: &zeus_topology_config_drivers.StatefulSetDriver{
 			ContainerDrivers: map[string]zeus_topology_config_drivers.ContainerDriver{
-				execClient: {
+				zeusExecClient: {
 					Container: v1Core.Container{
-						Name:  execClient,
+						Name:  zeusExecClient,
 						Image: gethDockerImageCapella,
 					},
 				},
@@ -62,14 +62,14 @@ var ExecClientSkeletonBaseMonitoringConfig = zeus_cluster_config_drivers.Cluster
 				ObjectMeta: metav1.ObjectMeta{
 					Name: "zeus-exec-client-monitor",
 					Labels: map[string]string{
-						"app":     execClient,
+						"app":     zeusExecClient,
 						"release": "kube-prometheus-stack",
 					}},
 				Spec: v1.ServiceMonitorSpec{
 					Selector: metav1.LabelSelector{
 						MatchLabels: map[string]string{
-							"app.kubernetes.io/instance": execClient,
-							"app.kubernetes.io/name":     execClient,
+							"app.kubernetes.io/instance": zeusExecClient,
+							"app.kubernetes.io/name":     zeusExecClient,
 						},
 					},
 				},

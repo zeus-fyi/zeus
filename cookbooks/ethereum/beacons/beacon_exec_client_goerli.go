@@ -25,9 +25,9 @@ var ExecClientGoerliSkeletonBaseConfig = zeus_cluster_config_drivers.ClusterSkel
 		},
 		StatefulSetDriver: &zeus_topology_config_drivers.StatefulSetDriver{
 			ContainerDrivers: map[string]zeus_topology_config_drivers.ContainerDriver{
-				execClient: {
+				zeusExecClient: {
 					Container: v1Core.Container{
-						Name:  execClient,
+						Name:  zeusExecClient,
 						Image: gethDockerImage,
 					},
 				},

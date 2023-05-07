@@ -31,7 +31,7 @@ const (
 func ExtractAndDecEphemeralTestnetConfig(dataDir filepaths.Path, clientName string) {
 	wipeDirPath := dataDir.DirIn
 	switch clientName {
-	case beacon_cookbooks.LighthouseEphemeral, validator_cookbooks.EphemeryValidatorClusterClassName:
+	case beacon_cookbooks.LighthouseEphemeral, validator_cookbooks.EphemeryValidatorClusterClassName, "lodestarEphemeral":
 		log.Info().Interface("dataDir", dataDir).Msg("ExtractAndDecEphemeralTestnetConfig: LighthouseEphemeral")
 		dataDir.DirIn = "/data/testnet"
 		dataDir.DirOut = path.Join(dataDir.DirIn)
