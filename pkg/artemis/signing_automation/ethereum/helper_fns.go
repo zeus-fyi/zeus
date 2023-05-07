@@ -12,6 +12,7 @@ import (
 	"github.com/rs/zerolog/log"
 	e2types "github.com/wealdtech/go-eth2-types/v2"
 	util "github.com/wealdtech/go-eth2-util"
+	strings_filter "github.com/zeus-fyi/zeus/pkg/utils/strings"
 )
 
 type GenesisData struct {
@@ -19,6 +20,36 @@ type GenesisData struct {
 		GenesisTime           string `json:"genesis_time"`
 		GenesisValidatorsRoot string `json:"genesis_validators_root"`
 		GenesisForkVersion    string `json:"genesis_fork_version"`
+	} `json:"data"`
+}
+
+type ForkData struct {
+	ExecutionOptimistic bool `json:"execution_optimistic"`
+	Finalized           bool `json:"finalized"`
+	Data                struct {
+		PreviousVersion string `json:"previous_version"`
+		CurrentVersion  string `json:"current_version"`
+		Epoch           string `json:"epoch"`
+	} `json:"data"`
+}
+
+type ValidatorInfo struct {
+	ExecutionOptimistic bool `json:"execution_optimistic"`
+	Finalized           bool `json:"finalized"`
+	Data                struct {
+		Index     string `json:"index"`
+		Balance   string `json:"balance"`
+		Status    string `json:"status"`
+		Validator struct {
+			Pubkey                     string `json:"pubkey"`
+			WithdrawalCredentials      string `json:"withdrawal_credentials"`
+			EffectiveBalance           string `json:"effective_balance"`
+			Slashed                    bool   `json:"slashed"`
+			ActivationEligibilityEpoch string `json:"activation_eligibility_epoch"`
+			ActivationEpoch            string `json:"activation_epoch"`
+			ExitEpoch                  string `json:"exit_epoch"`
+			WithdrawableEpoch          string `json:"withdrawable_epoch"`
+		} `json:"validator"`
 	} `json:"data"`
 }
 
@@ -49,6 +80,68 @@ func GetForkVersion(ctx context.Context, beacon string) (*spec.Version, error) {
 	ver[2] = forkVersion[2]
 	ver[3] = forkVersion[3]
 	return ver, err
+}
+
+func GetCurrentForkVersion(ctx context.Context, beacon string) (*spec.Version, error) {
+	ver := &spec.Version{}
+	resp := ForkData{}
+	r := resty.New()
+	r.SetBaseURL(beacon)
+	_, err := r.R().
+		SetResult(&resp).
+		Get(BeaconForkPath)
+	if err != nil {
+		log.Ctx(ctx).Err(err)
+		return ver, err
+	}
+	forkVersion, err := hex.DecodeString(strings.TrimPrefix(resp.Data.CurrentVersion, "0x"))
+	if err != nil {
+		log.Ctx(ctx).Err(err)
+		return ver, err
+	}
+
+	ver[0] = forkVersion[0]
+	ver[1] = forkVersion[1]
+	ver[2] = forkVersion[2]
+	ver[3] = forkVersion[3]
+	return ver, err
+}
+
+func GetValidatorIndexFromPubkey(ctx context.Context, beacon, pubkey string) (string, error) {
+	resp := ValidatorInfo{}
+	pubkey = strings_filter.AddHexPrefix(pubkey)
+	urlPath := fmt.Sprintf("/eth/v1/beacon/states/head/validators/%s", pubkey)
+	r := resty.New()
+	r.SetBaseURL(beacon)
+	_, err := r.R().
+		SetResult(&resp).
+		Get(urlPath)
+	if err != nil {
+		log.Ctx(ctx).Err(err)
+		return resp.Data.Index, err
+	}
+	return resp.Data.Index, err
+}
+
+func SubmitVoluntaryExit(ctx context.Context, beacon string, ve *spec.SignedVoluntaryExit) error {
+	r := resty.New()
+	r.SetBaseURL(beacon)
+	resp, err := r.R().
+		SetBody(ve).
+		Post(BeaconVoluntaryExitPath)
+	if err != nil {
+		log.Ctx(ctx).Err(err)
+		return err
+	}
+	if resp.StatusCode() == 400 {
+		log.Ctx(ctx).Err(err)
+		return errors.New("invalid voluntary exit format")
+	}
+	if resp.StatusCode() != 200 {
+		log.Ctx(ctx).Err(err)
+		return errors.New("failed to submit voluntary exit")
+	}
+	return err
 }
 
 // ValidateAndReturnEcdsaPubkeyBytes is borrowed from https://github.com/wealdtech/ethdo

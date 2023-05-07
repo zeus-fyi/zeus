@@ -1,36 +1,39 @@
 package snapshot_init
 
 import (
+	"context"
+
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	init_jwt "github.com/zeus-fyi/zeus/pkg/aegis/jwt"
-	"github.com/zeus-fyi/zeus/pkg/utils/ephemery_reset"
-	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 )
 
 var (
-	dataDir         filepaths.Path
 	preSignedURL    string
 	onlyIfEmptyDir  bool
 	compressionType string
 	clientName      string
 	jwtToken        string
 	useDefaultToken bool
+	Workload        WorkloadInfo
 )
 
 func StartUp() {
-	// the below uses a switch case to download if an ephemeralClientName is used
-	ephemery_reset.ExtractAndDecEphemeralTestnetConfig(dataDir, clientName)
-
-	if useDefaultToken {
-		_ = init_jwt.SetTokenToDefault(dataDir, "jwt.hex", jwtToken)
-	}
-	ChainDownload()
+	log.Info().Msg("Snapshots: starting")
+	ctx := context.Background()
+	log.Info().Interface("workload", Workload).Msg("Downloader: WorkloadInfo")
+	InitWorkloadAction(ctx, Workload)
+	ChainDownload(ctx, Workload)
+	log.Info().Msg("Snapshots: done")
 }
 
 func init() {
 	viper.AutomaticEnv()
-	Cmd.Flags().StringVar(&dataDir.DirIn, "dataDir", "/data", "data directory location")
+	Cmd.Flags().StringVar(&Workload.DataDir.DirIn, "dataDir", "/data", "data directory location")
+	Cmd.Flags().StringVar(&Workload.WorkloadType, "workload-type", "", "workloadType") // eg validatorClient
+	Cmd.Flags().StringVar(&Workload.Network, "network", "", "network")                 // eg mainnet, testnet
+	Cmd.Flags().StringVar(&Workload.Protocol, "protocol", "", "protocol")              // eg eth, cosmos, etc
+
 	Cmd.Flags().StringVar(&preSignedURL, "downloadURL", "", "use a presigned bucket url")
 	Cmd.Flags().BoolVar(&onlyIfEmptyDir, "onlyIfEmptyDir", true, "only download & extract if the datadir is empty")
 	Cmd.Flags().StringVar(&compressionType, "compressionExtension", ".tar.lz4", "compression type")

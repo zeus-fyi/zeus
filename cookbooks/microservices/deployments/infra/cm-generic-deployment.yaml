@@ -5,4 +5,4 @@ metadata:
 data:
   start.sh: |-
     #!/bin/sh
-    exec http-echo -text="hello world"
+    exec api

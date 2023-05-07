@@ -1,6 +1,6 @@
 ## Zeus ##
 
-We’ve built technology significantly improving Kubernetes in both scalability and usability enabling you to automate complex devops procedures, schedule resource management allocations, and manage distributed cloud infra setups at scale with far less effort and with almost zero knowledge of Kubernetes needed so you can reduce your engineering time managing infra and spend that time on research and product development instead. We built an orchestration engine using Temporal over Kubernetes itself for managing, and controlling infrastructure and mapped all the infrastructure into our Postgres database. This makes the entire infrastructure layout completely searchable and easily mappable to business logic requirements making it much easier to get higher utilization of your cloud resources and schedule resource sharing that help drive big costs saving with your cloud spend. Our infrastructure is designed specifically to meet the performance requirements for complex cloud distributed systems such as in AI/Ml, Big Data, and managing infra at significant scale, and in targeted areas of web3.
+We’ve built technology significantly improving Kubernetes in both scalability and usability enabling you to automate complex devops procedures, schedule resource management allocations, and manage distributed cloud infra setups at scale with far less effort and with almost zero knowledge of Kubernetes needed so you can reduce your engineering time managing infra and spend that time on research and product development instead. We built an orchestration engine using Temporal over Kubernetes itself for managing, and controlling infrastructure and mapped all the infrastructure into our Postgres database. This makes the entire infrastructure layout completely searchable and easily mappable to business logic requirements making it much easier to get higher utilization of your cloud resources and schedule resource sharing that help drive big costs saving with your cloud spend. 
 
 ### Zeus UI Highlights
 
@@ -11,6 +11,10 @@ We’ve built technology significantly improving Kubernetes in both scalability 
 ![Screenshot 2023-04-07 at 6 46 08 PM](https://user-images.githubusercontent.com/17446735/231288683-a350f36b-d103-428f-88b3-eac80742a9c4.png)
 
 ![Screenshot 2023-04-05 at 2 11 33 PM](https://user-images.githubusercontent.com/17446735/231288689-f970cd81-76b3-4b85-9241-3f30ad7c80b9.png)
+
+### Zeus UI Tutorial: No Code Kubernetes: Create an Authenticated API Within 5 Minutes
+
+https://medium.com/@zeusfyi/zeus-ui-no-code-kubernetes-authenticated-api-tutorial-c468d5ef0446
 
 ### Zeus K8s Infra as Code Concepts
 
@@ -95,6 +99,8 @@ We've merged Kubernetes & Temporal orchestration and added state management usin
 Not every possible field type is supported, but the most common ones are, and even a decent amount of the uncommon ones.
 
 ![Screenshot 2022-11-17 at 8 09 48 PM](https://user-images.githubusercontent.com/17446735/202614955-2708063e-1547-4dae-9332-f712102c287e.png)
+
+![sys](https://user-images.githubusercontent.com/17446735/236006394-d7782657-c2a8-4ee6-a53c-a55f07dbc2b8.png)
 
 ### Cluster Topology Class Hierarchy Definitions ###
 

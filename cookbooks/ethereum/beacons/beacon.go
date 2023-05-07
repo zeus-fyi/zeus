@@ -13,7 +13,7 @@ const (
 
 var (
 	BeaconClusterDefinition = zeus_cluster_config_drivers.ClusterDefinition{
-		ClusterClassName: "ethereumEphemeralBeacons",
+		ClusterClassName: "ethereumEphemeralBeaconsDev",
 		CloudCtxNs:       BeaconCloudCtxNs,
 		ComponentBases:   BeaconComponentBases,
 	}
@@ -34,7 +34,7 @@ var (
 	}
 	ConsensusClientComponentBase = zeus_cluster_config_drivers.ComponentBaseDefinition{
 		SkeletonBases: map[string]zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
-			"lighthouseHercules": ConsensusClientSkeletonBaseConfig,
+			"lodestarHercules": ConsensusClientSkeletonBaseConfig,
 		},
 	}
 	ConsensusClientMonitoringComponentBase = zeus_cluster_config_drivers.ComponentBaseDefinition{
@@ -58,3 +58,22 @@ var (
 		},
 	}
 )
+
+func GetClientClusterDef(consensusClient, execClient, network string) zeus_cluster_config_drivers.ClusterDefinition {
+	return zeus_cluster_config_drivers.ClusterDefinition{
+		ClusterClassName: "ethereumEphemeralBeaconsDev",
+		ComponentBases:   GetComponentBases(consensusClient, execClient, network),
+	}
+}
+
+func GetComponentBases(consensusClient, execClient, network string) map[string]zeus_cluster_config_drivers.ComponentBaseDefinition {
+	beaconComponentBases := map[string]zeus_cluster_config_drivers.ComponentBaseDefinition{
+		"beaconIngress":                 IngressComponentBase,
+		"consensusClients":              GetConsensusClientNetworkConfig(consensusClient, network),
+		"execClients":                   GetExecClientNetworkConfig(execClient, network),
+		"serviceMonitorConsensusClient": ConsensusClientMonitoringComponentBase,
+		"serviceMonitorExecClient":      ExecClientMonitoringComponentBase,
+		"choreography":                  choreography_cookbooks.ChoreographyComponentBase,
+	}
+	return beaconComponentBases
+}

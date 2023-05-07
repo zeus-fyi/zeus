@@ -21,7 +21,7 @@ data:
     exec sleep 100000000000000000
   download.sh: |-
     #!/bin/sh
-    exec snapshots --downloadURL="" --clientName="ethereumEphemeralValidatorCluster"
+    exec snapshots --downloadURL="" --clientName="ethereumEphemeralValidatorCluster" --protocol="eth" --network="ephemery" --workload-type="validatorClient"
   hercules.sh: |-
     #!/bin/sh 
     hercules

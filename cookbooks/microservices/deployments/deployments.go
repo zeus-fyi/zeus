@@ -7,6 +7,34 @@ import (
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_common_types"
 	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_req_types"
+	zeus_cluster_config_drivers "github.com/zeus-fyi/zeus/pkg/zeus/cluster_config_drivers"
+)
+
+var (
+	MicroserviceClusterDefinition = zeus_cluster_config_drivers.ClusterDefinition{
+		ClusterClassName: "microservice",
+		CloudCtxNs:       MicroserviceNodeCloudCtxNs,
+		ComponentBases:   MicroserviceComponentBases,
+	}
+	MicroserviceNodeCloudCtxNs = zeus_common_types.CloudCtxNs{
+		CloudProvider: "do",
+		Region:        "nyc1",
+		Context:       "do-nyc1-do-nyc1-zeus-demo",
+		Namespace:     "microservice",
+		Env:           "production",
+	}
+	MicroserviceComponentBases = map[string]zeus_cluster_config_drivers.ComponentBaseDefinition{
+		"microservice": MicroserviceComponentBase,
+	}
+	MicroserviceComponentBase = zeus_cluster_config_drivers.ComponentBaseDefinition{
+		SkeletonBases: map[string]zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
+			"api": MicroserviceSkeletonBaseConfig,
+		},
+	}
+	MicroserviceSkeletonBaseConfig = zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
+		SkeletonBaseChart:         zeus_req_types.TopologyCreateRequest{},
+		SkeletonBaseNameChartPath: genericDeploymentChartPath,
+	}
 )
 
 // set your own topologyID here after uploading a chart workload

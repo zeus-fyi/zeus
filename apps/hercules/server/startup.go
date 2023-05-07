@@ -10,11 +10,13 @@ import (
 	"github.com/zeus-fyi/zeus/pkg/utils/ephemery_reset"
 )
 
-func StartAndConfigClientNetworkSettings(client, network string) {
-	if network == "ephemery" {
+func StartAndConfigClientNetworkSettings(clientName, network string) {
+	if network == "ephemery" || network == "ephemeral" {
 		genesisPath := dataDir.DirIn
 		switch clientName {
 		case client_consts.Lighthouse:
+			genesisPath = path.Join(genesisPath, "/testnet")
+		case client_consts.Lodestar:
 			genesisPath = path.Join(genesisPath, "/testnet")
 		default:
 		}
@@ -24,7 +26,8 @@ func StartAndConfigClientNetworkSettings(client, network string) {
 			kt := ephemery_reset.ExtractResetTime(path.Join(genesisPath, "/retention.vars"))
 			go func(timeBeforeKill int64) {
 				log.Info().Msgf("killing ephemeral infra due to genesis reset after %d seconds", timeBeforeKill)
-				time.Sleep(time.Duration(timeBeforeKill) * time.Second)
+				// give it a 15-minute buffer, 900s = 15m
+				time.Sleep(time.Duration(timeBeforeKill+900) * time.Second)
 				rc := resty.New()
 				// assumes you have the default choreography sidecar in your namespace cluster
 				_, err := rc.R().Get("http://zeus-choreography:9999/delete/pods")

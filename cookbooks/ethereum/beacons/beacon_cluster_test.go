@@ -5,13 +5,13 @@ import (
 	"fmt"
 
 	"github.com/zeus-fyi/zeus/cookbooks"
+	client_consts "github.com/zeus-fyi/zeus/cookbooks/ethereum/beacons/constants"
 	choreography_cookbooks "github.com/zeus-fyi/zeus/cookbooks/microservices/choreography"
+	hestia_req_types "github.com/zeus-fyi/zeus/pkg/hestia/client/req_types"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_req_types"
 )
 
-// ethereumBeacons is a reserved keyword, so it can be global to our stored config we maintain.
-// you can replace the below with your own setup by changing the class name and following the tests.
 var (
 	clusterClassName       = "ethereumEphemeralBeacons"
 	execSkeletonBases      = []string{"gethHercules"}
@@ -44,6 +44,23 @@ func (t *BeaconCookbookTestSuite) TestClusterSetupV2() {
 	sbDefs, err := cd.GenerateSkeletonBaseCharts()
 	t.Require().Nil(err)
 	t.Assert().NotEmpty(sbDefs)
+}
+
+func (t *BeaconCookbookTestSuite) TestClusterSetupWithCfgDriver() {
+	cd := GetClientClusterDef(client_consts.Lodestar, client_consts.Geth, hestia_req_types.Ephemery)
+	gcd := cd.BuildClusterDefinitions()
+	t.Assert().NotEmpty(gcd)
+	fmt.Println(gcd)
+
+	gdr := cd.GenerateDeploymentRequest()
+	t.Assert().NotEmpty(gdr)
+	fmt.Println(gdr)
+
+	sbDefs, err := cd.GenerateSkeletonBaseCharts()
+	t.Require().Nil(err)
+	t.Assert().NotEmpty(sbDefs)
+	_, err = cd.UploadChartsFromClusterDefinition(ctx, t.ZeusTestClient, true)
+	t.Require().Nil(err)
 }
 
 func (t *BeaconCookbookTestSuite) TestClusterDefinitionCreationV2() {
@@ -121,7 +138,7 @@ func (t *BeaconCookbookTestSuite) TestCreateClusterClass() {
 func (t *BeaconCookbookTestSuite) TestCreateClusterBase() {
 	basesInsert := []string{
 		"executionClient",
-		"consensusClient",
+		"zeusConsensusClient",
 		"beaconIngress",
 		"serviceMonitorConsensusClient",
 		"serviceMonitorExecClient",
@@ -135,8 +152,6 @@ func (t *BeaconCookbookTestSuite) TestCreateClusterBase() {
 }
 
 func (t *BeaconCookbookTestSuite) TestCreateClusterSkeletonBases() {
-	ctx := context.Background()
-
 	cc := zeus_req_types.TopologyCreateOrAddSkeletonBasesToClassesRequest{
 		ClusterClassName:  clusterClassName,
 		ComponentBaseName: "executionClient",
@@ -147,7 +162,7 @@ func (t *BeaconCookbookTestSuite) TestCreateClusterSkeletonBases() {
 
 	cc = zeus_req_types.TopologyCreateOrAddSkeletonBasesToClassesRequest{
 		ClusterClassName:  clusterClassName,
-		ComponentBaseName: "consensusClient",
+		ComponentBaseName: "zeusConsensusClient",
 		SkeletonBaseNames: consensusSkeletonBases,
 	}
 	_, err = t.ZeusTestClient.AddSkeletonBasesToClass(ctx, cc)

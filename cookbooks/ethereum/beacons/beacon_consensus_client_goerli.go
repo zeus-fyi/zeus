@@ -58,8 +58,8 @@ var ConsensusClientGoerliSkeletonBaseConfig = zeus_cluster_config_drivers.Cluste
 		},
 		StatefulSetDriver: &zeus_topology_config_drivers.StatefulSetDriver{
 			ContainerDrivers: map[string]zeus_topology_config_drivers.ContainerDriver{
-				consensusClient: {Container: v1Core.Container{
-					Name:  consensusClient,
+				zeusConsensusClient: {Container: v1Core.Container{
+					Name:  zeusConsensusClient,
 					Image: lodestarDockerImage,
 					Ports: []v1Core.ContainerPort{
 						{

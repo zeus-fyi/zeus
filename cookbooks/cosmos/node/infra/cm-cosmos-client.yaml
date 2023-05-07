@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cm-cosmos-client
+data:
+  start.sh: |-
+    #!/bin/sh
+    exec gaiad start --moniker=cosmos-node --home=/ --db_dir=/data --log_format=json --x-crisis-skip-assert-invariants
+  download.sh: |-
+    #!/bin/sh
+    exec snapshots --downloadURL="" --clientName="cosmosClient" --network="mainnet" --protocol="cosmos"
+  downloadTestnet.sh: |-
+    #!/bin/sh
+    exec snapshots --downloadURL="" --clientName="cosmosClient" --network="theta-testnet-001" --protocol="cosmos"
+  hercules.sh: |-
+    #!/bin/sh 
+    hercules
