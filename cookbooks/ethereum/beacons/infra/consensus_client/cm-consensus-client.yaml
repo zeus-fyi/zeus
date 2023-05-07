@@ -45,7 +45,7 @@ data:
     #!/bin/sh
     exec node /usr/app/node_modules/.bin/lodestar beacon \
               --dataDir /data \
-              --paramsFile=/data/testnet/config.yaml \
+              --paramsFile=/data/testnet/chainspec.json \
               --rest \
               --execution.urls http://zeus-exec-client:8551 \
               --rest.address 0.0.0.0 \
