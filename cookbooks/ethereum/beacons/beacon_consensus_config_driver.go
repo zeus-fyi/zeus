@@ -12,6 +12,7 @@ const (
 	consensusStorageDiskName          = "consensus-client-storage"
 	consensusStorageDiskSizeEphemeral = "2Gi"
 	consensusStorageDiskSizeGoerli    = "100Gi"
+	consensusStorageDiskSizeMainnet   = "300Gi"
 
 	LodestarEphemeral           = "lodestarEphemeral"
 	LighthouseEphemeral         = "lighthouseEphemeral"

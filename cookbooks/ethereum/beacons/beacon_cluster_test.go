@@ -47,7 +47,7 @@ func (t *BeaconCookbookTestSuite) TestClusterSetupV2() {
 }
 
 func (t *BeaconCookbookTestSuite) TestClusterSetupWithCfgDriver() {
-	cd := GetClientClusterDef(client_consts.Lodestar, client_consts.Geth, hestia_req_types.Ephemery)
+	cd := GetClientClusterDef(client_consts.Lighthouse, client_consts.Geth, hestia_req_types.Mainnet)
 	gcd := cd.BuildClusterDefinitions()
 	t.Assert().NotEmpty(gcd)
 	fmt.Println(gcd)
@@ -59,12 +59,12 @@ func (t *BeaconCookbookTestSuite) TestClusterSetupWithCfgDriver() {
 	sbDefs, err := cd.GenerateSkeletonBaseCharts()
 	t.Require().Nil(err)
 	t.Assert().NotEmpty(sbDefs)
-	//_, err = cd.UploadChartsFromClusterDefinition(ctx, t.ZeusTestClient, true)
-	//t.Require().Nil(err)
+	_, err = cd.UploadChartsFromClusterDefinition(ctx, t.ZeusTestClient, true)
+	t.Require().Nil(err)
 }
 
 func (t *BeaconCookbookTestSuite) TestClusterDefinitionCreationV2() {
-	cd := BeaconClusterDefinition
+	cd := GetClientClusterDef(client_consts.Lighthouse, client_consts.Geth, hestia_req_types.Mainnet)
 	gcd := cd.BuildClusterDefinitions()
 	t.Assert().NotEmpty(gcd)
 	fmt.Println(gcd)

@@ -20,6 +20,12 @@ const (
 	execClientDiskName          = "exec-client-storage"
 	execClientDiskSizeEphemeral = "10Gi"
 	execClientDiskSizeGoerli    = "500Gi"
+	execClientDiskSizeMainnet   = "2Ti"
+
+	execClientEphemeralRequestCPU    = "2.5"
+	execClientEphemeralRequestMemory = "4Gi"
+	execClientMainnetCPU             = "7"
+	execClientMainnetCPUMemory       = "20Gi"
 
 	hercules          = "hercules"
 	herculesEphemeral = "herculesEphemeral"
@@ -35,13 +41,18 @@ const (
 func GetExecClientNetworkConfig(execClient, network string, choreographySecretsExist bool) zeus_cluster_config_drivers.ComponentBaseDefinition {
 	dockerImage := ""
 	cmConfig := ""
-	diskSize := ""
+	diskSize := execClientDiskSizeMainnet
 	herculesStartup := hercules + ".sh"
 	downloadStartup := download + ".sh"
+	cpuSize := execClientMainnetCPU
+	memSize := execClientMainnetCPUMemory
+
 	switch execClient {
 	case client_consts.Geth:
 		switch network {
 		case hestia_req_types.Ephemery, "ephemeral":
+			cpuSize = execClientEphemeralRequestCPU
+			memSize = execClientEphemeralRequestMemory
 			dockerImage = gethDockerImageCapella
 			diskSize = execClientDiskSizeEphemeral
 			cmConfig = GethEphemeral
@@ -66,6 +77,12 @@ func GetExecClientNetworkConfig(execClient, network string, choreographySecretsE
 			AppendEnvVars:   []v1Core.EnvVar{BearerTokenSecretFromChoreography},
 		}
 	}
+	rr := v1Core.ResourceRequirements{
+		Requests: v1Core.ResourceList{
+			"cpu":    resource.MustParse(cpuSize),
+			"memory": resource.MustParse(memSize),
+		},
+	}
 	sbCfg := zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
 		SkeletonBaseChart:         zeus_req_types.TopologyCreateRequest{},
 		SkeletonBaseNameChartPath: cp,
@@ -85,8 +102,9 @@ func GetExecClientNetworkConfig(execClient, network string, choreographySecretsE
 					initSnapshots: initContDriver,
 					zeusExecClient: {
 						Container: v1Core.Container{
-							Name:  zeusExecClient,
-							Image: dockerImage,
+							Name:      zeusExecClient,
+							Image:     dockerImage,
+							Resources: rr,
 						},
 					},
 				},
