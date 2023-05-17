@@ -23,6 +23,13 @@ func (t *BeaconCookbookTestSuite) SetupTest() {
 	// uses the bearer token from test/configs/config.yaml
 	t.ZeusTestClient = zeus_client.NewDefaultZeusClient(tc.Bearer)
 	//t.ZeusTestClient = zeus_client.NewZeusClient("http://localhost:9001", tc.Bearer)
+	const poseidonEndpoint = "https://poseidon.zeus.fyi"
+
+	//var preSignedURL string
+	//rc := resty_base.GetBaseRestyClient(poseidonEndpoint, tc.Bearer)
+	//resp, err := rc.R().SetResult(&preSignedURL).Get("/v1/ethereum/mainnet/geth")
+	//t.Require().Nil(err)
+	//fmt.Println(resp)
 	cookbooks.ChangeToCookbookDir()
 }
 

@@ -13,6 +13,7 @@ var (
 	onlyIfEmptyDir  bool
 	compressionType string
 	clientName      string
+	bearer          string
 	jwtToken        string
 	useDefaultToken bool
 	Workload        WorkloadInfo
@@ -33,6 +34,7 @@ func init() {
 	Cmd.Flags().StringVar(&Workload.WorkloadType, "workload-type", "", "workloadType") // eg validatorClient
 	Cmd.Flags().StringVar(&Workload.Network, "network", "", "network")                 // eg mainnet, testnet
 	Cmd.Flags().StringVar(&Workload.Protocol, "protocol", "", "protocol")              // eg eth, cosmos, etc
+	Cmd.Flags().StringVar(&bearer, "bearer", "", "bearer")
 
 	Cmd.Flags().StringVar(&preSignedURL, "downloadURL", "", "use a presigned bucket url")
 	Cmd.Flags().BoolVar(&onlyIfEmptyDir, "onlyIfEmptyDir", true, "only download & extract if the datadir is empty")
