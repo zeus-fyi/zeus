@@ -64,7 +64,7 @@ var (
 
 func GetClientClusterDef(consensusClient, execClient, network string) zeus_cluster_config_drivers.ClusterDefinition {
 	return zeus_cluster_config_drivers.ClusterDefinition{
-		ClusterClassName: "ethereumBeaconClients" + network,
+		ClusterClassName: "ethereumBeacon" + network,
 		ComponentBases:   GetComponentBases(consensusClient, execClient, network),
 	}
 }
