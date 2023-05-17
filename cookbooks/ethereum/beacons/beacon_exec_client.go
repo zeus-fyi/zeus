@@ -37,7 +37,7 @@ var ExecClientSkeletonBaseConfig = zeus_cluster_config_drivers.ClusterSkeletonBa
 				zeusExecClient: {
 					Container: v1Core.Container{
 						Name:  zeusExecClient,
-						Image: gethDockerImageCapella,
+						Image: gethDockerImage,
 					},
 				},
 			},
