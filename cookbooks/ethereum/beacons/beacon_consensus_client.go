@@ -23,7 +23,7 @@ var DeployConsensusClientKnsReq = zeus_req_types.TopologyDeployRequest{
 	CloudCtxNs: BeaconCloudCtxNs,
 }
 
-func GetConsensusClientNetworkConfig(consensusClient, network string) zeus_cluster_config_drivers.ComponentBaseDefinition {
+func GetConsensusClientNetworkConfig(consensusClient, network string, choreographySecretsExist bool) zeus_cluster_config_drivers.ComponentBaseDefinition {
 	dockerImage := ""
 	cmConfig := ""
 	diskSize := ""
@@ -94,12 +94,15 @@ func GetConsensusClientNetworkConfig(consensusClient, network string) zeus_clust
 	case client_consts.Lighthouse:
 		switch network {
 		case hestia_req_types.Ephemery, "ephemeral":
-			dockerImage = lighthouseDockerImageCapella
+			dockerImage = lighthouseDockerImage
 			cmConfig = LighthouseEphemeral
 			diskSize = consensusStorageDiskSizeEphemeral
 			downloadStartup = "downloadLighthouseEphemeral.sh"
 			herculesStartup = "herculesLighthouseEphemeral.sh"
+		case hestia_req_types.Mainnet:
+			dockerImage = lighthouseDockerImage
 		}
+
 	}
 	cp := filepaths.Path{
 		PackageName: "",
@@ -108,6 +111,16 @@ func GetConsensusClientNetworkConfig(consensusClient, network string) zeus_clust
 		FnIn:        consensusClient + "Hercules", // filename for your gzip workload
 		FnOut:       "",
 		Env:         "",
+	}
+
+	initContDriver := zeus_topology_config_drivers.ContainerDriver{
+		AppendEnvVars: []v1Core.EnvVar{BearerTokenSecretFromChoreography},
+	}
+	if choreographySecretsExist {
+		initContDriver = zeus_topology_config_drivers.ContainerDriver{
+			IsInitContainer: true,
+			AppendEnvVars:   []v1Core.EnvVar{BearerTokenSecretFromChoreography},
+		}
 	}
 	sbDef := zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
 		SkeletonBaseChart:         zeus_req_types.TopologyCreateRequest{},
@@ -126,6 +139,7 @@ func GetConsensusClientNetworkConfig(consensusClient, network string) zeus_clust
 			ServiceDriver: svcDriver,
 			StatefulSetDriver: &zeus_topology_config_drivers.StatefulSetDriver{
 				ContainerDrivers: map[string]zeus_topology_config_drivers.ContainerDriver{
+					initSnapshots: initContDriver,
 					zeusConsensusClient: {Container: v1Core.Container{
 						Name:  consensusClient,
 						Image: dockerImage,
@@ -143,6 +157,8 @@ func GetConsensusClientNetworkConfig(consensusClient, network string) zeus_clust
 					}},
 			},
 		}}
+	if choreographySecretsExist {
+	}
 	compBase := zeus_cluster_config_drivers.ComponentBaseDefinition{
 		SkeletonBases: map[string]zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
 			"consensusClient" + "Hercules": sbDef,

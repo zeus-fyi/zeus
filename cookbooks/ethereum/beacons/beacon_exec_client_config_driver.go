@@ -32,7 +32,7 @@ const (
 	gethDockerImageCapella = "ethpandaops/geth:master"
 )
 
-func GetExecClientNetworkConfig(execClient, network string) zeus_cluster_config_drivers.ComponentBaseDefinition {
+func GetExecClientNetworkConfig(execClient, network string, choreographySecretsExist bool) zeus_cluster_config_drivers.ComponentBaseDefinition {
 	dockerImage := ""
 	cmConfig := ""
 	diskSize := ""
@@ -57,6 +57,15 @@ func GetExecClientNetworkConfig(execClient, network string) zeus_cluster_config_
 		FnOut:       "",
 		Env:         "",
 	}
+	initContDriver := zeus_topology_config_drivers.ContainerDriver{
+		AppendEnvVars: []v1Core.EnvVar{BearerTokenSecretFromChoreography},
+	}
+	if choreographySecretsExist {
+		initContDriver = zeus_topology_config_drivers.ContainerDriver{
+			IsInitContainer: true,
+			AppendEnvVars:   []v1Core.EnvVar{BearerTokenSecretFromChoreography},
+		}
+	}
 	sbCfg := zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
 		SkeletonBaseChart:         zeus_req_types.TopologyCreateRequest{},
 		SkeletonBaseNameChartPath: cp,
@@ -73,6 +82,7 @@ func GetExecClientNetworkConfig(execClient, network string) zeus_cluster_config_
 			},
 			StatefulSetDriver: &zeus_topology_config_drivers.StatefulSetDriver{
 				ContainerDrivers: map[string]zeus_topology_config_drivers.ContainerDriver{
+					initSnapshots: initContDriver,
 					zeusExecClient: {
 						Container: v1Core.Container{
 							Name:  zeusExecClient,

@@ -24,6 +24,6 @@ func (t *ChainDownloadsClientTestSuite) TestDownloader() {
 	t.Assert().Nil(err)
 }
 
-func TestHerculesClientTestSuite(t *testing.T) {
+func TestChainDownloadsClientTestSuite(t *testing.T) {
 	suite.Run(t, new(ChainDownloadsClientTestSuite))
 }

@@ -1,14 +1,18 @@
 package ethereum_beacon_cookbooks
 
 import (
+	"strings"
+
 	choreography_cookbooks "github.com/zeus-fyi/zeus/cookbooks/microservices/choreography"
 	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_common_types"
 	zeus_cluster_config_drivers "github.com/zeus-fyi/zeus/pkg/zeus/cluster_config_drivers"
+	zeus_topology_config_drivers "github.com/zeus-fyi/zeus/pkg/zeus/workload_config_drivers"
 )
 
 const (
-	start    = "start"
-	download = "download"
+	start         = "start"
+	download      = "download"
+	initSnapshots = "init-snapshots"
 )
 
 var (
@@ -57,11 +61,12 @@ var (
 			"beaconIngress": BeaconIngressSkeletonBaseConfig,
 		},
 	}
+	BearerTokenSecretFromChoreography = zeus_topology_config_drivers.MakeEnvVar("choreography", "BEARER", "bearer")
 )
 
 func GetClientClusterDef(consensusClient, execClient, network string) zeus_cluster_config_drivers.ClusterDefinition {
 	return zeus_cluster_config_drivers.ClusterDefinition{
-		ClusterClassName: "ethereumEphemeralBeaconsDev",
+		ClusterClassName: "ethereumBeacon" + strings.ToTitle(network),
 		ComponentBases:   GetComponentBases(consensusClient, execClient, network),
 	}
 }
@@ -69,8 +74,8 @@ func GetClientClusterDef(consensusClient, execClient, network string) zeus_clust
 func GetComponentBases(consensusClient, execClient, network string) map[string]zeus_cluster_config_drivers.ComponentBaseDefinition {
 	beaconComponentBases := map[string]zeus_cluster_config_drivers.ComponentBaseDefinition{
 		"beaconIngress":                 IngressComponentBase,
-		"consensusClients":              GetConsensusClientNetworkConfig(consensusClient, network),
-		"execClients":                   GetExecClientNetworkConfig(execClient, network),
+		"consensusClients":              GetConsensusClientNetworkConfig(consensusClient, network, true),
+		"execClients":                   GetExecClientNetworkConfig(execClient, network, true),
 		"serviceMonitorConsensusClient": ConsensusClientMonitoringComponentBase,
 		"serviceMonitorExecClient":      ExecClientMonitoringComponentBase,
 		"choreography":                  choreography_cookbooks.ChoreographyComponentBase,

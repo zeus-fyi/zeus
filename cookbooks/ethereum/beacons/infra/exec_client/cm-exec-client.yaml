@@ -26,7 +26,7 @@ data:
       --authrpc.vhosts=* 
   download.sh: |-
     #!/bin/sh
-    exec snapshots --downloadURL="" --clientName="geth" --protocol="eth" --network="mainnet" --workload-type="beacon"
+    exec snapshots --downloadURL="" --clientName="geth" --protocol="eth" --network="mainnet" --workload-type="beacon" --bearer="${BEARER}"
   downloadGethEphemeral.sh: |-
     #!/bin/sh
     exec snapshots --downloadURL="" --clientName="gethEphemeral" --network="ephemery" --protocol="eth" --workload-type="beacon"

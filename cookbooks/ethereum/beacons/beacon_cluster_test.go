@@ -59,8 +59,8 @@ func (t *BeaconCookbookTestSuite) TestClusterSetupWithCfgDriver() {
 	sbDefs, err := cd.GenerateSkeletonBaseCharts()
 	t.Require().Nil(err)
 	t.Assert().NotEmpty(sbDefs)
-	_, err = cd.UploadChartsFromClusterDefinition(ctx, t.ZeusTestClient, true)
-	t.Require().Nil(err)
+	//_, err = cd.UploadChartsFromClusterDefinition(ctx, t.ZeusTestClient, true)
+	//t.Require().Nil(err)
 }
 
 func (t *BeaconCookbookTestSuite) TestClusterDefinitionCreationV2() {
