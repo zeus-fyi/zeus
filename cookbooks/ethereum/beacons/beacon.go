@@ -1,6 +1,8 @@
 package ethereum_beacon_cookbooks
 
 import (
+	"strings"
+
 	choreography_cookbooks "github.com/zeus-fyi/zeus/cookbooks/microservices/choreography"
 	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_common_types"
 	zeus_cluster_config_drivers "github.com/zeus-fyi/zeus/pkg/zeus/cluster_config_drivers"
@@ -64,7 +66,7 @@ var (
 
 func GetClientClusterDef(consensusClient, execClient, network string) zeus_cluster_config_drivers.ClusterDefinition {
 	return zeus_cluster_config_drivers.ClusterDefinition{
-		ClusterClassName: "ethereumBeacon" + network,
+		ClusterClassName: "ethereumBeacon" + strings.ToTitle(network),
 		ComponentBases:   GetComponentBases(consensusClient, execClient, network),
 	}
 }
