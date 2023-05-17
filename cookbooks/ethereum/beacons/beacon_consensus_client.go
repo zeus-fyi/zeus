@@ -23,12 +23,21 @@ var DeployConsensusClientKnsReq = zeus_req_types.TopologyDeployRequest{
 	CloudCtxNs: BeaconCloudCtxNs,
 }
 
+const (
+	consensusClientEphemeralRequestCPU    = "2.5"
+	consensusClientEphemeralRequestMemory = "4Gi"
+	consensusClientMainnetCPU             = "7"
+	consensusClientMainnetCPUMemory       = "13Gi"
+)
+
 func GetConsensusClientNetworkConfig(consensusClient, network string, choreographySecretsExist bool) zeus_cluster_config_drivers.ComponentBaseDefinition {
 	dockerImage := ""
 	cmConfig := ""
-	diskSize := ""
+	diskSize := consensusStorageDiskSizeMainnet
 	downloadStartup := download + ".sh"
 	herculesStartup := hercules + ".sh"
+	cpuSize := consensusClientMainnetCPU
+	memSize := consensusClientMainnetCPUMemory
 	var ports []v1Core.ContainerPort
 	var svcDriver *zeus_topology_config_drivers.ServiceDriver
 	switch consensusClient {
@@ -90,6 +99,8 @@ func GetConsensusClientNetworkConfig(consensusClient, network string, choreograp
 			diskSize = consensusStorageDiskSizeEphemeral
 			downloadStartup = "downloadLodestarEphemeral.sh"
 			herculesStartup = "herculesLodestarEphemeral.sh"
+			cpuSize = consensusClientEphemeralRequestCPU
+			memSize = consensusClientEphemeralRequestMemory
 		}
 	case client_consts.Lighthouse:
 		switch network {
@@ -99,10 +110,18 @@ func GetConsensusClientNetworkConfig(consensusClient, network string, choreograp
 			diskSize = consensusStorageDiskSizeEphemeral
 			downloadStartup = "downloadLighthouseEphemeral.sh"
 			herculesStartup = "herculesLighthouseEphemeral.sh"
+			cpuSize = consensusClientEphemeralRequestCPU
+			memSize = consensusClientEphemeralRequestMemory
 		case hestia_req_types.Mainnet:
 			dockerImage = lighthouseDockerImage
 		}
 
+	}
+	rr := v1Core.ResourceRequirements{
+		Requests: v1Core.ResourceList{
+			"cpu":    resource.MustParse(cpuSize),
+			"memory": resource.MustParse(memSize),
+		},
 	}
 	cp := filepaths.Path{
 		PackageName: "",
@@ -141,9 +160,10 @@ func GetConsensusClientNetworkConfig(consensusClient, network string, choreograp
 				ContainerDrivers: map[string]zeus_topology_config_drivers.ContainerDriver{
 					initSnapshots: initContDriver,
 					zeusConsensusClient: {Container: v1Core.Container{
-						Name:  consensusClient,
-						Image: dockerImage,
-						Ports: ports,
+						Name:      consensusClient,
+						Image:     dockerImage,
+						Ports:     ports,
+						Resources: rr,
 					}},
 				},
 				PVCDriver: &zeus_topology_config_drivers.PersistentVolumeClaimsConfigDriver{
