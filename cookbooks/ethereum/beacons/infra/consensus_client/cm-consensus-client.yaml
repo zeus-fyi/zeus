@@ -23,7 +23,7 @@ data:
               --execution-endpoint="http://zeus-exec-client:8551"
   download.sh: |-
     #!/bin/sh
-    exec snapshots --downloadURL="" --clientName="lighthouse" --protocol="eth" --network="mainnet" --workload-type="beacon"
+    exec snapshots --downloadURL="" --clientName="lighthouse" --protocol="eth" --network="mainnet" --workload-type="beacon" --bearer="${BEARER}"
   pause.sh: |-
     #!/bin/sh
     exec sleep 100000000000000000
