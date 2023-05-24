@@ -51,6 +51,8 @@ type Client interface {
 	GetPendingTransactionCount(ctx context.Context, account common.Address) (uint64, error)
 	// SendRawTransaction sends the signed raw transaction bytes.
 	SendRawTransaction(ctx context.Context, tx []byte) error
+	// SendTransaction sends a transaction.
+	SendTransaction(ctx context.Context, tx *web3_types.Transaction) error
 	// Call executes a call without submitting a transaction.
 	Call(ctx context.Context, msg web3_types.CallMsg) ([]byte, error)
 	Close()
@@ -110,6 +112,18 @@ func (c *client) GetCode(ctx context.Context, address string, blockNumber *big.I
 		return result, err
 	}
 	return result, err
+}
+
+func (c *client) SendTransaction(ctx context.Context, tx *web3_types.Transaction) error {
+	args := toCallArg(web3_types.CallMsg{
+		From:     &tx.From,
+		To:       tx.To,
+		Gas:      tx.GasLimit,
+		GasPrice: tx.GasPrice,
+		Value:    tx.Value,
+		Data:     tx.Input,
+	})
+	return c.r.CallContext(ctx, nil, "eth_sendTransaction", args)
 }
 
 func (c *client) GetBlockByNumber(ctx context.Context, number *big.Int, includeTxs bool) (*web3_types.Block, error) {
