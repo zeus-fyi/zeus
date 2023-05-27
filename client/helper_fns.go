@@ -14,6 +14,7 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/shopspring/decimal"
 	"github.com/zeus-fyi/gochain/v4/common"
+	"github.com/zeus-fyi/gochain/web3/accounts"
 )
 
 func constructSendEtherPayload(amount *big.Int, address common.Address, gasPrice *big.Int, gasLimit uint64) SendEtherPayload {
@@ -36,7 +37,7 @@ func ValidateToAddress(ctx context.Context, toAddress string) error {
 		log.Ctx(ctx).Err(err).Msg("Transfer: toAddress")
 		return err
 	}
-	if !common.IsHexAddress(toAddress) {
+	if !accounts.IsHexAddress(toAddress) {
 		err := fmt.Errorf("invalid to 'address': %s", toAddress)
 		log.Ctx(ctx).Err(err).Msg("Transfer: IsHexAddress")
 		return err
@@ -64,10 +65,10 @@ func ConvertTailForTransfer(ctx context.Context, tail []string) (TransferArgs, e
 		log.Ctx(ctx).Err(err).Msg("Transfer: ValidateToAddress")
 		return TransferArgs{}, err
 	}
-	address := common.HexToAddress(toAddress)
+	address := accounts.HexToAddress(toAddress)
 	argsIn := TransferArgs{
 		Amount:    amountD.BigInt(),
-		ToAddress: address,
+		ToAddress: common.Address(address),
 	}
 	return argsIn, err
 }

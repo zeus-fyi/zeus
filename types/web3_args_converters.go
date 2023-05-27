@@ -9,9 +9,9 @@ import (
 	"strings"
 
 	"github.com/ethereum/go-ethereum/accounts/abi"
+	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/rs/zerolog/log"
 	"github.com/zeus-fyi/gochain/v4/common"
-	"github.com/zeus-fyi/gochain/v4/common/hexutil"
 )
 
 // ConvertArguments attempts to convert each param to the matching args type.

@@ -5,6 +5,7 @@ import (
 	"math/big"
 
 	"github.com/ethereum/go-ethereum/common/hexutil"
+	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/ethclient"
 	zlog "github.com/rs/zerolog/log"
 	"github.com/zeus-fyi/gochain/v4/common"
@@ -128,6 +129,15 @@ func (w *Web3Actions) GetCode(ctx context.Context, address string, blockNumber *
 		return result, err
 	}
 	return result, err
+}
+
+func (w *Web3Actions) GetTxPoolContent(ctx context.Context) (map[string]map[string]map[string]*types.Transaction, error) {
+	var txPool map[string]map[string]map[string]*types.Transaction
+	if err := w.C.Client().CallContext(ctx, &txPool, "txpool_content"); err != nil {
+		zlog.Err(err).Msg("GetTxPoolContent: CallContext")
+		return nil, err
+	}
+	return txPool, nil
 }
 
 func toBlockNumArg(number *big.Int) string {
