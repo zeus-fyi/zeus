@@ -12,10 +12,10 @@ import (
 	zlog "github.com/rs/zerolog/log"
 	web3_types "github.com/zeus-fyi/gochain/web3/types"
 
-	"github.com/gochain/gochain/v4/common"
-	"github.com/gochain/gochain/v4/common/hexutil"
-	"github.com/gochain/gochain/v4/core/types"
-	"github.com/gochain/gochain/v4/rpc"
+	"github.com/zeus-fyi/gochain/v4/common"
+	"github.com/zeus-fyi/gochain/v4/common/hexutil"
+	"github.com/zeus-fyi/gochain/v4/core/types"
+	"github.com/zeus-fyi/gochain/v4/rpc"
 )
 
 var NotFoundErr = errors.New("not found")
@@ -58,8 +58,6 @@ type Client interface {
 	SendTransaction(ctx context.Context, tx *web3_types.RpcTransaction) error
 	// SendRawTransaction sends the signed raw transaction bytes.
 	SendRawTransaction(ctx context.Context, tx []byte) error
-	// SendTransaction sends a transaction.
-	SendTransaction(ctx context.Context, tx *web3_types.Transaction) error
 	// Call executes a call without submitting a transaction.
 	Call(ctx context.Context, msg web3_types.CallMsg) ([]byte, error)
 	Close()

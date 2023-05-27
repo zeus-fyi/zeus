@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"math/big"
+	"os"
 
 	"github.com/rs/zerolog/log"
 	"github.com/zeus-fyi/gochain/v4/common/hexutil"
