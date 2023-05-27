@@ -8,7 +8,7 @@ import (
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/rs/zerolog/log"
-	"github.com/zeus-fyi/gochain/web3/types"
+	web3_types "github.com/zeus-fyi/gochain/web3/types"
 )
 
 // GetSignedTxToCallFunctionWithData prepares the tx for broadcast
