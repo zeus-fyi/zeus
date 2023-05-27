@@ -231,7 +231,12 @@ func (c *client) SendTransaction(ctx context.Context, tx *web3_types.RpcTransact
 		callArgs.GasPrice = tx.GasPrice.ToInt()
 	}
 	args := toCallArg(callArgs)
-	return c.r.CallContext(ctx, nil, "eth_sendTransaction", args)
+	err := c.r.CallContext(ctx, &tx.Hash, "eth_sendTransaction", args)
+	if err != nil {
+		zlog.Err(err).Msg("SendTransaction: CallContext")
+		return err
+	}
+	return err
 }
 
 func (c *client) GetTxPoolContent(ctx context.Context) (map[string]map[string]map[string]*web3_types.RpcTransaction, error) {
