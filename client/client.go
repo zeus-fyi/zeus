@@ -7,6 +7,7 @@ import (
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/ethclient"
+	"github.com/ethereum/go-ethereum/rlp"
 	zlog "github.com/rs/zerolog/log"
 	"github.com/zeus-fyi/gochain/web3/accounts"
 )
@@ -102,9 +103,18 @@ func (w *Web3Actions) SetCode(ctx context.Context, address string, bytes string)
 func (w *Web3Actions) SetBalance(ctx context.Context, address string, balance hexutil.Big) error {
 	err := w.C.Client().CallContext(ctx, nil, "hardhat_setBalance", accounts.HexToAddress(address), balance)
 	if err != nil {
-		zlog.Err(err).Msg("SetBalance error")
+		zlog.Err(err).Msg("HardHatSetBalance error")
 		return err
 	}
+	return err
+}
+
+func (w *Web3Actions) SendRawTransaction(ctx context.Context, tx *types.Transaction) error {
+	data, err := rlp.EncodeToBytes(tx)
+	if err != nil {
+		return err
+	}
+	err = w.C.Client().CallContext(ctx, nil, "eth_sendRawTransaction", hexutil.Encode(data))
 	return err
 }
 

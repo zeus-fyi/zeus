@@ -16,15 +16,15 @@ func (w *Web3Actions) GetSignedTxToCallFunctionWithData(ctx context.Context, pay
 	var err error
 	w.Dial()
 	defer w.C.Close()
-
 	err = w.SetGasPriceAndLimit(ctx, &payload.GasPriceLimits)
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("GetSignedTxToCallFunctionWithData: SetGasPriceAndLimit")
 		return nil, err
 	}
 	if payload.GasLimit == 21000 {
-		payload.GasLimit = 21000 * 10
+		payload.GasLimit = 3000000
 	}
+
 	chainID, err := w.C.ChainID(ctx)
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("CallFunctionWithData: GetChainID")
@@ -37,8 +37,18 @@ func (w *Web3Actions) GetSignedTxToCallFunctionWithData(ctx context.Context, pay
 		log.Ctx(ctx).Err(err).Msg("CallFunctionWithData: GetPendingTransactionCount")
 		return nil, fmt.Errorf("cannot get nonce: %v", err)
 	}
-	tx := types.NewTransaction(nonce, common.HexToAddress(payload.SmartContractAddr), payload.Amount, payload.GasLimit, payload.GasPrice, data)
-	signedTx, err := types.SignTx(tx, types.NewLondonSigner(chainID), w.EcdsaPrivateKey())
+	scAddr := common.HexToAddress(payload.SmartContractAddr)
+	baseTx := &types.DynamicFeeTx{
+		To:        &scAddr,
+		Nonce:     nonce,
+		GasFeeCap: payload.GasPrice,
+		GasTipCap: payload.GasTipCap,
+		Gas:       payload.GasLimit,
+		Value:     payload.Amount,
+		Data:      data,
+	}
+	tx := types.NewTx(baseTx)
+	signedTx, err := types.SignTx(tx, types.LatestSignerForChainID(chainID), w.EcdsaPrivateKey())
 	if err != nil {
 		err = fmt.Errorf("cannot sign transaction: %v", err)
 		log.Ctx(ctx).Err(err).Msg("CallFunctionWithData: SignTx")

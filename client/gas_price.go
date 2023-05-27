@@ -23,5 +23,6 @@ func (w *Web3Actions) SetGasPriceAndLimit(ctx context.Context, params *GasPriceL
 		}
 		params.GasPrice = gasPrice
 	}
+
 	return nil
 }

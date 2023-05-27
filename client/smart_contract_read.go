@@ -5,6 +5,8 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/ethereum/go-ethereum"
+	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/rs/zerolog/log"
 	"github.com/zeus-fyi/gochain/web3/accounts"
@@ -42,9 +44,10 @@ func (w *Web3Actions) CallConstantFunction(ctx context.Context, payload *SendCon
 		return nil, fmt.Errorf("failed to pack values: %v", err)
 	}
 	scAddr := accounts.HexToAddress(payload.SmartContractAddr)
-
-	var res []byte
-	err = w.C.Client().Call(&res, payload.MethodName, web3_types.CallMsg{Data: input, To: &scAddr})
+	res, err := w.C.CallContract(ctx, ethereum.CallMsg{
+		To:   (*common.Address)(&scAddr),
+		Data: input,
+	}, nil)
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("CallConstantFunction: client.Call")
 		return nil, err
