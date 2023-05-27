@@ -8,7 +8,7 @@ require (
 	github.com/shopspring/decimal v1.3.1
 	github.com/treeder/gotils/v2 v2.0.18
 	github.com/urfave/cli v1.22.5
-	github.com/zeus-fyi/gochain/v4 v4.2.2
+	github.com/zeus-fyi/gochain/v4 v4.2.3
 	golang.org/x/crypto v0.7.0
 )
 
