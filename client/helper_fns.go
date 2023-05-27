@@ -13,11 +13,10 @@ import (
 
 	"github.com/rs/zerolog/log"
 	"github.com/shopspring/decimal"
-	"github.com/zeus-fyi/gochain/v4/common"
 	"github.com/zeus-fyi/gochain/web3/accounts"
 )
 
-func constructSendEtherPayload(amount *big.Int, address common.Address, gasPrice *big.Int, gasLimit uint64) SendEtherPayload {
+func constructSendEtherPayload(amount *big.Int, address accounts.Address, gasPrice *big.Int, gasLimit uint64) SendEtherPayload {
 	params := SendEtherPayload{
 		TransferArgs: TransferArgs{
 			Amount:    amount,
@@ -68,7 +67,7 @@ func ConvertTailForTransfer(ctx context.Context, tail []string) (TransferArgs, e
 	address := accounts.HexToAddress(toAddress)
 	argsIn := TransferArgs{
 		Amount:    amountD.BigInt(),
-		ToAddress: common.Address(address),
+		ToAddress: address,
 	}
 	return argsIn, err
 }

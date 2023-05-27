@@ -7,7 +7,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/rs/zerolog/log"
-	"github.com/zeus-fyi/gochain/v4/common"
+	"github.com/zeus-fyi/gochain/web3/accounts"
 	web3_types "github.com/zeus-fyi/gochain/web3/types"
 )
 
@@ -41,7 +41,7 @@ func (w *Web3Actions) CallConstantFunction(ctx context.Context, payload *SendCon
 		log.Ctx(ctx).Err(err).Msg("CallConstantFunction: myabi.Pack")
 		return nil, fmt.Errorf("failed to pack values: %v", err)
 	}
-	scAddr := common.HexToAddress(payload.SmartContractAddr)
+	scAddr := accounts.HexToAddress(payload.SmartContractAddr)
 
 	var res []byte
 	err = w.C.Client().Call(&res, payload.MethodName, web3_types.CallMsg{Data: input, To: &scAddr})

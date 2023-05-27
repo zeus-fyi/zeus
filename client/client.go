@@ -8,7 +8,6 @@ import (
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/ethclient"
 	zlog "github.com/rs/zerolog/log"
-	"github.com/zeus-fyi/gochain/v4/common"
 	"github.com/zeus-fyi/gochain/web3/accounts"
 )
 
@@ -81,27 +80,27 @@ func (w *Web3Actions) ResetNetwork(ctx context.Context, rpcUrl string, blockNumb
 
 func (w *Web3Actions) ImpersonateAccount(ctx context.Context, address string) error {
 	var result any
-	err := w.C.Client().CallContext(ctx, &result, "hardhat_impersonateAccount", common.HexToAddress(address))
+	err := w.C.Client().CallContext(ctx, &result, "hardhat_impersonateAccount", accounts.HexToAddress(address))
 	return err
 }
 
 func (w *Web3Actions) StopImpersonatingAccount(ctx context.Context, address string) error {
-	err := w.C.Client().CallContext(ctx, nil, "hardhat_stopImpersonatingAccount", common.HexToAddress(address))
+	err := w.C.Client().CallContext(ctx, nil, "hardhat_stopImpersonatingAccount", accounts.HexToAddress(address))
 	return err
 }
 
 func (w *Web3Actions) SetNonce(ctx context.Context, address string, nonce hexutil.Big) error {
-	err := w.C.Client().CallContext(ctx, nil, "hardhat_setNonce", common.HexToAddress(address), nonce.String())
+	err := w.C.Client().CallContext(ctx, nil, "hardhat_setNonce", accounts.HexToAddress(address), nonce.String())
 	return err
 }
 
 func (w *Web3Actions) SetCode(ctx context.Context, address string, bytes string) error {
-	err := w.C.Client().CallContext(ctx, nil, "hardhat_setCode", common.HexToAddress(address), bytes)
+	err := w.C.Client().CallContext(ctx, nil, "hardhat_setCode", accounts.HexToAddress(address), bytes)
 	return err
 }
 
 func (w *Web3Actions) SetBalance(ctx context.Context, address string, balance hexutil.Big) error {
-	err := w.C.Client().CallContext(ctx, nil, "hardhat_setBalance", common.HexToAddress(address), balance)
+	err := w.C.Client().CallContext(ctx, nil, "hardhat_setBalance", accounts.HexToAddress(address), balance)
 	if err != nil {
 		zlog.Err(err).Msg("SetBalance error")
 		return err
@@ -111,19 +110,19 @@ func (w *Web3Actions) SetBalance(ctx context.Context, address string, balance he
 
 func (w *Web3Actions) GetNumber(ctx context.Context, address string, blockNumber *big.Int) (*big.Int, error) {
 	var result hexutil.Big
-	err := w.C.Client().CallContext(ctx, &result, "eth_getBalance", common.HexToAddress(address), toBlockNumArg(blockNumber))
+	err := w.C.Client().CallContext(ctx, &result, "eth_getBalance", accounts.HexToAddress(address), toBlockNumArg(blockNumber))
 	return (*big.Int)(&result), err
 }
 
 func (w *Web3Actions) GetBalance(ctx context.Context, address string, blockNumber *big.Int) (*big.Int, error) {
 	var result hexutil.Big
-	err := w.C.Client().CallContext(ctx, &result, "eth_getBalance", common.HexToAddress(address), toBlockNumArg(blockNumber))
+	err := w.C.Client().CallContext(ctx, &result, "eth_getBalance", accounts.HexToAddress(address), toBlockNumArg(blockNumber))
 	return (*big.Int)(&result), err
 }
 
 func (w *Web3Actions) GetCode(ctx context.Context, address string, blockNumber *big.Int) ([]byte, error) {
 	var result hexutil.Bytes
-	err := w.C.Client().CallContext(ctx, &result, "eth_getCode", common.HexToAddress(address), toBlockNumArg(blockNumber))
+	err := w.C.Client().CallContext(ctx, &result, "eth_getCode", accounts.HexToAddress(address), toBlockNumArg(blockNumber))
 	if err != nil {
 		zlog.Err(err).Msg("GetCode: CallContext")
 		return result, err

@@ -6,7 +6,7 @@ require (
 	github.com/ethereum/go-ethereum v1.12.0
 	github.com/rs/zerolog v1.29.0
 	github.com/shopspring/decimal v1.3.1
-	github.com/zeus-fyi/gochain/v4 v4.2.5
+	golang.org/x/crypto v0.7.0
 )
 
 require (
@@ -27,8 +27,6 @@ require (
 	github.com/syndtr/goleveldb v1.0.1-0.20220614013038-64ee5596c38a // indirect
 	github.com/tklauser/go-sysconf v0.3.5 // indirect
 	github.com/tklauser/numcpus v0.2.2 // indirect
-	golang.org/x/crypto v0.7.0 // indirect
 	golang.org/x/sys v0.7.0 // indirect
-	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
 	gopkg.in/natefinch/npipe.v2 v2.0.0-20160621034901-c1b8fa8bdcce // indirect
 )
