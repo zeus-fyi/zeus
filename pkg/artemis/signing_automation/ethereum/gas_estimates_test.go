@@ -3,7 +3,7 @@ package signing_automation_ethereum
 import (
 	"fmt"
 
-	"github.com/zeus-fyi/gochain/v4/common"
+	"github.com/zeus-fyi/gochain/web3/accounts"
 	web3_actions "github.com/zeus-fyi/gochain/web3/client"
 )
 
@@ -64,7 +64,7 @@ func (t *Web3SignerClientTestSuite) TestSendEther() {
 	sendEthTx := web3_actions.SendEtherPayload{
 		TransferArgs: web3_actions.TransferArgs{
 			Amount:    Finney,
-			ToAddress: common.Address(t.TestAccount2.Address()),
+			ToAddress: accounts.Address(t.TestAccount2.Address()),
 		},
 		GasPriceLimits: web3_actions.GasPriceLimits{},
 	}

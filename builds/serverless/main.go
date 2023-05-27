@@ -8,12 +8,12 @@ import (
 	"strings"
 	"time"
 
+	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"github.com/zeus-fyi/gochain/v4/core/types"
 	"github.com/zeus-fyi/gochain/web3/accounts"
-	"github.com/zeus-fyi/gochain/web3/web3_actions"
+	web3_actions "github.com/zeus-fyi/gochain/web3/client"
 	serverless_aws_automation "github.com/zeus-fyi/zeus/builds/serverless/aws_automation"
 	ethereum_automation_cookbook "github.com/zeus-fyi/zeus/cookbooks/ethereum/automation"
 	aws_aegis_auth "github.com/zeus-fyi/zeus/pkg/aegis/aws/auth"
@@ -489,7 +489,7 @@ var Cmd = &cobra.Command{
 					if serr != nil {
 						panic(serr)
 					}
-					fmt.Println("tx receipt: ", rx.Hash.String())
+					fmt.Println("tx receipt: ", rx.Hash())
 				}
 			}
 		}

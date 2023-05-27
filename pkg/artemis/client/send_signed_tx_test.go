@@ -1,7 +1,7 @@
 package artemis_client
 
 import (
-	"github.com/zeus-fyi/gochain/web3/web3_actions"
+	web3_actions "github.com/zeus-fyi/gochain/web3/client"
 	artemis_endpoints "github.com/zeus-fyi/zeus/pkg/artemis/client/endpoints"
 	artemis_req_types "github.com/zeus-fyi/zeus/pkg/artemis/client/req_types"
 	"github.com/zeus-fyi/zeus/pkg/artemis/signing_automation/ethereum"
