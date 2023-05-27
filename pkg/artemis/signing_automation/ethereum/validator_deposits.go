@@ -5,8 +5,8 @@ import (
 	"encoding/hex"
 	"strings"
 
-	"github.com/gochain/gochain/v4/core/types"
 	"github.com/rs/zerolog/log"
+	"github.com/zeus-fyi/gochain/v4/core/types"
 	"github.com/zeus-fyi/gochain/web3/web3_actions"
 	signing_automation_ethereum_smart_contracts "github.com/zeus-fyi/zeus/pkg/artemis/signing_automation/ethereum/smart_contracts"
 )

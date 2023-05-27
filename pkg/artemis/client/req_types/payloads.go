@@ -3,9 +3,9 @@ package artemis_req_types
 import (
 	"math/big"
 
-	"github.com/gochain/gochain/v4/accounts/abi"
-	"github.com/gochain/gochain/v4/common"
-	"github.com/gochain/gochain/v4/core/types"
+	"github.com/zeus-fyi/gochain/v4/accounts/abi"
+	"github.com/zeus-fyi/gochain/v4/common"
+	"github.com/zeus-fyi/gochain/v4/core/types"
 )
 
 type SignedTxPayload struct {

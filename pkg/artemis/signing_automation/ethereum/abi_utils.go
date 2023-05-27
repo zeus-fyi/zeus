@@ -7,8 +7,8 @@ import (
 	"path"
 	"runtime"
 
-	"github.com/gochain/gochain/v4/accounts/abi"
 	"github.com/rs/zerolog/log"
+	"github.com/zeus-fyi/gochain/v4/accounts/abi"
 )
 
 func ABIOpenFile(ctx context.Context, abiFile string) (*abi.ABI, error) {
