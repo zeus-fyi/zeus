@@ -102,7 +102,7 @@ func (w *Web3Actions) SetCode(ctx context.Context, address string, bytes string)
 func (w *Web3Actions) SetBalance(ctx context.Context, address string, balance hexutil.Big) error {
 	err := w.C.Client().CallContext(ctx, nil, "hardhat_setBalance", common.HexToAddress(address), balance)
 	if err != nil {
-		zlog.Err(err).Msg("SetBalance error")
+		zlog.Err(err).Msg("HardHatSetBalance error")
 		return err
 	}
 	return err

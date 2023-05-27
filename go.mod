@@ -6,7 +6,6 @@ require (
 	github.com/ethereum/go-ethereum v1.12.0
 	github.com/rs/zerolog v1.29.0
 	github.com/shopspring/decimal v1.3.1
-	github.com/zeus-fyi/gochain/v4 v4.2.5
 )
 
 require (
