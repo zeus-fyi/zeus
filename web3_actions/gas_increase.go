@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"math/big"
 
-	"github.com/gochain/gochain/v4/common"
-	"github.com/gochain/gochain/v4/core/types"
 	"github.com/rs/zerolog/log"
+	"github.com/zeus-fyi/gochain/v4/common"
+	"github.com/zeus-fyi/gochain/v4/core/types"
 	web3_client "github.com/zeus-fyi/gochain/web3/client"
 	"github.com/zeus-fyi/gochain/web3/types"
 )

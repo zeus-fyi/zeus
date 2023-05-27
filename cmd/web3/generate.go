@@ -11,8 +11,8 @@ import (
 	"os"
 	"os/exec"
 
-	"github.com/gochain/gochain/v4/accounts/abi/bind"
 	"github.com/urfave/cli"
+	"github.com/zeus-fyi/gochain/v4/accounts/abi/bind"
 	"github.com/zeus-fyi/gochain/web3/assets"
 )
 

@@ -7,8 +7,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/gochain/gochain/v4/accounts/abi"
 	"github.com/rs/zerolog/log"
+	"github.com/zeus-fyi/gochain/v4/accounts/abi"
 	"github.com/zeus-fyi/gochain/web3/assets"
 )
 
