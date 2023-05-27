@@ -6,7 +6,6 @@ import (
 	"errors"
 	"strings"
 
-	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/rs/zerolog/log"
 )
@@ -42,8 +41,8 @@ func (a *Account) EcdsaPrivateKey() *ecdsa.PrivateKey {
 	return a.key
 }
 
-func (a *Account) Address() common.Address {
-	return crypto.PubkeyToAddress(a.key.PublicKey)
+func (a *Account) Address() Address {
+	return Address(crypto.PubkeyToAddress(a.key.PublicKey))
 }
 
 func (a *Account) PublicKey() string {
