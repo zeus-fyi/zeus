@@ -6,9 +6,9 @@ import (
 	"errors"
 	"strings"
 
-	"github.com/gochain/gochain/v4/common"
-	"github.com/gochain/gochain/v4/crypto"
 	"github.com/rs/zerolog/log"
+	"github.com/zeus-fyi/gochain/v4/common"
+	"github.com/zeus-fyi/gochain/v4/crypto"
 )
 
 type Account struct {
@@ -43,7 +43,7 @@ func (a *Account) EcdsaPrivateKey() *ecdsa.PrivateKey {
 }
 
 func (a *Account) Address() common.Address {
-	return crypto.PubkeyToAddress(a.key.PublicKey)
+	return common.Address(crypto.PubkeyToAddress(a.key.PublicKey))
 }
 
 func (a *Account) PublicKey() string {

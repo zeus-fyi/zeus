@@ -6,8 +6,8 @@ import (
 	"math/big"
 	"time"
 
-	"github.com/gochain/gochain/v4/common"
 	"github.com/rs/zerolog/log"
+	"github.com/zeus-fyi/gochain/v4/common"
 )
 
 func (w *Web3Actions) ResumeContract(ctx context.Context, contractAddress string, amount *big.Int, timeoutInSeconds uint64) error {

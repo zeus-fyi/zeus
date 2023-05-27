@@ -8,10 +8,10 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/gochain/gochain/v4/accounts/abi"
-	"github.com/gochain/gochain/v4/common"
-	"github.com/gochain/gochain/v4/common/hexutil"
 	"github.com/rs/zerolog/log"
+	"github.com/zeus-fyi/gochain/v4/accounts/abi"
+	"github.com/zeus-fyi/gochain/v4/common"
+	"github.com/zeus-fyi/gochain/v4/common/hexutil"
 )
 
 // ConvertArguments attempts to convert each param to the matching args type.

@@ -12,10 +12,10 @@ import (
 	zlog "github.com/rs/zerolog/log"
 	web3_types "github.com/zeus-fyi/gochain/web3/types"
 
-	"github.com/gochain/gochain/v4/common"
-	"github.com/gochain/gochain/v4/common/hexutil"
-	"github.com/gochain/gochain/v4/core/types"
-	"github.com/gochain/gochain/v4/rpc"
+	"github.com/zeus-fyi/gochain/v4/common"
+	"github.com/zeus-fyi/gochain/v4/common/hexutil"
+	"github.com/zeus-fyi/gochain/v4/core/types"
+	"github.com/zeus-fyi/gochain/v4/rpc"
 )
 
 var NotFoundErr = errors.New("not found")
@@ -436,22 +436,22 @@ func (c *client) getBlock(ctx context.Context, method string, hashOrNum string, 
 		return nil, err
 	}
 	// Quick-verify transaction and uncle lists. This mostly helps with debugging the server.
-	if block.Sha3Uncles == types.EmptyUncleHash && len(block.Uncles) > 0 {
+	if block.Sha3Uncles.String() == types.EmptyUncleHash.String() && len(block.Uncles) > 0 {
 		err = fmt.Errorf("server returned non-empty uncle list but block header indicates no uncles")
 		zlog.Err(err).Msg("client: getBlock")
 		return nil, err
 	}
-	if block.Sha3Uncles != types.EmptyUncleHash && len(block.Uncles) == 0 {
+	if block.Sha3Uncles.String() != types.EmptyUncleHash.String() && len(block.Uncles) == 0 {
 		err = fmt.Errorf("server returned empty uncle list but block header indicates uncles")
 		zlog.Err(err).Msg("client: getBlock")
 		return nil, err
 	}
-	if block.TxsRoot == types.EmptyRootHash && block.TxCount() > 0 {
+	if block.TxsRoot.String() == types.EmptyRootHash.String() && block.TxCount() > 0 {
 		err = fmt.Errorf("server returned non-empty transaction list but block header indicates no transactions")
 		zlog.Err(err).Msg("client: getBlock")
 		return nil, err
 	}
-	if block.TxsRoot != types.EmptyRootHash && len(block.TxsRoot) == 0 {
+	if block.TxsRoot.String() != types.EmptyRootHash.String() && len(block.TxsRoot) == 0 {
 		return nil, fmt.Errorf("server returned empty transaction list but block header indicates transactions")
 	}
 	// Load uncles because they are not included in the block response.
