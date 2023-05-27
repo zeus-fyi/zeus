@@ -3,11 +3,11 @@ module github.com/zeus-fyi/gochain/web3
 go 1.20
 
 require (
-	github.com/zeus-fyi/gochain/v4 v4.1.0
 	github.com/rs/zerolog v1.29.0
 	github.com/shopspring/decimal v1.3.1
 	github.com/treeder/gotils/v2 v2.0.18
 	github.com/urfave/cli v1.22.5
+	github.com/zeus-fyi/gochain/v4 v4.1.0
 	golang.org/x/crypto v0.6.0
 )
 
@@ -57,3 +57,5 @@ require (
 	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/natefinch/npipe.v2 v2.0.0-20160621034901-c1b8fa8bdcce // indirect
 )
+
+replace github.com/gochain/gochain/v4 => github.com/zeus-fyi/gochain/v4 latest
