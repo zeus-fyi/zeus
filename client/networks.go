@@ -1,4 +1,4 @@
-package web3_client
+package web3_actions
 
 import "math/big"
 

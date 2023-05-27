@@ -6,18 +6,18 @@ import (
 	"math/big"
 	"os"
 
+	"github.com/ethereum/go-ethereum/common/hexutil"
+	"github.com/ethereum/go-ethereum/core/types"
+	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/rs/zerolog/log"
-	"github.com/zeus-fyi/gochain/v4/common/hexutil"
-	"github.com/zeus-fyi/gochain/v4/core/types"
-	"github.com/zeus-fyi/gochain/v4/crypto"
 	web3_types "github.com/zeus-fyi/gochain/web3/types"
 )
 
 // DeployContract submits a contract creation transaction.
 // abiJSON is only required when including params for the constructor.
-func (w *Web3Actions) DeployContract(ctx context.Context, binHex string, payload SendContractTxPayload) (*web3_types.Transaction, error) {
+func (w *Web3Actions) DeployContract(ctx context.Context, binHex string, payload SendContractTxPayload) (*types.Transaction, error) {
 	w.Dial()
-	defer w.Close()
+	defer w.C.Close()
 	var err error
 
 	signedTx, err := w.GetSignedDeployTxToCallFunctionWithArgs(ctx, binHex, &payload)
@@ -34,9 +34,9 @@ func (w *Web3Actions) DeployContract(ctx context.Context, binHex string, payload
 
 // DeployBin will deploy a bin file to the network
 func (w *Web3Actions) DeployBin(ctx context.Context, binFilename, abiFilename string,
-	gasPrice *big.Int, gasLimit uint64, constructorArgs ...interface{}) (*web3_types.Transaction, error) {
+	gasPrice *big.Int, gasLimit uint64, constructorArgs ...interface{}) (*types.Transaction, error) {
 	w.Dial()
-	defer w.Close()
+	defer w.C.Close()
 	var bin []byte
 	var err error
 	if isValidUrl(binFilename) {
@@ -84,13 +84,9 @@ func (w *Web3Actions) DeployBin(ctx context.Context, binFilename, abiFilename st
 // GetSignedDeployTxToCallFunctionWithArgs prepares the tx for broadcast
 func (w *Web3Actions) GetSignedDeployTxToCallFunctionWithArgs(ctx context.Context, binHex string, payload *SendContractTxPayload) (*types.Transaction, error) {
 	w.Dial()
-	defer w.Close()
-	err := w.GetAndSetChainID(ctx)
-	if err != nil {
-		log.Ctx(ctx).Err(err).Msg("Web3Actions: GetAndSetChainID")
-		return nil, err
-	}
-	err = w.SetGasPriceAndLimit(ctx, &payload.GasPriceLimits)
+	defer w.C.Close()
+
+	err := w.SetGasPriceAndLimit(ctx, &payload.GasPriceLimits)
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("Web3Actions: Transfer: SetGasPriceAndLimit")
 		return nil, err
@@ -126,33 +122,28 @@ func (w *Web3Actions) GetSignedDeployTxToCallFunctionWithArgs(ctx context.Contex
 func (w *Web3Actions) GetSignedTxToDeploySmartContract(ctx context.Context, payload *SendContractTxPayload, data []byte) (*types.Transaction, error) {
 	var err error
 	w.Dial()
-	defer w.Close()
+	defer w.C.Close()
 
 	err = w.SetGasPriceAndLimit(ctx, &payload.GasPriceLimits)
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("GetSignedTxToCallFunctionWithData: SetGasPriceAndLimit")
 		return nil, err
 	}
-	from := w.Address()
-	est, err := w.GetGasPriceEstimateForTx(ctx, web3_types.CallMsg{
-		From:     &from,
-		To:       nil,
-		GasPrice: payload.GasPrice,
-		Data:     data,
-	})
+	est, err := w.C.SuggestGasPrice(ctx)
+
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("GetSignedTxToCallFunctionWithData: SetGasPriceAndLimit")
 		return nil, err
 	}
 	payload.GasLimit = est.Uint64()
-	chainID, err := w.GetChainID(ctx)
+	chainID, err := w.C.ChainID(ctx)
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("CallFunctionWithData: GetChainID")
 		return nil, fmt.Errorf("couldn't get chain ID: %v", err)
 	}
 	publicKeyECDSA := w.EcdsaPublicKey()
 	fromAddress := crypto.PubkeyToAddress(*publicKeyECDSA)
-	nonce, err := w.GetPendingTransactionCount(ctx, fromAddress)
+	nonce, err := w.C.PendingNonceAt(ctx, fromAddress)
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("CallFunctionWithData: GetPendingTransactionCount")
 		return nil, fmt.Errorf("cannot get nonce: %v", err)

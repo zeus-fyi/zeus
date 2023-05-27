@@ -5,16 +5,14 @@ import (
 	"fmt"
 	"reflect"
 
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/common/hexutil"
+	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/rs/zerolog/log"
-	"github.com/zeus-fyi/gochain/v4/common"
-	"github.com/zeus-fyi/gochain/v4/common/hexutil"
-	"github.com/zeus-fyi/gochain/v4/crypto"
-	"github.com/zeus-fyi/gochain/v4/rlp"
-	web3_types "github.com/zeus-fyi/gochain/web3/types"
 )
 
 // CallFunctionWithArgs submits a transaction to execute a smart contract function call.
-func (w *Web3Actions) CallFunctionWithArgs(ctx context.Context, payload *SendContractTxPayload) (*web3_types.Transaction, error) {
+func (w *Web3Actions) CallFunctionWithArgs(ctx context.Context, payload *SendContractTxPayload) (*types.Transaction, error) {
 	signedTx, err := w.GetSignedTxToCallFunctionWithArgs(ctx, payload)
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("CallFunctionWithData: GetSignedTxToCallFunctionWithArgs")
@@ -24,25 +22,20 @@ func (w *Web3Actions) CallFunctionWithArgs(ctx context.Context, payload *SendCon
 }
 
 // CallFunctionWithData if you already have the encoded function data, then use this
-func (w *Web3Actions) CallFunctionWithData(ctx context.Context, payload *SendContractTxPayload, data []byte) (*web3_types.Transaction, error) {
+func (w *Web3Actions) CallFunctionWithData(ctx context.Context, payload *SendContractTxPayload, data []byte) (*types.Transaction, error) {
 	signedTx, err := w.GetSignedTxToCallFunctionWithData(ctx, payload, data)
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("CallFunctionWithData: GetSignedTxToCallFunctionWithData")
 		return nil, err
 	}
-	raw, err := rlp.EncodeToBytes(signedTx)
-	if err != nil {
-		log.Ctx(ctx).Err(err).Msg("CallFunctionWithData: EncodeToBytes")
-		return nil, err
-	}
-	err = w.SendRawTransaction(ctx, raw)
+
+	err = w.C.SendTransaction(ctx, signedTx)
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("CallFunctionWithData: SendRawTransaction")
 		return nil, fmt.Errorf("cannot send transaction: %v", err)
 	}
-	publicKeyECDSA := w.EcdsaPublicKey()
-	fromAddress := crypto.PubkeyToAddress(*publicKeyECDSA)
-	return ConvertTx(signedTx, fromAddress), nil
+
+	return signedTx, nil
 }
 
 func convertOutputParams(params []interface{}) []interface{} {

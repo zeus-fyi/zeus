@@ -5,16 +5,16 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/rs/zerolog/log"
 	"github.com/zeus-fyi/gochain/v4/common"
-	"github.com/zeus-fyi/gochain/v4/common/hexutil"
 	web3_types "github.com/zeus-fyi/gochain/web3/types"
 )
 
 // CallConstantFunction executes a contract function call without submitting a transaction.
 func (w *Web3Actions) CallConstantFunction(ctx context.Context, payload *SendContractTxPayload) ([]interface{}, error) {
 	w.Dial()
-	defer w.Close()
+	defer w.C.Close()
 	if payload.SmartContractAddr == "" {
 		err := errors.New("no contract address specified")
 		log.Ctx(ctx).Err(err).Msg("CallConstantFunction")
@@ -43,7 +43,8 @@ func (w *Web3Actions) CallConstantFunction(ctx context.Context, payload *SendCon
 	}
 	scAddr := common.HexToAddress(payload.SmartContractAddr)
 
-	res, err := w.Call(ctx, web3_types.CallMsg{Data: input, To: &scAddr})
+	var res []byte
+	err = w.C.Client().Call(&res, payload.MethodName, web3_types.CallMsg{Data: input, To: &scAddr})
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("CallConstantFunction: client.Call")
 		return nil, err

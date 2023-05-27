@@ -5,9 +5,10 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/ethereum/go-ethereum/accounts/abi"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/rs/zerolog/log"
-	"github.com/zeus-fyi/gochain/v4/accounts/abi"
-	"github.com/zeus-fyi/gochain/v4/common"
 	web3_types "github.com/zeus-fyi/gochain/web3/types"
 )
 
@@ -48,7 +49,7 @@ func ListContract(ctx context.Context, contractFile string) error {
 
 func (w *Web3Actions) GetContractConst(ctx context.Context, payload *SendContractTxPayload) ([]interface{}, error) {
 	w.Dial()
-	defer w.Close()
+	defer w.C.Close()
 	myabi := payload.ContractABI
 	if myabi == nil {
 		abiInternal, aerr := web3_types.GetABI(payload.ContractFile)
@@ -81,9 +82,9 @@ func (w *Web3Actions) GetContractConst(ctx context.Context, payload *SendContrac
 func (w *Web3Actions) CallContract(ctx context.Context,
 	payload *SendContractTxPayload, waitForReceipt bool, data []byte, timeoutInSeconds uint64) error {
 	w.Dial()
-	defer w.Close()
+	defer w.C.Close()
 	var err error
-	var tx *web3_types.Transaction
+	var tx *types.Transaction
 	var myabi *abi.ABI
 	if len(data) > 0 {
 		tx, err = w.CallFunctionWithData(ctx, payload, data)
@@ -137,32 +138,28 @@ func (w *Web3Actions) CallContract(ctx context.Context,
 			return err
 		}
 	}
-	fmt.Println("Transaction hash:", tx.Hash.Hex())
+	fmt.Println("Transaction hash:", tx.Hash().String())
 	if !waitForReceipt {
 		return err
 	}
 
-	return w.waitForConfirmation(ctx, myabi, tx.Hash, timeoutInSeconds)
+	return w.waitForConfirmation(ctx, myabi, tx.Hash(), timeoutInSeconds)
 }
 
 func (w *Web3Actions) waitForConfirmation(ctx context.Context, myabi *abi.ABI, tx common.Hash, timeoutInSeconds uint64) error {
 	fmt.Println("Waiting for receipt...")
 	ctx, cancelFunc := context.WithTimeout(ctx, time.Duration(timeoutInSeconds)*time.Second)
 	defer cancelFunc()
-	receipt, err := w.WaitForReceipt(ctx, tx)
+	_, err := w.WaitForReceipt(ctx, tx)
 	if err != nil {
 		err = fmt.Errorf("getting receipt: %v", err)
 		log.Ctx(ctx).Err(err).Msg("CallContract: CallTransactFunction")
 		return err
 	}
-	err = PrintReceiptDetails(ctx, receipt, myabi)
-	if err != nil {
-		log.Ctx(ctx).Err(err).Msg("CallContract: PrintReceiptDetails")
-		return err
-	}
+
 	return err
 }
 
-func (w *Web3Actions) CallTransactFunction(ctx context.Context, payload *SendContractTxPayload) (*web3_types.Transaction, error) {
+func (w *Web3Actions) CallTransactFunction(ctx context.Context, payload *SendContractTxPayload) (*types.Transaction, error) {
 	return w.CallFunctionWithArgs(ctx, payload)
 }

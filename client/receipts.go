@@ -6,27 +6,18 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/ethereum/go-ethereum/accounts/abi"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/rs/zerolog/log"
-	"github.com/zeus-fyi/gochain/v4/accounts/abi"
-	"github.com/zeus-fyi/gochain/v4/common"
-	web3_types "github.com/zeus-fyi/gochain/web3/types"
 )
 
 var NotFoundErr = errors.New("not found")
 
 func (w *Web3Actions) GetTxReceipt(ctx context.Context, txhash, contractFile string) error {
-	var myabi *abi.ABI
 	w.Dial()
-	defer w.Close()
-	if contractFile != "" {
-		myabiFetched, err := web3_types.GetABI(contractFile)
-		if err != nil {
-			log.Ctx(ctx).Err(err).Msg("GetTxReceipt: GetABI")
-			return err
-		}
-		myabi = myabiFetched
-	}
-	r, err := w.GetTransactionReceipt(ctx, common.HexToHash(txhash))
+	defer w.C.Close()
+	_, err := w.C.TransactionReceipt(ctx, common.HexToHash(txhash))
 	if err != nil {
 		err = fmt.Errorf("failed to get transaction receipt: %v", err)
 		log.Ctx(ctx).Err(err).Msg("GetTransactionReceipt: GetTransactionReceipt")
@@ -35,21 +26,15 @@ func (w *Web3Actions) GetTxReceipt(ctx context.Context, txhash, contractFile str
 	if verbose {
 		fmt.Println("Transaction Receipt Details:")
 	}
-
-	err = PrintReceiptDetails(ctx, r, myabi)
-	if err != nil {
-		log.Ctx(ctx).Err(err).Msg("GetTransactionReceipt: PrintReceiptDetails")
-		return err
-	}
 	return err
 }
 
 // WaitForReceipt polls for a transaction receipt until it is available, or ctx is cancelled.
-func (w *Web3Actions) WaitForReceipt(ctx context.Context, hash common.Hash) (*web3_types.Receipt, error) {
+func (w *Web3Actions) WaitForReceipt(ctx context.Context, hash common.Hash) (*types.Receipt, error) {
 	w.Dial()
-	defer w.Close()
+	defer w.C.Close()
 	for {
-		receipt, err := w.GetTransactionReceipt(ctx, hash)
+		receipt, err := w.C.TransactionReceipt(ctx, hash)
 		if err == nil {
 			return receipt, nil
 		}

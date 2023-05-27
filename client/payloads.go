@@ -3,7 +3,7 @@ package web3_actions
 import (
 	"math/big"
 
-	"github.com/zeus-fyi/gochain/v4/accounts/abi"
+	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/zeus-fyi/gochain/v4/common"
 )
 

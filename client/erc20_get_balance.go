@@ -10,7 +10,7 @@ import (
 
 func (w *Web3Actions) ReadERC20TokenBalance(ctx context.Context, contractAddress, addrHash string) (*big.Int, error) {
 	w.Dial()
-	defer w.Close()
+	defer w.C.Close()
 	payload := SendContractTxPayload{
 		SmartContractAddr: contractAddress,
 		ContractFile:      ERC20,
@@ -30,7 +30,7 @@ func (w *Web3Actions) ReadERC20TokenBalance(ctx context.Context, contractAddress
 
 func (w *Web3Actions) ReadERC20TokenDecimals(ctx context.Context, payload SendContractTxPayload) (int32, error) {
 	w.Dial()
-	defer w.Close()
+	defer w.C.Close()
 	payload.Params = []interface{}{}
 	decimals, err := w.GetContractConst(ctx, &payload)
 	if err != nil {

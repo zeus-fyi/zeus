@@ -4,18 +4,18 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/core/types"
+	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/rs/zerolog/log"
-	"github.com/zeus-fyi/gochain/v4/common"
-	"github.com/zeus-fyi/gochain/v4/core/types"
-	"github.com/zeus-fyi/gochain/v4/crypto"
-	web3_types "github.com/zeus-fyi/gochain/web3/types"
+	"github.com/zeus-fyi/gochain/web3/types"
 )
 
 // GetSignedTxToCallFunctionWithData prepares the tx for broadcast
 func (w *Web3Actions) GetSignedTxToCallFunctionWithData(ctx context.Context, payload *SendContractTxPayload, data []byte) (*types.Transaction, error) {
 	var err error
 	w.Dial()
-	defer w.Close()
+	defer w.C.Close()
 
 	err = w.SetGasPriceAndLimit(ctx, &payload.GasPriceLimits)
 	if err != nil {
@@ -25,19 +25,19 @@ func (w *Web3Actions) GetSignedTxToCallFunctionWithData(ctx context.Context, pay
 	if payload.GasLimit == 21000 {
 		payload.GasLimit = 21000 * 10
 	}
-	chainID, err := w.GetChainID(ctx)
+	chainID, err := w.C.ChainID(ctx)
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("CallFunctionWithData: GetChainID")
 		return nil, fmt.Errorf("couldn't get chain ID: %v", err)
 	}
 	publicKeyECDSA := w.EcdsaPublicKey()
 	fromAddress := crypto.PubkeyToAddress(*publicKeyECDSA)
-	nonce, err := w.GetPendingTransactionCount(ctx, fromAddress)
+	nonce, err := w.C.PendingNonceAt(ctx, fromAddress)
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("CallFunctionWithData: GetPendingTransactionCount")
 		return nil, fmt.Errorf("cannot get nonce: %v", err)
 	}
-	tx := types.NewV2Transaction(nonce, common.HexToAddress(payload.SmartContractAddr), payload.Amount, payload.GasLimit, payload.GasPrice, payload.GasFeeCap, payload.GasTipCap, data)
+	tx := types.NewTransaction(nonce, common.HexToAddress(payload.SmartContractAddr), payload.Amount, payload.GasLimit, payload.GasPrice, data)
 	signedTx, err := types.SignTx(tx, types.NewLondonSigner(chainID), w.EcdsaPrivateKey())
 	if err != nil {
 		err = fmt.Errorf("cannot sign transaction: %v", err)
@@ -50,12 +50,8 @@ func (w *Web3Actions) GetSignedTxToCallFunctionWithData(ctx context.Context, pay
 // GetSignedTxToCallFunctionWithArgs prepares the tx for broadcast
 func (w *Web3Actions) GetSignedTxToCallFunctionWithArgs(ctx context.Context, payload *SendContractTxPayload) (*types.Transaction, error) {
 	w.Dial()
-	defer w.Close()
-	err := w.GetAndSetChainID(ctx)
-	if err != nil {
-		log.Ctx(ctx).Err(err).Msg("Web3Actions: GetAndSetChainID")
-		return nil, err
-	}
+	defer w.C.Close()
+
 	myabi := payload.ContractABI
 	if myabi == nil {
 		abiInternal, aerr := web3_types.GetABI(payload.ContractFile)

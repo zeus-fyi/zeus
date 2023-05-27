@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/zeus-fyi/gochain/v4/common"
+	"github.com/ethereum/go-ethereum/common"
 )
 
 // Contract only upgradeable by owner.

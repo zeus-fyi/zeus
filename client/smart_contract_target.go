@@ -4,13 +4,13 @@ import (
 	"context"
 	"strings"
 
-	"github.com/zeus-fyi/gochain/v4/accounts/abi"
+	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/zeus-fyi/gochain/web3/assets"
 )
 
 func (w *Web3Actions) GetTargetContract(ctx context.Context, rpcURL, contractAddress string) (string, error) {
 	w.Dial()
-	defer w.Close()
+	defer w.C.Close()
 	ac := NewWeb3ActionsClient(rpcURL)
 	ac.Dial()
 	defer ac.Close()

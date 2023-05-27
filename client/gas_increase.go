@@ -5,24 +5,23 @@ import (
 	"fmt"
 	"math/big"
 
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/rs/zerolog/log"
-	"github.com/zeus-fyi/gochain/v4/common"
-	"github.com/zeus-fyi/gochain/v4/core/types"
-	web3_client "github.com/zeus-fyi/gochain/web3/client"
-	"github.com/zeus-fyi/gochain/web3/types"
+	web3_types "github.com/zeus-fyi/gochain/web3/types"
 )
 
-func (w *Web3Actions) IncreaseGas(ctx context.Context, network web3_client.Network, txHash string, amountGwei string) error {
+func (w *Web3Actions) IncreaseGas(ctx context.Context, txHash string, amountGwei string) error {
 	w.Dial()
-	defer w.Close()
+	defer w.C.Close()
 	// then we'll clone the original and increase gas
-	txOrig, err := w.GetTransactionByHash(ctx, common.HexToHash(txHash))
+	txOrig, isPending, err := w.C.TransactionByHash(ctx, common.HexToHash(txHash))
 	if err != nil {
 		err = fmt.Errorf("error on GetTransactionByHash: %v", err)
 		log.Ctx(ctx).Err(err).Msg("IncreaseGas: Dial")
 		return err
 	}
-	if txOrig.BlockNumber != nil {
+	if !isPending {
 		fmt.Printf("tx isn't pending, so can't increase gas")
 		return err
 	}
@@ -32,8 +31,8 @@ func (w *Web3Actions) IncreaseGas(ctx context.Context, network web3_client.Netwo
 		log.Ctx(ctx).Warn().Msgf("IncreaseGas: failed to parse amount %q: %v\n", amountGwei, err)
 		return err
 	}
-	newPrice := new(big.Int).Add(txOrig.GasPrice, amount)
-	_, err = w.ReplaceTx(ctx, network, txOrig.Nonce, *txOrig.To, txOrig.Value, newPrice, txOrig.GasLimit, txOrig.Input)
+	newPrice := new(big.Int).Add(txOrig.GasPrice(), amount)
+	_, err = w.ReplaceTx(ctx, txOrig.ChainId(), txOrig.Nonce(), *txOrig.To(), txOrig.Value(), newPrice, txOrig.Gas(), txOrig.Data())
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("IncreaseGas: ReplaceTx")
 		return err
@@ -42,12 +41,12 @@ func (w *Web3Actions) IncreaseGas(ctx context.Context, network web3_client.Netwo
 	return err
 }
 
-func (w *Web3Actions) ReplaceTx(ctx context.Context, network web3_client.Network, nonce uint64, to common.Address, amount *big.Int,
+func (w *Web3Actions) ReplaceTx(ctx context.Context, chainID *big.Int, nonce uint64, to common.Address, amount *big.Int,
 	gasPrice *big.Int, gasLimit uint64, data []byte) (*types.Transaction, error) {
 	w.Dial()
-	defer w.Close()
+	defer w.C.Close()
 	if gasPrice == nil {
-		gasPriceFetched, err := w.GetGasPrice(ctx)
+		gasPriceFetched, err := w.C.SuggestGasPrice(ctx)
 		if err != nil {
 			err = fmt.Errorf("couldn't get suggested gas price: %v", err)
 			log.Ctx(ctx).Err(err).Msg("ReplaceTx: Dial")
@@ -57,9 +56,8 @@ func (w *Web3Actions) ReplaceTx(ctx context.Context, network web3_client.Network
 		fmt.Printf("Using suggested gas price: %v\n", gasPrice)
 	}
 
-	chainID := network.ChainID
 	if chainID == nil {
-		fetchedChainID, err := w.GetChainID(ctx)
+		fetchedChainID, err := w.C.ChainID(ctx)
 		if err != nil {
 			err = fmt.Errorf("couldn't get chain ID: %v", err)
 			log.Ctx(ctx).Err(err).Msg("ReplaceTx: Dial")
