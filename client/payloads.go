@@ -4,7 +4,7 @@ import (
 	"math/big"
 
 	"github.com/ethereum/go-ethereum/accounts/abi"
-	"github.com/zeus-fyi/gochain/v4/common"
+	"github.com/zeus-fyi/gochain/web3/accounts"
 )
 
 type SendContractTxPayload struct {
@@ -34,7 +34,7 @@ func (tx *SendEtherPayload) EffectiveGasPrice(dst *big.Int, baseFee *big.Int) *b
 
 type TransferArgs struct {
 	Amount    *big.Int
-	ToAddress common.Address
+	ToAddress accounts.Address
 }
 
 type GasPriceLimits struct {
@@ -45,12 +45,12 @@ type GasPriceLimits struct {
 }
 
 type CallMsg struct {
-	From      *common.Address // the sender of the 'transaction'
-	To        *common.Address // the destination contract (nil for contract creation)
-	Gas       uint64          // if 0, the call executes with near-infinite gas
-	GasPrice  *big.Int        // wei <-> gas exchange ratio
-	GasTipCap *big.Int        // a.k.a. maxPriorityFeePerGas
-	GasFeeCap *big.Int        // a.k.a. maxFeePerGas
-	Value     *big.Int        // amount of wei sent along with the call
-	Data      []byte          // input data, usually an ABI-encoded contract method invocation
+	From      *accounts.Address // the sender of the 'transaction'
+	To        *accounts.Address // the destination contract (nil for contract creation)
+	Gas       uint64            // if 0, the call executes with near-infinite gas
+	GasPrice  *big.Int          // wei <-> gas exchange ratio
+	GasTipCap *big.Int          // a.k.a. maxPriorityFeePerGas
+	GasFeeCap *big.Int          // a.k.a. maxFeePerGas
+	Value     *big.Int          // amount of wei sent along with the call
+	Data      []byte            // input data, usually an ABI-encoded contract method invocation
 }

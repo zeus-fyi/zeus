@@ -9,9 +9,9 @@ import (
 	"strings"
 
 	"github.com/ethereum/go-ethereum/accounts/abi"
+	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/rs/zerolog/log"
-	"github.com/zeus-fyi/gochain/v4/common"
-	"github.com/zeus-fyi/gochain/v4/common/hexutil"
+	"github.com/zeus-fyi/gochain/web3/accounts"
 )
 
 // ConvertArguments attempts to convert each param to the matching args type.
@@ -80,10 +80,10 @@ func ConvertArgument(abiType abi.Type, param interface{}) (interface{}, error) {
 		}
 	case abi.AddressTy:
 		if s, ok := param.(string); ok {
-			if !common.IsHexAddress(s) {
+			if !accounts.IsHexAddress(s) {
 				return nil, fmt.Errorf("invalid hex address: %s", s)
 			}
-			return common.HexToAddress(s), nil
+			return accounts.HexToAddress(s), nil
 		}
 	case abi.SliceTy, abi.ArrayTy:
 		s, ok := param.(string)
@@ -96,13 +96,13 @@ func ConvertArgument(abiType abi.Type, param interface{}) (interface{}, error) {
 		switch abiType.Elem.T {
 
 		case abi.AddressTy:
-			arrayParams := make([]common.Address, len(inputArray))
+			arrayParams := make([]accounts.Address, len(inputArray))
 			for i, elem := range inputArray {
 				converted, err := ConvertArgument(*abiType.Elem, elem)
 				if err != nil {
 					return nil, err
 				}
-				arrayParams[i] = converted.(common.Address)
+				arrayParams[i] = converted.(accounts.Address)
 			}
 			return arrayParams, nil
 
@@ -154,10 +154,10 @@ func ConvertArgument(abiType abi.Type, param interface{}) (interface{}, error) {
 			if err != nil {
 				return nil, fmt.Errorf("failed to parse hash %q: %v", s, err)
 			}
-			if len(val) != common.HashLength {
+			if len(val) != accounts.HashLength {
 				return nil, fmt.Errorf("invalid hash length %d:hash must be 32 bytes", len(val))
 			}
-			return common.BytesToHash(val), nil
+			return accounts.BytesToHash(val), nil
 		}
 	case abi.FixedBytesTy:
 		switch {
@@ -167,10 +167,10 @@ func ConvertArgument(abiType abi.Type, param interface{}) (interface{}, error) {
 				if err != nil {
 					return nil, fmt.Errorf("failed to parse hash %q: %v", s, err)
 				}
-				if len(val) != common.HashLength {
+				if len(val) != accounts.HashLength {
 					return nil, fmt.Errorf("invalid hash length %d:hash must be 32 bytes", len(val))
 				}
-				return common.BytesToHash(val), nil
+				return accounts.BytesToHash(val), nil
 			}
 		default:
 			if s, ok := param.(string); ok {

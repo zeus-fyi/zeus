@@ -27,9 +27,17 @@ func (w *Web3Actions) GetSignedSendTx(ctx context.Context, params SendEtherPaylo
 		log.Ctx(ctx).Err(err).Msg("Send: GetChainID")
 		return nil, fmt.Errorf("couldn't get chain ID: %v", err)
 	}
-	log.Ctx(ctx).Info().Interface("chainID", chainID).Msg("GetSignedSendTx")
-	tx := types.NewTransaction(nonce, common.Address(params.ToAddress), params.Amount, params.GasLimit, params.GasPrice, nil)
-	signedTx, err := types.SignTx(tx, types.NewLondonSigner(chainID), w.EcdsaPrivateKey())
+	scAddr := common.HexToAddress(params.ToAddress.Hex())
+	baseTx := &types.DynamicFeeTx{
+		To:        &scAddr,
+		Nonce:     nonce,
+		GasFeeCap: params.GasPrice,
+		GasTipCap: params.GasTipCap,
+		Gas:       params.GasLimit,
+		Value:     params.Amount,
+	}
+	tx := types.NewTx(baseTx)
+	signedTx, err := types.SignTx(tx, types.LatestSignerForChainID(chainID), w.EcdsaPrivateKey())
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("Send: SignTx")
 		return nil, fmt.Errorf("cannot sign transaction: %v", err)

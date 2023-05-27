@@ -8,7 +8,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/rs/zerolog/log"
-	"github.com/zeus-fyi/gochain/v4/common"
+	"github.com/zeus-fyi/gochain/web3/accounts"
 	"github.com/zeus-fyi/gochain/web3/assets"
 )
 
@@ -31,7 +31,7 @@ func (w *Web3Actions) UpgradeContract(ctx context.Context, contractAddress, newT
 		SendEtherPayload: SendEtherPayload{
 			TransferArgs: TransferArgs{
 				Amount:    amount,
-				ToAddress: common.Address{},
+				ToAddress: accounts.Address{},
 			},
 			GasPriceLimits: gp,
 		},
