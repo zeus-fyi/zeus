@@ -145,17 +145,19 @@ func (b *Block) TxCount() int {
 }
 
 type Transaction struct {
-	Nonce    uint64
-	GasPrice *big.Int // wei
-	GasLimit uint64
-	To       *common.Address
-	Value    *big.Int // wei
-	Input    []byte
-	From     common.Address
-	V        *big.Int
-	R        *big.Int
-	S        *big.Int
-	Hash     common.Hash
+	Nonce     uint64
+	GasTipCap *big.Int
+	GasFeeCap *big.Int
+	GasLimit  uint64
+	GasPrice  *big.Int // wei
+	To        *common.Address
+	Value     *big.Int // wei
+	Input     []byte
+	From      common.Address
+	V         *big.Int
+	R         *big.Int
+	S         *big.Int
+	Hash      common.Hash
 
 	BlockNumber      *big.Int
 	BlockHash        common.Hash

@@ -170,7 +170,7 @@ func (r *RpcBlock) CopyFrom(b *Block) error {
 
 type RpcTransaction struct {
 	Nonce     *hexutil.Uint64 `json:"nonce"`
-	GasPrice  *hexutil.Big    `json:"gasPrice"`
+	GasPrice  *hexutil.Big    `json:"gasPrice,omitempty"`
 	GasLimit  *hexutil.Uint64 `json:"gas"`
 	GasFeeCap *hexutil.Big    `json:"maxFeePerGas,omitempty"`
 	GasTipCap *hexutil.Big    `json:"maxPriorityFeePerGas,omitempty"`
@@ -197,7 +197,15 @@ func (r *RpcTransaction) CopyTo(t *Transaction) error {
 	if r.GasPrice == nil {
 		return errors.New("missing 'gasPrice'")
 	}
-	t.GasPrice = r.GasPrice.ToInt()
+	if r.GasPrice != nil {
+		t.GasPrice = r.GasPrice.ToInt()
+	}
+	if r.GasFeeCap != nil {
+		t.GasFeeCap = r.GasFeeCap.ToInt()
+	}
+	if r.GasTipCap != nil {
+		t.GasTipCap = r.GasTipCap.ToInt()
+	}
 	if r.GasLimit == nil {
 		return errors.New("missing 'gas'")
 	}
@@ -246,6 +254,9 @@ func (r *RpcTransaction) CopyTo(t *Transaction) error {
 // CopyFrom copies the fields from t to r.
 func (r *RpcTransaction) CopyFrom(t *Transaction) {
 	r.Nonce = (*hexutil.Uint64)(&t.Nonce)
+	r.GasTipCap = (*hexutil.Big)(t.GasTipCap)
+	r.GasFeeCap = (*hexutil.Big)(t.GasFeeCap)
+
 	r.GasPrice = (*hexutil.Big)(t.GasPrice)
 	r.GasLimit = (*hexutil.Uint64)(&t.GasLimit)
 	r.To = t.To

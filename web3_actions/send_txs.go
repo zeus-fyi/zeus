@@ -59,6 +59,7 @@ func ConvertTx(tx *types.Transaction, from common.Address) *web3_types.Transacti
 	rtx.Nonce = tx.Nonce()
 	rtx.GasPrice = tx.GasPrice()
 	rtx.GasLimit = tx.Gas()
+	rtx.GasTipCap = tx.GasTipCap()
 	rtx.To = tx.To()
 	rtx.Value = tx.Value()
 	rtx.Input = tx.Data()
