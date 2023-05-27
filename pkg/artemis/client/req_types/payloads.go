@@ -3,9 +3,9 @@ package artemis_req_types
 import (
 	"math/big"
 
-	"github.com/zeus-fyi/gochain/v4/accounts/abi"
-	"github.com/zeus-fyi/gochain/v4/common"
-	"github.com/zeus-fyi/gochain/v4/core/types"
+	"github.com/ethereum/go-ethereum/accounts/abi"
+	"github.com/ethereum/go-ethereum/core/types"
+	"github.com/zeus-fyi/gochain/web3/accounts"
 )
 
 type SignedTxPayload struct {
@@ -28,7 +28,7 @@ type SendEtherPayload struct {
 
 type TransferArgs struct {
 	Amount    *big.Int
-	ToAddress common.Address
+	ToAddress accounts.Address
 }
 
 type GasPriceLimits struct {

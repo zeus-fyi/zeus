@@ -5,9 +5,9 @@ import (
 	"encoding/hex"
 	"strings"
 
+	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/rs/zerolog/log"
-	"github.com/zeus-fyi/gochain/v4/core/types"
-	"github.com/zeus-fyi/gochain/web3/web3_actions"
+	web3_actions "github.com/zeus-fyi/gochain/web3/client"
 	signing_automation_ethereum_smart_contracts "github.com/zeus-fyi/zeus/pkg/artemis/signing_automation/ethereum/smart_contracts"
 )
 
@@ -31,23 +31,12 @@ func (w *Web3SignerClient) SignValidatorDepositTxToBroadcastFromJSON(ctx context
 		log.Ctx(ctx).Err(err).Msg("Web3SignerClient: SignValidatorDepositTxToBroadcast")
 		return nil, err
 	}
-	from := w.Address()
-	txPayload, err := extractCallMsgFromSendContractTxPayload(ctx, &from, params)
+	gasPrice, err := w.Web3Actions.C.SuggestGasPrice(ctx)
 	if err != nil {
 		panic(err)
 	}
-	est, err := w.GetGasPriceEstimateForTx(ctx, txPayload)
-	if err != nil {
-		panic(err)
-	}
-	gasPrice, err := w.GetGasPrice(ctx)
-	if err != nil {
-		panic(err)
-	}
-	params.GasPrice = est
-	if gasPrice.Cmp(est) > 0 {
-		params.GasPrice = gasPrice
-	}
+	params.GasPrice = gasPrice
+
 	params.GasLimit = 500000
 	signedTx, err := w.GetSignedTxToCallFunctionWithArgs(ctx, &params)
 	if err != nil {
@@ -65,23 +54,12 @@ func (w *Web3SignerClient) SignValidatorDepositTxToBroadcast(ctx context.Context
 		log.Ctx(ctx).Err(err).Msg("Web3SignerClient: SignValidatorDepositTxToBroadcast")
 		return nil, err
 	}
-	from := w.Address()
-	txPayload, err := extractCallMsgFromSendContractTxPayload(ctx, &from, params)
+
+	gasPrice, err := w.Web3Actions.C.SuggestGasPrice(ctx)
 	if err != nil {
 		panic(err)
 	}
-	est, err := w.GetGasPriceEstimateForTx(ctx, txPayload)
-	if err != nil {
-		panic(err)
-	}
-	gasPrice, err := w.GetGasPrice(ctx)
-	if err != nil {
-		panic(err)
-	}
-	params.GasPrice = est
-	if gasPrice.Cmp(est) > 0 {
-		params.GasPrice = gasPrice
-	}
+	params.GasPrice = gasPrice
 	params.GasLimit = 500000
 	signedTx, err := w.GetSignedTxToCallFunctionWithArgs(ctx, &params)
 	if err != nil {

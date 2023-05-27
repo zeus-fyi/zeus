@@ -2,7 +2,7 @@ package signing_automation_ethereum
 
 import (
 	"github.com/zeus-fyi/gochain/web3/accounts"
-	"github.com/zeus-fyi/gochain/web3/web3_actions"
+	web3_actions "github.com/zeus-fyi/gochain/web3/client"
 	bls_signer "github.com/zeus-fyi/zeus/pkg/crypto/bls"
 )
 

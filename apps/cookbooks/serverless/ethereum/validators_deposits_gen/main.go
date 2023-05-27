@@ -15,7 +15,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
 	"github.com/go-resty/resty/v2"
 	"github.com/rs/zerolog/log"
-	"github.com/zeus-fyi/gochain/web3/web3_actions"
+	web3_actions "github.com/zeus-fyi/gochain/web3/client"
 	bls_serverless_signing "github.com/zeus-fyi/zeus/pkg/aegis/aws/serverless_signing"
 	signing_automation_ethereum "github.com/zeus-fyi/zeus/pkg/artemis/signing_automation/ethereum"
 )

@@ -5,10 +5,10 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/tidwall/pretty"
 	"github.com/wealdtech/go-ed25519hd"
 	util "github.com/wealdtech/go-eth2-util"
-	"github.com/zeus-fyi/gochain/v4/core/types"
 	signing_automation_ethereum "github.com/zeus-fyi/zeus/pkg/artemis/signing_automation/ethereum"
 	bls_signer "github.com/zeus-fyi/zeus/pkg/crypto/bls"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"

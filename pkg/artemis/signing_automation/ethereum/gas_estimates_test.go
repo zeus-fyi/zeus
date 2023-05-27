@@ -3,26 +3,15 @@ package signing_automation_ethereum
 import (
 	"fmt"
 
-	"github.com/zeus-fyi/gochain/web3/web3_actions"
+	"github.com/zeus-fyi/gochain/web3/accounts"
+	web3_actions "github.com/zeus-fyi/gochain/web3/client"
 )
 
 func (t *Web3SignerClientTestSuite) TestValidatorDepositPayloadGasEstimate() {
 	t.Web3SignerClientTestClient.Dial()
 	defer t.Web3SignerClientTestClient.Close()
-	wc, err := ValidateAndReturnEcdsaPubkeyBytes(t.TestAccount1.PublicKey())
-	t.Require().Nil(err)
-	fv, err := GetEphemeralForkVersion(ctx)
-	t.Require().Nil(err)
 
-	dd, err := t.Web3SignerClientTestClient.GenerateDepositData(ctx, t.TestBLSAccount, wc, fv)
-	t.Require().Nil(err)
-	payload, err := GetValidatorDepositPayload(ctx, dd)
-	t.Require().Nil(err)
-
-	from := t.TestAccount1.Address()
-	txPayload, err := extractCallMsgFromSendContractTxPayload(ctx, &from, payload)
-	t.Require().Nil(err)
-	est, err := t.Web3SignerClientTestClient.GetGasPriceEstimateForTx(ctx, txPayload)
+	est, err := t.Web3SignerClientTestClient.Web3Actions.C.SuggestGasPrice(ctx)
 	t.Require().Nil(err)
 	t.Require().NotNil(est)
 	fmt.Println(est.Uint64())
@@ -55,24 +44,15 @@ func (t *Web3SignerClientTestSuite) TestValidatorDeposit() {
 }
 
 func (t *Web3SignerClientTestSuite) TestSendEtherGasEstimates() {
-	sendEthTx := web3_actions.SendEtherPayload{
-		TransferArgs: web3_actions.TransferArgs{
-			Amount:    Finney,
-			ToAddress: t.TestAccount2.Address(),
-		},
-		GasPriceLimits: web3_actions.GasPriceLimits{},
-	}
-	from := t.TestAccount1.Address()
-	msg := extractCallMsgFromSendEtherPayload(&from, sendEthTx)
 	t.Web3SignerClientTestClient.Dial()
 	defer t.Web3SignerClientTestClient.Close()
 
-	est, err := t.Web3SignerClientTestClient.GetGasPrice(ctx)
+	est, err := t.Web3SignerClientTestClient.C.SuggestGasPrice(ctx)
 	t.Require().Nil(err)
 	t.Require().NotNil(est)
 
 	fmt.Println(est.Uint64())
-	est, err = t.Web3SignerClientTestClient.GetGasPriceEstimateForTx(ctx, msg)
+	est, err = t.Web3SignerClientTestClient.C.SuggestGasPrice(ctx)
 	t.Require().Nil(err)
 	t.Require().NotNil(est)
 	fmt.Println(est.Uint64())
@@ -84,13 +64,11 @@ func (t *Web3SignerClientTestSuite) TestSendEther() {
 	sendEthTx := web3_actions.SendEtherPayload{
 		TransferArgs: web3_actions.TransferArgs{
 			Amount:    Finney,
-			ToAddress: t.TestAccount2.Address(),
+			ToAddress: accounts.Address(t.TestAccount2.Address()),
 		},
 		GasPriceLimits: web3_actions.GasPriceLimits{},
 	}
-	from := t.TestAccount1.Address()
-	msg := extractCallMsgFromSendEtherPayload(&from, sendEthTx)
-	est, err := t.Web3SignerClientTestClient.GetGasPriceEstimateForTx(ctx, msg)
+	est, err := t.Web3SignerClientTestClient.Web3Actions.C.SuggestGasPrice(ctx)
 	t.Require().Nil(err)
 	sendEthTx.GasPrice = est
 	rx, err := t.Web3SignerClientTestClient.Send(ctx, sendEthTx)
