@@ -12,10 +12,10 @@ import (
 	zlog "github.com/rs/zerolog/log"
 	web3_types "github.com/zeus-fyi/gochain/web3/types"
 
-	"github.com/zeus-fyi/gochain/v4/common"
-	"github.com/zeus-fyi/gochain/v4/common/hexutil"
-	"github.com/zeus-fyi/gochain/v4/core/types"
-	"github.com/zeus-fyi/gochain/v4/rpc"
+	"github.com/gochain/gochain/v4/common"
+	"github.com/gochain/gochain/v4/common/hexutil"
+	"github.com/gochain/gochain/v4/core/types"
+	"github.com/gochain/gochain/v4/rpc"
 )
 
 var NotFoundErr = errors.New("not found")
@@ -34,21 +34,28 @@ type Client interface {
 	GetTransactionByHash(ctx context.Context, hash common.Hash) (*web3_types.Transaction, error)
 	// GetSnapshot returns the latest clique snapshot.
 	GetSnapshot(ctx context.Context) (*web3_types.Snapshot, error)
+	// GetTxPoolContent returns tx_mempool content.
+	GetTxPoolContent(ctx context.Context) (map[string]map[string]map[string]*web3_types.RpcTransaction, error)
 	// GetID returns unique identifying information for the network.
 	GetID(ctx context.Context) (*web3_types.ID, error)
 	// GetTransactionReceipt returns the receipt for a transaction hash.
 	GetTransactionReceipt(ctx context.Context, hash common.Hash) (*web3_types.Receipt, error)
 	// GetChainID returns the chain id for the network.
 	GetChainID(ctx context.Context) (*big.Int, error)
+	// GetBlockNumber returns the number of most recent block the client is on.
+	GetBlockNumber(ctx context.Context) (*big.Int, error)
 	// GetNetworkID returns the network id.
 	GetNetworkID(ctx context.Context) (*big.Int, error)
 	// GetGasPriceEstimateForTx returns the estimated gas cost for a given transcation
 	GetGasPriceEstimateForTx(ctx context.Context, msg web3_types.CallMsg) (*big.Int, error)
 	// GetGasPrice returns a suggested gas price.
 	GetGasPrice(ctx context.Context) (*big.Int, error)
-	// GetPendingTransactionCount returns the transaction count including pending txs.
-	// This value is also the next legal nonce.
+	// GetSyncStatus returns true if the node is syncing.
+	GetSyncStatus(ctx context.Context) (bool, error)
 	GetPendingTransactionCount(ctx context.Context, account common.Address) (uint64, error)
+	GetStorageAt(ctx context.Context, addr, slot string) (hexutil.Bytes, error)
+	// SendTransaction sends a transaction from a user
+	SendTransaction(ctx context.Context, tx *web3_types.RpcTransaction) error
 	// SendRawTransaction sends the signed raw transaction bytes.
 	SendRawTransaction(ctx context.Context, tx []byte) error
 	// SendTransaction sends a transaction.
@@ -58,6 +65,25 @@ type Client interface {
 	Close()
 	SetChainID(*big.Int)
 	SetHeader(ctx context.Context, key string, value string)
+
+	// SetBalance hardhat method
+	SetBalance(ctx context.Context, address string, balance hexutil.Big) error
+	// SetNonce hardhat method
+	SetNonce(ctx context.Context, address string, nonce hexutil.Big) error
+	// SetCode hardhat method
+	SetCode(ctx context.Context, address string, bytes string) error
+	// ImpersonateAccount hardhat method
+	ImpersonateAccount(ctx context.Context, address string) error
+	// StopImpersonatingAccount hardhat method
+	StopImpersonatingAccount(ctx context.Context, address string) error
+	// ResetNetwork hardhat method
+	ResetNetwork(ctx context.Context, rpcUrl string, blockNumber int) error
+	// GetEVMSnapshot hardhat method
+	GetEVMSnapshot(ctx context.Context) (*big.Int, error)
+	// SetStorageAt hardhat method
+	SetStorageAt(ctx context.Context, addr, slot, value string) error
+	// MineBlock hardhat method
+	MineBlock(ctx context.Context, blocksToMine hexutil.Big) error
 }
 
 // Dial returns a new client backed by dialing url (supported schemes "http", "https", "ws" and "wss").
@@ -98,6 +124,72 @@ func (c *client) Call(ctx context.Context, msg web3_types.CallMsg) ([]byte, erro
 	return result, err
 }
 
+func (c *client) MineBlock(ctx context.Context, blocksToMine hexutil.Big) error {
+	err := c.r.CallContext(ctx, nil, "hardhat_mine", blocksToMine.String())
+	return err
+}
+
+func (c *client) GetStorageAt(ctx context.Context, addr, slot string) (hexutil.Bytes, error) {
+	var result hexutil.Bytes
+	err := c.r.CallContext(ctx, &result, "eth_getStorageAt", addr, slot)
+	return result, err
+}
+
+func (c *client) SetStorageAt(ctx context.Context, addr, slot, value string) error {
+	err := c.r.CallContext(ctx, nil, "hardhat_setStorageAt", addr, slot, value)
+	return err
+}
+
+func (c *client) GetEVMSnapshot(ctx context.Context) (*big.Int, error) {
+	var result hexutil.Big
+	err := c.r.CallContext(ctx, &result, "evm_snapshot")
+	return (*big.Int)(&result), err
+}
+
+func (c *client) ResetNetwork(ctx context.Context, rpcUrl string, blockNumber int) error {
+	if rpcUrl != "" && blockNumber != 0 {
+		args := toForkingArg(rpcUrl, blockNumber)
+		return c.r.CallContext(ctx, nil, "hardhat_reset", args)
+	}
+	return c.r.CallContext(ctx, nil, "hardhat_reset")
+}
+
+func (c *client) ImpersonateAccount(ctx context.Context, address string) error {
+	var result any
+	err := c.r.CallContext(ctx, &result, "hardhat_impersonateAccount", common.HexToAddress(address))
+	return err
+}
+
+func (c *client) StopImpersonatingAccount(ctx context.Context, address string) error {
+	err := c.r.CallContext(ctx, nil, "hardhat_stopImpersonatingAccount", common.HexToAddress(address))
+	return err
+}
+
+func (c *client) SetNonce(ctx context.Context, address string, nonce hexutil.Big) error {
+	err := c.r.CallContext(ctx, nil, "hardhat_setNonce", common.HexToAddress(address), nonce.String())
+	return err
+}
+
+func (c *client) SetCode(ctx context.Context, address string, bytes string) error {
+	err := c.r.CallContext(ctx, nil, "hardhat_setCode", common.HexToAddress(address), bytes)
+	return err
+}
+
+func (c *client) SetBalance(ctx context.Context, address string, balance hexutil.Big) error {
+	err := c.r.CallContext(ctx, nil, "hardhat_setBalance", common.HexToAddress(address), balance)
+	if err != nil {
+		zlog.Err(err).Msg("SetBalance error")
+		return err
+	}
+	return err
+}
+
+func (c *client) GetNumber(ctx context.Context, address string, blockNumber *big.Int) (*big.Int, error) {
+	var result hexutil.Big
+	err := c.r.CallContext(ctx, &result, "eth_getBalance", common.HexToAddress(address), toBlockNumArg(blockNumber))
+	return (*big.Int)(&result), err
+}
+
 func (c *client) GetBalance(ctx context.Context, address string, blockNumber *big.Int) (*big.Int, error) {
 	var result hexutil.Big
 	err := c.r.CallContext(ctx, &result, "eth_getBalance", common.HexToAddress(address), toBlockNumArg(blockNumber))
@@ -114,16 +206,48 @@ func (c *client) GetCode(ctx context.Context, address string, blockNumber *big.I
 	return result, err
 }
 
-func (c *client) SendTransaction(ctx context.Context, tx *web3_types.Transaction) error {
-	args := toCallArg(web3_types.CallMsg{
-		From:     &tx.From,
-		To:       tx.To,
-		Gas:      tx.GasLimit,
-		GasPrice: tx.GasPrice,
-		Value:    tx.Value,
-		Data:     tx.Input,
-	})
-	return c.r.CallContext(ctx, nil, "eth_sendTransaction", args)
+func (c *client) SendTransaction(ctx context.Context, tx *web3_types.RpcTransaction) error {
+	var data []byte
+	if tx.Input != nil {
+		data = *tx.Input
+	}
+	callArgs := web3_types.CallMsg{
+		From: tx.From,
+		To:   tx.To,
+		Data: data,
+	}
+	if tx.Value != nil {
+		callArgs.Value = tx.Value.ToInt()
+	}
+	if tx.GasLimit != nil {
+		gasLimit := *tx.GasLimit
+		callArgs.Gas = uint64(gasLimit)
+	}
+	if tx.GasTipCap != nil {
+		callArgs.GasTipCap = tx.GasTipCap.ToInt()
+	}
+	if tx.GasFeeCap != nil {
+		callArgs.GasFeeCap = tx.GasFeeCap.ToInt()
+	}
+	if tx.GasPrice != nil {
+		callArgs.GasPrice = tx.GasPrice.ToInt()
+	}
+	args := toCallArg(callArgs)
+	err := c.r.CallContext(ctx, &tx.Hash, "eth_sendTransaction", args)
+	if err != nil {
+		zlog.Err(err).Msg("SendTransaction: CallContext")
+		return err
+	}
+	return err
+}
+
+func (c *client) GetTxPoolContent(ctx context.Context) (map[string]map[string]map[string]*web3_types.RpcTransaction, error) {
+	var txPool map[string]map[string]map[string]*web3_types.RpcTransaction
+	if err := c.r.CallContext(ctx, &txPool, "txpool_content"); err != nil {
+		zlog.Err(err).Msg("GetTxPoolContent: CallContext")
+		return nil, err
+	}
+	return txPool, nil
 }
 
 func (c *client) GetBlockByNumber(ctx context.Context, number *big.Int, includeTxs bool) (*web3_types.Block, error) {
@@ -185,6 +309,27 @@ func (c *client) GetID(ctx context.Context) (*web3_types.ID, error) {
 		return nil, err
 	}
 	return &web3_types.ID{NetworkID: netID, ChainID: (*big.Int)(chainID), GenesisHash: block.Hash}, nil
+}
+
+func (c *client) GetBlockNumber(ctx context.Context) (*big.Int, error) {
+	var result hexutil.Uint64
+	err := c.r.CallContext(ctx, &result, "eth_blockNumber")
+	if err != nil {
+		zlog.Err(err).Msg("GetBlockNumber: CallContext")
+		return nil, err
+	}
+	number := new(big.Int).SetUint64(uint64(result))
+	return number, err
+}
+
+func (c *client) GetSyncStatus(ctx context.Context) (bool, error) {
+	var result bool
+	err := c.r.CallContext(ctx, &result, "eth_syncing")
+	if err != nil {
+		zlog.Err(err).Msg("GetSyncStatus: CallContext")
+		return result, err
+	}
+	return result, err
 }
 
 func (c *client) GetNetworkID(ctx context.Context) (*big.Int, error) {
@@ -293,22 +438,22 @@ func (c *client) getBlock(ctx context.Context, method string, hashOrNum string, 
 		return nil, err
 	}
 	// Quick-verify transaction and uncle lists. This mostly helps with debugging the server.
-	if block.Sha3Uncles == types.EmptyUncleHash && len(block.Uncles) > 0 {
+	if block.Sha3Uncles.String() == types.EmptyUncleHash.String() && len(block.Uncles) > 0 {
 		err = fmt.Errorf("server returned non-empty uncle list but block header indicates no uncles")
 		zlog.Err(err).Msg("client: getBlock")
 		return nil, err
 	}
-	if block.Sha3Uncles != types.EmptyUncleHash && len(block.Uncles) == 0 {
+	if block.Sha3Uncles.String() != types.EmptyUncleHash.String() && len(block.Uncles) == 0 {
 		err = fmt.Errorf("server returned empty uncle list but block header indicates uncles")
 		zlog.Err(err).Msg("client: getBlock")
 		return nil, err
 	}
-	if block.TxsRoot == types.EmptyRootHash && block.TxCount() > 0 {
+	if block.TxsRoot.String() == types.EmptyRootHash.String() && block.TxCount() > 0 {
 		err = fmt.Errorf("server returned non-empty transaction list but block header indicates no transactions")
 		zlog.Err(err).Msg("client: getBlock")
 		return nil, err
 	}
-	if block.TxsRoot != types.EmptyRootHash && len(block.TxsRoot) == 0 {
+	if block.TxsRoot.String() != types.EmptyRootHash.String() && len(block.TxsRoot) == 0 {
 		return nil, fmt.Errorf("server returned empty transaction list but block header indicates transactions")
 	}
 	// Load uncles because they are not included in the block response.
@@ -367,6 +512,22 @@ func toCallArg(msg web3_types.CallMsg) interface{} {
 	}
 	if msg.GasPrice != nil {
 		arg["gasPrice"] = (*hexutil.Big)(msg.GasPrice)
+	}
+	if msg.GasFeeCap != nil {
+		arg["maxFeePerGas"] = (*hexutil.Big)(msg.GasFeeCap)
+	}
+	if msg.GasTipCap != nil {
+		arg["maxPriorityFeePerGas"] = (*hexutil.Big)(msg.GasTipCap)
+	}
+	return arg
+}
+
+func toForkingArg(jsonRpcURL string, blockNumber int) interface{} {
+	arg := map[string]map[string]any{
+		"forking": {
+			"jsonRpcUrl":  jsonRpcURL,
+			"blockNumber": blockNumber,
+		},
 	}
 	return arg
 }

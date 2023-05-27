@@ -43,7 +43,7 @@ func (a *Account) EcdsaPrivateKey() *ecdsa.PrivateKey {
 }
 
 func (a *Account) Address() common.Address {
-	return crypto.PubkeyToAddress(a.key.PublicKey)
+	return common.Address(crypto.PubkeyToAddress(a.key.PublicKey))
 }
 
 func (a *Account) PublicKey() string {
