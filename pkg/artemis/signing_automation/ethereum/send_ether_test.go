@@ -1,7 +1,8 @@
 package signing_automation_ethereum
 
 import (
-	"github.com/zeus-fyi/gochain/web3/web3_actions"
+	"github.com/zeus-fyi/gochain/v4/common"
+	web3_actions "github.com/zeus-fyi/gochain/web3/client"
 )
 
 func (t *Web3SignerClientTestSuite) TestEtherSend() {
@@ -10,7 +11,7 @@ func (t *Web3SignerClientTestSuite) TestEtherSend() {
 	sendEthTx := web3_actions.SendEtherPayload{
 		TransferArgs: web3_actions.TransferArgs{
 			Amount:    Finney,
-			ToAddress: t.TestAccount2.Address(),
+			ToAddress: common.Address(t.TestAccount2.Address()),
 		},
 		GasPriceLimits: web3_actions.GasPriceLimits{},
 	}

@@ -17,7 +17,6 @@ require (
 	github.com/ferranbt/fastssz v0.1.3
 	github.com/ghodss/yaml v1.0.0
 	github.com/go-resty/resty/v2 v2.7.0
-	github.com/gochain/gochain/v4 v4.2.0
 	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/google/uuid v1.3.0
 	github.com/hashicorp/go-memdb v1.3.4

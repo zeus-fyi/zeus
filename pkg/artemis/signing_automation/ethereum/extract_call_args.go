@@ -5,8 +5,8 @@ import (
 
 	"github.com/rs/zerolog/log"
 	"github.com/zeus-fyi/gochain/v4/common"
+	web3_actions "github.com/zeus-fyi/gochain/web3/client"
 	web3_types "github.com/zeus-fyi/gochain/web3/types"
-	"github.com/zeus-fyi/gochain/web3/web3_actions"
 )
 
 func extractCallMsgFromSendContractTxPayload(ctx context.Context, from *common.Address, sendContractTxPayload web3_actions.SendContractTxPayload) (web3_types.CallMsg, error) {
