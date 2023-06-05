@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/ethereum/go-ethereum/accounts/abi"
+	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/rs/zerolog/log"
 	"github.com/zeus-fyi/gochain/web3/accounts"
@@ -79,12 +80,7 @@ func ConvertArgument(abiType abi.Type, param interface{}) (interface{}, error) {
 			return nil, fmt.Errorf("floating point numbers are not valid in web3 - please use an integer or string instead (including big.Int and json.Number)")
 		}
 	case abi.AddressTy:
-		if s, ok := param.(string); ok {
-			if !accounts.IsHexAddress(s) {
-				return nil, fmt.Errorf("invalid hex address: %s", s)
-			}
-			return accounts.HexToAddress(s), nil
-		}
+		return ConvertToAddress(param)
 	case abi.SliceTy, abi.ArrayTy:
 		s, ok := param.(string)
 		if !ok {
@@ -96,13 +92,13 @@ func ConvertArgument(abiType abi.Type, param interface{}) (interface{}, error) {
 		switch abiType.Elem.T {
 
 		case abi.AddressTy:
-			arrayParams := make([]accounts.Address, len(inputArray))
+			arrayParams := make([]common.Address, len(inputArray))
 			for i, elem := range inputArray {
 				converted, err := ConvertArgument(*abiType.Elem, elem)
 				if err != nil {
 					return nil, err
 				}
-				arrayParams[i] = converted.(accounts.Address)
+				arrayParams[i] = converted.(common.Address)
 			}
 			return arrayParams, nil
 
@@ -192,4 +188,18 @@ func ConvertArgument(abiType abi.Type, param interface{}) (interface{}, error) {
 		return nil, fmt.Errorf("unsupported input type %v", abiType)
 	}
 	return param, nil
+}
+
+func ConvertToAddress(i interface{}) (common.Address, error) {
+	switch v := i.(type) {
+	case string:
+		return common.HexToAddress(v), nil
+	case common.Address:
+		return v, nil
+	case accounts.Address:
+		addr := i.(accounts.Address)
+		return common.HexToAddress(addr.Hex()), nil
+	default:
+		return common.Address{}, fmt.Errorf("input is not a  common.Address")
+	}
 }
