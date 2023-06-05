@@ -14,14 +14,19 @@ import (
 	"github.com/zeus-fyi/gochain/web3/accounts"
 )
 
+const (
+	defaultProxyUrl = "https://iris.zeus.fyi/v1/"
+	proxyHeader     = "Proxy-Relay-To"
+)
+
 type Web3Actions struct {
 	C *ethclient.Client
 	*accounts.Account
-	Headers     map[string]string
-	NodeURL     string
-	RelayTo     string
-	Network     string
-	IsAnvilNode bool
+	Headers       map[string]string
+	NodeURL       string
+	RelayProxyUrl string
+	Network       string
+	IsAnvilNode   bool
 }
 
 func (w *Web3Actions) Dial() {
@@ -29,11 +34,12 @@ func (w *Web3Actions) Dial() {
 		w.Headers = make(map[string]string)
 	}
 	nodeUrl := w.NodeURL
-	if len(w.RelayTo) > 0 {
-		relayUrlVal, rerr := url.ParseRequestURI(w.RelayTo)
+	if len(w.RelayProxyUrl) > 0 {
+		proxyRelayUrlVal, rerr := url.ParseRequestURI(w.RelayProxyUrl)
 		if rerr == nil {
-			w.Headers["Proxy-Relay-To"] = nodeUrl
-			nodeUrl = relayUrlVal.String()
+			// the node becomes the destination through the proxy now
+			w.Headers[proxyHeader] = nodeUrl
+			nodeUrl = proxyRelayUrlVal.String()
 		}
 	}
 	ctx := context.Background()
@@ -47,6 +53,13 @@ func (w *Web3Actions) Dial() {
 	}
 }
 
+func (w *Web3Actions) AddBearerToken(token string) {
+	if w.Headers == nil {
+		w.Headers = make(map[string]string)
+	}
+	w.Headers["Authorization"] = "Bearer " + token
+}
+
 func (w *Web3Actions) Close() {
 	w.C.Close()
 }
@@ -57,11 +70,19 @@ func NewWeb3ActionsClient(nodeUrl string) Web3Actions {
 	}
 }
 
-func NewWeb3ActionsClientWithRelay(nodeUrl, relayUrl string, accounts *accounts.Account) Web3Actions {
+func NewWeb3ActionsClientWithDefaultRelayProxy(nodeUrl string, accounts *accounts.Account) Web3Actions {
 	return Web3Actions{
-		NodeURL: nodeUrl,
-		RelayTo: relayUrl,
-		Account: accounts,
+		NodeURL:       nodeUrl,
+		RelayProxyUrl: defaultProxyUrl,
+		Account:       accounts,
+	}
+}
+
+func NewWeb3ActionsClientWithRelayProxy(relayProxyUrl, nodeUrl string, accounts *accounts.Account) Web3Actions {
+	return Web3Actions{
+		NodeURL:       nodeUrl,
+		RelayProxyUrl: relayProxyUrl,
+		Account:       accounts,
 	}
 }
 
