@@ -3,6 +3,7 @@ package web3_actions
 import (
 	"context"
 	"math/big"
+	"net/url"
 
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/core/types"
@@ -17,12 +18,24 @@ type Web3Actions struct {
 	*accounts.Account
 	Headers map[string]string
 	NodeURL string
+	RelayTo string
 	Network string
 }
 
 func (w *Web3Actions) Dial() {
+	if w.Headers == nil {
+		w.Headers = make(map[string]string)
+	}
+	nodeUrl := w.NodeURL
+	if len(w.RelayTo) > 0 {
+		urlVal, rerr := url.ParseRequestURI(w.RelayTo)
+		if rerr == nil {
+			w.Headers["Proxy-Relay-To"] = urlVal.String()
+			nodeUrl = urlVal.String()
+		}
+	}
 	ctx := context.Background()
-	cli, err := ethclient.DialContext(ctx, w.NodeURL)
+	cli, err := ethclient.DialContext(ctx, nodeUrl)
 	if err != nil {
 		panic(err)
 	}
@@ -39,6 +52,13 @@ func (w *Web3Actions) Close() {
 func NewWeb3ActionsClient(nodeUrl string) Web3Actions {
 	return Web3Actions{
 		NodeURL: nodeUrl,
+	}
+}
+
+func NewWeb3ActionsClientWithRelay(nodeUrl, relayUrl string) Web3Actions {
+	return Web3Actions{
+		NodeURL: nodeUrl,
+		RelayTo: relayUrl,
 	}
 }
 
