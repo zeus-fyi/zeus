@@ -28,10 +28,10 @@ func (w *Web3Actions) Dial() {
 	}
 	nodeUrl := w.NodeURL
 	if len(w.RelayTo) > 0 {
-		urlVal, rerr := url.ParseRequestURI(w.RelayTo)
+		relayUrlVal, rerr := url.ParseRequestURI(w.RelayTo)
 		if rerr == nil {
-			w.Headers["Proxy-Relay-To"] = urlVal.String()
-			nodeUrl = urlVal.String()
+			w.Headers["Proxy-Relay-To"] = nodeUrl
+			nodeUrl = relayUrlVal.String()
 		}
 	}
 	ctx := context.Background()
@@ -55,10 +55,11 @@ func NewWeb3ActionsClient(nodeUrl string) Web3Actions {
 	}
 }
 
-func NewWeb3ActionsClientWithRelay(nodeUrl, relayUrl string) Web3Actions {
+func NewWeb3ActionsClientWithRelay(nodeUrl, relayUrl string, accounts *accounts.Account) Web3Actions {
 	return Web3Actions{
 		NodeURL: nodeUrl,
 		RelayTo: relayUrl,
+		Account: accounts,
 	}
 }
 
