@@ -52,6 +52,20 @@ func (t *TopologyBaseInfraWorkload) PrintWorkload(p filepaths.Path) error {
 			return err
 		}
 	}
+	if t.Job != nil {
+		name := addPrefixAndYamlSuffixIfNotExists("job", t.Job.Name)
+		err := t.printYaml(&p, name, t.Job)
+		if err != nil {
+			return err
+		}
+	}
+	if t.CronJob != nil {
+		name := addPrefixAndYamlSuffixIfNotExists("cronjob", t.CronJob.Name)
+		err := t.printYaml(&p, name, t.CronJob)
+		if err != nil {
+			return err
+		}
+	}
 	return nil
 }
 

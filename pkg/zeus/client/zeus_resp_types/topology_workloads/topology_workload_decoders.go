@@ -7,6 +7,7 @@ import (
 	v1sm "github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v1"
 	"github.com/rs/zerolog/log"
 	v1 "k8s.io/api/apps/v1"
+	v1Batch "k8s.io/api/batch/v1"
 	v1core "k8s.io/api/core/v1"
 	v1networking "k8s.io/api/networking/v1"
 )
@@ -36,6 +37,12 @@ func (t *TopologyBaseInfraWorkload) DecodeBytes(jsonBytes []byte) error {
 	case "ServiceMonitor":
 		t.ServiceMonitor = &v1sm.ServiceMonitor{}
 		err = json.Unmarshal(jsonBytes, t.ServiceMonitor)
+	case "Job":
+		t.Job = &v1Batch.Job{}
+		err = json.Unmarshal(jsonBytes, t.Job)
+	case "CronJob":
+		t.CronJob = &v1Batch.CronJob{}
+		err = json.Unmarshal(jsonBytes, t.CronJob)
 	default:
 		err = errors.New("TopologyBaseInfraWorkload: DecodeBytes, no matching kind found")
 		log.Err(err).Msg("TopologyBaseInfraWorkload: DecodeBytes, no matching kind found")

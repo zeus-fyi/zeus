@@ -3,6 +3,7 @@ package topology_workloads
 import (
 	v1sm "github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v1"
 	v1 "k8s.io/api/apps/v1"
+	v1Batch "k8s.io/api/batch/v1"
 	v1core "k8s.io/api/core/v1"
 	v1networking "k8s.io/api/networking/v1"
 )
@@ -14,6 +15,8 @@ type TopologyBaseInfraWorkload struct {
 	*v1.StatefulSet       `json:"statefulSet"`
 	*v1networking.Ingress `json:"ingress"`
 	*v1sm.ServiceMonitor  `json:"serviceMonitor"`
+	*v1Batch.Job          `json:"job"`
+	*v1Batch.CronJob      `json:"cronJob"`
 }
 
 func NewTopologyBaseInfraWorkload() TopologyBaseInfraWorkload {
@@ -24,6 +27,8 @@ func NewTopologyBaseInfraWorkload() TopologyBaseInfraWorkload {
 		Ingress:        nil,
 		ConfigMap:      nil,
 		ServiceMonitor: nil,
+		Job:            nil,
+		CronJob:        nil,
 	}
 	return k8s
 }
