@@ -130,12 +130,11 @@ func (w *Web3Actions) GetSignedTxToDeploySmartContract(ctx context.Context, payl
 		return nil, err
 	}
 	est, err := w.C.SuggestGasPrice(ctx)
-
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("GetSignedTxToCallFunctionWithData: SetGasPriceAndLimit")
 		return nil, err
 	}
-	payload.GasLimit = est.Uint64()
+	payload.GasFeeCap = est
 	chainID, err := w.C.ChainID(ctx)
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("CallFunctionWithData: GetChainID")
@@ -148,9 +147,16 @@ func (w *Web3Actions) GetSignedTxToDeploySmartContract(ctx context.Context, payl
 		log.Ctx(ctx).Err(err).Msg("CallFunctionWithData: GetPendingTransactionCount")
 		return nil, fmt.Errorf("cannot get nonce: %v", err)
 	}
-	amount := new(big.Int).SetUint64(0)
-	tx := types.NewContractCreation(nonce, amount, payload.GasLimit, payload.GasPrice, data)
-	signedTx, err := types.SignTx(tx, types.NewEIP155Signer(chainID), w.EcdsaPrivateKey())
+	baseTx := &types.DynamicFeeTx{
+		Nonce:     nonce,
+		GasFeeCap: payload.GasPrice,
+		GasTipCap: payload.GasTipCap,
+		Gas:       payload.GasLimit,
+		Value:     payload.Amount,
+		Data:      data,
+	}
+	tx := types.NewTx(baseTx)
+	signedTx, err := types.SignTx(tx, types.LatestSignerForChainID(chainID), w.EcdsaPrivateKey())
 	if err != nil {
 		err = fmt.Errorf("cannot sign transaction: %v", err)
 		log.Ctx(ctx).Err(err).Msg("CallFunctionWithData: SignTx")

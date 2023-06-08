@@ -3,6 +3,8 @@ package web3_actions
 import (
 	"context"
 	"math/big"
+	"net/url"
+	"strings"
 
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/core/types"
@@ -12,17 +14,36 @@ import (
 	"github.com/zeus-fyi/gochain/web3/accounts"
 )
 
+const (
+	defaultProxyUrl = "https://iris.zeus.fyi/v1/"
+	proxyHeader     = "Proxy-Relay-To"
+)
+
 type Web3Actions struct {
 	C *ethclient.Client
 	*accounts.Account
-	Headers map[string]string
-	NodeURL string
-	Network string
+	Headers       map[string]string
+	NodeURL       string
+	RelayProxyUrl string
+	Network       string
+	IsAnvilNode   bool
 }
 
 func (w *Web3Actions) Dial() {
+	if w.Headers == nil {
+		w.Headers = make(map[string]string)
+	}
+	nodeUrl := w.NodeURL
+	if len(w.RelayProxyUrl) > 0 {
+		proxyRelayUrlVal, rerr := url.ParseRequestURI(w.RelayProxyUrl)
+		if rerr == nil {
+			// the node becomes the destination through the proxy now
+			w.Headers[proxyHeader] = nodeUrl
+			nodeUrl = proxyRelayUrlVal.String()
+		}
+	}
 	ctx := context.Background()
-	cli, err := ethclient.DialContext(ctx, w.NodeURL)
+	cli, err := ethclient.DialContext(ctx, nodeUrl)
 	if err != nil {
 		panic(err)
 	}
@@ -30,6 +51,13 @@ func (w *Web3Actions) Dial() {
 	for k, h := range w.Headers {
 		w.C.Client().SetHeader(k, h)
 	}
+}
+
+func (w *Web3Actions) AddBearerToken(token string) {
+	if w.Headers == nil {
+		w.Headers = make(map[string]string)
+	}
+	w.Headers["Authorization"] = "Bearer " + token
 }
 
 func (w *Web3Actions) Close() {
@@ -42,6 +70,22 @@ func NewWeb3ActionsClient(nodeUrl string) Web3Actions {
 	}
 }
 
+func NewWeb3ActionsClientWithDefaultRelayProxy(nodeUrl string, accounts *accounts.Account) Web3Actions {
+	return Web3Actions{
+		NodeURL:       nodeUrl,
+		RelayProxyUrl: defaultProxyUrl,
+		Account:       accounts,
+	}
+}
+
+func NewWeb3ActionsClientWithRelayProxy(relayProxyUrl, nodeUrl string, accounts *accounts.Account) Web3Actions {
+	return Web3Actions{
+		NodeURL:       nodeUrl,
+		RelayProxyUrl: relayProxyUrl,
+		Account:       accounts,
+	}
+}
+
 func NewWeb3ActionsClientWithAccount(nodeUrl string, account *accounts.Account) Web3Actions {
 	return Web3Actions{
 		NodeURL: nodeUrl,
@@ -49,8 +93,22 @@ func NewWeb3ActionsClientWithAccount(nodeUrl string, account *accounts.Account) 
 	}
 }
 
+func (w *Web3Actions) swapToAnvil(method string) string {
+	if w.IsAnvilNode {
+		return replacePrefix(method, "hardhat_", "anvil_")
+	}
+	return method
+}
+
+func replacePrefix(input string, prefix string, replacement string) string {
+	if strings.HasPrefix(input, prefix) {
+		return replacement + input[len(prefix):]
+	}
+	return input
+}
+
 func (w *Web3Actions) MineBlock(ctx context.Context, blocksToMine hexutil.Big) error {
-	err := w.C.Client().CallContext(ctx, nil, "hardhat_mine", blocksToMine.String())
+	err := w.C.Client().CallContext(ctx, nil, w.swapToAnvil("hardhat_mine"), blocksToMine.String())
 	return err
 }
 
@@ -61,7 +119,7 @@ func (w *Web3Actions) GetStorageAt(ctx context.Context, addr, slot string) (hexu
 }
 
 func (w *Web3Actions) SetStorageAt(ctx context.Context, addr, slot, value string) error {
-	err := w.C.Client().CallContext(ctx, nil, "hardhat_setStorageAt", addr, slot, value)
+	err := w.C.Client().CallContext(ctx, nil, w.swapToAnvil("hardhat_setStorageAt"), addr, slot, value)
 	return err
 }
 
@@ -74,34 +132,34 @@ func (w *Web3Actions) GetEVMSnapshot(ctx context.Context) (*big.Int, error) {
 func (w *Web3Actions) ResetNetwork(ctx context.Context, rpcUrl string, blockNumber int) error {
 	if rpcUrl != "" && blockNumber != 0 {
 		args := toForkingArg(rpcUrl, blockNumber)
-		return w.C.Client().CallContext(ctx, nil, "hardhat_reset", args)
+		return w.C.Client().CallContext(ctx, nil, w.swapToAnvil("hardhat_reset"), args)
 	}
-	return w.C.Client().CallContext(ctx, nil, "hardhat_reset")
+	return w.C.Client().CallContext(ctx, nil, w.swapToAnvil("hardhat_reset"))
 }
 
 func (w *Web3Actions) ImpersonateAccount(ctx context.Context, address string) error {
 	var result any
-	err := w.C.Client().CallContext(ctx, &result, "hardhat_impersonateAccount", accounts.HexToAddress(address))
+	err := w.C.Client().CallContext(ctx, &result, w.swapToAnvil("hardhat_impersonateAccount"), accounts.HexToAddress(address))
 	return err
 }
 
 func (w *Web3Actions) StopImpersonatingAccount(ctx context.Context, address string) error {
-	err := w.C.Client().CallContext(ctx, nil, "hardhat_stopImpersonatingAccount", accounts.HexToAddress(address))
+	err := w.C.Client().CallContext(ctx, nil, w.swapToAnvil("hardhat_stopImpersonatingAccount"), accounts.HexToAddress(address))
 	return err
 }
 
 func (w *Web3Actions) SetNonce(ctx context.Context, address string, nonce hexutil.Big) error {
-	err := w.C.Client().CallContext(ctx, nil, "hardhat_setNonce", accounts.HexToAddress(address), nonce.String())
+	err := w.C.Client().CallContext(ctx, nil, w.swapToAnvil("hardhat_setNonce"), accounts.HexToAddress(address), nonce.String())
 	return err
 }
 
 func (w *Web3Actions) SetCode(ctx context.Context, address string, bytes string) error {
-	err := w.C.Client().CallContext(ctx, nil, "hardhat_setCode", accounts.HexToAddress(address), bytes)
+	err := w.C.Client().CallContext(ctx, nil, w.swapToAnvil("hardhat_setCode"), accounts.HexToAddress(address), bytes)
 	return err
 }
 
 func (w *Web3Actions) SetBalance(ctx context.Context, address string, balance hexutil.Big) error {
-	err := w.C.Client().CallContext(ctx, nil, "hardhat_setBalance", accounts.HexToAddress(address), balance)
+	err := w.C.Client().CallContext(ctx, nil, w.swapToAnvil("hardhat_setBalance"), accounts.HexToAddress(address), balance)
 	if err != nil {
 		zlog.Err(err).Msg("HardHatSetBalance error")
 		return err

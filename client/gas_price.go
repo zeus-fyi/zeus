@@ -12,7 +12,7 @@ func (w *Web3Actions) SetGasPriceAndLimit(ctx context.Context, params *GasPriceL
 	defer w.C.Close()
 
 	if params.GasLimit == 0 {
-		params.GasLimit = 21000
+		params.GasLimit = 290000
 	}
 
 	if params.GasPrice == nil || params.GasPrice.Int64() == 0 {

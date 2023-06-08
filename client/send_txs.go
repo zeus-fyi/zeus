@@ -22,8 +22,6 @@ func (w *Web3Actions) Send(ctx context.Context, params SendEtherPayload) (*types
 		log.Ctx(ctx).Err(err).Msg("Send: SendTransaction")
 		return nil, fmt.Errorf("failed to send transaction: %v", err)
 	}
-	//publicKeyECDSA := w.EcdsaPublicKey()
-	//fromAddress := crypto.PubkeyToAddress(*publicKeyECDSA)
 	return signedTx, nil
 }
 
@@ -41,7 +39,5 @@ func (w *Web3Actions) SubmitSignedTxAndReturnTxData(ctx context.Context, signedT
 	if err != nil {
 		return nil, err
 	}
-	//publicKeyECDSA := w.EcdsaPublicKey()
-	//fromAddress := crypto.PubkeyToAddress(*publicKeyECDSA)
 	return signedTx, nil
 }
