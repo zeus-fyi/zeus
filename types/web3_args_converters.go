@@ -82,6 +82,10 @@ func ConvertArgument(abiType abi.Type, param interface{}) (interface{}, error) {
 	case abi.AddressTy:
 		return ConvertToAddress(param)
 	case abi.SliceTy, abi.ArrayTy:
+		_, ok := param.([][]byte)
+		if ok {
+			return param, nil
+		}
 		s, ok := param.(string)
 		if !ok {
 			return nil, fmt.Errorf("invalid array: %s", s)
@@ -90,7 +94,6 @@ func ConvertArgument(abiType abi.Type, param interface{}) (interface{}, error) {
 		s = strings.TrimSuffix(s, "]")
 		inputArray := strings.Split(s, ",")
 		switch abiType.Elem.T {
-
 		case abi.AddressTy:
 			arrayParams := make([]common.Address, len(inputArray))
 			for i, elem := range inputArray {
