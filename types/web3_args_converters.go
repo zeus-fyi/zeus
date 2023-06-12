@@ -86,6 +86,11 @@ func ConvertArgument(abiType abi.Type, param interface{}) (interface{}, error) {
 		if ok {
 			return param, nil
 		}
+		typeName := reflect.TypeOf(param).Kind()
+		if typeName == reflect.Slice {
+			return param, nil
+		}
+
 		s, ok := param.(string)
 		if !ok {
 			return nil, fmt.Errorf("invalid array: %s", s)
