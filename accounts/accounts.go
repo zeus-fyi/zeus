@@ -37,6 +37,20 @@ func ParsePrivateKey(pkHex string) (*Account, error) {
 	}, nil
 }
 
+func (a *Account) Sign(data []byte) ([]byte, error) {
+	return crypto.Sign(data, a.key)
+}
+
+func (a *Account) VerifySignature(pubkey Address, data, sig []byte) (bool, error) {
+	pubkeyVal, err := crypto.SigToPub(data[:], sig[:])
+	if err != nil {
+		log.Err(err).Msg("VerifySignature: SigToPub")
+		return false, err
+	}
+	addr := crypto.PubkeyToAddress(*pubkeyVal)
+	return addr.String() == pubkey.String(), nil
+}
+
 func (a *Account) EcdsaPrivateKey() *ecdsa.PrivateKey {
 	return a.key
 }
