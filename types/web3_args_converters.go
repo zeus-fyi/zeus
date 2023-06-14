@@ -178,7 +178,6 @@ func ConvertArgument(abiType abi.Type, param interface{}) (interface{}, error) {
 			}
 		default:
 			if s, ok := param.(string); ok {
-				fmt.Println(s)
 				val, err := hexutil.Decode(s)
 				if err != nil {
 					return nil, fmt.Errorf("failed to parse hash %q: %v", s, err)
@@ -192,6 +191,8 @@ func ConvertArgument(abiType abi.Type, param interface{}) (interface{}, error) {
 				return array.Interface(), nil
 			}
 		}
+	case abi.TupleTy:
+		return nil, fmt.Errorf("unsupported input type %v", abiType)
 	default:
 		return nil, fmt.Errorf("unsupported input type %v", abiType)
 	}

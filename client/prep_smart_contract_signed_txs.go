@@ -70,14 +70,13 @@ func (w *Web3Actions) GetSignedTxToCallFunctionWithArgs(ctx context.Context, pay
 		}
 		myabi = abiInternal
 	}
-
 	fn := myabi.Methods[payload.MethodName]
 	goParams, err := web3_types.ConvertArguments(fn.Inputs, payload.Params)
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("CallFunctionWithArgs")
 		return nil, err
 	}
-	data, err := myabi.Pack(payload.MethodName, goParams...)
+	data, err := myabi.Methods[payload.MethodName].Inputs.Pack(goParams...)
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("CallFunctionWithArgs")
 		return nil, fmt.Errorf("failed to pack values: %v", err)
