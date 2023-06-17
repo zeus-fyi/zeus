@@ -38,3 +38,40 @@ func (w *Web3Actions) ReadERC20TokenDecimals(ctx context.Context, payload SendCo
 	}
 	return int32(decimals[0].(uint8)), err
 }
+
+func (w *Web3Actions) ReadERC20TokenName(ctx context.Context, contractAddress string) (string, error) {
+	w.Dial()
+	defer w.C.Close()
+	payload := SendContractTxPayload{
+		SmartContractAddr: contractAddress,
+		ContractFile:      ERC20,
+		SendEtherPayload:  SendEtherPayload{},
+		MethodName:        "name",
+	}
+	name, err := w.GetContractConst(ctx, &payload)
+	if err != nil {
+		log.Ctx(ctx).Err(err).Msg("ReadERC20TokenName")
+		return "", err
+	}
+	return name[0].(string), err
+}
+
+func (w *Web3Actions) ReadERC20Allowance(ctx context.Context, contractAddress, owner, spender string) (*big.Int, error) {
+	w.Dial()
+	defer w.C.Close()
+	payload := SendContractTxPayload{
+		SmartContractAddr: contractAddress,
+		ContractFile:      ERC20,
+		SendEtherPayload:  SendEtherPayload{},
+		MethodName:        "allowance",
+	}
+	ownerStr := common.HexToAddress(owner)
+	spenderStr := common.HexToAddress(spender)
+	payload.Params = []interface{}{ownerStr, spenderStr}
+	balance, err := w.GetContractConst(ctx, &payload)
+	if err != nil {
+		log.Ctx(ctx).Err(err).Msg("ReadERC20Allowance")
+		return new(big.Int), err
+	}
+	return balance[0].(*big.Int), err
+}

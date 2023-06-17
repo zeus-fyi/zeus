@@ -56,6 +56,9 @@ func ConvertArgument(abiType abi.Type, param interface{}) (interface{}, error) {
 			return val, nil
 		}
 	case abi.UintTy, abi.IntTy:
+		if _, ok := param.(*big.Int); ok {
+			return param, nil
+		}
 		if j, ok := param.(json.Number); ok {
 			param = string(j)
 		}
@@ -192,7 +195,7 @@ func ConvertArgument(abiType abi.Type, param interface{}) (interface{}, error) {
 			}
 		}
 	case abi.TupleTy:
-		return nil, fmt.Errorf("unsupported input type %v", abiType)
+		return param, nil
 	default:
 		return nil, fmt.Errorf("unsupported input type %v", abiType)
 	}

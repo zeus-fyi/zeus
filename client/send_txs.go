@@ -35,7 +35,7 @@ func (w *Web3Actions) SendSignedTransaction(ctx context.Context, signedTx *types
 func (w *Web3Actions) SubmitSignedTxAndReturnTxData(ctx context.Context, signedTx *types.Transaction) (*types.Transaction, error) {
 	w.Dial()
 	defer w.C.Close()
-	err := w.SendSignedTransaction(ctx, signedTx)
+	err := w.C.SendTransaction(ctx, signedTx)
 	if err != nil {
 		return nil, err
 	}
