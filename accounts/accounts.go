@@ -58,6 +58,7 @@ func (a *Account) Sign(data []byte) ([]byte, error) {
 }
 
 func (a *Account) VerifySignature(pubkey Address, data, sig []byte) (bool, error) {
+	sig[64] -= 27 // Transform yellow paper V from 27/28 to 0/1
 	pubkeyVal, err := crypto.SigToPub(data[:], sig[:])
 	if err != nil {
 		log.Err(err).Msg("VerifySignature: SigToPub")
