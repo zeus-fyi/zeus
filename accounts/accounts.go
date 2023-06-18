@@ -38,7 +38,23 @@ func ParsePrivateKey(pkHex string) (*Account, error) {
 }
 
 func (a *Account) Sign(data []byte) ([]byte, error) {
-	return crypto.Sign(data, a.key)
+	signedData, err := crypto.Sign(data, a.key)
+	if err != nil {
+		log.Err(err).Msg("Sign: crypto.Sign")
+		return nil, err
+	}
+	/*
+		// EcRecover returns the address for the account that was used to create the signature.
+		// Note, this function is compatible with eth_sign and personal_sign. As such it recovers
+		// the address of:
+		// hash = keccak256("\x19Ethereum Signed Message:\n"${message length}${message})
+		// addr = ecrecover(hash, signature)
+		//
+		// Note, the signature must conform to the secp256k1 curve R, S and V values, where
+		// the V value must be be 27 or 28 for legacy reasons.
+	*/
+	signedData[64] += 27
+	return signedData, nil
 }
 
 func (a *Account) VerifySignature(pubkey Address, data, sig []byte) (bool, error) {
