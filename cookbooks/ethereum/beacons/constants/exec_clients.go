@@ -6,6 +6,7 @@ const (
 	ZeusExecClient          = "zeus-exec-client"
 	Erigon                  = "erigon"
 	Geth                    = "geth"
+	Reth                    = "reth"
 	Nethermind              = "nethermind"
 )
 
