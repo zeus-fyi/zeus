@@ -36,6 +36,12 @@ const (
 	gethDockerImage       = "ethereum/client-go:v1.11.6"
 
 	gethDockerImageCapella = "ethpandaops/geth:master"
+
+	rethDockerImage = "ghcr.io/paradigmxyz/reth:v0.1.0-alpha.1"
+	rethMainnet     = "reth"
+	rethDownload    = "downloadReth"
+
+	execClientRethDiskSizeMainnet = "3Ti"
 )
 
 func GetExecClientNetworkConfig(execClient, network string, choreographySecretsExist bool) zeus_cluster_config_drivers.ComponentBaseDefinition {
@@ -59,6 +65,11 @@ func GetExecClientNetworkConfig(execClient, network string, choreographySecretsE
 			herculesStartup = herculesEphemeral + ".sh"
 			downloadStartup = downloadGethEphemeral + ".sh"
 		}
+	case client_consts.Reth:
+		diskSize = execClientRethDiskSizeMainnet
+		cmConfig = rethMainnet
+		dockerImage = rethDockerImage
+		downloadStartup = rethDownload + ".sh"
 	}
 	cp := filepaths.Path{
 		PackageName: "",

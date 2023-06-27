@@ -23,13 +23,33 @@ data:
       --authrpc.jwtsecret=/data/jwt.hex \
       --authrpc.addr=0.0.0.0 \
       --authrpc.port=8551 \
-      --authrpc.vhosts=* 
+      --authrpc.vhosts=*
+  reth.sh: |-
+    #!/bin/sh
+    exec reth node \
+    --datadir=/data \
+    --authrpc.jwtsecret /data/jwt.hex \
+    --authrpc.addr=0.0.0.0 \
+    --authrpc.port=8551 \
+    --metrics 0.0.0.0:9001 \
+    --http \
+    --http.addr=0.0.0.0 \
+    --http.port=8545 \
+    --http.vhosts=* \
+    --http.corsdomain=* \
+    --ws \
+    --ws.addr=0.0.0.0 \
+    --ws.port=8546 \
+    --ws.origins=*
   download.sh: |-
     #!/bin/sh
     exec snapshots --downloadURL="" --clientName="geth" --protocol="eth" --network="mainnet" --workload-type="beacon" --bearer="${BEARER}"
   downloadGethEphemeral.sh: |-
     #!/bin/sh
     exec snapshots --downloadURL="" --clientName="gethEphemeral" --network="ephemery" --protocol="eth" --workload-type="beacon"
+  downloadReth.sh: |-
+    #!/bin/sh
+    exec snapshots --downloadURL="" --clientName="reth" --network="mainnet" --protocol="eth" --workload-type="beacon"
   pause.sh: |-
     #!/bin/sh
     exec sleep 100000000000000000
