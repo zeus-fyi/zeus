@@ -61,12 +61,12 @@ var (
 			"beaconIngress": BeaconIngressSkeletonBaseConfig,
 		},
 	}
-	BearerTokenSecretFromChoreography = zeus_topology_config_drivers.MakeEnvVar("choreography", "BEARER", "bearer")
+	BearerTokenSecretFromChoreography = zeus_topology_config_drivers.MakeEnvVar("BEARER", "bearer", "choreography")
 )
 
 func GetClientClusterDef(consensusClient, execClient, network string) zeus_cluster_config_drivers.ClusterDefinition {
 	return zeus_cluster_config_drivers.ClusterDefinition{
-		ClusterClassName: "ethereumBeacon" + cases.Title(language.English).String(network),
+		ClusterClassName: "ethereumBeacon" + cases.Title(language.English).String(network) + cases.Title(language.English).String(consensusClient) + cases.Title(language.English).String(execClient),
 		ComponentBases:   GetComponentBases(consensusClient, execClient, network),
 	}
 }
