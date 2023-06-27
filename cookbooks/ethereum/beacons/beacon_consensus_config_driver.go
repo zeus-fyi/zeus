@@ -18,7 +18,7 @@ const (
 	LighthouseEphemeral         = "lighthouseEphemeral"
 	downloadLighthouseEphemeral = "downloadLighthouseEphemeral"
 
-	lighthouseDockerImage        = "sigp/lighthouse:v4.1.0"
+	lighthouseDockerImage        = "sigp/lighthouse:v4.2.0"
 	lighthouseDockerImageCapella = "sigp/lighthouse:capella"
 
 	LodestarGoerli      = "lodestarGoerli"
