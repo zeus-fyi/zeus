@@ -63,8 +63,35 @@ func (t *BeaconCookbookTestSuite) TestClusterSetupWithCfgDriver() {
 	t.Require().Nil(err)
 }
 
+func (t *BeaconCookbookTestSuite) TestLighthouseRethClusterSetupWithCfgDriver() {
+	cd := GetClientClusterDef(client_consts.Lighthouse, client_consts.Reth, hestia_req_types.Mainnet)
+	gcd := cd.BuildClusterDefinitions()
+	t.Assert().NotEmpty(gcd)
+	fmt.Println(gcd)
+
+	gdr := cd.GenerateDeploymentRequest()
+	t.Assert().NotEmpty(gdr)
+	fmt.Println(gdr)
+
+	sbDefs, err := cd.GenerateSkeletonBaseCharts()
+	t.Require().Nil(err)
+	t.Assert().NotEmpty(sbDefs)
+	_, err = cd.UploadChartsFromClusterDefinition(ctx, t.ZeusTestClient, true)
+	t.Require().Nil(err)
+}
+
 func (t *BeaconCookbookTestSuite) TestClusterDefinitionCreationV2() {
 	cd := GetClientClusterDef(client_consts.Lighthouse, client_consts.Geth, hestia_req_types.Mainnet)
+	gcd := cd.BuildClusterDefinitions()
+	t.Assert().NotEmpty(gcd)
+	fmt.Println(gcd)
+
+	err := gcd.CreateClusterClassDefinitions(context.Background(), t.ZeusTestClient)
+	t.Require().Nil(err)
+}
+
+func (t *BeaconCookbookTestSuite) TestLighthouseRethClusterDefinitionCreation() {
+	cd := GetClientClusterDef(client_consts.Lighthouse, client_consts.Reth, hestia_req_types.Mainnet)
 	gcd := cd.BuildClusterDefinitions()
 	t.Assert().NotEmpty(gcd)
 	fmt.Println(gcd)
