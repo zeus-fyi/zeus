@@ -20,6 +20,8 @@ func ChainDownload(ctx context.Context, w WorkloadInfo) {
 			switch w.Network {
 			case "mainnet":
 				switch clientName {
+				case "reth":
+					// todo: add reth download
 				case "geth":
 					_, err := rc.R().SetResult(&preSignedURL).Get("/v1/ethereum/mainnet/geth")
 					if err != nil {
