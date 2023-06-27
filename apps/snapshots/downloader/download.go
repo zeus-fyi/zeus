@@ -14,6 +14,9 @@ const poseidonEndpoint = "https://poseidon.zeus.fyi"
 
 func ChainDownload(ctx context.Context, w WorkloadInfo) {
 	if w.WorkloadType == "beacon" {
+		if len(bearer) <= 0 {
+			return
+		}
 		rc := resty_base.GetBaseRestyClient(poseidonEndpoint, bearer)
 		switch w.Protocol {
 		case "eth", "ethereum":
