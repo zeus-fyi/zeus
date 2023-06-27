@@ -114,6 +114,7 @@ func GetConsensusClientNetworkConfig(consensusClient, network string, choreograp
 			memSize = consensusClientEphemeralRequestMemory
 		case hestia_req_types.Mainnet:
 			dockerImage = lighthouseDockerImage
+			cmConfig = LighthouseMainnet
 		}
 
 	}

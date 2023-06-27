@@ -14,6 +14,7 @@ const (
 	consensusStorageDiskSizeGoerli    = "100Gi"
 	consensusStorageDiskSizeMainnet   = "300Gi"
 
+	LighthouseMainnet           = "lighthouse"
 	LodestarEphemeral           = "lodestarEphemeral"
 	LighthouseEphemeral         = "lighthouseEphemeral"
 	downloadLighthouseEphemeral = "downloadLighthouseEphemeral"
