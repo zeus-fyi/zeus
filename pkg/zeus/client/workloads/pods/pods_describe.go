@@ -1,4 +1,4 @@
-package zeus_client
+package pods_client
 
 import (
 	"context"
@@ -12,7 +12,7 @@ import (
 	v1 "k8s.io/api/core/v1"
 )
 
-func (z *ZeusClient) GetPods(ctx context.Context, par zeus_pods_reqs.PodActionRequest) (*v1.PodList, error) {
+func (z *PodsClient) GetPods(ctx context.Context, par zeus_pods_reqs.PodActionRequest) (*v1.PodList, error) {
 	par.Action = zeus_pods_reqs.GetPods
 
 	pl := &v1.PodList{}
@@ -32,7 +32,7 @@ func (z *ZeusClient) GetPods(ctx context.Context, par zeus_pods_reqs.PodActionRe
 	return pl, err
 }
 
-func (z *ZeusClient) GetPodsAudit(ctx context.Context, par zeus_pods_reqs.PodActionRequest) (zeus_pods_resp.PodsSummary, error) {
+func (z *PodsClient) GetPodsAudit(ctx context.Context, par zeus_pods_reqs.PodActionRequest) (zeus_pods_resp.PodsSummary, error) {
 	par.Action = zeus_pods_reqs.DescribeAudit
 
 	pl := zeus_pods_resp.PodsSummary{}

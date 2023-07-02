@@ -1,4 +1,4 @@
-package zeus_client
+package pods_client
 
 import (
 	"context"
@@ -12,7 +12,7 @@ import (
 
 // GetPodLogs will use this filter by default unless you provide an override
 // filter request.FilterOpts.StartsWith = request.PodName
-func (z *ZeusClient) GetPodLogs(ctx context.Context, par zeus_pods_reqs.PodActionRequest) ([]byte, error) {
+func (z *PodsClient) GetPodLogs(ctx context.Context, par zeus_pods_reqs.PodActionRequest) ([]byte, error) {
 	par.Action = zeus_pods_reqs.GetPodLogs
 	resp, err := z.R().
 		SetBody(par).

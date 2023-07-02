@@ -1,4 +1,4 @@
-package zeus_client
+package pods_client
 
 import (
 	"context"
@@ -13,7 +13,7 @@ import (
 
 // PortForwardReqToPods will use this filter by default if you specify a pod name without your own custom filter override
 // filter request.FilterOpts.StartsWith = request.PodName
-func (z *ZeusClient) PortForwardReqToPods(ctx context.Context, par zeus_pods_reqs.PodActionRequest) (zeus_pods_resp.ClientResp, error) {
+func (z *PodsClient) PortForwardReqToPods(ctx context.Context, par zeus_pods_reqs.PodActionRequest) (zeus_pods_resp.ClientResp, error) {
 	par.Action = zeus_pods_reqs.PortForwardToAllMatchingPods
 
 	clientResponses := zeus_pods_resp.ClientResp{}

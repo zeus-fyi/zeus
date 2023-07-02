@@ -1,11 +1,15 @@
-package zeus_client
+package pods_client
 
 import (
+	"context"
+
 	strings_filter "github.com/zeus-fyi/zeus/pkg/utils/strings"
 	zeus_pods_reqs "github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_req_types/pods"
 )
 
-func (t *ZeusClientTestSuite) TestPortForwardReqToPods() {
+var ctx = context.Background()
+
+func (t *PodsClientTestSuite) TestPortForwardReqToPods() {
 	deployKnsReq.Namespace = "ethereum"
 
 	cliReq := zeus_pods_reqs.ClientRequest{

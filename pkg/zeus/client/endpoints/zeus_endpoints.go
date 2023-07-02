@@ -5,6 +5,10 @@ const (
 	InfraCreateV1Path = "/v1/infra/create"
 	// InfraCreateClassV1Path creates a class definition
 	InfraCreateClassV1Path = "/v1/infra/class/create"
+	// InfraCreateMatrixV1Path creates a matrix definition
+	InfraCreateMatrixV1Path = "/v1/infra/matrix/create"
+	// InfraCreateSystemV1Path creates a system definition
+	InfraCreateSystemV1Path = "/v1/infra/system/create"
 	// InfraAddBasesToClassV1Path adds base relationship to class
 	InfraAddBasesToClassV1Path = "/v1/infra/class/bases/create"
 	// InfraAddSkeletonBasesToBaseClassV1Path adds skeleton base relationship to base class

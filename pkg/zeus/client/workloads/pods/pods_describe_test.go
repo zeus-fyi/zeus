@@ -1,10 +1,10 @@
-package zeus_client
+package pods_client
 
 import (
 	zeus_pods_reqs "github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_req_types/pods"
 )
 
-func (t *ZeusClientTestSuite) TestGetPods() {
+func (t *PodsClientTestSuite) TestGetPods() {
 	deployKnsReq.Namespace = "ethereum"
 	par := zeus_pods_reqs.PodActionRequest{
 		TopologyDeployRequest: deployKnsReq,
