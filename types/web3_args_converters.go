@@ -56,6 +56,9 @@ func ConvertArgument(abiType abi.Type, param interface{}) (interface{}, error) {
 			return val, nil
 		}
 	case abi.UintTy, abi.IntTy:
+		if _, ok := param.(*big.Int); ok {
+			return param, nil
+		}
 		if j, ok := param.(json.Number); ok {
 			param = string(j)
 		}
@@ -82,6 +85,15 @@ func ConvertArgument(abiType abi.Type, param interface{}) (interface{}, error) {
 	case abi.AddressTy:
 		return ConvertToAddress(param)
 	case abi.SliceTy, abi.ArrayTy:
+		_, ok := param.([][]byte)
+		if ok {
+			return param, nil
+		}
+		typeName := reflect.TypeOf(param).Kind()
+		if typeName == reflect.Slice {
+			return param, nil
+		}
+
 		s, ok := param.(string)
 		if !ok {
 			return nil, fmt.Errorf("invalid array: %s", s)
@@ -90,7 +102,6 @@ func ConvertArgument(abiType abi.Type, param interface{}) (interface{}, error) {
 		s = strings.TrimSuffix(s, "]")
 		inputArray := strings.Split(s, ",")
 		switch abiType.Elem.T {
-
 		case abi.AddressTy:
 			arrayParams := make([]common.Address, len(inputArray))
 			for i, elem := range inputArray {
@@ -170,7 +181,6 @@ func ConvertArgument(abiType abi.Type, param interface{}) (interface{}, error) {
 			}
 		default:
 			if s, ok := param.(string); ok {
-				fmt.Println(s)
 				val, err := hexutil.Decode(s)
 				if err != nil {
 					return nil, fmt.Errorf("failed to parse hash %q: %v", s, err)
@@ -184,6 +194,8 @@ func ConvertArgument(abiType abi.Type, param interface{}) (interface{}, error) {
 				return array.Interface(), nil
 			}
 		}
+	case abi.TupleTy:
+		return param, nil
 	default:
 		return nil, fmt.Errorf("unsupported input type %v", abiType)
 	}

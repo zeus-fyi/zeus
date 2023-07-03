@@ -27,6 +27,8 @@ const (
 	Resume    = "resume"
 	Upgrade   = "upgrade"
 	Approve   = "approve"
+	Name      = "name"
+	Symbol    = "symbol"
 )
 
 func ListContract(ctx context.Context, contractFile string) error {

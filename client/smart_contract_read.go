@@ -53,7 +53,7 @@ func (w *Web3Actions) CallConstantFunction(ctx context.Context, payload *SendCon
 		return nil, err
 	}
 	// TODO: calling a function on a contract errors on unpacking, it should probably know it's not a contract before hand if it can
-	// fmt.Printf("RESPONSE: %v\n", string(res))
+	//fmt.Printf("RESPONSE: %v\n", hexutil.Encode(res))
 	vals, err := fn.Outputs.UnpackValues(res)
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("CallConstantFunction: UnpackValues")
@@ -62,7 +62,7 @@ func (w *Web3Actions) CallConstantFunction(ctx context.Context, payload *SendCon
 	return convertOutputParams(vals), nil
 }
 
-func (w *Web3Actions) GetContractDecimals(ctx context.Context, contractAddress string) (int32, error) {
+func (w *Web3Actions) GetContractDecimals(ctx context.Context, contractAddress string) (int, error) {
 	payload := SendContractTxPayload{
 		SmartContractAddr: contractAddress,
 		ContractFile:      ERC20,
@@ -82,5 +82,47 @@ func (w *Web3Actions) GetContractDecimals(ctx context.Context, contractAddress s
 		return 0, derr
 	}
 	contractDecimals := int32(decimals[0].(uint8))
-	return contractDecimals, derr
+	return int(contractDecimals), derr
+}
+
+func (w *Web3Actions) GetContractName(ctx context.Context, contractAddress string) (string, error) {
+	payload := SendContractTxPayload{
+		SmartContractAddr: contractAddress,
+		ContractFile:      ERC20,
+		SendEtherPayload:  SendEtherPayload{},
+		MethodName:        Name,
+		Params:            nil,
+	}
+	name, err := w.GetContractConst(ctx, &payload)
+	if err != nil {
+		log.Ctx(ctx).Err(err).Msg("Web3Actions: GetContractName")
+		return "", err
+	}
+	dLen := len(name)
+	if dLen != 1 {
+		return "", errors.New("contract call has unexpected return slice size")
+	}
+	nameStr := name[0].(string)
+	return nameStr, err
+}
+
+func (w *Web3Actions) GetContractSymbol(ctx context.Context, contractAddress string) (string, error) {
+	payload := SendContractTxPayload{
+		SmartContractAddr: contractAddress,
+		ContractFile:      ERC20,
+		SendEtherPayload:  SendEtherPayload{},
+		MethodName:        Symbol,
+		Params:            nil,
+	}
+	sym, err := w.GetContractConst(ctx, &payload)
+	if err != nil {
+		log.Ctx(ctx).Err(err).Msg("Web3Actions: GetContractSymbol")
+		return "", err
+	}
+	dLen := len(sym)
+	if dLen != 1 {
+		return "", errors.New("contract call has unexpected return slice size")
+	}
+	symStr := sym[0].(string)
+	return symStr, err
 }
