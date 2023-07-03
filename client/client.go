@@ -15,8 +15,9 @@ import (
 )
 
 const (
-	defaultProxyUrl = "https://iris.zeus.fyi/v1/"
-	proxyHeader     = "Proxy-Relay-To"
+	defaultProxyUrl   = "https://iris.zeus.fyi/v1/"
+	proxyHeader       = "Proxy-Relay-To"
+	SessionLockHeader = "Session-Lock-ID"
 )
 
 type Web3Actions struct {
@@ -51,6 +52,13 @@ func (w *Web3Actions) Dial() {
 	for k, h := range w.Headers {
 		w.C.Client().SetHeader(k, h)
 	}
+}
+
+func (w *Web3Actions) AddSessionLockHeader(sessionID string) {
+	if w.Headers == nil {
+		w.Headers = make(map[string]string)
+	}
+	w.Headers[SessionLockHeader] = sessionID
 }
 
 func (w *Web3Actions) AddBearerToken(token string) {
