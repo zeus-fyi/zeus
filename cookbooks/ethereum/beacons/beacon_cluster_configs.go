@@ -2,7 +2,7 @@ package ethereum_beacon_cookbooks
 
 import (
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
-	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_resp_types/topology_workloads"
+	"github.com/zeus-fyi/zeus/zeus/client/zeus_resp_types/topology_workloads"
 )
 
 func ConfigEphemeralLighthouseGethBeacon(cp, ep, ing filepaths.Path, withIngress bool) {

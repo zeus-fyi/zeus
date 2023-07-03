@@ -6,7 +6,6 @@ import (
 
 	validator_cookbooks "github.com/zeus-fyi/zeus/cookbooks/ethereum/validators"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
-	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_req_types"
 )
 
 var (

@@ -2,7 +2,7 @@ package artemis_client
 
 import (
 	"github.com/zeus-fyi/zeus/pkg/crypto/ecdsa"
-	resty_base "github.com/zeus-fyi/zeus/pkg/zeus/client/base"
+	resty_base "github.com/zeus-fyi/zeus/zeus/client/base"
 )
 
 type ArtemisClient struct {

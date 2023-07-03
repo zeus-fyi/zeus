@@ -4,7 +4,6 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	v1_choreography "github.com/zeus-fyi/zeus/choreography/api/v1"
-	zeus_client "github.com/zeus-fyi/zeus/pkg/zeus/client"
 )
 
 var (

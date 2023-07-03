@@ -3,8 +3,6 @@ package web3signer_cookbooks
 import (
 	"context"
 
-	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_req_types"
-	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_resp_types/topology_workloads"
 	zeus_topology_config_drivers "github.com/zeus-fyi/zeus/pkg/zeus/workload_config_drivers"
 )
 

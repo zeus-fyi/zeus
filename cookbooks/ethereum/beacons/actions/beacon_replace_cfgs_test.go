@@ -1,6 +1,6 @@
 package beacon_actions
 
-import "github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_req_types"
+import "github.com/zeus-fyi/zeus/zeus/client/zeus_req_types"
 
 var deployConsensusKnsReq = zeus_req_types.TopologyDeployRequest{
 	TopologyID: 1669171061885689000,

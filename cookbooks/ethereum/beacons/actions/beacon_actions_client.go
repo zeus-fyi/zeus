@@ -3,13 +3,14 @@ package beacon_actions
 import (
 	client_consts "github.com/zeus-fyi/zeus/cookbooks/ethereum/beacons/constants"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
-	zeus_client "github.com/zeus-fyi/zeus/pkg/zeus/client"
-	resty_base "github.com/zeus-fyi/zeus/pkg/zeus/client/base"
-	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_req_types"
+	resty_base "github.com/zeus-fyi/zeus/zeus/client/base"
+	pods_client "github.com/zeus-fyi/zeus/zeus/client/workloads/pods"
+	"github.com/zeus-fyi/zeus/zeus/client/zeus_req_types"
 )
 
 type BeaconActionsClient struct {
-	zeus_client.ZeusClient
+	pods_client.PodsClient
+
 	BeaconKnsReq    zeus_req_types.TopologyDeployRequest
 	PrintPath       filepaths.Path
 	ConfigPaths     filepaths.Path
@@ -30,6 +31,7 @@ func NewDefaultBeaconActionsClient(bearer string, kCtxNs zeus_req_types.Topology
 	ba := NewBeaconActionsClient(ZeusEndpoint, bearer, kCtxNs)
 	ba.ConsensusClient = client_consts.ZeusConsensusClient
 	ba.ExecClient = client_consts.ZeusExecClient
+	ba.PodsClient = pods_client.NewPodsClientFromZeusClient(ba.ZeusClient)
 	return ba
 }
 

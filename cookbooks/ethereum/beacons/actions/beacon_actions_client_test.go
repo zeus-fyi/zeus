@@ -7,9 +7,9 @@ import (
 
 	"github.com/stretchr/testify/suite"
 	"github.com/zeus-fyi/zeus/cookbooks"
-	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_req_types"
 	"github.com/zeus-fyi/zeus/test/configs"
 	"github.com/zeus-fyi/zeus/test/test_suites"
+	"github.com/zeus-fyi/zeus/zeus/client/zeus_req_types"
 )
 
 var ctx = context.Background()

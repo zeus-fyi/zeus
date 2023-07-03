@@ -7,7 +7,7 @@ import (
 	"github.com/rs/zerolog/log"
 	client_consts "github.com/zeus-fyi/zeus/cookbooks/ethereum/beacons/constants"
 	strings_filter "github.com/zeus-fyi/zeus/pkg/utils/strings"
-	zeus_pods_reqs "github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_req_types/pods"
+	zeus_pods_reqs "github.com/zeus-fyi/zeus/zeus/client/zeus_req_types/pods"
 	v1 "k8s.io/api/core/v1"
 )
 

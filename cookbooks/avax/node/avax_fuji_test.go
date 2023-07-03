@@ -2,8 +2,6 @@ package avax_node_cookbooks
 
 import (
 	"fmt"
-
-	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_req_types"
 )
 
 func (t *AvaxCookbookTestSuite) TestFujiClusterDeploy() {

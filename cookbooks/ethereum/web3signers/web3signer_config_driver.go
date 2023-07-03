@@ -1,9 +1,5 @@
 package web3signer_cookbooks
 
-import (
-	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_resp_types/topology_workloads"
-)
-
 const (
 	web3SignerClient      = "zeus-web3signer"
 	web3signerDockerImage = "consensys/web3signer:22.11"

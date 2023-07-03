@@ -7,10 +7,6 @@ import (
 	"github.com/rs/zerolog/log"
 	client_consts "github.com/zeus-fyi/zeus/cookbooks/ethereum/beacons/constants"
 	strings_filter "github.com/zeus-fyi/zeus/pkg/utils/strings"
-	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_common_types"
-	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_req_types"
-	zeus_pods_reqs "github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_req_types/pods"
-	zeus_pods_resp "github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_resp_types/pods"
 )
 
 func (w *Web3SignerActionsClient) EnableWeb3SignerLighthouse(ctx context.Context, kns zeus_common_types.CloudCtxNs, w3req []LighthouseWeb3SignerRequest, authToken string) (zeus_pods_resp.ClientResp, error) {

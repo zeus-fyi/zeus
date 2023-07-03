@@ -3,8 +3,8 @@ package v1_hades_workloads
 import (
 	"github.com/labstack/echo/v4"
 	hades_core "github.com/zeus-fyi/zeus/pkg/hades/core"
-	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_common_types"
-	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_resp_types/topology_workloads"
+	"github.com/zeus-fyi/zeus/zeus/client/zeus_common_types"
+	"github.com/zeus-fyi/zeus/zeus/client/zeus_resp_types/topology_workloads"
 )
 
 var Hades = hades_core.Hades{}

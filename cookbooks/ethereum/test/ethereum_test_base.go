@@ -8,7 +8,6 @@ import (
 	artemis_client "github.com/zeus-fyi/zeus/pkg/artemis/client"
 	signing_automation_ethereum "github.com/zeus-fyi/zeus/pkg/artemis/signing_automation/ethereum"
 	"github.com/zeus-fyi/zeus/pkg/crypto/ecdsa"
-	zeus_client "github.com/zeus-fyi/zeus/pkg/zeus/client"
 	"github.com/zeus-fyi/zeus/test/configs"
 	"github.com/zeus-fyi/zeus/test/test_suites"
 )
