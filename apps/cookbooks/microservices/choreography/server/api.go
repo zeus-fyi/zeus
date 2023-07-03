@@ -4,7 +4,8 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	v1_choreography "github.com/zeus-fyi/zeus/choreography/api/v1"
-	zeus_client "github.com/zeus-fyi/zeus/pkg/zeus/client"
+	zeus_client "github.com/zeus-fyi/zeus/zeus/z_client"
+	pods_client "github.com/zeus-fyi/zeus/zeus/z_client/workloads/pods"
 )
 
 var (
@@ -15,7 +16,7 @@ var (
 func Api() {
 	cfg.Host = "0.0.0.0"
 	srv := NewChoreography(cfg)
-	v1_choreography.ZeusClient = zeus_client.NewDefaultZeusClient(bearer)
+	v1_choreography.PodsClient = pods_client.NewPodsClientFromZeusClient(zeus_client.NewDefaultZeusClient(bearer))
 	srv.E = v1_choreography.Routes(srv.E)
 	srv.Start()
 }

@@ -1,6 +1,6 @@
 package beacon_actions
 
-import "github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_common_types"
+import "github.com/zeus-fyi/zeus/zeus/z_client/zeus_common_types"
 
 func (t *BeaconActionsTestSuite) TestConsensusClientPodKill() {
 	t.BeaconActionsClient.BeaconKnsReq.CloudCtxNs = zeus_common_types.CloudCtxNs{

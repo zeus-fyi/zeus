@@ -2,9 +2,9 @@ package ethereum_beacon_cookbooks
 
 import (
 	choreography_cookbooks "github.com/zeus-fyi/zeus/cookbooks/microservices/choreography"
-	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_common_types"
-	zeus_cluster_config_drivers "github.com/zeus-fyi/zeus/pkg/zeus/cluster_config_drivers"
-	zeus_topology_config_drivers "github.com/zeus-fyi/zeus/pkg/zeus/workload_config_drivers"
+	zeus_cluster_config_drivers "github.com/zeus-fyi/zeus/zeus/cluster_config_drivers"
+	zeus_topology_config_drivers "github.com/zeus-fyi/zeus/zeus/workload_config_drivers"
+	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_common_types"
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
 )

@@ -6,9 +6,10 @@ import (
 
 	"github.com/rs/zerolog/log"
 	strings_filter "github.com/zeus-fyi/zeus/pkg/utils/strings"
-	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_common_types"
-	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_req_types"
-	zeus_pods_reqs "github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_req_types/pods"
+	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_common_types"
+	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_req_types"
+
+	zeus_pods_reqs "github.com/zeus-fyi/zeus/zeus/z_client/zeus_req_types/pods"
 )
 
 type GetKeystoresResp struct {

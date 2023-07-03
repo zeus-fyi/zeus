@@ -6,10 +6,11 @@ import (
 
 	"github.com/rs/zerolog/log"
 	client_consts "github.com/zeus-fyi/zeus/cookbooks/ethereum/beacons/constants"
-	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_common_types"
-	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_req_types"
-	zeus_config_map_reqs "github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_req_types/config_maps"
-	zeus_pods_reqs "github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_req_types/pods"
+	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_common_types"
+	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_req_types"
+
+	zeus_config_map_reqs "github.com/zeus-fyi/zeus/zeus/z_client/zeus_req_types/config_maps"
+	zeus_pods_reqs "github.com/zeus-fyi/zeus/zeus/z_client/zeus_req_types/pods"
 )
 
 // set your own topologyID here after uploading a chart workload

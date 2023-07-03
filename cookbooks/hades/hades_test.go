@@ -6,8 +6,8 @@ import (
 
 	"github.com/stretchr/testify/suite"
 	"github.com/zeus-fyi/zeus/cookbooks"
-	zeus_client "github.com/zeus-fyi/zeus/pkg/zeus/client"
 	"github.com/zeus-fyi/zeus/test/test_suites"
+	zeus_client "github.com/zeus-fyi/zeus/zeus/z_client"
 )
 
 type HadesCookbookTestSuite struct {

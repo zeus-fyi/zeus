@@ -3,7 +3,7 @@ package ethereum_beacon_cookbooks
 import (
 	"errors"
 
-	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_resp_types/topology_workloads"
+	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_resp_types/topology_workloads"
 	"k8s.io/apimachinery/pkg/api/resource"
 )
 

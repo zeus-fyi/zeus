@@ -7,11 +7,12 @@ import (
 
 	"github.com/stretchr/testify/suite"
 	"github.com/zeus-fyi/zeus/cookbooks"
-	zeus_client "github.com/zeus-fyi/zeus/pkg/zeus/client"
-	"github.com/zeus-fyi/zeus/pkg/zeus/client/zeus_req_types"
-	zeus_topology_config_drivers "github.com/zeus-fyi/zeus/pkg/zeus/workload_config_drivers"
 	"github.com/zeus-fyi/zeus/test/configs"
 	"github.com/zeus-fyi/zeus/test/test_suites"
+	zeus_client "github.com/zeus-fyi/zeus/zeus/z_client"
+	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_req_types"
+
+	zeus_topology_config_drivers "github.com/zeus-fyi/zeus/zeus/workload_config_drivers"
 )
 
 var ctx = context.Background()
