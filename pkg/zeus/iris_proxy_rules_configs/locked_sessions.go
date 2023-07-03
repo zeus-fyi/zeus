@@ -1,13 +1,16 @@
 package iris_proxy_rules_configs
 
+import zeus_client "github.com/zeus-fyi/zeus/pkg/zeus/client"
+
 const (
 	SessionLockID  = "Session-Lock-ID"
 	SessionLockTTL = "Session-Lock-TTL"
 )
 
 type IrisProxyRulesConfigs struct {
-	Routes  []string
-	Headers map[string]string
+	zeus_client.ZeusClient
+	Routes  []string          `json:"routes"`
+	Headers map[string]string `json:"headers"`
 }
 
 func (i *IrisProxyRulesConfigs) AddSessionLockIDHeaderToHeaders(sessionID string) {
