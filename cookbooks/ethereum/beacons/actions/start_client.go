@@ -7,7 +7,7 @@ import (
 
 	"github.com/rs/zerolog/log"
 	client_consts "github.com/zeus-fyi/zeus/cookbooks/ethereum/beacons/constants"
-	zeus_config_map_reqs "github.com/zeus-fyi/zeus/zeus/client/zeus_req_types/config_maps"
+	zeus_config_map_reqs "github.com/zeus-fyi/zeus/zeus/z_client/zeus_req_types/config_maps"
 )
 
 func (b *BeaconActionsClient) StartConsensusClient(ctx context.Context) ([]byte, error) {

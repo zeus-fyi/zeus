@@ -1,6 +1,6 @@
 package hera_client
 
-import resty_base "github.com/zeus-fyi/zeus/zeus/client/base"
+import resty_base "github.com/zeus-fyi/zeus/zeus/z_client/base"
 
 type HeraClient struct {
 	resty_base.Resty

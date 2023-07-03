@@ -4,8 +4,8 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	v1_choreography "github.com/zeus-fyi/zeus/choreography/api/v1"
-	zeus_client "github.com/zeus-fyi/zeus/zeus/client"
-	pods_client "github.com/zeus-fyi/zeus/zeus/client/workloads/pods"
+	zeus_client "github.com/zeus-fyi/zeus/zeus/z_client"
+	pods_client "github.com/zeus-fyi/zeus/zeus/z_client/workloads/pods"
 )
 
 var (

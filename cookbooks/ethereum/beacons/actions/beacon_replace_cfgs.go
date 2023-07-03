@@ -4,9 +4,10 @@ import (
 	"context"
 
 	"github.com/rs/zerolog/log"
-	"github.com/zeus-fyi/zeus/zeus/client/zeus_req_types"
-	zeus_pods_reqs "github.com/zeus-fyi/zeus/zeus/client/zeus_req_types/pods"
-	"github.com/zeus-fyi/zeus/zeus/client/zeus_resp_types"
+	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_req_types"
+
+	zeus_pods_reqs "github.com/zeus-fyi/zeus/zeus/z_client/zeus_req_types/pods"
+	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_resp_types"
 )
 
 func (b *BeaconActionsClient) ReplaceAndRestartConfigsConsensusClient(ctx context.Context, par zeus_pods_reqs.PodActionRequest) ([]byte, error) {

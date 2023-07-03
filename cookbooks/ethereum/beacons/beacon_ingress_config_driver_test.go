@@ -1,6 +1,6 @@
 package ethereum_beacon_cookbooks
 
-import "github.com/zeus-fyi/zeus/zeus/client/zeus_resp_types/topology_workloads"
+import "github.com/zeus-fyi/zeus/zeus/z_client/zeus_resp_types/topology_workloads"
 
 func (t *BeaconCookbookTestSuite) TestBeaconIngressConfigDriver() {
 	p := IngressChartPath

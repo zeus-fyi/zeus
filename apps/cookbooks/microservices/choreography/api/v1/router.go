@@ -4,8 +4,8 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
-	pods_client "github.com/zeus-fyi/zeus/zeus/client/workloads/pods"
-	"github.com/zeus-fyi/zeus/zeus/client/zeus_common_types"
+	pods_client "github.com/zeus-fyi/zeus/zeus/z_client/workloads/pods"
+	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_common_types"
 )
 
 var (

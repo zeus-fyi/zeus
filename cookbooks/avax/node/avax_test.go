@@ -9,8 +9,9 @@ import (
 	"github.com/zeus-fyi/zeus/cookbooks"
 	"github.com/zeus-fyi/zeus/test/configs"
 	"github.com/zeus-fyi/zeus/test/test_suites"
-	zeus_client "github.com/zeus-fyi/zeus/zeus/client"
-	"github.com/zeus-fyi/zeus/zeus/client/zeus_req_types"
+	zeus_client "github.com/zeus-fyi/zeus/zeus/z_client"
+	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_req_types"
+
 	zeus_topology_config_drivers "github.com/zeus-fyi/zeus/zeus/workload_config_drivers"
 )
 

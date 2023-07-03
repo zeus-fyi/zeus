@@ -5,8 +5,8 @@ import (
 	"time"
 
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
-	"github.com/zeus-fyi/zeus/zeus/client/zeus_common_types"
-	"github.com/zeus-fyi/zeus/zeus/client/zeus_req_types"
+	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_common_types"
+	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_req_types"
 )
 
 var (

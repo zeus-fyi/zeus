@@ -4,8 +4,8 @@ import (
 	"context"
 
 	"github.com/rs/zerolog/log"
-	zeus_client "github.com/zeus-fyi/zeus/zeus/client"
-	"github.com/zeus-fyi/zeus/zeus/client/zeus_req_types"
+	zeus_client "github.com/zeus-fyi/zeus/zeus/z_client"
+	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_req_types"
 )
 
 type GeneratedClusterCreationRequests struct {

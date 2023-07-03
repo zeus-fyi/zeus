@@ -5,9 +5,10 @@ import (
 	"time"
 
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
-	"github.com/zeus-fyi/zeus/zeus/client/zeus_common_types"
-	"github.com/zeus-fyi/zeus/zeus/client/zeus_req_types"
-	"github.com/zeus-fyi/zeus/zeus/client/zeus_resp_types/topology_workloads"
+	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_common_types"
+	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_req_types"
+	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_resp_types/topology_workloads"
+
 	zeus_cluster_config_drivers "github.com/zeus-fyi/zeus/zeus/cluster_config_drivers"
 )
 

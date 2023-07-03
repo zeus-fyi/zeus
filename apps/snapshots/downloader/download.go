@@ -7,7 +7,7 @@ import (
 	"github.com/zeus-fyi/zeus/pkg/poseidon"
 	"github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/compression"
 	"github.com/zeus-fyi/zeus/pkg/utils/host_info"
-	resty_base "github.com/zeus-fyi/zeus/zeus/client/base"
+	resty_base "github.com/zeus-fyi/zeus/zeus/z_client/base"
 )
 
 const poseidonEndpoint = "https://poseidon.zeus.fyi"

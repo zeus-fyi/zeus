@@ -1,6 +1,6 @@
 package zeus_topology_config_drivers
 
-import "github.com/zeus-fyi/zeus/zeus/client/zeus_resp_types/topology_workloads"
+import "github.com/zeus-fyi/zeus/zeus/z_client/zeus_resp_types/topology_workloads"
 
 type TopologyConfigDriver struct {
 	*IngressDriver

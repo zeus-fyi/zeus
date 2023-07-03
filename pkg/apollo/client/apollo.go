@@ -1,8 +1,8 @@
 package apollo_client
 
 import (
-	zeus_client "github.com/zeus-fyi/zeus/zeus/client"
-	resty_base "github.com/zeus-fyi/zeus/zeus/client/base"
+	zeus_client "github.com/zeus-fyi/zeus/zeus/z_client"
+	resty_base "github.com/zeus-fyi/zeus/zeus/z_client/base"
 )
 
 type Apollo struct {

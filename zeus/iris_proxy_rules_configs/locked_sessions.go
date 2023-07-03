@@ -1,6 +1,6 @@
 package iris_proxy_rules_configs
 
-import zeus_client "github.com/zeus-fyi/zeus/zeus/client"
+import zeus_client "github.com/zeus-fyi/zeus/zeus/z_client"
 
 const (
 	SessionLockID  = "Session-Lock-ID"

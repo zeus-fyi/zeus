@@ -6,11 +6,11 @@ import (
 	"net/http"
 
 	"github.com/rs/zerolog/log"
-	zeus_client "github.com/zeus-fyi/zeus/zeus/client"
-	zeus_endpoints "github.com/zeus-fyi/zeus/zeus/client/endpoints"
-	"github.com/zeus-fyi/zeus/zeus/client/zeus_resp_types"
 	zeus_cluster_config_drivers "github.com/zeus-fyi/zeus/zeus/cluster_config_drivers"
 	cluster_node_resources "github.com/zeus-fyi/zeus/zeus/cluster_resources"
+	zeus_client "github.com/zeus-fyi/zeus/zeus/z_client"
+	zeus_endpoints "github.com/zeus-fyi/zeus/zeus/z_client/endpoints"
+	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_resp_types"
 )
 
 type MatrixDefinition struct {
