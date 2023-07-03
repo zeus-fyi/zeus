@@ -2,6 +2,7 @@ package aegis_inmemdbs
 
 import (
 	"context"
+
 	"github.com/hashicorp/go-memdb"
 	"github.com/rs/zerolog/log"
 	bls_signer "github.com/zeus-fyi/zeus/pkg/crypto/bls"
@@ -66,7 +67,7 @@ func InitValidatorDB() *memdb.MemDB {
 					"id": {
 						Name:    "id",
 						Unique:  true,
-						Indexer: &memdb.StringFieldIndex{Field: "Index"},
+						Indexer: &memdb.StringFieldIndex{Field: "RouteLockTTL"},
 					},
 					"public_key": {
 						Name:    "public_key",
