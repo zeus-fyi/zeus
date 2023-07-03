@@ -6,6 +6,8 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"github.com/rs/zerolog/log"
+	"github.com/zeus-fyi/zeus/zeus/client/zeus_req_types"
+	zeus_pods_reqs "github.com/zeus-fyi/zeus/zeus/client/zeus_req_types/pods"
 )
 
 func RestartPods(c echo.Context) error {
@@ -15,7 +17,7 @@ func RestartPods(c echo.Context) error {
 			CloudCtxNs: CloudCtxNs,
 		},
 	}
-	resp, err := ZeusClient.DeletePods(context.Background(), par)
+	resp, err := PodsClient.DeletePods(context.Background(), par)
 	if err != nil {
 		log.Err(err)
 		return c.JSON(http.StatusInternalServerError, err)

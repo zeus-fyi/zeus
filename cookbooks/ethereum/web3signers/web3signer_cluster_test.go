@@ -4,6 +4,8 @@ import (
 	"context"
 
 	validator_cookbooks "github.com/zeus-fyi/zeus/cookbooks/ethereum/validators"
+	"github.com/zeus-fyi/zeus/zeus/client/zeus_req_types"
+	"github.com/zeus-fyi/zeus/zeus/client/zeus_resp_types/topology_workloads"
 )
 
 func (t *Web3SignerCookbookTestSuite) TestClusterDeploy() {

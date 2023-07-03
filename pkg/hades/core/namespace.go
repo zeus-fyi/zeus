@@ -3,6 +3,7 @@ package hades_core
 import (
 	"context"
 
+	"github.com/zeus-fyi/zeus/zeus/client/zeus_common_types"
 	v1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"

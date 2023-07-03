@@ -8,6 +8,8 @@ import (
 	"github.com/zeus-fyi/zeus/cookbooks"
 	"github.com/zeus-fyi/zeus/test/configs"
 	"github.com/zeus-fyi/zeus/test/test_suites"
+	zeus_client "github.com/zeus-fyi/zeus/zeus/client"
+	"github.com/zeus-fyi/zeus/zeus/client/zeus_req_types"
 )
 
 func (t *ValidatorCookbookTestSuite) TestCreateClusterValidatorBase() {

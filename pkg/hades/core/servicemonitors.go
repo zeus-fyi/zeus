@@ -6,6 +6,7 @@ import (
 	v1 "github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v1"
 	"github.com/rs/zerolog/log"
 	strings_filter "github.com/zeus-fyi/zeus/pkg/utils/strings"
+	"github.com/zeus-fyi/zeus/zeus/client/zeus_common_types"
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )

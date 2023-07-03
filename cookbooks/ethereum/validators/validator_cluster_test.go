@@ -2,6 +2,9 @@ package ethereum_validator_cookbooks
 
 import (
 	"context"
+
+	"github.com/zeus-fyi/zeus/zeus/client/zeus_req_types"
+	"github.com/zeus-fyi/zeus/zeus/client/zeus_resp_types/topology_workloads"
 )
 
 func (t *ValidatorCookbookTestSuite) TestClusterDeploy() {

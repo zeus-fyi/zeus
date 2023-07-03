@@ -4,10 +4,12 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
+	pods_client "github.com/zeus-fyi/zeus/zeus/client/workloads/pods"
+	"github.com/zeus-fyi/zeus/zeus/client/zeus_common_types"
 )
 
 var (
-	ZeusClient zeus_client.ZeusClient
+	PodsClient pods_client.PodsClient
 	CloudCtxNs zeus_common_types.CloudCtxNs
 )
 
