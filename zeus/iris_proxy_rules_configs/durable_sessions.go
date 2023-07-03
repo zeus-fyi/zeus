@@ -10,10 +10,10 @@ func (i *IrisProxyRulesConfigs) AddDurableExecutionIDHeaderToHeaders(dexecID str
 	i.Headers[DurableExecutionID] = dexecID
 }
 
-func (i *IrisProxyRulesConfigs) AddRetryCountHeaderToHeaders(dexecID string) {
-	i.Headers[RetryCount] = dexecID
+func (i *IrisProxyRulesConfigs) AddRetryCountHeaderToHeaders(retryID string) {
+	i.Headers[RetryCount] = retryID
 }
 
-func (i *IrisProxyRulesConfigs) AddMaxRetriesHeaderToHeaders(dexecID string) {
-	i.Headers[MaxRetries] = dexecID
+func (i *IrisProxyRulesConfigs) AddMaxRetriesHeaderToHeaders(maxRetries string) {
+	i.Headers[MaxRetries] = maxRetries
 }
