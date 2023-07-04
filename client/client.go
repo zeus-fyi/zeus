@@ -10,6 +10,7 @@ import (
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/ethereum/go-ethereum/rlp"
+	"github.com/google/uuid"
 	zlog "github.com/rs/zerolog/log"
 	"github.com/zeus-fyi/gochain/web3/accounts"
 )
@@ -24,11 +25,12 @@ const (
 type Web3Actions struct {
 	C *ethclient.Client
 	*accounts.Account
-	Headers       map[string]string
-	NodeURL       string
-	RelayProxyUrl string
-	Network       string
-	IsAnvilNode   bool
+	Headers          map[string]string
+	NodeURL          string
+	RelayProxyUrl    string
+	Network          string
+	IsAnvilNode      bool
+	DurableExecution bool
 }
 
 func (w *Web3Actions) Dial() {
@@ -43,6 +45,9 @@ func (w *Web3Actions) Dial() {
 			w.Headers[proxyHeader] = nodeUrl
 			nodeUrl = proxyRelayUrlVal.String()
 		}
+	}
+	if w.DurableExecution {
+		w.Headers[DurableExecutionID] = uuid.New().String()
 	}
 	ctx := context.Background()
 	cli, err := ethclient.DialContext(ctx, nodeUrl)
