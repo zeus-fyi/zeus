@@ -79,10 +79,11 @@ func (w *Web3Actions) AddEndSessionLockToHeaderIfExisting() {
 	}
 }
 
-func (w *Web3Actions) EndHardHatSessionReset(ctx context.Context) {
+func (w *Web3Actions) EndHardHatSessionReset(ctx context.Context, nodeURL, blockNum int) {
 	w.AddEndSessionLockToHeaderIfExisting()
-	err := w.ResetNetwork(ctx, w.NodeURL, 0)
+	err := w.ResetNetwork(ctx, w.NodeURL, blockNum)
 	if err != nil {
+		zlog.Warn().Err(err).Msg("error resetting hardhat session")
 		return
 	}
 }
@@ -177,10 +178,22 @@ func (w *Web3Actions) GetEVMSnapshot(ctx context.Context) (*big.Int, error) {
 	return (*big.Int)(&result), err
 }
 
+type RpcMessage struct {
+	Method string        `json:"method"`
+	Id     int           `json:"id"`
+	Result string        `json:"result"`
+	Params []interface{} `json:"params"`
+}
+
 func (w *Web3Actions) ResetNetwork(ctx context.Context, rpcUrl string, blockNumber int) error {
 	if rpcUrl != "" && blockNumber != 0 {
 		args := toForkingArg(rpcUrl, blockNumber)
-		return w.C.Client().CallContext(ctx, nil, w.swapToAnvil("hardhat_reset"), args)
+		msg := RpcMessage{
+			Method: w.swapToAnvil("hardhat_reset"),
+			Id:     1,
+			Params: []interface{}{args},
+		}
+		return w.C.Client().CallContext(ctx, nil, w.swapToAnvil("hardhat_reset"), msg)
 	}
 	return w.C.Client().CallContext(ctx, nil, w.swapToAnvil("hardhat_reset"))
 }
