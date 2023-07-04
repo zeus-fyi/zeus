@@ -20,6 +20,7 @@ const (
 	proxyHeader        = "Proxy-Relay-To"
 	SessionLockHeader  = "Session-Lock-ID"
 	DurableExecutionID = "Durable-Execution-ID"
+	EndSessionLockID   = "End-Session-Lock-ID"
 )
 
 type Web3Actions struct {
@@ -57,6 +58,32 @@ func (w *Web3Actions) Dial() {
 	w.C = cli
 	for k, h := range w.Headers {
 		w.C.Client().SetHeader(k, h)
+	}
+}
+
+func (w *Web3Actions) AddEndSessionLockHeader(sessionID string) {
+	if w.Headers == nil {
+		w.Headers = make(map[string]string)
+	}
+	w.Headers[EndSessionLockID] = sessionID
+}
+
+func (w *Web3Actions) AddEndSessionLockToHeaderIfExisting() {
+	if w.Headers == nil {
+		w.Headers = make(map[string]string)
+	}
+	if sessionID, ok := w.Headers[SessionLockHeader]; ok {
+		w.Headers[EndSessionLockID] = sessionID
+	} else {
+		zlog.Warn().Msg("no session lock header found")
+	}
+}
+
+func (w *Web3Actions) EndHardHatSessionReset(ctx context.Context) {
+	w.AddEndSessionLockToHeaderIfExisting()
+	err := w.ResetNetwork(ctx, w.NodeURL, 0)
+	if err != nil {
+		return
 	}
 }
 
