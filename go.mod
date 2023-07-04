@@ -123,6 +123,7 @@ require (
 	github.com/protolambda/zssz v0.1.5 // indirect
 	github.com/prysmaticlabs/go-bitfield v0.0.0-20210809151128-385d8c5e3fb7 // indirect
 	github.com/prysmaticlabs/go-ssz v0.0.0-20210121151755-f6208871c388 // indirect
+	github.com/puzpuzpuz/xsync/v2 v2.4.1 // indirect
 	github.com/r3labs/sse/v2 v2.7.4 // indirect
 	github.com/shibukawa/configdir v0.0.0-20170330084843-e180dbdc8da0 // indirect
 	github.com/spaolacci/murmur3 v1.1.0 // indirect
