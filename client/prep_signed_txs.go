@@ -28,10 +28,13 @@ func (w *Web3Actions) GetSignedSendTx(ctx context.Context, params SendEtherPaylo
 		return nil, fmt.Errorf("couldn't get chain ID: %v", err)
 	}
 	scAddr := common.HexToAddress(params.ToAddress.Hex())
+	if params.GasFeeCap == nil {
+		params.GasFeeCap = params.GasPrice
+	}
 	baseTx := &types.DynamicFeeTx{
 		To:        &scAddr,
 		Nonce:     nonce,
-		GasFeeCap: params.GasPrice,
+		GasFeeCap: params.GasFeeCap,
 		GasTipCap: params.GasTipCap,
 		Gas:       params.GasLimit,
 		Value:     params.Amount,
