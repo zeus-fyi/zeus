@@ -79,9 +79,9 @@ func (w *Web3Actions) AddEndSessionLockToHeaderIfExisting() {
 	}
 }
 
-func (w *Web3Actions) EndHardHatSessionReset(ctx context.Context, nodeURL, blockNum int) {
+func (w *Web3Actions) EndHardHatSessionReset(ctx context.Context, nodeURL string, blockNum int) {
 	w.AddEndSessionLockToHeaderIfExisting()
-	err := w.ResetNetwork(ctx, w.NodeURL, blockNum)
+	err := w.ResetNetwork(ctx, nodeURL, blockNum)
 	if err != nil {
 		zlog.Warn().Err(err).Msg("error resetting hardhat session")
 		return
