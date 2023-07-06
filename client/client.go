@@ -185,6 +185,25 @@ func (w *Web3Actions) GetEVMSnapshot(ctx context.Context) (*big.Int, error) {
 	return (*big.Int)(&result), err
 }
 
+type NodeInfo struct {
+	CurrentBlockHash      string      `json:"currentBlockHash"`
+	CurrentBlockNumber    hexutil.Big `json:"currentBlockNumber"`
+	CurrentBlockTimestamp int         `json:"currentBlockTimestamp"`
+	Environment           struct {
+		BaseFee  hexutil.Big `json:"baseFee"`
+		ChainId  hexutil.Big `json:"chainId"`
+		GasLimit hexutil.Big `json:"gasLimit"`
+		GasPrice hexutil.Big `json:"gasPrice"`
+	} `json:"environment"`
+	ForkConfig struct {
+		ForkBlockNumber  int    `json:"forkBlockNumber"`
+		ForkRetryBackoff int    `json:"forkRetryBackoff"`
+		ForkUrl          string `json:"forkUrl"`
+	} `json:"forkConfig"`
+	HardFork         string `json:"hardFork"`
+	TransactionOrder string `json:"transactionOrder"`
+}
+
 func (w *Web3Actions) GetNodeInfo(ctx context.Context) (interface{}, error) {
 	cmdValue := "hardhat_metadata"
 	if w.IsAnvilNode {
@@ -195,7 +214,7 @@ func (w *Web3Actions) GetNodeInfo(ctx context.Context) (interface{}, error) {
 		Id:     1,
 		Params: []interface{}{},
 	}
-	var result interface{}
+	var result NodeInfo
 	err := w.C.Client().CallContext(ctx, &result, msg.Method, msg.Params...)
 	if err != nil {
 		return nil, err
