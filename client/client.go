@@ -234,6 +234,7 @@ func (w *Web3Actions) ResetNetwork(ctx context.Context, rpcUrl string, blockNumb
 		if err != nil {
 			return err
 		}
+		return err
 	}
 	return w.C.Client().CallContext(ctx, nil, w.swapToAnvil("hardhat_reset"))
 }
