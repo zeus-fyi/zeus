@@ -204,7 +204,7 @@ type NodeInfo struct {
 	TransactionOrder string `json:"transactionOrder"`
 }
 
-func (w *Web3Actions) GetNodeInfo(ctx context.Context) (interface{}, error) {
+func (w *Web3Actions) GetNodeInfo(ctx context.Context) (NodeInfo, error) {
 	cmdValue := "hardhat_metadata"
 	if w.IsAnvilNode {
 		cmdValue = "anvil_nodeInfo"
@@ -217,7 +217,7 @@ func (w *Web3Actions) GetNodeInfo(ctx context.Context) (interface{}, error) {
 	var result NodeInfo
 	err := w.C.Client().CallContext(ctx, &result, msg.Method, msg.Params...)
 	if err != nil {
-		return nil, err
+		return result, err
 	}
 	return result, err
 }
@@ -230,7 +230,10 @@ func (w *Web3Actions) ResetNetwork(ctx context.Context, rpcUrl string, blockNumb
 			Id:     1,
 			Params: []interface{}{args},
 		}
-		return w.C.Client().CallContext(ctx, nil, w.swapToAnvil("hardhat_reset"), msg)
+		err := w.C.Client().CallContext(ctx, nil, w.swapToAnvil("hardhat_reset"), msg)
+		if err != nil {
+			return err
+		}
 	}
 	return w.C.Client().CallContext(ctx, nil, w.swapToAnvil("hardhat_reset"))
 }
