@@ -225,12 +225,7 @@ func (w *Web3Actions) GetNodeInfo(ctx context.Context) (NodeInfo, error) {
 func (w *Web3Actions) ResetNetwork(ctx context.Context, rpcUrl string, blockNumber int) error {
 	if rpcUrl != "" && blockNumber != 0 {
 		args := toForkingArg(rpcUrl, blockNumber)
-		msg := RpcMessage{
-			Method: w.swapToAnvil("hardhat_reset"),
-			Id:     1,
-			Params: []interface{}{args},
-		}
-		err := w.C.Client().CallContext(ctx, nil, w.swapToAnvil("hardhat_reset"), msg)
+		err := w.C.Client().CallContext(ctx, nil, w.swapToAnvil("hardhat_reset"), args)
 		if err != nil {
 			return err
 		}
