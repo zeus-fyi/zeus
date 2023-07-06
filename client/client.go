@@ -142,11 +142,11 @@ func NewWeb3ActionsClientWithAccount(nodeUrl string, account *accounts.Account) 
 	}
 }
 
-func (w *Web3Actions) swapToAnvil(method string) string {
-	if w.IsAnvilNode {
-		return replacePrefix(method, "hardhat_", "anvil_")
-	}
-	return method
+type RpcMessage struct {
+	Method string        `json:"method"`
+	Id     int           `json:"id"`
+	Result any           `json:"result,omitempty"`
+	Params []interface{} `json:"params"`
 }
 
 func replacePrefix(input string, prefix string, replacement string) string {
@@ -154,6 +154,13 @@ func replacePrefix(input string, prefix string, replacement string) string {
 		return replacement + input[len(prefix):]
 	}
 	return input
+}
+
+func (w *Web3Actions) swapToAnvil(method string) string {
+	if w.IsAnvilNode {
+		return replacePrefix(method, "hardhat_", "anvil_")
+	}
+	return method
 }
 
 func (w *Web3Actions) MineBlock(ctx context.Context, blocksToMine hexutil.Big) error {
@@ -178,11 +185,22 @@ func (w *Web3Actions) GetEVMSnapshot(ctx context.Context) (*big.Int, error) {
 	return (*big.Int)(&result), err
 }
 
-type RpcMessage struct {
-	Method string        `json:"method"`
-	Id     int           `json:"id"`
-	Result string        `json:"result"`
-	Params []interface{} `json:"params"`
+func (w *Web3Actions) GetNodeInfo(ctx context.Context) (interface{}, error) {
+	cmdValue := "hardhat_metadata"
+	if w.IsAnvilNode {
+		cmdValue = "anvil_nodeInfo"
+	}
+	msg := RpcMessage{
+		Method: cmdValue,
+		Id:     1,
+		Params: []interface{}{},
+	}
+	var result interface{}
+	err := w.C.Client().CallContext(ctx, &result, msg.Method, msg.Params...)
+	if err != nil {
+		return nil, err
+	}
+	return result, err
 }
 
 func (w *Web3Actions) ResetNetwork(ctx context.Context, rpcUrl string, blockNumber int) error {
