@@ -64,21 +64,23 @@ var (
 	BearerTokenSecretFromChoreography = zeus_topology_config_drivers.MakeEnvVar("BEARER", "bearer", "choreography")
 )
 
-func GetClientClusterDef(consensusClient, execClient, network string) zeus_cluster_config_drivers.ClusterDefinition {
+func GetClientClusterDef(consensusClient, execClient, network string, withIngress bool) zeus_cluster_config_drivers.ClusterDefinition {
 	return zeus_cluster_config_drivers.ClusterDefinition{
 		ClusterClassName: "ethereumBeacon" + cases.Title(language.English).String(network) + cases.Title(language.English).String(consensusClient) + cases.Title(language.English).String(execClient),
-		ComponentBases:   GetComponentBases(consensusClient, execClient, network),
+		ComponentBases:   GetComponentBases(consensusClient, execClient, network, withIngress),
 	}
 }
 
-func GetComponentBases(consensusClient, execClient, network string) map[string]zeus_cluster_config_drivers.ComponentBaseDefinition {
+func GetComponentBases(consensusClient, execClient, network string, withIngress bool) map[string]zeus_cluster_config_drivers.ComponentBaseDefinition {
 	beaconComponentBases := map[string]zeus_cluster_config_drivers.ComponentBaseDefinition{
-		"beaconIngress":                 IngressComponentBase,
 		"consensusClients":              GetConsensusClientNetworkConfig(consensusClient, network, true),
 		"execClients":                   GetExecClientNetworkConfig(execClient, network, true),
 		"serviceMonitorConsensusClient": ConsensusClientMonitoringComponentBase,
 		"serviceMonitorExecClient":      ExecClientMonitoringComponentBase,
 		"choreography":                  choreography_cookbooks.ChoreographyComponentBase,
+	}
+	if withIngress {
+		beaconComponentBases["beaconIngress"] = IngressComponentBase
 	}
 	return beaconComponentBases
 }
