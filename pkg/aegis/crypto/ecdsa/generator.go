@@ -24,29 +24,27 @@ type AddressDetails struct {
 func GenerateZeroPrefixAddresses(mnemonic, pw string, count, numWorkers int) (AddressGenerator, error) {
 	var wg sync.WaitGroup
 	wg.Add(numWorkers)
-	resultCh := make(chan AddressDetails)
-	ag := AddressGenerator{
-		Mnemonic: mnemonic,
-		AddressDetails: AddressDetails{
-			PathIndex:          0,
-			Address:            "",
-			LeadingZeroesCount: 0,
-		},
+
+	maxMutex := &sync.Mutex{}
+	maxAddressDetails := AddressDetails{
+		PathIndex:          0,
+		Address:            "",
+		LeadingZeroesCount: 0,
 	}
+
 	mnemonic, err := aegis_random.GenerateMnemonic()
 	if err != nil {
-		return ag, err
+		return AddressGenerator{}, err
 	}
 	seed, err := ed25519hd.SeedFromMnemonic(mnemonic, pw)
 	if err != nil {
-		return ag, err
+		return AddressGenerator{}, err
 	}
 	masterKey, err := bip32.NewMasterKey(seed)
 	if err != nil {
-		return ag, err
+		return AddressGenerator{}, err
 	}
-	// Use BIP44: m / purpose' / coin_type' / account' / change / address_index
-	// Ethereum path: m/44'/60'/0'/0/0
+
 	for i := 0; i < numWorkers; i++ {
 		go func(workerId, start, end int) {
 			defer wg.Done()
@@ -55,25 +53,22 @@ func GenerateZeroPrefixAddresses(mnemonic, pw string, count, numWorkers int) (Ad
 				privateKeyECDSA := crypto.ToECDSAUnsafe(child.Key)
 				address := crypto.PubkeyToAddress(privateKeyECDSA.PublicKey)
 				leadingZeroesCount := countLeadingZeroes(address.Hex())
-				resultCh <- AddressDetails{j, address.Hex(), leadingZeroesCount}
+
+				// Compare and replace if necessary
+				maxMutex.Lock()
+				if leadingZeroesCount > maxAddressDetails.LeadingZeroesCount {
+					maxAddressDetails = AddressDetails{j, address.Hex(), leadingZeroesCount}
+				}
+				maxMutex.Unlock()
 			}
 		}(i, i*(count/numWorkers), (i+1)*(count/numWorkers))
 	}
 
-	go func() {
-		wg.Wait()
-		close(resultCh)
-	}()
-
-	for res := range resultCh {
-		if res.LeadingZeroesCount > ag.LeadingZeroesCount {
-			ag.Mnemonic = mnemonic
-			ag.PathIndex = res.PathIndex
-			ag.Address = res.Address
-			ag.LeadingZeroesCount = res.LeadingZeroesCount
-		}
-	}
-	return ag, err
+	wg.Wait()
+	return AddressGenerator{
+		Mnemonic:       mnemonic,
+		AddressDetails: maxAddressDetails,
+	}, nil
 }
 
 func countLeadingZeroes(address string) int {
