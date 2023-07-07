@@ -21,7 +21,7 @@ type AddressDetails struct {
 	LeadingZeroesCount int
 }
 
-func GenerateZeroPrefixAddresses(mnemonic string, count, numWorkers int) (AddressGenerator, error) {
+func GenerateZeroPrefixAddresses(mnemonic, pw string, count, numWorkers int) (AddressGenerator, error) {
 	var wg sync.WaitGroup
 	wg.Add(numWorkers)
 	resultCh := make(chan AddressDetails)
@@ -37,7 +37,7 @@ func GenerateZeroPrefixAddresses(mnemonic string, count, numWorkers int) (Addres
 	if err != nil {
 		return ag, err
 	}
-	seed, err := ed25519hd.SeedFromMnemonic(mnemonic, "password")
+	seed, err := ed25519hd.SeedFromMnemonic(mnemonic, pw)
 	if err != nil {
 		return ag, err
 	}
