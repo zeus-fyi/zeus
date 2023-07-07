@@ -10,23 +10,28 @@ import (
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/ethereum/go-ethereum/rlp"
+	"github.com/google/uuid"
 	zlog "github.com/rs/zerolog/log"
 	"github.com/zeus-fyi/gochain/web3/accounts"
 )
 
 const (
-	defaultProxyUrl = "https://iris.zeus.fyi/v1/"
-	proxyHeader     = "Proxy-Relay-To"
+	defaultProxyUrl    = "https://iris.zeus.fyi/v1/"
+	proxyHeader        = "Proxy-Relay-To"
+	SessionLockHeader  = "Session-Lock-ID"
+	DurableExecutionID = "Durable-Execution-ID"
+	EndSessionLockID   = "End-Session-Lock-ID"
 )
 
 type Web3Actions struct {
 	C *ethclient.Client
 	*accounts.Account
-	Headers       map[string]string
-	NodeURL       string
-	RelayProxyUrl string
-	Network       string
-	IsAnvilNode   bool
+	Headers          map[string]string
+	NodeURL          string
+	RelayProxyUrl    string
+	Network          string
+	IsAnvilNode      bool
+	DurableExecution bool
 }
 
 func (w *Web3Actions) Dial() {
@@ -42,6 +47,9 @@ func (w *Web3Actions) Dial() {
 			nodeUrl = proxyRelayUrlVal.String()
 		}
 	}
+	if w.DurableExecution {
+		w.Headers[DurableExecutionID] = uuid.New().String()
+	}
 	ctx := context.Background()
 	cli, err := ethclient.DialContext(ctx, nodeUrl)
 	if err != nil {
@@ -51,6 +59,47 @@ func (w *Web3Actions) Dial() {
 	for k, h := range w.Headers {
 		w.C.Client().SetHeader(k, h)
 	}
+}
+
+func (w *Web3Actions) AddEndSessionLockHeader(sessionID string) {
+	if w.Headers == nil {
+		w.Headers = make(map[string]string)
+	}
+	w.Headers[EndSessionLockID] = sessionID
+}
+
+func (w *Web3Actions) AddEndSessionLockToHeaderIfExisting() {
+	if w.Headers == nil {
+		w.Headers = make(map[string]string)
+	}
+	if sessionID, ok := w.Headers[SessionLockHeader]; ok {
+		w.Headers[EndSessionLockID] = sessionID
+	} else {
+		zlog.Warn().Msg("no session lock header found")
+	}
+}
+
+func (w *Web3Actions) EndHardHatSessionReset(ctx context.Context, nodeURL string, blockNum int) {
+	w.AddEndSessionLockToHeaderIfExisting()
+	err := w.ResetNetwork(ctx, nodeURL, blockNum)
+	if err != nil {
+		zlog.Warn().Err(err).Msg("error resetting hardhat session")
+		return
+	}
+}
+
+func (w *Web3Actions) AddDurableExecutionIDHeader(reqID string) {
+	if w.Headers == nil {
+		w.Headers = make(map[string]string)
+	}
+	w.Headers[DurableExecutionID] = reqID
+}
+
+func (w *Web3Actions) AddSessionLockHeader(sessionID string) {
+	if w.Headers == nil {
+		w.Headers = make(map[string]string)
+	}
+	w.Headers[SessionLockHeader] = sessionID
 }
 
 func (w *Web3Actions) AddBearerToken(token string) {
@@ -93,11 +142,11 @@ func NewWeb3ActionsClientWithAccount(nodeUrl string, account *accounts.Account) 
 	}
 }
 
-func (w *Web3Actions) swapToAnvil(method string) string {
-	if w.IsAnvilNode {
-		return replacePrefix(method, "hardhat_", "anvil_")
-	}
-	return method
+type RpcMessage struct {
+	Method string        `json:"method"`
+	Id     int           `json:"id"`
+	Result any           `json:"result,omitempty"`
+	Params []interface{} `json:"params"`
 }
 
 func replacePrefix(input string, prefix string, replacement string) string {
@@ -105,6 +154,13 @@ func replacePrefix(input string, prefix string, replacement string) string {
 		return replacement + input[len(prefix):]
 	}
 	return input
+}
+
+func (w *Web3Actions) swapToAnvil(method string) string {
+	if w.IsAnvilNode {
+		return replacePrefix(method, "hardhat_", "anvil_")
+	}
+	return method
 }
 
 func (w *Web3Actions) MineBlock(ctx context.Context, blocksToMine hexutil.Big) error {
@@ -129,10 +185,51 @@ func (w *Web3Actions) GetEVMSnapshot(ctx context.Context) (*big.Int, error) {
 	return (*big.Int)(&result), err
 }
 
+type NodeInfo struct {
+	CurrentBlockHash      string      `json:"currentBlockHash"`
+	CurrentBlockNumber    hexutil.Big `json:"currentBlockNumber"`
+	CurrentBlockTimestamp int         `json:"currentBlockTimestamp"`
+	Environment           struct {
+		BaseFee  hexutil.Big `json:"baseFee"`
+		ChainId  hexutil.Big `json:"chainId"`
+		GasLimit hexutil.Big `json:"gasLimit"`
+		GasPrice hexutil.Big `json:"gasPrice"`
+	} `json:"environment"`
+	ForkConfig struct {
+		ForkBlockNumber  int    `json:"forkBlockNumber"`
+		ForkRetryBackoff int    `json:"forkRetryBackoff"`
+		ForkUrl          string `json:"forkUrl"`
+	} `json:"forkConfig"`
+	HardFork         string `json:"hardFork"`
+	TransactionOrder string `json:"transactionOrder"`
+}
+
+func (w *Web3Actions) GetNodeInfo(ctx context.Context) (NodeInfo, error) {
+	cmdValue := "hardhat_metadata"
+	if w.IsAnvilNode {
+		cmdValue = "anvil_nodeInfo"
+	}
+	msg := RpcMessage{
+		Method: cmdValue,
+		Id:     1,
+		Params: []interface{}{},
+	}
+	var result NodeInfo
+	err := w.C.Client().CallContext(ctx, &result, msg.Method, msg.Params...)
+	if err != nil {
+		return result, err
+	}
+	return result, err
+}
+
 func (w *Web3Actions) ResetNetwork(ctx context.Context, rpcUrl string, blockNumber int) error {
 	if rpcUrl != "" && blockNumber != 0 {
 		args := toForkingArg(rpcUrl, blockNumber)
-		return w.C.Client().CallContext(ctx, nil, w.swapToAnvil("hardhat_reset"), args)
+		err := w.C.Client().CallContext(ctx, nil, w.swapToAnvil("hardhat_reset"), args)
+		if err != nil {
+			return err
+		}
+		return err
 	}
 	return w.C.Client().CallContext(ctx, nil, w.swapToAnvil("hardhat_reset"))
 }
