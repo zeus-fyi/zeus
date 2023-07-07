@@ -215,7 +215,7 @@ func (w *Web3Actions) GetNodeInfo(ctx context.Context) (NodeInfo, error) {
 		Params: []interface{}{},
 	}
 	var result NodeInfo
-	err := w.C.Client().CallContext(ctx, &result, msg.Method, msg.Params...)
+	err := w.C.Client().CallContext(ctx, &result, cmdValue, msg.Params...)
 	if err != nil {
 		return result, err
 	}
