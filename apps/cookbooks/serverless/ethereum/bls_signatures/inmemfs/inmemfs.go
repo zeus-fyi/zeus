@@ -5,11 +5,12 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
+
 	"github.com/rs/zerolog/log"
+	age_encryption "github.com/zeus-fyi/zeus/pkg/aegis/crypto/age"
+	bls_signer "github.com/zeus-fyi/zeus/pkg/aegis/crypto/bls"
 
 	aegis_inmemdbs "github.com/zeus-fyi/zeus/pkg/aegis/inmemdbs"
-	age_encryption "github.com/zeus-fyi/zeus/pkg/crypto/age"
-	bls_signer "github.com/zeus-fyi/zeus/pkg/crypto/bls"
 	"github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/memfs"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 	strings_filter "github.com/zeus-fyi/zeus/pkg/utils/strings"

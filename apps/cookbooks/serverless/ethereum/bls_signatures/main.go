@@ -12,7 +12,7 @@ import (
 	"github.com/go-resty/resty/v2"
 	"github.com/rs/zerolog/log"
 	bls_serverless_signing "github.com/zeus-fyi/zeus/pkg/aegis/aws/serverless_signing"
-	age_encryption "github.com/zeus-fyi/zeus/pkg/crypto/age"
+	age_encryption "github.com/zeus-fyi/zeus/pkg/aegis/crypto/age"
 	serverless_inmemfs "github.com/zeus-fyi/zeus/serverless/ethereum/signatures/inmemfs"
 )
 

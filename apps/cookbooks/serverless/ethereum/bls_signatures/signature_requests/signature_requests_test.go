@@ -8,8 +8,8 @@ import (
 	"github.com/stretchr/testify/suite"
 	aegis_aws_auth "github.com/zeus-fyi/zeus/pkg/aegis/aws/auth"
 	bls_serverless_signing "github.com/zeus-fyi/zeus/pkg/aegis/aws/serverless_signing"
+	bls_signer "github.com/zeus-fyi/zeus/pkg/aegis/crypto/bls"
 	aegis_inmemdbs "github.com/zeus-fyi/zeus/pkg/aegis/inmemdbs"
-	bls_signer "github.com/zeus-fyi/zeus/pkg/crypto/bls"
 	"github.com/zeus-fyi/zeus/test/test_suites"
 )
 
