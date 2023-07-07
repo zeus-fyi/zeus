@@ -1,6 +1,7 @@
 package ecdsa
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/suite"
@@ -16,8 +17,13 @@ func (s *EcdsaTestSuite) TestEthWalletGeneration() {
 	mnemonic, err := aegis_random.GenerateMnemonic()
 	s.Require().Nil(err)
 
-	err = GenerateAddresses(mnemonic, 10)
+	ag, err := GenerateAddresses(mnemonic, 10000)
 	s.Require().Nil(err)
+
+	fmt.Println("Mnemonic: ", ag.Mnemonic)
+	fmt.Println("Path Index: ", ag.PathIndex)
+	fmt.Println("Address: ", ag.Address)
+	fmt.Println("Leading Zeroes Count: ", ag.LeadingZeroesCount)
 }
 
 func TestEcdsaTestSuite(t *testing.T) {

@@ -1,24 +1,35 @@
 package ecdsa
 
 import (
-	"fmt"
 	"strings"
 
-	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/tyler-smith/go-bip32"
 	"github.com/wealdtech/go-ed25519hd"
 	aegis_random "github.com/zeus-fyi/zeus/pkg/aegis/crypto/random"
 )
 
-func GenerateAddresses(mnemonic string, count int) error {
+type AddressGenerator struct {
+	Mnemonic           string
+	PathIndex          int
+	Address            string
+	LeadingZeroesCount int
+}
+
+func GenerateAddresses(mnemonic string, count int) (AddressGenerator, error) {
+	ag := AddressGenerator{
+		Mnemonic:           mnemonic,
+		PathIndex:          0,
+		Address:            "",
+		LeadingZeroesCount: 0,
+	}
 	mnemonic, err := aegis_random.GenerateMnemonic()
 	if err != nil {
-		return err
+		return ag, err
 	}
 	seed, err := ed25519hd.SeedFromMnemonic(mnemonic, "password")
 	if err != nil {
-		return err
+		return ag, err
 	}
 	masterKey, err := bip32.NewMasterKey(seed)
 
@@ -28,16 +39,24 @@ func GenerateAddresses(mnemonic string, count int) error {
 	for i := 0; i <= count; i++ {
 		child, cerr := masterKey.NewChildKey(uint32(i))
 		if cerr != nil {
-			return err
+			return ag, err
 		}
 		privateKeyECDSA := crypto.ToECDSAUnsafe(child.Key)
 		address := crypto.PubkeyToAddress(privateKeyECDSA.PublicKey)
 		leadingZeroesCount := countLeadingZeroes(address.Hex())
-		fmt.Println("Leading zeroes: ", leadingZeroesCount)
-		fmt.Println("Ethereum Address: ", address.Hex())
-		fmt.Println("Private Key: ", hexutil.Encode(crypto.FromECDSA(privateKeyECDSA)))
+		if leadingZeroesCount > ag.LeadingZeroesCount {
+			ag.Mnemonic = mnemonic
+			ag.PathIndex = i
+			ag.Address = address.Hex()
+			ag.LeadingZeroesCount = leadingZeroesCount
+		}
+
+		//fmt.Println("Leading zeroes: ", leadingZeroesCount)
+		//fmt.Println("Ethereum Address: ", address.Hex())
+		//fmt.Println("Private Key: ", hexutil.Encode(crypto.FromECDSA(privateKeyECDSA)))
 	}
-	return nil
+
+	return ag, err
 }
 
 func countLeadingZeroes(address string) int {
