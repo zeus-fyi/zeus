@@ -42,7 +42,9 @@ func GenerateZeroPrefixAddresses(mnemonic, pw string, count, numWorkers int) (Ad
 		return ag, err
 	}
 	masterKey, err := bip32.NewMasterKey(seed)
-
+	if err != nil {
+		return ag, err
+	}
 	// Use BIP44: m / purpose' / coin_type' / account' / change / address_index
 	// Ethereum path: m/44'/60'/0'/0/0
 	for i := 0; i < numWorkers; i++ {
