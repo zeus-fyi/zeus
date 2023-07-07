@@ -142,13 +142,6 @@ func NewWeb3ActionsClientWithAccount(nodeUrl string, account *accounts.Account) 
 	}
 }
 
-type RpcMessage struct {
-	Method string        `json:"method"`
-	Id     int           `json:"id"`
-	Result any           `json:"result,omitempty"`
-	Params []interface{} `json:"params"`
-}
-
 func replacePrefix(input string, prefix string, replacement string) string {
 	if strings.HasPrefix(input, prefix) {
 		return replacement + input[len(prefix):]
@@ -209,13 +202,10 @@ func (w *Web3Actions) GetNodeInfo(ctx context.Context) (NodeInfo, error) {
 	if w.IsAnvilNode {
 		cmdValue = "anvil_nodeInfo"
 	}
-	msg := RpcMessage{
-		Method: cmdValue,
-		Id:     1,
-		Params: []interface{}{},
-	}
+
+	var params []interface{}
 	var result NodeInfo
-	err := w.C.Client().CallContext(ctx, &result, cmdValue, msg.Params...)
+	err := w.C.Client().CallContext(ctx, &result, cmdValue, params...)
 	if err != nil {
 		return result, err
 	}
