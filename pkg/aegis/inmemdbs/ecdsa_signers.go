@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/go-memdb"
 	"github.com/rs/zerolog/log"
 	"github.com/zeus-fyi/gochain/web3/accounts"
-	"github.com/zeus-fyi/zeus/pkg/crypto/ecdsa"
+	"github.com/zeus-fyi/zeus/pkg/aegis/crypto/ecdsa"
 )
 
 var EcdsaAccountsInMemDB *memdb.MemDB
