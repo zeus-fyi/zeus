@@ -2,9 +2,10 @@ package aegis_inmemdbs
 
 import (
 	"context"
+
 	"github.com/hashicorp/go-memdb"
 	"github.com/rs/zerolog/log"
-	bls_signer "github.com/zeus-fyi/zeus/pkg/crypto/bls"
+	bls_signer "github.com/zeus-fyi/zeus/pkg/aegis/crypto/bls"
 )
 
 var ValidatorInMemDB *memdb.MemDB

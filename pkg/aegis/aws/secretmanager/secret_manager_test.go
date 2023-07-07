@@ -9,9 +9,9 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
 	"github.com/stretchr/testify/suite"
 	aws_aegis_auth "github.com/zeus-fyi/zeus/pkg/aegis/aws/auth"
-	age_encryption "github.com/zeus-fyi/zeus/pkg/crypto/age"
-	bls_signer "github.com/zeus-fyi/zeus/pkg/crypto/bls"
-	aegis_random "github.com/zeus-fyi/zeus/pkg/crypto/random"
+	age_encryption "github.com/zeus-fyi/zeus/pkg/aegis/crypto/age"
+	bls_signer "github.com/zeus-fyi/zeus/pkg/aegis/crypto/bls"
+	aegis_random "github.com/zeus-fyi/zeus/pkg/aegis/crypto/random"
 	"github.com/zeus-fyi/zeus/test/test_suites"
 	"k8s.io/apimachinery/pkg/util/rand"
 )

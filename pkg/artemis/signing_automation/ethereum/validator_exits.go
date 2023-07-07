@@ -8,8 +8,8 @@ import (
 	"github.com/pkg/errors"
 	"github.com/rs/zerolog/log"
 	e2types "github.com/wealdtech/go-eth2-types/v2"
-	bls_signer "github.com/zeus-fyi/zeus/pkg/crypto/bls"
-	"github.com/zeus-fyi/zeus/pkg/crypto/ssz"
+	bls_signer "github.com/zeus-fyi/zeus/pkg/aegis/crypto/bls"
+	"github.com/zeus-fyi/zeus/pkg/aegis/crypto/ssz"
 )
 
 // GenerateVoluntaryExit TODO generateVoluntaryExit needs current fork version
