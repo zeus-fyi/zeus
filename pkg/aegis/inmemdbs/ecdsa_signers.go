@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/go-memdb"
 	"github.com/rs/zerolog/log"
 	"github.com/zeus-fyi/gochain/web3/accounts"
-	"github.com/zeus-fyi/zeus/pkg/aegis/crypto/ecdsa"
+	zeus_ecdsa "github.com/zeus-fyi/zeus/pkg/aegis/crypto/ecdsa"
 )
 
 var EcdsaAccountsInMemDB *memdb.MemDB
@@ -19,7 +19,7 @@ type ecdsaAccount struct {
 	privateKey string
 }
 
-func InsertEcdsaAccounts(ctx context.Context, accounts []ecdsa.Account) {
+func InsertEcdsaAccounts(ctx context.Context, accounts []zeus_ecdsa.Account) {
 	txn := EcdsaAccountsInMemDB.Txn(true)
 	for _, acc := range accounts {
 		insertAccount := ecdsaAccount{acc.PublicKey(), acc.PrivateKey()}
@@ -31,7 +31,7 @@ func InsertEcdsaAccounts(ctx context.Context, accounts []ecdsa.Account) {
 	txn.Commit()
 }
 
-func ReadOnlyEcdsaAccountFromInMemDb(ctx context.Context, a ecdsa.Account) ecdsa.Account {
+func ReadOnlyEcdsaAccountFromInMemDb(ctx context.Context, a zeus_ecdsa.Account) zeus_ecdsa.Account {
 	txn := EcdsaAccountsInMemDB.Txn(false)
 	defer txn.Abort()
 	raw, err := txn.First(EcdsaAccountsTable, "public_key", a.PublicKey())
@@ -43,13 +43,13 @@ func ReadOnlyEcdsaAccountFromInMemDb(ctx context.Context, a ecdsa.Account) ecdsa
 	return convertInMemEcdsaAccountToAccount(ctx, raw.(ecdsaAccount))
 }
 
-func convertInMemEcdsaAccountToAccount(ctx context.Context, e ecdsaAccount) ecdsa.Account {
+func convertInMemEcdsaAccountToAccount(ctx context.Context, e ecdsaAccount) zeus_ecdsa.Account {
 	acc, err := accounts.ParsePrivateKey(e.privateKey)
 	if err != nil {
 		log.Ctx(ctx).Panic().Err(err).Interface("public_key", e.publicKey).Msg("convertInMemEcdsaAccountToAccount")
 		panic(err)
 	}
-	return ecdsa.Account{Account: acc}
+	return zeus_ecdsa.Account{Account: acc}
 }
 
 func InitEcdsaAccountsDB() {

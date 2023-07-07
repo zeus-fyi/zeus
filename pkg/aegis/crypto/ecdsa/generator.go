@@ -1,4 +1,4 @@
-package ecdsa
+package zeus_ecdsa
 
 import (
 	"strings"

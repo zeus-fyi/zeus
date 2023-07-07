@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/suite"
-	bls_signer "github.com/zeus-fyi/zeus/pkg/crypto/bls"
+	bls_signer "github.com/zeus-fyi/zeus/pkg/aegis/crypto/bls"
 	test_base "github.com/zeus-fyi/zeus/test"
 	"github.com/zeus-fyi/zeus/test/configs"
 

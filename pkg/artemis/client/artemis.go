@@ -1,12 +1,12 @@
 package artemis_client
 
 import (
-	"github.com/zeus-fyi/zeus/pkg/crypto/ecdsa"
+	zeus_ecdsa "github.com/zeus-fyi/zeus/pkg/aegis/crypto/ecdsa"
 	resty_base "github.com/zeus-fyi/zeus/zeus/z_client/base"
 )
 
 type ArtemisClient struct {
-	ecdsa.Account
+	zeus_ecdsa.Account
 	resty_base.Resty
 	ArtemisConfigs
 }
