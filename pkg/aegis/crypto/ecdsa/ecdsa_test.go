@@ -22,9 +22,9 @@ func (s *EcdsaTestSuite) TestEthWalletGeneration() {
 	fmt.Println("Number of workers: ", numWorkers)
 
 	now := time.Now()
-	ag, err := GenerateAddresses(mnemonic, 10000, numWorkers)
+	ag, err := GenerateZeroPrefixAddresses(mnemonic, 1000, numWorkers)
 	s.Require().Nil(err)
-	fmt.Println("100 workers: time taken: ", time.Since(now))
+	fmt.Println(numWorkers, " workers: time taken: ", time.Since(now))
 
 	fmt.Println("Mnemonic: ", ag.Mnemonic)
 	fmt.Println("Path Index: ", ag.PathIndex)

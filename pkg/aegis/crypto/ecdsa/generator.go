@@ -21,7 +21,7 @@ type AddressDetails struct {
 	LeadingZeroesCount int
 }
 
-func GenerateAddresses(mnemonic string, count, numWorkers int) (AddressGenerator, error) {
+func GenerateZeroPrefixAddresses(mnemonic string, count, numWorkers int) (AddressGenerator, error) {
 	var wg sync.WaitGroup
 	wg.Add(numWorkers)
 	resultCh := make(chan AddressDetails)
@@ -71,26 +71,6 @@ func GenerateAddresses(mnemonic string, count, numWorkers int) (AddressGenerator
 			ag.LeadingZeroesCount = res.LeadingZeroesCount
 		}
 	}
-
-	//for i := 0; i <= count; i++ {
-	//	child, cerr := masterKey.NewChildKey(uint32(i))
-	//	if cerr != nil {
-	//		return ag, err
-	//	}
-	//	privateKeyECDSA := crypto.ToECDSAUnsafe(child.Key)
-	//	address := crypto.PubkeyToAddress(privateKeyECDSA.PublicKey)
-	//	leadingZeroesCount := countLeadingZeroes(address.Hex())
-	//	if leadingZeroesCount > ag.LeadingZeroesCount {
-	//		ag.Mnemonic = mnemonic
-	//		ag.PathIndex = i
-	//		ag.Address = address.Hex()
-	//		ag.LeadingZeroesCount = leadingZeroesCount
-	//	}
-	//	//fmt.Println("Leading zeroes: ", leadingZeroesCount)
-	//	//fmt.Println("Ethereum Address: ", address.Hex())
-	//	//fmt.Println("Private Key: ", hexutil.Encode(crypto.FromECDSA(privateKeyECDSA)))
-	//}
-
 	return ag, err
 }
 
