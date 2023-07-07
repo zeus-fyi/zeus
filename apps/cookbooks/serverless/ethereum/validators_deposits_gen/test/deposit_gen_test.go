@@ -13,9 +13,9 @@ import (
 	serverless_aws_automation "github.com/zeus-fyi/zeus/builds/serverless/aws_automation"
 	aegis_aws_auth "github.com/zeus-fyi/zeus/pkg/aegis/aws/auth"
 	bls_serverless_signing "github.com/zeus-fyi/zeus/pkg/aegis/aws/serverless_signing"
+	"github.com/zeus-fyi/zeus/pkg/aegis/crypto/ecdsa"
 	signing_automation_ethereum "github.com/zeus-fyi/zeus/pkg/artemis/signing_automation/ethereum"
 	aws_lambda "github.com/zeus-fyi/zeus/pkg/cloud/aws/lambda"
-	"github.com/zeus-fyi/zeus/pkg/crypto/ecdsa"
 	"github.com/zeus-fyi/zeus/test/configs"
 
 	"github.com/zeus-fyi/zeus/test/test_suites"
