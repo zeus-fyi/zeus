@@ -7,7 +7,6 @@ import (
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/tyler-smith/go-bip32"
 	"github.com/wealdtech/go-ed25519hd"
-	aegis_random "github.com/zeus-fyi/zeus/pkg/aegis/crypto/random"
 )
 
 type AddressGenerator struct {
@@ -32,10 +31,6 @@ func GenerateZeroPrefixAddresses(mnemonic, pw string, count, numWorkers int) (Ad
 		LeadingZeroesCount: 0,
 	}
 
-	mnemonic, err := aegis_random.GenerateMnemonic()
-	if err != nil {
-		return AddressGenerator{}, err
-	}
 	seed, err := ed25519hd.SeedFromMnemonic(mnemonic, pw)
 	if err != nil {
 		return AddressGenerator{}, err
