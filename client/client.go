@@ -5,12 +5,14 @@ import (
 	"math/big"
 	"net/url"
 	"strings"
+	"time"
 
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/ethereum/go-ethereum/rlp"
 	"github.com/google/uuid"
+	"github.com/patrickmn/go-cache"
 	zlog "github.com/rs/zerolog/log"
 	"github.com/zeus-fyi/gochain/web3/accounts"
 )
@@ -100,6 +102,14 @@ func (w *Web3Actions) AddSessionLockHeader(sessionID string) {
 		w.Headers = make(map[string]string)
 	}
 	w.Headers[SessionLockHeader] = sessionID
+}
+
+func (w *Web3Actions) GetSessionLockHeader() string {
+	if w.Headers == nil {
+		w.Headers = make(map[string]string)
+	}
+	sessionID := w.Headers[SessionLockHeader]
+	return sessionID
 }
 
 func (w *Web3Actions) AddBearerToken(token string) {
@@ -197,10 +207,19 @@ type NodeInfo struct {
 	TransactionOrder string `json:"transactionOrder"`
 }
 
+var sessionCache = cache.New(5*time.Minute, 10*time.Minute)
+
 func (w *Web3Actions) GetNodeInfo(ctx context.Context) (NodeInfo, error) {
 	cmdValue := "hardhat_metadata"
 	if w.IsAnvilNode {
 		cmdValue = "anvil_nodeInfo"
+	}
+
+	sessionID := w.GetSessionLockHeader()
+	val, ok := sessionCache.Get(sessionID)
+	if ok {
+		tmp := val.(NodeInfo)
+		return tmp, nil
 	}
 
 	var params []interface{}
@@ -209,6 +228,8 @@ func (w *Web3Actions) GetNodeInfo(ctx context.Context) (NodeInfo, error) {
 	if err != nil {
 		return result, err
 	}
+
+	sessionCache.Set(sessionID, result, cache.DefaultExpiration)
 	return result, err
 }
 
