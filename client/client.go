@@ -245,7 +245,13 @@ func (w *Web3Actions) ResetNetwork(ctx context.Context, rpcUrl string, blockNumb
 		}
 		return err
 	}
-	return w.C.Client().CallContext(ctx, nil, w.swapToAnvil("hardhat_reset"))
+	args := toForkingArgResetToLatest(rpcUrl)
+	params := []interface{}{args}
+	err := w.C.Client().CallContext(ctx, nil, methodName, params...)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func (w *Web3Actions) ImpersonateAccount(ctx context.Context, address string) error {
@@ -330,6 +336,15 @@ func toForkingArg(jsonRpcURL string, blockNumber int) interface{} {
 		"forking": {
 			"jsonRpcUrl":  jsonRpcURL,
 			"blockNumber": blockNumber,
+		},
+	}
+	return arg
+}
+
+func toForkingArgResetToLatest(jsonRpcURL string) interface{} {
+	arg := map[string]map[string]any{
+		"forking": {
+			"jsonRpcUrl": jsonRpcURL,
 		},
 	}
 	return arg
