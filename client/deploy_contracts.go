@@ -6,6 +6,7 @@ import (
 	"math/big"
 	"os"
 
+	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/crypto"
@@ -85,12 +86,6 @@ func (w *Web3Actions) DeployBin(ctx context.Context, binFilename, abiFilename st
 func (w *Web3Actions) GetSignedDeployTxToCallFunctionWithArgs(ctx context.Context, binHex string, payload *SendContractTxPayload) (*types.Transaction, error) {
 	w.Dial()
 	defer w.C.Close()
-
-	err := w.SetGasPriceAndLimit(ctx, &payload.GasPriceLimits)
-	if err != nil {
-		log.Ctx(ctx).Err(err).Msg("Web3Actions: Transfer: SetGasPriceAndLimit")
-		return nil, err
-	}
 	binData, err := hexutil.Decode(binHex)
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("DeployContract: Decode")
@@ -110,6 +105,11 @@ func (w *Web3Actions) GetSignedDeployTxToCallFunctionWithArgs(ctx context.Contex
 		}
 		binData = append(binData, input...)
 	}
+	err = w.SuggestAndSetGasPriceAndLimitForTx(ctx, &payload.GasPriceLimits, common.HexToAddress(payload.ToAddress.Hex()), binData)
+	if err != nil {
+		log.Ctx(ctx).Err(err).Msg("Web3Actions: Transfer: SetGasPriceAndLimit")
+		return nil, err
+	}
 	signedTx, err := w.GetSignedTxToDeploySmartContract(ctx, payload, binData)
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("CallFunctionWithData: GetSignedDeployTxToCallFunctionWithArgs")
@@ -124,17 +124,6 @@ func (w *Web3Actions) GetSignedTxToDeploySmartContract(ctx context.Context, payl
 	w.Dial()
 	defer w.C.Close()
 
-	err = w.SetGasPriceAndLimit(ctx, &payload.GasPriceLimits)
-	if err != nil {
-		log.Ctx(ctx).Err(err).Msg("GetSignedTxToCallFunctionWithData: SetGasPriceAndLimit")
-		return nil, err
-	}
-	est, err := w.C.SuggestGasPrice(ctx)
-	if err != nil {
-		log.Ctx(ctx).Err(err).Msg("GetSignedTxToCallFunctionWithData: SetGasPriceAndLimit")
-		return nil, err
-	}
-	payload.GasFeeCap = est
 	chainID, err := w.C.ChainID(ctx)
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("CallFunctionWithData: GetChainID")

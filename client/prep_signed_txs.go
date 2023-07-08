@@ -12,11 +12,6 @@ import (
 func (w *Web3Actions) GetSignedSendTx(ctx context.Context, params SendEtherPayload) (*types.Transaction, error) {
 	w.Dial()
 	defer w.C.Close()
-	err := w.SetGasPriceAndLimit(ctx, &params.GasPriceLimits)
-	if err != nil {
-		log.Ctx(ctx).Err(err).Msg("Send: SignTx")
-		return nil, fmt.Errorf("cannot sign transaction: %v", err)
-	}
 	nonce, err := w.GetNonce(ctx)
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("Send: GetNonce")
@@ -26,6 +21,11 @@ func (w *Web3Actions) GetSignedSendTx(ctx context.Context, params SendEtherPaylo
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("Send: GetChainID")
 		return nil, fmt.Errorf("couldn't get chain ID: %v", err)
+	}
+	err = w.SuggestAndSetGasPriceAndLimitForTx(ctx, &params.GasPriceLimits, common.HexToAddress(params.ToAddress.Hex()), nil)
+	if err != nil {
+		log.Ctx(ctx).Err(err).Msg("Send: SuggestAndSetGasPriceAndLimitForTx")
+		return nil, err
 	}
 	scAddr := common.HexToAddress(params.ToAddress.Hex())
 	if params.GasFeeCap == nil {

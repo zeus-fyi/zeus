@@ -16,15 +16,15 @@ func (w *Web3Actions) GetSignedTxToCallFunctionWithData(ctx context.Context, pay
 	var err error
 	w.Dial()
 	defer w.C.Close()
-	err = w.SetGasPriceAndLimit(ctx, &payload.GasPriceLimits)
+	if payload == nil {
+		return nil, fmt.Errorf("payload is nil")
+	}
+	scAddr := common.HexToAddress(payload.SmartContractAddr)
+	err = w.SuggestAndSetGasPriceAndLimitForTx(ctx, &payload.GasPriceLimits, scAddr, data)
 	if err != nil {
-		log.Ctx(ctx).Err(err).Msg("GetSignedTxToCallFunctionWithData: SetGasPriceAndLimit")
+		log.Ctx(ctx).Err(err).Msg("Send: SuggestAndSetGasPriceAndLimitForTx")
 		return nil, err
 	}
-	if payload.GasLimit == 21000 {
-		payload.GasLimit = 3000000
-	}
-
 	chainID, err := w.C.ChainID(ctx)
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("CallFunctionWithData: GetChainID")
@@ -37,10 +37,6 @@ func (w *Web3Actions) GetSignedTxToCallFunctionWithData(ctx context.Context, pay
 		log.Ctx(ctx).Err(err).Msg("CallFunctionWithData: GetPendingTransactionCount")
 		return nil, fmt.Errorf("cannot get nonce: %v", err)
 	}
-	if payload.GasFeeCap == nil {
-		payload.GasFeeCap = payload.GasPrice
-	}
-	scAddr := common.HexToAddress(payload.SmartContractAddr)
 	baseTx := &types.DynamicFeeTx{
 		To:        &scAddr,
 		Nonce:     nonce,
