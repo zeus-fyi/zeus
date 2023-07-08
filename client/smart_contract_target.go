@@ -31,7 +31,6 @@ func (w *Web3Actions) GetTargetContract(ctx context.Context, rpcURL, contractAdd
 	}
 	if len(res) != 1 {
 		return "", err
-
 	}
 	return res[0].(string), err
 

@@ -7,28 +7,12 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"math/big"
 	"net/http"
 	"net/url"
 
 	"github.com/rs/zerolog/log"
-	"github.com/shopspring/decimal"
 	"github.com/zeus-fyi/gochain/web3/accounts"
 )
-
-func constructSendEtherPayload(amount *big.Int, address accounts.Address, gasPrice *big.Int, gasLimit uint64) SendEtherPayload {
-	params := SendEtherPayload{
-		TransferArgs: TransferArgs{
-			Amount:    amount,
-			ToAddress: address,
-		},
-		GasPriceLimits: GasPriceLimits{
-			GasPrice: gasPrice,
-			GasLimit: gasLimit,
-		},
-	}
-	return params
-}
 
 func ValidateToAddress(ctx context.Context, toAddress string) error {
 	if toAddress == "" {
@@ -42,34 +26,6 @@ func ValidateToAddress(ctx context.Context, toAddress string) error {
 		return err
 	}
 	return nil
-}
-
-func ConvertTailForTransfer(ctx context.Context, tail []string) (TransferArgs, error) {
-	if len(tail) < 3 {
-		err := errors.New("invalid arguments. format is: `transfer X to ADDRESS`")
-		log.Ctx(ctx).Err(err).Msg("Web3Actions: Transfer")
-		return TransferArgs{}, err
-	}
-	amountS := tail[0]
-	amountD, err := decimal.NewFromString(amountS)
-	if err != nil {
-		err = fmt.Errorf("invalid amount %v", amountS)
-		log.Ctx(ctx).Err(err).Msg("Transfer: decimal.NewFromString")
-		return TransferArgs{}, err
-	}
-	toAddress := tail[2]
-
-	err = ValidateToAddress(ctx, toAddress)
-	if err != nil {
-		log.Ctx(ctx).Err(err).Msg("Transfer: ValidateToAddress")
-		return TransferArgs{}, err
-	}
-	address := accounts.HexToAddress(toAddress)
-	argsIn := TransferArgs{
-		Amount:    amountD.BigInt(),
-		ToAddress: address,
-	}
-	return argsIn, err
 }
 
 func marshalJSON(ctx context.Context, data interface{}) (string, error) {
