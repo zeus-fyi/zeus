@@ -105,11 +105,6 @@ func (w *Web3Actions) GetSignedDeployTxToCallFunctionWithArgs(ctx context.Contex
 		}
 		binData = append(binData, input...)
 	}
-	err = w.SuggestAndSetGasPriceAndLimitForTx(ctx, &payload.GasPriceLimits, common.HexToAddress(payload.ToAddress.Hex()), binData)
-	if err != nil {
-		log.Ctx(ctx).Err(err).Msg("Web3Actions: Transfer: SetGasPriceAndLimit")
-		return nil, err
-	}
 	signedTx, err := w.GetSignedTxToDeploySmartContract(ctx, payload, binData)
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("CallFunctionWithData: GetSignedDeployTxToCallFunctionWithArgs")
@@ -123,7 +118,11 @@ func (w *Web3Actions) GetSignedTxToDeploySmartContract(ctx context.Context, payl
 	var err error
 	w.Dial()
 	defer w.C.Close()
-
+	err = w.SuggestAndSetGasPriceAndLimitForTx(ctx, payload, common.HexToAddress(payload.ToAddress.Hex()), data)
+	if err != nil {
+		log.Ctx(ctx).Err(err).Msg("Web3Actions: Transfer: SetGasPriceAndLimit")
+		return nil, err
+	}
 	chainID, err := w.C.ChainID(ctx)
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("CallFunctionWithData: GetChainID")

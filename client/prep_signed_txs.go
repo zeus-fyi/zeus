@@ -22,14 +22,21 @@ func (w *Web3Actions) GetSignedSendTx(ctx context.Context, params SendEtherPaylo
 		log.Ctx(ctx).Err(err).Msg("Send: GetChainID")
 		return nil, fmt.Errorf("couldn't get chain ID: %v", err)
 	}
-	err = w.SuggestAndSetGasPriceAndLimitForTx(ctx, &params.GasPriceLimits, common.HexToAddress(params.ToAddress.Hex()), nil)
+	scAddr := common.HexToAddress(params.ToAddress.Hex())
+	payload := &SendContractTxPayload{
+		SmartContractAddr: scAddr.String(),
+		SendEtherPayload: SendEtherPayload{
+			TransferArgs: TransferArgs{
+				ToAddress: params.ToAddress,
+				Amount:    params.Amount,
+			},
+			GasPriceLimits: params.GasPriceLimits,
+		},
+	}
+	err = w.SuggestAndSetGasPriceAndLimitForTx(ctx, payload, common.HexToAddress(params.ToAddress.Hex()), nil)
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("Send: SuggestAndSetGasPriceAndLimitForTx")
 		return nil, err
-	}
-	scAddr := common.HexToAddress(params.ToAddress.Hex())
-	if params.GasFeeCap == nil {
-		params.GasFeeCap = params.GasPrice
 	}
 	baseTx := &types.DynamicFeeTx{
 		To:        &scAddr,

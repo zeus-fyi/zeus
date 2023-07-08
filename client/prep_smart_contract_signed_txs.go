@@ -20,7 +20,7 @@ func (w *Web3Actions) GetSignedTxToCallFunctionWithData(ctx context.Context, pay
 		return nil, fmt.Errorf("payload is nil")
 	}
 	scAddr := common.HexToAddress(payload.SmartContractAddr)
-	err = w.SuggestAndSetGasPriceAndLimitForTx(ctx, &payload.GasPriceLimits, scAddr, data)
+	err = w.SuggestAndSetGasPriceAndLimitForTx(ctx, payload, scAddr, data)
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("Send: SuggestAndSetGasPriceAndLimitForTx")
 		return nil, err

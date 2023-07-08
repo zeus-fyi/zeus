@@ -34,7 +34,7 @@ func (w *Web3Actions) GetBaseFee(ctx context.Context) (*big.Int, error) {
 	return baseFee, nil
 }
 
-func (w *Web3Actions) SuggestAndSetGasPriceAndLimitForTx(ctx context.Context, params *GasPriceLimits, toAddr common.Address, data []byte) error {
+func (w *Web3Actions) SuggestAndSetGasPriceAndLimitForTx(ctx context.Context, params *SendContractTxPayload, toAddr common.Address, data []byte) error {
 	w.Dial()
 	defer w.C.Close()
 	/*
@@ -62,13 +62,13 @@ func (w *Web3Actions) SuggestAndSetGasPriceAndLimitForTx(ctx context.Context, pa
 		return err
 	}
 	msg := ethereum.CallMsg{
-		From:       common.HexToAddress(w.Address().Hex()),
-		To:         &toAddr,
-		GasPrice:   gasPrice,
-		GasFeeCap:  params.GasFeeCap,
-		GasTipCap:  params.GasTipCap,
-		Data:       data,
-		AccessList: nil,
+		From:      common.HexToAddress(w.Address().Hex()),
+		To:        &toAddr,
+		GasPrice:  gasPrice,
+		GasFeeCap: params.GasFeeCap,
+		GasTipCap: params.GasTipCap,
+		Data:      data,
+		Value:     params.Amount,
 	}
 	gasLimit, err := w.C.EstimateGas(ctx, msg)
 	if err != nil {
