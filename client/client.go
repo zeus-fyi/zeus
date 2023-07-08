@@ -81,13 +81,14 @@ func (w *Web3Actions) AddEndSessionLockToHeaderIfExisting() {
 	}
 }
 
-func (w *Web3Actions) EndHardHatSessionReset(ctx context.Context, nodeURL string, blockNum int) {
+func (w *Web3Actions) EndHardHatSessionReset(ctx context.Context, nodeURL string, blockNum int) error {
 	w.AddEndSessionLockToHeaderIfExisting()
 	err := w.ResetNetwork(ctx, nodeURL, blockNum)
 	if err != nil {
 		zlog.Warn().Err(err).Msg("error resetting hardhat session")
-		return
+		return err
 	}
+	return nil
 }
 
 func (w *Web3Actions) AddDurableExecutionIDHeader(reqID string) {
