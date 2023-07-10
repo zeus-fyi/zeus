@@ -11,7 +11,8 @@ import (
 )
 
 type Account struct {
-	key *ecdsa.PrivateKey
+	key            *ecdsa.PrivateKey
+	nonceIncrement uint64
 }
 
 func CreateAccount() (*Account, error) {
@@ -21,7 +22,8 @@ func CreateAccount() (*Account, error) {
 		return nil, err
 	}
 	return &Account{
-		key: key,
+		key:            key,
+		nonceIncrement: 0,
 	}, nil
 }
 
@@ -100,4 +102,16 @@ func (a *Account) EcdsaPublicKey() *ecdsa.PublicKey {
 		panic(err)
 	}
 	return publicKeyECDSA
+}
+
+func (a *Account) GetNonceOffset() uint64 {
+	return a.nonceIncrement
+}
+
+func (a *Account) IncrementLocalNonce() {
+	a.nonceIncrement++
+}
+
+func (a *Account) ResetLocalNonce() {
+	a.nonceIncrement = 0
 }

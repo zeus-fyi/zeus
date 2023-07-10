@@ -17,6 +17,9 @@ func (w *Web3Actions) GetSignedSendTx(ctx context.Context, params SendEtherPaylo
 		log.Ctx(ctx).Err(err).Msg("Send: GetNonce")
 		return nil, err
 	}
+	if w.IncrementLocalNonce {
+		nonce += w.Account.GetNonceOffset()
+	}
 	chainID, err := w.C.ChainID(ctx)
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("Send: GetChainID")
@@ -51,6 +54,9 @@ func (w *Web3Actions) GetSignedSendTx(ctx context.Context, params SendEtherPaylo
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("Send: SignTx")
 		return nil, fmt.Errorf("cannot sign transaction: %v", err)
+	}
+	if w.IncrementLocalNonce {
+		w.Account.IncrementLocalNonce()
 	}
 	return signedTx, err
 }
