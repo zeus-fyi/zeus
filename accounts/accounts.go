@@ -103,15 +103,3 @@ func (a *Account) EcdsaPublicKey() *ecdsa.PublicKey {
 	}
 	return publicKeyECDSA
 }
-
-func (a *Account) GetNonceOffset() uint64 {
-	return a.nonceIncrement
-}
-
-func (a *Account) IncrementLocalNonce() {
-	a.nonceIncrement++
-}
-
-func (a *Account) ResetLocalNonce() {
-	a.nonceIncrement = 0
-}

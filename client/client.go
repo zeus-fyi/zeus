@@ -26,13 +26,12 @@ const (
 type Web3Actions struct {
 	C *ethclient.Client
 	*accounts.Account
-	Headers                 map[string]string
-	NodeURL                 string
-	RelayProxyUrl           string
-	Network                 string
-	IsAnvilNode             bool
-	DurableExecution        bool
-	AutoIncrementLocalNonce bool
+	Headers          map[string]string
+	NodeURL          string
+	RelayProxyUrl    string
+	Network          string
+	IsAnvilNode      bool
+	DurableExecution bool
 }
 
 func (w *Web3Actions) Dial() {
