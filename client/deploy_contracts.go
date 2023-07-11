@@ -118,7 +118,10 @@ func (w *Web3Actions) GetSignedTxToDeploySmartContract(ctx context.Context, payl
 	var err error
 	w.Dial()
 	defer w.C.Close()
-	err = w.SuggestAndSetGasPriceAndLimitForTx(ctx, payload, common.HexToAddress(payload.ToAddress.Hex()), data)
+	if data != nil {
+		payload.Data = data
+	}
+	err = w.SuggestAndSetGasPriceAndLimitForTx(ctx, payload, common.HexToAddress(payload.ToAddress.Hex()))
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("Web3Actions: Transfer: SetGasPriceAndLimit")
 		return nil, err

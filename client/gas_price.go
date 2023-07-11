@@ -34,7 +34,7 @@ func (w *Web3Actions) GetBaseFee(ctx context.Context) (*big.Int, error) {
 	return baseFee, nil
 }
 
-func (w *Web3Actions) SuggestAndSetGasPriceAndLimitForTx(ctx context.Context, params *SendContractTxPayload, toAddr common.Address, data []byte) error {
+func (w *Web3Actions) SuggestAndSetGasPriceAndLimitForTx(ctx context.Context, params *SendContractTxPayload, toAddr common.Address) error {
 	w.Dial()
 	defer w.C.Close()
 	/*
@@ -71,7 +71,7 @@ func (w *Web3Actions) SuggestAndSetGasPriceAndLimitForTx(ctx context.Context, pa
 		GasPrice:  gasPrice,
 		GasFeeCap: params.GasFeeCap,
 		GasTipCap: params.GasTipCap,
-		Data:      data,
+		Data:      params.Data,
 		Value:     params.Amount,
 	}
 	gasLimit, err := w.C.EstimateGas(ctx, msg)

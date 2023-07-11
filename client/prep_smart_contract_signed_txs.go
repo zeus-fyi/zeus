@@ -8,7 +8,6 @@ import (
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/rs/zerolog/log"
-	web3_types "github.com/zeus-fyi/gochain/web3/types"
 )
 
 // GetSignedTxToCallFunctionWithData prepares the tx for broadcast
@@ -20,7 +19,10 @@ func (w *Web3Actions) GetSignedTxToCallFunctionWithData(ctx context.Context, pay
 		return nil, fmt.Errorf("payload is nil")
 	}
 	scAddr := common.HexToAddress(payload.SmartContractAddr)
-	err = w.SuggestAndSetGasPriceAndLimitForTx(ctx, payload, scAddr, data)
+	if data != nil {
+		payload.Data = data
+	}
+	err = w.SuggestAndSetGasPriceAndLimitForTx(ctx, payload, scAddr)
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("Send: SuggestAndSetGasPriceAndLimitForTx")
 		return nil, err
@@ -66,39 +68,15 @@ func (w *Web3Actions) GetSignedTxToCallFunctionWithData(ctx context.Context, pay
 func (w *Web3Actions) GetSignedTxToCallFunctionWithArgs(ctx context.Context, payload *SendContractTxPayload) (*types.Transaction, error) {
 	w.Dial()
 	defer w.C.Close()
-	data, err := GetDataPayload(ctx, payload)
+	err := payload.GenerateBinDataFromParamsAbi(ctx)
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("CallFunctionWithArgs: GetDataPayload")
 		return nil, err
 	}
-	signedTx, err := w.GetSignedTxToCallFunctionWithData(ctx, payload, data)
+	signedTx, err := w.GetSignedTxToCallFunctionWithData(ctx, payload, payload.Data)
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("CallFunctionWithData: GetSignedTxToCallFunctionWithData")
 		return nil, err
 	}
 	return signedTx, err
-}
-
-func GetDataPayload(ctx context.Context, payload *SendContractTxPayload) ([]byte, error) {
-	myabi := payload.ContractABI
-	if myabi == nil {
-		abiInternal, aerr := web3_types.GetABI(payload.ContractFile)
-		if aerr != nil {
-			log.Ctx(ctx).Err(aerr).Msg("CallContract: GetABI")
-			return nil, aerr
-		}
-		myabi = abiInternal
-	}
-	fn := myabi.Methods[payload.MethodName]
-	goParams, err := web3_types.ConvertArguments(fn.Inputs, payload.Params)
-	if err != nil {
-		log.Ctx(ctx).Err(err).Msg("CallFunctionWithArgs")
-		return nil, err
-	}
-	data, err := myabi.Pack(payload.MethodName, goParams...)
-	if err != nil {
-		log.Ctx(ctx).Err(err).Msg("CallFunctionWithArgs")
-		return nil, fmt.Errorf("failed to pack values: %v", err)
-	}
-	return data, err
 }

@@ -36,7 +36,7 @@ func (w *Web3Actions) GetSignedSendTx(ctx context.Context, params SendEtherPaylo
 			GasPriceLimits: params.GasPriceLimits,
 		},
 	}
-	err = w.SuggestAndSetGasPriceAndLimitForTx(ctx, payload, common.HexToAddress(params.ToAddress.Hex()), nil)
+	err = w.SuggestAndSetGasPriceAndLimitForTx(ctx, payload, common.HexToAddress(params.ToAddress.Hex()))
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("Send: SuggestAndSetGasPriceAndLimitForTx")
 		return nil, err
