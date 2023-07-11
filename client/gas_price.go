@@ -42,6 +42,10 @@ func (w *Web3Actions) SuggestAndSetGasPriceAndLimitForTx(ctx context.Context, pa
 		GasFeeCap  *big.Int // a.k.a. maxFeePerGas
 		Gas        uint64 // a.k.a. gasLimit
 	*/
+	if params.GasLimit != 0 {
+		// if user sets gas manually, don't override it
+		return nil
+	}
 	gasTip, err := w.C.SuggestGasTipCap(ctx)
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("Send: GetGasTip")

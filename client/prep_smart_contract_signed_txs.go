@@ -66,6 +66,20 @@ func (w *Web3Actions) GetSignedTxToCallFunctionWithData(ctx context.Context, pay
 func (w *Web3Actions) GetSignedTxToCallFunctionWithArgs(ctx context.Context, payload *SendContractTxPayload) (*types.Transaction, error) {
 	w.Dial()
 	defer w.C.Close()
+	data, err := GetDataPayload(ctx, payload)
+	if err != nil {
+		log.Ctx(ctx).Err(err).Msg("CallFunctionWithArgs: GetDataPayload")
+		return nil, err
+	}
+	signedTx, err := w.GetSignedTxToCallFunctionWithData(ctx, payload, data)
+	if err != nil {
+		log.Ctx(ctx).Err(err).Msg("CallFunctionWithData: GetSignedTxToCallFunctionWithData")
+		return nil, err
+	}
+	return signedTx, err
+}
+
+func GetDataPayload(ctx context.Context, payload *SendContractTxPayload) ([]byte, error) {
 	myabi := payload.ContractABI
 	if myabi == nil {
 		abiInternal, aerr := web3_types.GetABI(payload.ContractFile)
@@ -86,10 +100,5 @@ func (w *Web3Actions) GetSignedTxToCallFunctionWithArgs(ctx context.Context, pay
 		log.Ctx(ctx).Err(err).Msg("CallFunctionWithArgs")
 		return nil, fmt.Errorf("failed to pack values: %v", err)
 	}
-	signedTx, err := w.GetSignedTxToCallFunctionWithData(ctx, payload, data)
-	if err != nil {
-		log.Ctx(ctx).Err(err).Msg("CallFunctionWithData: GetSignedTxToCallFunctionWithData")
-		return nil, err
-	}
-	return signedTx, err
+	return data, err
 }
