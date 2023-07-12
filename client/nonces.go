@@ -10,6 +10,30 @@ import (
 	"github.com/zeus-fyi/gochain/web3/accounts"
 )
 
+const (
+	NonceOffset = "nonceOffset"
+)
+
+func (w *Web3Actions) GetNonceOffset(ctx context.Context) uint64 {
+	offset := ctx.Value(NonceOffset)
+	if offset == nil {
+		return 0
+	}
+	switch v := offset.(type) {
+	case uint64:
+		return v
+	case int:
+		return uint64(v)
+	default:
+	}
+	return 0
+}
+
+func (w *Web3Actions) SetNonceOffset(ctx context.Context, offset uint64) context.Context {
+	ctx = context.WithValue(ctx, NonceOffset, offset)
+	return ctx
+}
+
 func (w *Web3Actions) GetNonce(ctx context.Context) (uint64, error) {
 	w.Dial()
 	defer w.C.Close()
