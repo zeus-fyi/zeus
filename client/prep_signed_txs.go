@@ -38,9 +38,10 @@ func (w *Web3Actions) GetSignedSendTx(ctx context.Context, params SendEtherPaylo
 		log.Ctx(ctx).Err(err).Msg("Send: SuggestAndSetGasPriceAndLimitForTx")
 		return nil, err
 	}
+	nonceOffset := w.GetNonceOffset(ctx)
 	baseTx := &types.DynamicFeeTx{
 		To:        &scAddr,
-		Nonce:     nonce,
+		Nonce:     nonce + nonceOffset,
 		GasFeeCap: params.GasFeeCap,
 		GasTipCap: params.GasTipCap,
 		Gas:       params.GasLimit,
