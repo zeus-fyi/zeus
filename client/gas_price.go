@@ -60,15 +60,9 @@ func (w *Web3Actions) SuggestAndSetGasPriceAndLimitForTx(ctx context.Context, pa
 	// Max Fee = (2 * Base Fee) + Max Priority Fee
 	gasBaseWithMargin := new(big.Int).Mul(baseFee, big.NewInt(2))
 	params.GasFeeCap = new(big.Int).Add(gasBaseWithMargin, gasTip)
-	gasPrice, err := w.C.SuggestGasPrice(ctx)
-	if err != nil {
-		log.Ctx(ctx).Err(err).Msg("Send: EstimateGas")
-		return err
-	}
 	msg := ethereum.CallMsg{
 		From:      common.HexToAddress(w.Address().Hex()),
 		To:        &toAddr,
-		GasPrice:  gasPrice,
 		GasFeeCap: params.GasFeeCap,
 		GasTipCap: params.GasTipCap,
 		Data:      params.Data,
