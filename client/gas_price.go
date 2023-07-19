@@ -17,6 +17,7 @@ func (w *Web3Actions) GetBaseFee(ctx context.Context) (*big.Int, error) {
 	defer w.C.Close()
 	blk, err := w.C.BlockByNumber(ctx, nil)
 	if err != nil {
+		log.Warn().Err(err).Msg("GetBaseFee: BlockByNumber")
 		return nil, err
 	}
 	config := params.MainnetChainConfig
@@ -46,17 +47,24 @@ func (w *Web3Actions) SuggestAndSetGasPriceAndLimitForTx(ctx context.Context, pa
 		// if user sets gas manually, don't override it
 		return nil
 	}
+	if w.Account == nil {
+		log.Warn().Msg("SuggestAndSetGasPriceAndLimitForTx: account is nil")
+		return fmt.Errorf("account is nil")
+	}
 	gasTip, err := w.C.SuggestGasTipCap(ctx)
 	if err != nil {
-		log.Ctx(ctx).Err(err).Msg("Send: GetGasTip")
+		log.Warn().Err(err).Msg("SuggestAndSetGasPriceAndLimitForTx: SuggestGasTipCap")
+		log.Ctx(ctx).Err(err).Msg("SuggestAndSetGasPriceAndLimitForTx: GetGasTip")
 		return fmt.Errorf("cannot get gas tip: %v", err)
 	}
 	params.GasTipCap = gasTip
 	baseFee, err := w.GetBaseFee(ctx)
 	if err != nil {
-		log.Ctx(ctx).Err(err).Msg("Send: GetBaseFee")
+		log.Warn().Err(err).Msg("SuggestAndSetGasPriceAndLimitForTx: GetBaseFee")
+		log.Ctx(ctx).Err(err).Msg("SuggestAndSetGasPriceAndLimitForTx: GetBaseFee")
 		return err
 	}
+
 	// Max Fee = (2 * Base Fee) + Max Priority Fee
 	gasBaseWithMargin := new(big.Int).Mul(baseFee, big.NewInt(2))
 	params.GasFeeCap = new(big.Int).Add(gasBaseWithMargin, gasTip)
@@ -70,7 +78,8 @@ func (w *Web3Actions) SuggestAndSetGasPriceAndLimitForTx(ctx context.Context, pa
 	}
 	gasLimit, err := w.C.EstimateGas(ctx, msg)
 	if err != nil {
-		log.Ctx(ctx).Err(err).Msg("Send: EstimateGas")
+		log.Warn().Err(err).Msg("SuggestAndSetGasPriceAndLimitForTx: EstimateGas")
+		log.Ctx(ctx).Err(err).Msg("SuggestAndSetGasPriceAndLimitForTx: EstimateGas")
 		return err
 	}
 	params.GasLimit = gasLimit
