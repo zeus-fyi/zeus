@@ -39,7 +39,7 @@ func (w *Web3Actions) GetSignedTxToCallFunctionWithData(ctx context.Context, pay
 		log.Ctx(ctx).Err(err).Msg("CallFunctionWithData: GetPendingTransactionCount")
 		return nil, fmt.Errorf("cannot get nonce: %v", err)
 	}
-	nonceOffset := w.GetNonceOffset(ctx)
+	nonceOffset := GetNonceOffset(ctx)
 	baseTx := &types.DynamicFeeTx{
 		To:        &scAddr,
 		Nonce:     nonce + nonceOffset,

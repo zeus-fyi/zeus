@@ -14,7 +14,7 @@ const (
 	NonceOffset = "nonceOffset"
 )
 
-func (w *Web3Actions) GetNonceOffset(ctx context.Context) uint64 {
+func GetNonceOffset(ctx context.Context) uint64 {
 	offset := ctx.Value(NonceOffset)
 	if offset == nil {
 		return 0
