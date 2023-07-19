@@ -24,6 +24,7 @@ func (w *Web3Actions) GetSignedTxToCallFunctionWithData(ctx context.Context, pay
 	}
 	err = w.SuggestAndSetGasPriceAndLimitForTx(ctx, payload, scAddr)
 	if err != nil {
+		log.Warn().Err(err).Msg("Send: SuggestAndSetGasPriceAndLimitForTx")
 		log.Ctx(ctx).Err(err).Msg("Send: SuggestAndSetGasPriceAndLimitForTx")
 		return nil, err
 	}
