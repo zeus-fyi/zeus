@@ -29,7 +29,7 @@ func GetNonceOffset(ctx context.Context) uint64 {
 	return 0
 }
 
-func (w *Web3Actions) SetNonceOffset(ctx context.Context, offset uint64) context.Context {
+func SetNonceOffset(ctx context.Context, offset uint64) context.Context {
 	ctx = context.WithValue(ctx, NonceOffset, offset)
 	return ctx
 }
