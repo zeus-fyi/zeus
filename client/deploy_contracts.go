@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math/big"
 	"os"
+	"strings"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
@@ -126,10 +127,18 @@ func (w *Web3Actions) GetSignedTxToDeploySmartContract(ctx context.Context, payl
 		log.Ctx(ctx).Err(err).Msg("Web3Actions: Transfer: SetGasPriceAndLimit")
 		return nil, err
 	}
-	chainID, err := w.C.ChainID(ctx)
-	if err != nil {
-		log.Ctx(ctx).Err(err).Msg("CallFunctionWithData: GetChainID")
-		return nil, fmt.Errorf("couldn't get chain ID: %v", err)
+	var chainID *big.Int
+	switch strings.ToLower(w.Network) {
+	case "mainnet":
+		chainID = new(big.Int).SetInt64(1)
+	case "goerli":
+		chainID = new(big.Int).SetInt64(5)
+	default:
+		chainID, err = w.C.ChainID(ctx)
+		if err != nil {
+			log.Ctx(ctx).Err(err).Msg("CallFunctionWithData: GetChainID")
+			return nil, fmt.Errorf("couldn't get chain ID: %v", err)
+		}
 	}
 	publicKeyECDSA := w.EcdsaPublicKey()
 	fromAddress := crypto.PubkeyToAddress(*publicKeyECDSA)
