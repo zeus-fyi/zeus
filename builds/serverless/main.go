@@ -17,14 +17,14 @@ import (
 	serverless_aws_automation "github.com/zeus-fyi/zeus/builds/serverless/aws_automation"
 	ethereum_automation_cookbook "github.com/zeus-fyi/zeus/cookbooks/ethereum/automation"
 	aws_aegis_auth "github.com/zeus-fyi/zeus/pkg/aegis/aws/auth"
+	age_encryption "github.com/zeus-fyi/zeus/pkg/aegis/crypto/age"
+	bls_signer "github.com/zeus-fyi/zeus/pkg/aegis/crypto/bls"
+	aegis_random "github.com/zeus-fyi/zeus/pkg/aegis/crypto/random"
 	signing_automation_ethereum "github.com/zeus-fyi/zeus/pkg/artemis/signing_automation/ethereum"
-	age_encryption "github.com/zeus-fyi/zeus/pkg/crypto/age"
-	bls_signer "github.com/zeus-fyi/zeus/pkg/crypto/bls"
-aegis_random
-hestia_req_types "github.com/zeus-fyi/zeus/pkg/hestia/client/req_types"
-filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
-strings_filter "github.com/zeus-fyi/zeus/pkg/utils/strings"
-"k8s.io/apimachinery/pkg/util/rand"
+	hestia_req_types "github.com/zeus-fyi/zeus/pkg/hestia/client/req_types"
+	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
+	strings_filter "github.com/zeus-fyi/zeus/pkg/utils/strings"
+	"k8s.io/apimachinery/pkg/util/rand"
 )
 
 func main() {
