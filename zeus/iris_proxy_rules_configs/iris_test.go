@@ -7,19 +7,18 @@ import (
 	"github.com/zeus-fyi/zeus/cookbooks"
 	"github.com/zeus-fyi/zeus/test/configs"
 	"github.com/zeus-fyi/zeus/test/test_suites"
-	zeus_client "github.com/zeus-fyi/zeus/zeus/z_client"
 )
 
 type IrisConfigTestSuite struct {
 	test_suites.BaseTestSuite
-	ZeusTestClient zeus_client.ZeusClient
+	IrisClient Iris
 }
 
 func (t *IrisConfigTestSuite) SetupTest() {
 	// points dir to test/configs
 	tc := configs.InitLocalTestConfigs()
 
-	t.ZeusTestClient = zeus_client.NewDefaultZeusClient(tc.Bearer)
+	t.IrisClient = NewIrisClient(tc.Bearer)
 	// points dir to cookbooks
 	cookbooks.ChangeToCookbookDir()
 }
