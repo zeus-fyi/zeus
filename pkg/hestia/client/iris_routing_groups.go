@@ -36,7 +36,7 @@ func (h *Hestia) ReadIrisGroupRoutes(ctx context.Context, rr any) (hestia_resp_t
 		SetResult(&respJson).
 		Post(hestia_endpoints.IrisReadGroupRoutesPath)
 	if err != nil || resp.StatusCode() != http.StatusAccepted {
-		log.Ctx(ctx).Err(err).Msg("Hestia: IrisCreateRoutesPath")
+		log.Ctx(ctx).Err(err).Msg("Hestia: ReadIrisGroupRoutes")
 		if resp.StatusCode() == http.StatusBadRequest {
 			err = errors.New("bad request")
 		}
