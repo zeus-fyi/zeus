@@ -17,7 +17,7 @@ func (h *Hestia) CreateIrisRoutes(ctx context.Context, rr any) (hestia_resp_type
 		SetBody(rr).
 		SetResult(&respJson).
 		Post(hestia_endpoints.IrisCreateRoutesPath)
-	if err != nil || resp.StatusCode() != http.StatusAccepted {
+	if err != nil || resp.StatusCode() >= 400 {
 		log.Ctx(ctx).Err(err).Msg("Hestia: CreateIrisRoutes")
 		if resp.StatusCode() == http.StatusBadRequest {
 			err = errors.New("bad request")
@@ -35,11 +35,11 @@ func (h *Hestia) ReadIrisRoutes(ctx context.Context, rr any) (hestia_resp_types.
 		SetBody(rr).
 		SetResult(&respJson).
 		Post(hestia_endpoints.IrisReadRoutesPath)
-	if err != nil || resp.StatusCode() != http.StatusAccepted {
-		log.Ctx(ctx).Err(err).Msg("Hestia: ReadIrisRoutes")
-		if resp.StatusCode() == http.StatusBadRequest {
+	if err != nil || resp.StatusCode() >= 400 {
+		if err == nil {
 			err = errors.New("bad request")
 		}
+		log.Ctx(ctx).Err(err).Msg("Hestia: ReadIrisRoutes")
 		return respJson, err
 	}
 	h.PrintRespJson(resp.Body())
@@ -53,11 +53,11 @@ func (h *Hestia) UpdateIrisRoutes(ctx context.Context, rr any) (hestia_resp_type
 		SetBody(rr).
 		SetResult(&respJson).
 		Post(hestia_endpoints.IrisUpdateRoutesPath)
-	if err != nil || resp.StatusCode() != http.StatusAccepted {
-		log.Ctx(ctx).Err(err).Msg("Hestia: IrisUpdateRoutesPath")
-		if resp.StatusCode() == http.StatusBadRequest {
+	if err != nil || resp.StatusCode() >= 400 {
+		if err == nil {
 			err = errors.New("bad request")
 		}
+		log.Ctx(ctx).Err(err).Msg("Hestia: IrisUpdateRoutesPath")
 		return respJson, err
 	}
 	h.PrintRespJson(resp.Body())
@@ -71,11 +71,11 @@ func (h *Hestia) DeleteIrisRoutes(ctx context.Context, rr any) (hestia_resp_type
 		SetBody(rr).
 		SetResult(&respJson).
 		Post(hestia_endpoints.IrisDeleteRoutesPath)
-	if err != nil || resp.StatusCode() != http.StatusAccepted {
-		log.Ctx(ctx).Err(err).Msg("Hestia: IrisDeleteRoutesPath")
-		if resp.StatusCode() == http.StatusBadRequest {
+	if err != nil || resp.StatusCode() >= 400 {
+		if err == nil {
 			err = errors.New("bad request")
 		}
+		log.Ctx(ctx).Err(err).Msg("Hestia: IrisDeleteRoutesPath")
 		return respJson, err
 	}
 	h.PrintRespJson(resp.Body())

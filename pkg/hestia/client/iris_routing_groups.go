@@ -3,7 +3,6 @@ package hestia_client
 import (
 	"context"
 	"errors"
-	"net/http"
 
 	"github.com/rs/zerolog/log"
 	hestia_endpoints "github.com/zeus-fyi/zeus/pkg/hestia/client/endpoints"
@@ -17,11 +16,11 @@ func (h *Hestia) CreateIrisGroupRoutes(ctx context.Context, rr any) (hestia_resp
 		SetBody(rr).
 		SetResult(&respJson).
 		Post(hestia_endpoints.IrisCreateGroupRoutesPath)
-	if err != nil || resp.StatusCode() != http.StatusAccepted {
-		log.Ctx(ctx).Err(err).Msg("Hestia: IrisCreateRoutesPath")
-		if resp.StatusCode() == http.StatusBadRequest {
+	if err != nil || resp.StatusCode() >= 400 {
+		if err == nil {
 			err = errors.New("bad request")
 		}
+		log.Ctx(ctx).Err(err).Msg("Hestia: IrisCreateRoutesPath")
 		return respJson, err
 	}
 	h.PrintRespJson(resp.Body())
@@ -35,11 +34,11 @@ func (h *Hestia) ReadIrisGroupRoutes(ctx context.Context, rr any) (hestia_resp_t
 		SetBody(rr).
 		SetResult(&respJson).
 		Post(hestia_endpoints.IrisReadGroupRoutesPath)
-	if err != nil || resp.StatusCode() != http.StatusAccepted {
-		log.Ctx(ctx).Err(err).Msg("Hestia: ReadIrisGroupRoutes")
-		if resp.StatusCode() == http.StatusBadRequest {
+	if err != nil || resp.StatusCode() >= 400 {
+		if err == nil {
 			err = errors.New("bad request")
 		}
+		log.Ctx(ctx).Err(err).Msg("Hestia: ReadIrisGroupRoutes")
 		return respJson, err
 	}
 	h.PrintRespJson(resp.Body())
@@ -53,12 +52,13 @@ func (h *Hestia) UpdateIrisGroupRoutes(ctx context.Context, rr any) (hestia_resp
 		SetBody(rr).
 		SetResult(&respJson).
 		Post(hestia_endpoints.IrisUpdateGroupRoutesPath)
-	if err != nil || resp.StatusCode() != http.StatusAccepted {
-		log.Ctx(ctx).Err(err).Msg("Hestia: UpdateIrisGroupRoutes")
-		if resp.StatusCode() == http.StatusBadRequest {
+	if err != nil || resp.StatusCode() >= 400 {
+		if err == nil {
 			err = errors.New("bad request")
 		}
+		log.Ctx(ctx).Err(err).Msg("Hestia: UpdateIrisGroupRoutes")
 		return respJson, err
+
 	}
 	h.PrintRespJson(resp.Body())
 	return respJson, err
@@ -71,11 +71,11 @@ func (h *Hestia) DeleteIrisGroupRoutes(ctx context.Context, rr any) (hestia_resp
 		SetBody(rr).
 		SetResult(&respJson).
 		Post(hestia_endpoints.IrisDeleteGroupRoutesPath)
-	if err != nil || resp.StatusCode() != http.StatusAccepted {
-		log.Ctx(ctx).Err(err).Msg("Hestia: DeleteIrisGroupRoutes")
-		if resp.StatusCode() == http.StatusBadRequest {
+	if err != nil || resp.StatusCode() >= 400 {
+		if err == nil {
 			err = errors.New("bad request")
 		}
+		log.Ctx(ctx).Err(err).Msg("Hestia: DeleteIrisGroupRoutes")
 		return respJson, err
 	}
 	h.PrintRespJson(resp.Body())

@@ -3,8 +3,9 @@ package hestia_client
 import (
 	"context"
 	"errors"
-	hestia_resp_types "github.com/zeus-fyi/zeus/pkg/hestia/client/resp_types"
 	"net/http"
+
+	hestia_resp_types "github.com/zeus-fyi/zeus/pkg/hestia/client/resp_types"
 
 	"github.com/rs/zerolog/log"
 	hestia_endpoints "github.com/zeus-fyi/zeus/pkg/hestia/client/endpoints"
@@ -24,7 +25,7 @@ func (h *Hestia) ValidatorsServiceRequest(ctx context.Context, rr hestia_req_typ
 		SetResult(&respJson).
 		Post(hestia_endpoints.EthereumValidatorsCreateServiceRequestV1Path)
 
-	if err != nil || resp.StatusCode() != http.StatusAccepted {
+	if err != nil || resp.StatusCode() >= 400 {
 		log.Ctx(ctx).Err(err).Msg("Hestia: ValidatorsServiceRequest")
 		if resp.StatusCode() == http.StatusBadRequest {
 			err = errors.New("bad request")

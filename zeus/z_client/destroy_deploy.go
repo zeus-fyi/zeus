@@ -3,7 +3,6 @@ package zeus_client
 import (
 	"context"
 	"fmt"
-	"net/http"
 
 	"github.com/rs/zerolog/log"
 	zeus_endpoints "github.com/zeus-fyi/zeus/zeus/z_client/endpoints"
@@ -21,7 +20,7 @@ func (z *ZeusClient) DestroyDeploy(ctx context.Context, tar zeus_req_types.Topol
 		SetBody(tar).
 		Post(zeus_endpoints.DestroyDeployInfraV1Path)
 
-	if err != nil || resp.StatusCode() != http.StatusAccepted {
+	if err != nil || resp.StatusCode() >= 400 {
 		log.Ctx(ctx).Err(err).Msg("ZeusClient: DestroyDeploy")
 		if err == nil {
 			err = fmt.Errorf("non-OK status code: %d", resp.StatusCode())
