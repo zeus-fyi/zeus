@@ -21,10 +21,10 @@ func (z *ZeusClient) ReadDeployStatusUpdates(ctx context.Context, tar zeus_req_t
 		Post(zeus_endpoints.DeployStatusV1Path)
 
 	if err != nil || resp.StatusCode() != http.StatusOK {
-		log.Ctx(ctx).Err(err).Msg("ZeusClient: ReadDeployStatusUpdates")
 		if err == nil {
 			err = fmt.Errorf("non-OK status code: %d", resp.StatusCode())
 		}
+		log.Ctx(ctx).Err(err).Msg("ZeusClient: ReadDeployStatusUpdates")
 		return respJson, err
 	}
 	z.PrintRespJson(resp.Body())

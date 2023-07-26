@@ -20,10 +20,10 @@ func (z *ZeusClient) ReadChart(ctx context.Context, tar zeus_req_types.TopologyR
 		Post(zeus_endpoints.InfraReadChartV1Path)
 
 	if err != nil || resp.StatusCode() != http.StatusOK {
-		log.Ctx(ctx).Err(err).Msg("ZeusClient: ReadChart")
 		if err == nil {
 			err = fmt.Errorf("non-OK status code: %d", resp.StatusCode())
 		}
+		log.Ctx(ctx).Err(err).Msg("ZeusClient: ReadChart")
 		return respJson, err
 	}
 	z.PrintRespJson(resp.Body())
