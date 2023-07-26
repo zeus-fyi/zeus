@@ -22,13 +22,13 @@ func (z *ZeusClient) DeployCluster(ctx context.Context, tar zeus_req_types.Clust
 		Post(zeus_endpoints.DeployClusterTopologyV1Path)
 
 	if err != nil || resp.StatusCode() >= 400 {
-		log.Ctx(ctx).Err(err).Msg("ZeusClient: DeployCluster")
-		if resp.StatusCode() == http.StatusBadRequest {
-			err = errors.New("bad request")
-		}
 		if err == nil {
 			err = fmt.Errorf("non-OK status code: %d", resp.StatusCode())
 		}
+		if resp.StatusCode() == http.StatusBadRequest {
+			err = errors.New("bad request")
+		}
+		log.Ctx(ctx).Err(err).Msg("ZeusClient: DeployCluster")
 		return respJson, err
 	}
 	z.PrintRespJson(resp.Body())
