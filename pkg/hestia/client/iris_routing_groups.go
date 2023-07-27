@@ -10,9 +10,9 @@ import (
 	hestia_resp_types "github.com/zeus-fyi/zeus/pkg/hestia/client/resp_types"
 )
 
-func (h *Hestia) CreateIrisGroupRoutes(ctx context.Context, rr hestia_req_types.CreateOrgGroupRoutesRequest) (hestia_resp_types.Response, error) {
+func (h *Hestia) CreateIrisGroupRoutes(ctx context.Context, rr hestia_req_types.CreateOrgGroupRoutesRequest) (hestia_resp_types.OrgGroupRoutesResponse, error) {
 	h.PrintReqJson(rr)
-	respJson := hestia_resp_types.Response{}
+	respJson := hestia_resp_types.OrgGroupRoutesResponse{}
 	resp, err := h.R().
 		SetBody(rr).
 		SetResult(&respJson).
@@ -28,11 +28,27 @@ func (h *Hestia) CreateIrisGroupRoutes(ctx context.Context, rr hestia_req_types.
 	return respJson, err
 }
 
-func (h *Hestia) ReadIrisGroupRoutes(ctx context.Context) (hestia_resp_types.Response, error) {
-	respJson := hestia_resp_types.Response{}
+func (h *Hestia) ReadIrisGroupRoutes(ctx context.Context, groupName string) (hestia_resp_types.OrgGroupRoutesResponse, error) {
+	respJson := hestia_resp_types.OrgGroupRoutesResponse{}
 	resp, err := h.R().
 		SetResult(&respJson).
 		Get(hestia_endpoints.IrisReadGroupRoutesPath)
+	if err != nil || resp.StatusCode() >= 400 {
+		if err == nil {
+			err = fmt.Errorf("non-OK status code: %d", resp.StatusCode())
+		}
+		log.Ctx(ctx).Err(err).Msg("Hestia: ReadIrisGroupRoutes")
+		return respJson, err
+	}
+	h.PrintRespJson(resp.Body())
+	return respJson, err
+}
+
+func (h *Hestia) ReadIrisGroupsRoutes(ctx context.Context) (hestia_resp_types.OrgGroupsRoutesResponse, error) {
+	respJson := hestia_resp_types.OrgGroupsRoutesResponse{}
+	resp, err := h.R().
+		SetResult(&respJson).
+		Get(hestia_endpoints.IrisReadGroupsRoutesPath)
 	if err != nil || resp.StatusCode() >= 400 {
 		if err == nil {
 			err = fmt.Errorf("non-OK status code: %d", resp.StatusCode())

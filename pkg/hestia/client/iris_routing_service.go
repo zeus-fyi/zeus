@@ -10,9 +10,9 @@ import (
 	hestia_resp_types "github.com/zeus-fyi/zeus/pkg/hestia/client/resp_types"
 )
 
-func (h *Hestia) CreateIrisRoutes(ctx context.Context, rr hestia_req_types.CreateOrgRoutesRequest) (hestia_resp_types.Response, error) {
+func (h *Hestia) CreateIrisRoutes(ctx context.Context, rr hestia_req_types.CreateOrgRoutesRequest) (hestia_resp_types.OrgRoutesResponse, error) {
 	h.PrintReqJson(rr)
-	respJson := hestia_resp_types.Response{}
+	respJson := hestia_resp_types.OrgRoutesResponse{}
 	resp, err := h.R().
 		SetBody(rr).
 		SetResult(&respJson).
@@ -28,11 +28,9 @@ func (h *Hestia) CreateIrisRoutes(ctx context.Context, rr hestia_req_types.Creat
 	return respJson, err
 }
 
-func (h *Hestia) ReadIrisRoutes(ctx context.Context, rr any) (hestia_resp_types.Response, error) {
-	h.PrintReqJson(rr)
-	respJson := hestia_resp_types.Response{}
+func (h *Hestia) ReadIrisRoutes(ctx context.Context) (hestia_resp_types.OrgRoutesResponse, error) {
+	respJson := hestia_resp_types.OrgRoutesResponse{}
 	resp, err := h.R().
-		SetBody(rr).
 		SetResult(&respJson).
 		Get(hestia_endpoints.IrisReadRoutesPath)
 	if err != nil || resp.StatusCode() >= 400 {
