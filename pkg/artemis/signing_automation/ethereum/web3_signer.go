@@ -3,7 +3,7 @@ package signing_automation_ethereum
 import (
 	"github.com/zeus-fyi/gochain/web3/accounts"
 	web3_actions "github.com/zeus-fyi/gochain/web3/client"
-	bls_signer "github.com/zeus-fyi/zeus/pkg/crypto/bls"
+	bls_signer "github.com/zeus-fyi/zeus/pkg/aegis/crypto/bls"
 )
 
 type Web3SignerClient struct {

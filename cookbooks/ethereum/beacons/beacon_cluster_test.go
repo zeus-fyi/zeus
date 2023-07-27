@@ -47,7 +47,7 @@ func (t *BeaconCookbookTestSuite) TestClusterSetupV2() {
 }
 
 func (t *BeaconCookbookTestSuite) TestClusterSetupWithCfgDriver() {
-	cd := GetClientClusterDef(client_consts.Lighthouse, client_consts.Geth, hestia_req_types.Mainnet)
+	cd := GetClientClusterDef(client_consts.Lighthouse, client_consts.Geth, hestia_req_types.Mainnet, false)
 	gcd := cd.BuildClusterDefinitions()
 	t.Assert().NotEmpty(gcd)
 	fmt.Println(gcd)
@@ -64,7 +64,7 @@ func (t *BeaconCookbookTestSuite) TestClusterSetupWithCfgDriver() {
 }
 
 func (t *BeaconCookbookTestSuite) TestLighthouseRethClusterSetupWithCfgDriver() {
-	cd := GetClientClusterDef(client_consts.Lighthouse, client_consts.Reth, hestia_req_types.Mainnet)
+	cd := GetClientClusterDef(client_consts.Lighthouse, client_consts.Reth, hestia_req_types.Mainnet, true)
 	gcd := cd.BuildClusterDefinitions()
 	t.Assert().NotEmpty(gcd)
 	fmt.Println(gcd)
@@ -81,7 +81,7 @@ func (t *BeaconCookbookTestSuite) TestLighthouseRethClusterSetupWithCfgDriver() 
 }
 
 func (t *BeaconCookbookTestSuite) TestClusterDefinitionCreationV2() {
-	cd := GetClientClusterDef(client_consts.Lighthouse, client_consts.Geth, hestia_req_types.Mainnet)
+	cd := GetClientClusterDef(client_consts.Lighthouse, client_consts.Geth, hestia_req_types.Mainnet, false)
 	gcd := cd.BuildClusterDefinitions()
 	t.Assert().NotEmpty(gcd)
 	fmt.Println(gcd)
@@ -91,7 +91,7 @@ func (t *BeaconCookbookTestSuite) TestClusterDefinitionCreationV2() {
 }
 
 func (t *BeaconCookbookTestSuite) TestLighthouseRethClusterDefinitionCreation() {
-	cd := GetClientClusterDef(client_consts.Lighthouse, client_consts.Reth, hestia_req_types.Mainnet)
+	cd := GetClientClusterDef(client_consts.Lighthouse, client_consts.Reth, hestia_req_types.Mainnet, true)
 	gcd := cd.BuildClusterDefinitions()
 	t.Assert().NotEmpty(gcd)
 	fmt.Println(gcd)

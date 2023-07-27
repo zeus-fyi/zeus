@@ -10,8 +10,8 @@ import (
 	"github.com/stretchr/testify/suite"
 	types "github.com/wealdtech/go-eth2-types/v2"
 	"github.com/zeus-fyi/gochain/web3/accounts"
-	bls_signer "github.com/zeus-fyi/zeus/pkg/crypto/bls"
-	"github.com/zeus-fyi/zeus/pkg/crypto/ecdsa"
+	bls_signer "github.com/zeus-fyi/zeus/pkg/aegis/crypto/bls"
+	zeus_ecdsa "github.com/zeus-fyi/zeus/pkg/aegis/crypto/ecdsa"
 	strings_filter "github.com/zeus-fyi/zeus/pkg/utils/strings"
 )
 
@@ -28,12 +28,12 @@ func (s *InMemDBsTestSuite) SetupTest() {
 func (s *InMemDBsTestSuite) TestEcdsaInMemDB() {
 	i := 0
 	numAccounts := 3
-	insertAccountSlice := make([]ecdsa.Account, numAccounts)
+	insertAccountSlice := make([]zeus_ecdsa.Account, numAccounts)
 	for i < numAccounts {
 		acc, err := accounts.CreateAccount()
 		s.Require().Nil(err)
 		s.Assert().NotEmpty(acc)
-		insertAccountSlice[i] = ecdsa.Account{Account: acc}
+		insertAccountSlice[i] = zeus_ecdsa.Account{Account: acc}
 		i++
 	}
 	InsertEcdsaAccounts(ctx, insertAccountSlice)

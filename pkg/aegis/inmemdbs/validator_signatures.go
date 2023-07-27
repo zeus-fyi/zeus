@@ -2,10 +2,10 @@ package aegis_inmemdbs
 
 import (
 	"context"
-	strings_filter "github.com/zeus-fyi/zeus/pkg/utils/strings"
 
 	"github.com/rs/zerolog/log"
-	bls_signer "github.com/zeus-fyi/zeus/pkg/crypto/bls"
+	bls_signer "github.com/zeus-fyi/zeus/pkg/aegis/crypto/bls"
+	strings_filter "github.com/zeus-fyi/zeus/pkg/utils/strings"
 )
 
 type EthereumBLSKeySignatureRequests struct {

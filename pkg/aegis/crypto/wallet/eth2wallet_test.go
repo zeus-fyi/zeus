@@ -7,14 +7,17 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/ethereum/go-ethereum/common/hexutil"
+	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/stretchr/testify/suite"
+	"github.com/tyler-smith/go-bip32"
 	"github.com/wealdtech/go-ed25519hd"
 	util "github.com/wealdtech/go-eth2-util"
 	e2wallet "github.com/wealdtech/go-eth2-wallet"
 	keystorev4 "github.com/wealdtech/go-eth2-wallet-encryptor-keystorev4"
 	scratch "github.com/wealdtech/go-eth2-wallet-store-scratch"
-	bls_signer "github.com/zeus-fyi/zeus/pkg/crypto/bls"
-	aegis_random "github.com/zeus-fyi/zeus/pkg/crypto/random"
+	bls_signer "github.com/zeus-fyi/zeus/pkg/aegis/crypto/bls"
+	aegis_random "github.com/zeus-fyi/zeus/pkg/aegis/crypto/random"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 	strings_filter "github.com/zeus-fyi/zeus/pkg/utils/strings"
 	"github.com/zeus-fyi/zeus/test/configs"
@@ -30,6 +33,34 @@ var depositDataPath = filepaths.Path{
 	FnOut:       "",
 	Env:         "",
 	FilterFiles: &strings_filter.FilterOpts{},
+}
+
+// m/44'/60'/0'/0/0
+func (s *WalletTestSuite) TestEthWalletCreation() {
+
+	mnemonic, err := aegis_random.GenerateMnemonic()
+	s.Require().Nil(err)
+
+	//seed := bip39.NewSeed(mnemonic, "")
+
+	seed, err := ed25519hd.SeedFromMnemonic(mnemonic, "password")
+	s.Require().Nil(err)
+	s.Assert().Len(seed, 64)
+	masterKey, err := bip32.NewMasterKey(seed)
+
+	// Use BIP44: m / purpose' / coin_type' / account' / change / address_index
+	// Ethereum path: m/44'/60'/0'/0/0
+
+	for i := 0; i <= 10; i++ {
+		child, cerr := masterKey.NewChildKey(uint32(i))
+		s.Require().Nil(cerr)
+		privateKeyECDSA := crypto.ToECDSAUnsafe(child.Key)
+		address := crypto.PubkeyToAddress(privateKeyECDSA.PublicKey)
+
+		fmt.Println("Mnemonic: ", mnemonic)
+		fmt.Println("Ethereum Address: ", address.Hex())
+		fmt.Println("Private Key: ", hexutil.Encode(crypto.FromECDSA(privateKeyECDSA)))
+	}
 }
 
 func (s *WalletTestSuite) TestHDWalletCreation() {

@@ -14,8 +14,8 @@ import (
 	"github.com/rs/zerolog/log"
 	aegis_aws_secretmanager "github.com/zeus-fyi/zeus/pkg/aegis/aws/secretmanager"
 	bls_serverless_signing "github.com/zeus-fyi/zeus/pkg/aegis/aws/serverless_signing"
-	age_encryption "github.com/zeus-fyi/zeus/pkg/crypto/age"
-	aegis_random "github.com/zeus-fyi/zeus/pkg/crypto/random"
+	age_encryption "github.com/zeus-fyi/zeus/pkg/aegis/crypto/age"
+	aegis_random "github.com/zeus-fyi/zeus/pkg/aegis/crypto/random"
 )
 
 const (

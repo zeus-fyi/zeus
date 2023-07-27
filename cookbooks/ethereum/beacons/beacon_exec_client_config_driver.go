@@ -33,9 +33,10 @@ const (
 	herculesEphemeral = "herculesEphemeral"
 	GethEphemeral     = "gethEphemeral"
 	GethGoerli        = "gethGoerli"
+	GethMainnet       = "geth"
 
 	downloadGethEphemeral = "downloadGethEphemeral"
-	gethDockerImage       = "ethereum/client-go:v1.11.6"
+	gethDockerImage       = "ethereum/client-go:v1.12.0"
 
 	gethDockerImageCapella = "ethpandaops/geth:master"
 
@@ -66,6 +67,8 @@ func GetExecClientNetworkConfig(execClient, network string, choreographySecretsE
 			cmConfig = GethEphemeral
 			herculesStartup = herculesEphemeral + ".sh"
 			downloadStartup = downloadGethEphemeral + ".sh"
+		case hestia_req_types.Mainnet:
+			cmConfig = GethMainnet
 		}
 	case client_consts.Reth:
 		diskSize = execClientRethDiskSizeMainnet

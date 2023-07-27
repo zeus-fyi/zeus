@@ -3,12 +3,13 @@ package aegis_inmemdbs
 import (
 	"context"
 	"encoding/json"
+	"os"
+
 	"github.com/rs/zerolog/log"
+	bls_signer "github.com/zeus-fyi/zeus/pkg/aegis/crypto/bls"
 	signing_automation_ethereum "github.com/zeus-fyi/zeus/pkg/artemis/signing_automation/ethereum"
-	bls_signer "github.com/zeus-fyi/zeus/pkg/crypto/bls"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 	strings_filter "github.com/zeus-fyi/zeus/pkg/utils/strings"
-	"os"
 )
 
 type DecryptedValidators struct {

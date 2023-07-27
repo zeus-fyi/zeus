@@ -35,10 +35,10 @@ func (z *MatrixDefinition) RegisterMatrixDefinition(ctx context.Context, tar any
 		Post(zeus_endpoints.InfraCreateMatrixV1Path)
 
 	if err != nil || (resp.StatusCode() != http.StatusAccepted && resp.StatusCode() != http.StatusOK) {
-		log.Ctx(ctx).Err(err).Msg("ZeusClient: RegisterMatrixDefinition")
 		if err == nil {
 			err = fmt.Errorf("non-OK status code: %d", resp.StatusCode())
 		}
+		log.Ctx(ctx).Err(err).Msg("ZeusClient: RegisterMatrixDefinition")
 		return respJson, err
 	}
 	z.PrintRespJson(resp.Body())

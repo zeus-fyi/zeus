@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/suite"
-	"github.com/zeus-fyi/zeus/pkg/crypto/ecdsa"
+	zeus_ecdsa "github.com/zeus-fyi/zeus/pkg/aegis/crypto/ecdsa"
 	"github.com/zeus-fyi/zeus/test/configs"
 	"github.com/zeus-fyi/zeus/test/test_suites"
 )
@@ -15,7 +15,7 @@ var ctx = context.Background()
 type HestiaClientTestSuite struct {
 	test_suites.BaseTestSuite
 	HestiaTestClient Hestia
-	TestAccount1     ecdsa.Account
+	TestAccount1     zeus_ecdsa.Account
 }
 
 func (t *HestiaClientTestSuite) SetupTest() {
@@ -25,7 +25,7 @@ func (t *HestiaClientTestSuite) SetupTest() {
 	//t.HestiaTestClient = NewLocalHestiaClient(t.Tc.Bearer)
 	// points working dir to inside /test
 	pkHexString := t.Tc.LocalEcsdaTestPkey
-	t.TestAccount1 = ecdsa.NewAccount(pkHexString)
+	t.TestAccount1 = zeus_ecdsa.NewAccount(pkHexString)
 }
 
 func TestHestiaClientTestSuite(t *testing.T) {

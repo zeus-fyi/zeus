@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: redis-replicas
+  labels:
+    app: "redis-replicas"
+    app.kubernetes.io/name: redis-replicas
+    app.kubernetes.io/instance: redis-replicas
+    app.kubernetes.io/managed-by: zeus
+  annotations:
+    {}
+spec:
+  podManagementPolicy: OrderedReady
+  replicas: 2
+  selector:
+    matchLabels:
+      app: "redis-replicas"
+      app.kubernetes.io/name: redis-replicas
+      app.kubernetes.io/instance: redis-replicas
+  serviceName: redis-replicas
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: "redis-replicas"
+        app.kubernetes.io/name: redis-replicas
+        app.kubernetes.io/instance: redis-replicas
+    spec:
+      containers:
+        - name: "redis-replicas"
+          image: "redis:7.0.12"
+          volumeMounts:
+            - mountPath: "/data"
+              name: "redis-storage"
+            - mountPath: "/configs"
+              name: "cm-redis-replicas"
+          imagePullPolicy: IfNotPresent
+          command: [ "/bin/sh" ]
+          args: [ "-c","/configs/start.sh" ]
+          ports:
+            - name: "redis"
+              containerPort: 6379
+              protocol: "TCP"
+          livenessProbe:
+            tcpSocket:
+              port: redis
+            initialDelaySeconds: 30
+            timeoutSeconds: 5
+            periodSeconds: 5
+            failureThreshold: 5
+            successThreshold: 1
+          readinessProbe:
+            exec:
+              command:
+                - redis-cli
+                - ping
+            initialDelaySeconds: 20
+            timeoutSeconds: 5
+            periodSeconds: 3
+          resources:
+            limits:
+              cpu: "1800m"
+              memory: 27.5Gi
+            requests:
+              cpu: "1800m"
+              memory: 27.5Gi
+      volumes:
+        - name: cm-redis-replicas
+          configMap:
+            name: cm-redis-replicas
+            defaultMode: 0744
+  volumeClaimTemplates:
+    - metadata:
+        name: redis-storage
+        annotations:
+          {}
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: "50Gi"
