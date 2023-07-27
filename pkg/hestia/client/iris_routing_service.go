@@ -34,7 +34,7 @@ func (h *Hestia) ReadIrisRoutes(ctx context.Context, rr any) (hestia_resp_types.
 	resp, err := h.R().
 		SetBody(rr).
 		SetResult(&respJson).
-		Post(hestia_endpoints.IrisReadRoutesPath)
+		Get(hestia_endpoints.IrisReadRoutesPath)
 	if err != nil || resp.StatusCode() >= 400 {
 		if err == nil {
 			err = fmt.Errorf("non-OK status code: %d", resp.StatusCode())
@@ -52,7 +52,7 @@ func (h *Hestia) UpdateIrisRoutes(ctx context.Context, rr any) (hestia_resp_type
 	resp, err := h.R().
 		SetBody(rr).
 		SetResult(&respJson).
-		Post(hestia_endpoints.IrisUpdateRoutesPath)
+		Put(hestia_endpoints.IrisUpdateRoutesPath)
 	if err != nil || resp.StatusCode() >= 400 {
 		if err == nil {
 			err = fmt.Errorf("non-OK status code: %d", resp.StatusCode())
@@ -70,7 +70,7 @@ func (h *Hestia) DeleteIrisRoutes(ctx context.Context, rr any) (hestia_resp_type
 	resp, err := h.R().
 		SetBody(rr).
 		SetResult(&respJson).
-		Post(hestia_endpoints.IrisDeleteRoutesPath)
+		Delete(hestia_endpoints.IrisDeleteRoutesPath)
 	if err != nil || resp.StatusCode() >= 400 {
 		if err == nil {
 			err = fmt.Errorf("non-OK status code: %d", resp.StatusCode())
