@@ -6,10 +6,11 @@ import (
 
 	"github.com/rs/zerolog/log"
 	hestia_endpoints "github.com/zeus-fyi/zeus/pkg/hestia/client/endpoints"
+	hestia_req_types "github.com/zeus-fyi/zeus/pkg/hestia/client/req_types"
 	hestia_resp_types "github.com/zeus-fyi/zeus/pkg/hestia/client/resp_types"
 )
 
-func (h *Hestia) CreateIrisRoutes(ctx context.Context, rr any) (hestia_resp_types.Response, error) {
+func (h *Hestia) CreateIrisRoutes(ctx context.Context, rr hestia_req_types.CreateOrgRoutesRequest) (hestia_resp_types.Response, error) {
 	h.PrintReqJson(rr)
 	respJson := hestia_resp_types.Response{}
 	resp, err := h.R().
