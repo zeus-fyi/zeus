@@ -127,3 +127,7 @@ func (vsr *CreateValidatorServiceRequest) CreateValidatorServiceRequest(vsg Vali
 		vsr.ValidatorServiceOrgGroupSlice[i].FeeRecipient = strings_filter.AddHexPrefix(vsr.ValidatorServiceOrgGroupSlice[i].FeeRecipient)
 	}
 }
+
+type CreateOrgRoutesRequest struct {
+	Routes []string `json:"routes"`
+}
