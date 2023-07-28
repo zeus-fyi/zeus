@@ -8,10 +8,10 @@ const (
 	IrisUpdateRoutesPath = "/v1/iris/routes/update"
 	IrisDeleteRoutesPath = "/v1/iris/routes/delete"
 
-	IrisReadGroupRoutesPath = "/v1/iris/routes/group/:groupName/read"
+	IrisReadGroupRoutesPath   = "/v1/iris/routes/group/:groupName/read"
+	IrisUpdateGroupRoutesPath = "/v1/iris/routes/group/:groupName/update"
 
 	IrisCreateGroupRoutesPath = "/v1/iris/routes/groups/create"
 	IrisReadGroupsRoutesPath  = "/v1/iris/routes/groups/read"
-	IrisUpdateGroupRoutesPath = "/v1/iris/routes/groups/update"
 	IrisDeleteGroupRoutesPath = "/v1/iris/routes/groups/delete"
 )

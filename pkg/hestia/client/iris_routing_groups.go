@@ -27,9 +27,10 @@ func (h *Hestia) CreateIrisGroupRoutes(ctx context.Context, rr hestia_req_types.
 
 func (h *Hestia) ReadIrisGroupRoutes(ctx context.Context, groupName string) (hestia_resp_types.OrgGroupRoutesResponse, error) {
 	respJson := hestia_resp_types.OrgGroupRoutesResponse{}
+	path := fmt.Sprintf("/v1/iris/routes/group/%s/read", groupName)
 	resp, err := h.R().
 		SetResult(&respJson).
-		Get(hestia_endpoints.IrisReadGroupRoutesPath)
+		Get(path)
 	if err != nil || resp.StatusCode() >= 400 {
 		if err == nil {
 			err = fmt.Errorf("non-OK status code: %d", resp.StatusCode())
@@ -57,22 +58,21 @@ func (h *Hestia) ReadIrisGroupsRoutes(ctx context.Context) (hestia_resp_types.Or
 	return respJson, err
 }
 
-func (h *Hestia) UpdateIrisGroupRoutes(ctx context.Context, rr hestia_req_types.IrisOrgGroupRoutesRequest) (hestia_resp_types.Response, error) {
+func (h *Hestia) UpdateIrisGroupRoutes(ctx context.Context, rr hestia_req_types.IrisOrgGroupRoutesRequest) error {
 	h.PrintReqJson(rr)
-	respJson := hestia_resp_types.Response{}
+	path := fmt.Sprintf("/v1/iris/routes/group/%s/update", rr.GroupName)
 	resp, err := h.R().
 		SetBody(rr).
-		SetResult(&respJson).
-		Put(hestia_endpoints.IrisUpdateGroupRoutesPath)
+		Put(path)
 	if err != nil || resp.StatusCode() >= 400 {
 		if err == nil {
 			err = fmt.Errorf("non-OK status code: %d", resp.StatusCode())
 		}
 		log.Ctx(ctx).Err(err).Msg("Hestia: UpdateIrisGroupRoutes")
-		return respJson, err
+		return err
 	}
 	h.PrintRespJson(resp.Body())
-	return respJson, err
+	return err
 }
 
 func (h *Hestia) DeleteIrisGroupRoutes(ctx context.Context, rr hestia_req_types.IrisOrgGroupRoutesRequest) error {

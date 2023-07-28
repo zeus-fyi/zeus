@@ -12,7 +12,7 @@ func (t *IrisConfigTestSuite) TestCreateRoutingGroup() {
 }
 
 func (t *IrisConfigTestSuite) TestReadRoutingGroup() {
-	resp, err := t.IrisClient.ReadRoutingGroupEndpoints(ctx, "testGroupZ")
+	resp, err := t.IrisClient.ReadRoutingGroupEndpoints(ctx, "quiknode-mainnet")
 	t.NoError(err)
 	t.NotNil(resp)
 }
@@ -21,14 +21,13 @@ func (t *IrisConfigTestSuite) TestReadAllRoutingGroups() {
 	resp, err := t.IrisClient.ReadAllRoutingGroupsEndpoints(ctx)
 	t.NoError(err)
 	t.NotNil(resp)
-
 }
 func (t *IrisConfigTestSuite) TestUpdateRoutingGroup() {
 	rr := hestia_req_types.IrisOrgGroupRoutesRequest{
 		GroupName: "testGroupZ",
 		Routes:    []string{"https://zeus.fyi"},
 	}
-	err := t.IrisClient.CreateRoutingGroup(ctx, rr)
+	err := t.IrisClient.UpdateRoutingGroupEndpoints(ctx, rr)
 	t.NoError(err)
 }
 

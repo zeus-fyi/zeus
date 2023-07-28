@@ -83,13 +83,13 @@ func (i *Iris) ReadAllRoutingGroupsEndpoints(ctx context.Context) (hestia_resp_t
 	return resp, nil
 }
 
-func (i *Iris) UpdateRoutingGroupEndpoints(ctx context.Context, rr hestia_req_types.IrisOrgGroupRoutesRequest) (any, error) {
+func (i *Iris) UpdateRoutingGroupEndpoints(ctx context.Context, rr hestia_req_types.IrisOrgGroupRoutesRequest) error {
 	hc := hestia_client.NewHestia(i.BaseURL, i.Token)
-	resp, err := hc.UpdateIrisGroupRoutes(ctx, rr)
+	err := hc.UpdateIrisGroupRoutes(ctx, rr)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	return resp, nil
+	return nil
 }
 
 func (i *Iris) DeleteRoutingGroupEndpoints(ctx context.Context, rr hestia_req_types.IrisOrgGroupRoutesRequest) error {
