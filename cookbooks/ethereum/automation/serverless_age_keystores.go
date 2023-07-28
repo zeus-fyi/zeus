@@ -10,9 +10,9 @@ import (
 	"path/filepath"
 
 	"github.com/rs/zerolog/log"
+	age_encryption "github.com/zeus-fyi/zeus/pkg/aegis/crypto/age"
+	bls_signer "github.com/zeus-fyi/zeus/pkg/aegis/crypto/bls"
 	signing_automation_ethereum "github.com/zeus-fyi/zeus/pkg/artemis/signing_automation/ethereum"
-	age_encryption "github.com/zeus-fyi/zeus/pkg/crypto/age"
-	bls_signer "github.com/zeus-fyi/zeus/pkg/crypto/bls"
 	"github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/compression"
 	"github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/memfs"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"

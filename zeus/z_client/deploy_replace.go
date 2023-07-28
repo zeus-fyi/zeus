@@ -36,10 +36,10 @@ func (z *ZeusClient) DeployReplace(ctx context.Context, p filepaths.Path, tar ze
 		Post(zeus_endpoints.ReplaceTopologyV1Path)
 
 	if err != nil || resp.StatusCode() != http.StatusOK {
-		log.Ctx(ctx).Err(err).Msg("ZeusClient: DeployReplace")
 		if err == nil {
 			err = fmt.Errorf("non-OK status code: %d", resp.StatusCode())
 		}
+		log.Ctx(ctx).Err(err).Msg("ZeusClient: DeployReplace")
 		return respJson, err
 	}
 	z.PrintRespJson(resp.Body())

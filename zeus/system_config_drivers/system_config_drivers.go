@@ -34,10 +34,10 @@ func (z *SystemDefinition) RegisterSystemDefinition(ctx context.Context, tar any
 		Post(zeus_endpoints.InfraCreateSystemV1Path)
 
 	if err != nil || (resp.StatusCode() != http.StatusAccepted && resp.StatusCode() != http.StatusOK) {
-		log.Ctx(ctx).Err(err).Msg("ZeusClient: RegisterSystemDefinition")
 		if err == nil {
 			err = fmt.Errorf("non-OK status code: %d", resp.StatusCode())
 		}
+		log.Ctx(ctx).Err(err).Msg("ZeusClient: RegisterSystemDefinition")
 		return respJson, err
 	}
 	z.PrintRespJson(resp.Body())

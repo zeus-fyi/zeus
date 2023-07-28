@@ -17,10 +17,10 @@ func (z *ZeusClient) ReadTopologies(ctx context.Context) (zeus_resp_types.ReadTo
 		Get(zeus_endpoints.InfraReadTopologyV1Path)
 
 	if err != nil || resp.StatusCode() != http.StatusOK {
-		log.Ctx(ctx).Err(err).Msg("ZeusClient: ReadTopologies")
 		if err == nil {
 			err = fmt.Errorf("non-OK status code: %d", resp.StatusCode())
 		}
+		log.Ctx(ctx).Err(err).Msg("ZeusClient: ReadTopologies")
 		return respJson, err
 	}
 	z.PrintRespJson(resp.Body())
