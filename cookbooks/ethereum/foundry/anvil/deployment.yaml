@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "anvil"
+  labels:
+    app.kubernetes.io/instance: "anvil"
+    app.kubernetes.io/name: "anvil"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "anvil"
+      app.kubernetes.io/instance: "anvil"
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: "anvil"
+        app.kubernetes.io/instance: "anvil"
+    spec:
+      containers:
+        - name: hercules
+          image: "zeusfyi/hercules:latest"
+          imagePullPolicy: Always
+          command: [ "/bin/sh" ]
+          args: [ "-c","/scripts/hercules.sh" ]
+          volumeMounts:
+            - name: cm-anvil
+              mountPath: "/scripts"
+          ports:
+            - name: hercules
+              containerPort: 9003
+              protocol: TCP
+          livenessProbe:
+            initialDelaySeconds: 60
+            periodSeconds: 120
+            tcpSocket:
+              port: hercules
+          readinessProbe:
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            tcpSocket:
+              port: hercules
+        - name: anvil
+          image: "ghcr.io/foundry-rs/foundry:latest"
+          imagePullPolicy: Always
+          command: [ "/bin/sh" ]
+          args: [ "-c","/scripts/start.sh" ]
+          env:
+            - name: RPC_URL
+              valueFrom:
+                secretKeyRef:
+                  key: rpc
+                  name: hardhat
+          volumeMounts:
+            - name: cm-anvil
+              mountPath: "/scripts"
+          ports:
+            - name: http-rpc
+              containerPort: 8545
+              protocol: TCP
+          resources:
+            {}
+      volumes:
+      - name: cm-anvil
+        configMap:
+          name: cm-anvil
+          defaultMode: 0744
+      nodeSelector:
+        {}
+      affinity:
+        {}
+      tolerations:
+        []
