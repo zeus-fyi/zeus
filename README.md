@@ -1,4 +1,4 @@
-### Zeus K8s Infra as Code Concepts
+### Zeus K8s & Cloud Infra as Go Code Concepts
 
 Here we overview the core concepts needed to understand how you can build, deploy, configure K8s apps using Zeus, with a full walkthrough example of how we created an Ethereum beacon.
 
