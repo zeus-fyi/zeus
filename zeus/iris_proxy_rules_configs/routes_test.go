@@ -12,7 +12,7 @@ func (t *IrisConfigTestSuite) TestCreateRoutingEndpoints() {
 	rr := hestia_req_types.IrisOrgGroupRoutesRequest{
 		Routes: []string{"https://zeus.fyi", "https://artemis.zeus.fyi"},
 	}
-	err := t.IrisClient.CreateRoutingGroup(ctx, rr)
+	err := t.IrisClient.CreateRoutingEndpoints(ctx, rr)
 	t.NoError(err)
 }
 

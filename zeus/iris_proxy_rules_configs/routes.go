@@ -5,6 +5,7 @@ import (
 
 	hestia_client "github.com/zeus-fyi/zeus/pkg/hestia/client"
 	hestia_req_types "github.com/zeus-fyi/zeus/pkg/hestia/client/req_types"
+	hestia_resp_types "github.com/zeus-fyi/zeus/pkg/hestia/client/resp_types"
 )
 
 type Routes struct {
@@ -19,13 +20,13 @@ type RoutingGroups struct {
 	Slice          []Routes          `json:"routingSlice,omitempty"`
 }
 
-func (i *Iris) CreateRoutingEndpoints(ctx context.Context, rr hestia_req_types.IrisOrgGroupRoutesRequest) (any, error) {
+func (i *Iris) CreateRoutingEndpoints(ctx context.Context, rr hestia_req_types.IrisOrgGroupRoutesRequest) error {
 	hc := hestia_client.NewHestia(i.BaseURL, i.Token)
-	resp, err := hc.CreateIrisRoutes(ctx, rr)
+	err := hc.CreateIrisRoutes(ctx, rr)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	return resp, nil
+	return nil
 }
 
 func (i *Iris) ReadRoutingEndpoints(ctx context.Context) (any, error) {
@@ -64,11 +65,20 @@ func (i *Iris) CreateRoutingGroup(ctx context.Context, rr hestia_req_types.IrisO
 	return nil
 }
 
-func (i *Iris) ReadRoutingGroupEndpoints(ctx context.Context, groupName string) (any, error) {
+func (i *Iris) ReadRoutingGroupEndpoints(ctx context.Context, groupName string) (hestia_resp_types.OrgGroupRoutesResponse, error) {
 	hc := hestia_client.NewHestia(i.BaseURL, i.Token)
 	resp, err := hc.ReadIrisGroupRoutes(ctx, groupName)
 	if err != nil {
-		return nil, err
+		return resp, err
+	}
+	return resp, nil
+}
+
+func (i *Iris) ReadAllRoutingGroupsEndpoints(ctx context.Context) (hestia_resp_types.OrgGroupsRoutesResponse, error) {
+	hc := hestia_client.NewHestia(i.BaseURL, i.Token)
+	resp, err := hc.ReadIrisGroupsRoutes(ctx)
+	if err != nil {
+		return resp, err
 	}
 	return resp, nil
 }
@@ -82,11 +92,11 @@ func (i *Iris) UpdateRoutingGroupEndpoints(ctx context.Context, rr hestia_req_ty
 	return resp, nil
 }
 
-func (i *Iris) DeleteRoutingGroupEndpoints(ctx context.Context, rr hestia_req_types.IrisOrgGroupRoutesRequest) (any, error) {
+func (i *Iris) DeleteRoutingGroupEndpoints(ctx context.Context, rr hestia_req_types.IrisOrgGroupRoutesRequest) error {
 	hc := hestia_client.NewHestia(i.BaseURL, i.Token)
-	resp, err := hc.DeleteIrisGroupRoutes(ctx, rr)
+	err := hc.DeleteIrisGroupRoutes(ctx, rr)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	return resp, nil
+	return nil
 }
