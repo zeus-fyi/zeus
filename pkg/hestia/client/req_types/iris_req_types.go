@@ -1,10 +1,6 @@
 package hestia_req_types
 
-type CreateOrgRoutesRequest struct {
-	Routes []string `json:"routes"`
-}
-
-type CreateOrgGroupRoutesRequest struct {
-	GroupName string   `json:"groupName"`
+type IrisOrgGroupRoutesRequest struct {
+	GroupName string   `json:"groupName,omitempty"`
 	Routes    []string `json:"routes"`
 }

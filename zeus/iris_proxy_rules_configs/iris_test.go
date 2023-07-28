@@ -7,6 +7,7 @@ import (
 	"github.com/zeus-fyi/zeus/cookbooks"
 	"github.com/zeus-fyi/zeus/test/configs"
 	"github.com/zeus-fyi/zeus/test/test_suites"
+	resty_base "github.com/zeus-fyi/zeus/zeus/z_client/base"
 )
 
 type IrisConfigTestSuite struct {
@@ -18,7 +19,9 @@ func (t *IrisConfigTestSuite) SetupTest() {
 	// points dir to test/configs
 	tc := configs.InitLocalTestConfigs()
 
-	t.IrisClient = NewIrisClient(tc.Bearer)
+	t.IrisClient = Iris{
+		resty_base.GetBaseRestyClient("http://localhost:9002", tc.Bearer),
+	}
 	// points dir to cookbooks
 	cookbooks.ChangeToCookbookDir()
 }

@@ -4,6 +4,7 @@ import (
 	"context"
 
 	hestia_client "github.com/zeus-fyi/zeus/pkg/hestia/client"
+	hestia_req_types "github.com/zeus-fyi/zeus/pkg/hestia/client/req_types"
 )
 
 type Routes struct {
@@ -18,9 +19,9 @@ type RoutingGroups struct {
 	Slice          []Routes          `json:"routingSlice,omitempty"`
 }
 
-func (i *Iris) CreateRoutingEndpoints(ctx context.Context, routingEndpoints []string) (any, error) {
-	hc := hestia_client.NewDefaultHestiaClient(i.Token)
-	resp, err := hc.CreateIrisRoutes(ctx, routingEndpoints)
+func (i *Iris) CreateRoutingEndpoints(ctx context.Context, rr hestia_req_types.IrisOrgGroupRoutesRequest) (any, error) {
+	hc := hestia_client.NewHestia(i.BaseURL, i.Token)
+	resp, err := hc.CreateIrisRoutes(ctx, rr)
 	if err != nil {
 		return nil, err
 	}
@@ -28,16 +29,16 @@ func (i *Iris) CreateRoutingEndpoints(ctx context.Context, routingEndpoints []st
 }
 
 func (i *Iris) ReadRoutingEndpoints(ctx context.Context) (any, error) {
-	hc := hestia_client.NewDefaultHestiaClient(i.Token)
-	resp, err := hc.ReadIrisRoutes(ctx, nil)
+	hc := hestia_client.NewHestia(i.BaseURL, i.Token)
+	resp, err := hc.ReadIrisRoutes(ctx)
 	if err != nil {
 		return nil, err
 	}
 	return resp, nil
 }
 
-func (i *Iris) UpdateRoutingEndpoints(ctx context.Context, rr any) (any, error) {
-	hc := hestia_client.NewDefaultHestiaClient(i.Token)
+func (i *Iris) UpdateRoutingEndpoints(ctx context.Context, rr hestia_req_types.IrisOrgGroupRoutesRequest) (any, error) {
+	hc := hestia_client.NewHestia(i.BaseURL, i.Token)
 	resp, err := hc.UpdateIrisRoutes(ctx, rr)
 	if err != nil {
 		return nil, err
@@ -45,8 +46,8 @@ func (i *Iris) UpdateRoutingEndpoints(ctx context.Context, rr any) (any, error) 
 	return resp, nil
 }
 
-func (i *Iris) DeleteRoutingEndpoints(ctx context.Context, rr any) (any, error) {
-	hc := hestia_client.NewDefaultHestiaClient(i.Token)
+func (i *Iris) DeleteRoutingEndpoints(ctx context.Context, rr hestia_req_types.IrisOrgGroupRoutesRequest) (any, error) {
+	hc := hestia_client.NewHestia(i.BaseURL, i.Token)
 	resp, err := hc.DeleteIrisRoutes(ctx, rr)
 	if err != nil {
 		return nil, err
@@ -54,26 +55,26 @@ func (i *Iris) DeleteRoutingEndpoints(ctx context.Context, rr any) (any, error) 
 	return resp, nil
 }
 
-func (i *Iris) CreateRoutingGroup(ctx context.Context, rr any) (any, error) {
-	hc := hestia_client.NewDefaultHestiaClient(i.Token)
-	resp, err := hc.CreateIrisGroupRoutes(ctx, rr)
+func (i *Iris) CreateRoutingGroup(ctx context.Context, rr hestia_req_types.IrisOrgGroupRoutesRequest) error {
+	hc := hestia_client.NewHestia(i.BaseURL, i.Token)
+	err := hc.CreateIrisGroupRoutes(ctx, rr)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (i *Iris) ReadRoutingGroupEndpoints(ctx context.Context, groupName string) (any, error) {
+	hc := hestia_client.NewHestia(i.BaseURL, i.Token)
+	resp, err := hc.ReadIrisGroupRoutes(ctx, groupName)
 	if err != nil {
 		return nil, err
 	}
 	return resp, nil
 }
 
-func (i *Iris) ReadRoutingGroupEndpoints(ctx context.Context, rr any) (any, error) {
-	hc := hestia_client.NewDefaultHestiaClient(i.Token)
-	resp, err := hc.ReadIrisGroupRoutes(ctx, rr)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (i *Iris) UpdateRoutingGroupEndpoints(ctx context.Context, rr any) (any, error) {
-	hc := hestia_client.NewDefaultHestiaClient(i.Token)
+func (i *Iris) UpdateRoutingGroupEndpoints(ctx context.Context, rr hestia_req_types.IrisOrgGroupRoutesRequest) (any, error) {
+	hc := hestia_client.NewHestia(i.BaseURL, i.Token)
 	resp, err := hc.UpdateIrisGroupRoutes(ctx, rr)
 	if err != nil {
 		return nil, err
@@ -81,8 +82,8 @@ func (i *Iris) UpdateRoutingGroupEndpoints(ctx context.Context, rr any) (any, er
 	return resp, nil
 }
 
-func (i *Iris) DeleteRoutingGroupEndpoints(ctx context.Context, rr any) (any, error) {
-	hc := hestia_client.NewDefaultHestiaClient(i.Token)
+func (i *Iris) DeleteRoutingGroupEndpoints(ctx context.Context, rr hestia_req_types.IrisOrgGroupRoutesRequest) (any, error) {
+	hc := hestia_client.NewHestia(i.BaseURL, i.Token)
 	resp, err := hc.DeleteIrisGroupRoutes(ctx, rr)
 	if err != nil {
 		return nil, err

@@ -10,7 +10,7 @@ import (
 	hestia_resp_types "github.com/zeus-fyi/zeus/pkg/hestia/client/resp_types"
 )
 
-func (h *Hestia) CreateIrisRoutes(ctx context.Context, rr hestia_req_types.CreateOrgRoutesRequest) (hestia_resp_types.OrgRoutesResponse, error) {
+func (h *Hestia) CreateIrisRoutes(ctx context.Context, rr hestia_req_types.IrisOrgGroupRoutesRequest) (hestia_resp_types.OrgRoutesResponse, error) {
 	h.PrintReqJson(rr)
 	respJson := hestia_resp_types.OrgRoutesResponse{}
 	resp, err := h.R().
@@ -44,7 +44,7 @@ func (h *Hestia) ReadIrisRoutes(ctx context.Context) (hestia_resp_types.OrgRoute
 	return respJson, err
 }
 
-func (h *Hestia) UpdateIrisRoutes(ctx context.Context, rr any) (hestia_resp_types.Response, error) {
+func (h *Hestia) UpdateIrisRoutes(ctx context.Context, rr hestia_req_types.IrisOrgGroupRoutesRequest) (hestia_resp_types.Response, error) {
 	h.PrintReqJson(rr)
 	respJson := hestia_resp_types.Response{}
 	resp, err := h.R().
@@ -62,7 +62,7 @@ func (h *Hestia) UpdateIrisRoutes(ctx context.Context, rr any) (hestia_resp_type
 	return respJson, err
 }
 
-func (h *Hestia) DeleteIrisRoutes(ctx context.Context, rr any) (hestia_resp_types.Response, error) {
+func (h *Hestia) DeleteIrisRoutes(ctx context.Context, rr hestia_req_types.IrisOrgGroupRoutesRequest) (hestia_resp_types.Response, error) {
 	h.PrintReqJson(rr)
 	respJson := hestia_resp_types.Response{}
 	resp, err := h.R().
