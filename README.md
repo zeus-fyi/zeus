@@ -92,6 +92,9 @@ We've merged Kubernetes & Temporal orchestration and added state management usin
 4. ConfigMaps
 5. Ingresses
 6. ServiceMonitors
+7. Secrets
+
++ Node Tainting Automation & Infra Provisioning (Servers & SSDs) Deployable & Scalable on Demand.
 
 ### Pods Controller 
 
