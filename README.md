@@ -117,13 +117,15 @@ Not every possible field type is supported, but the most common ones are, and ev
 
 ### Network Orchestration Topology ###
 
-One or many network matrix system topologies that are combined with orchestration workflows from Artemis, and Zeus, to build complex control flows and/or sequenced network states. This could be an enterprise fleet of infrastructure, a complex devops operation done at scale, or a simulation of a large testnet, or a built-in orchestration flow for automating web3 smart contract interactions for users and sending them notifications and prompts.
+One or many network matrix system topologies that are combined with orchestration workflows from Artemis, and Zeus, to build complex control flows and/or sequenced network states. This could be an enterprise fleet of infrastructure, a complex devops operation done at scale, or a built-in orchestration flow for automating maitenance procedures & service restoration and sending them notifications and prompts.
+
+At this stage you can manage complex topologies of infrastructure at the highest of scale over numerous regions and cloud providers, and include workflow hooks & event triggers, and long running control loops and batch processes. Which lets you control your environment on demand with complete automation.
 
 ### Matrix Topology ###
 
 A multi-component cluster topology that accomplishes one or more system components on its own and combined with a Zeus injection deploys this topology onto the network. Some but not all of these topologies can be stacked with another cluster topology or a base topology to create a higher level system component.
 
-It can be any combination of lower level system topologies or components.
+It can be any combination of lower level system topologies or components. At this stage you can now include server resource requirements & tainting rules.
 
 ### Cluster Topology ###
 
