@@ -1,4 +1,4 @@
-package iris_proxy_rules_configs
+package iris_programmable_proxy
 
 func (t *IrisConfigTestSuite) TestDurableSessions() {
 
