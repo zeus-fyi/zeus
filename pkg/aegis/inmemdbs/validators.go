@@ -67,7 +67,7 @@ func InitValidatorDB() *memdb.MemDB {
 					"id": {
 						Name:    "id",
 						Unique:  true,
-						Indexer: &memdb.StringFieldIndex{Field: "RouteLockTTL"},
+						Indexer: &memdb.StringFieldIndex{Field: "Index"},
 					},
 					"public_key": {
 						Name:    "public_key",
