@@ -4,6 +4,10 @@ Here we overview the core concepts needed to understand how you can build, deplo
 
 https://medium.com/@zeusfyi/zeus-k8s-infra-as-code-concepts-47e690c6e3c5
 
+### Zeus UI Tutorial: No Code Kubernetes: Create an Authenticated API Within 5 Minutes
+
+https://medium.com/@zeusfyi/zeus-ui-no-code-kubernetes-authenticated-api-tutorial-c468d5ef0446
+
 ## Cookbooks ##
 
 Contains common web2 & web3 building components like ethereum infra setups with customization driven through code, blurring the line between infra configuration and app development, and contains microservice designs & patterns like api servers and injectable choreography, their setups in kubernetes, golang, docker, and startup commands, and useful tools for debugging, interacting, and automating actions.
@@ -152,64 +156,6 @@ This also makes the entire infrastructure layout completely searchable and contr
 ![Screenshot 2023-04-07 at 6 46 08 PM](https://user-images.githubusercontent.com/17446735/231288683-a350f36b-d103-428f-88b3-eac80742a9c4.png)
 
 ![Screenshot 2023-04-05 at 2 11 33 PM](https://user-images.githubusercontent.com/17446735/231288689-f970cd81-76b3-4b85-9241-3f30ad7c80b9.png)
-
-### Zeus UI Tutorial: No Code Kubernetes: Create an Authenticated API Within 5 Minutes
-
-https://medium.com/@zeusfyi/zeus-ui-no-code-kubernetes-authenticated-api-tutorial-c468d5ef0446
-
-### Zeus K8s Infra as Code Concepts
-
-Here we overview the core concepts needed to understand how you can build, deploy, configure K8s apps using Zeus, with a full walkthrough example of how we created an Ethereum beacon.
-
-https://medium.com/@zeusfyi/zeus-k8s-infra-as-code-concepts-47e690c6e3c5
-
-## Cookbooks ##
-
-Contains common web2 & web3 building components like ethereum infra setups with customization driven through code, blurring the line between infra configuration and app development, and contains microservice designs & patterns like api servers and injectable choreography, their setups in kubernetes, golang, docker, and startup commands, and useful tools for debugging, interacting, and automating actions.
-
-### Cookbook Structure ###
-
-#### Microservices ###
-
-Contains full kubernetes infra setup templates for microservices, injectable choreography for clusters, and more continually being added.
-
-#### ```zeus/cookbooks/microservices/deployments ```
-#### ```zeus/cookbooks/microservices/choreography ```
-
-## Zeus Apps & Clients ##
-
-Core Zeus Infra Automation Client
-#### ```pkg/zeus/client```
-
-Powerful Cluster Building, Allowing for Large Scale Infra Automation, Customization, Control
-
-#### ```pkg/zeus/cluster_config_drivers ```
-#### ```pkg/zeus/system_config_drivers ```
-#### ```pkg/zeus/workload_config_drivers ```
-
-#### API Endpoints 
-
-Documentation and code examples are found here
-[API_README.md](https://github.com/zeus-fyi/zeus/blob/main/pkg/zeus/API_README.md)
-
-How to use the test suite to setup your own api calls
-[README.md](https://github.com/zeus-fyi/zeus/blob/main/pkg/zeus/README.md)
-
-The test directory contains useful mocks and tools for interacting with the API. It also contains a useful
-config-sample.yaml, convert this to config.yaml and set your bearer token here, which then allows you to
-use the demo code to create your first api request in seconds
-
-### Hera Client
-
-#### ```pkg/hera/client```
-
-This client uses the OpenAI API to generate code with AI. This service is available at OpenAI cost, so just pay for the token cost, otherwise it is free to use.
-
-### Hades Library
-
-#### ```pkg/hades```
-
-Hades is used to interact with kubernetes workloads via API, and can apply saved Zeus workloads & cookbooks onto your own in house infrastructure.
 
 ## Infra configuration is in the 14th century. Introducing the 21st century printing press
 
