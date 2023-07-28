@@ -65,7 +65,7 @@ This client uses the OpenAI API to generate code with AI. This service is availa
 
 Hades is used to interact with kubernetes workloads via API, and can apply saved Zeus workloads & cookbooks onto your own in house infrastructure.
 
-## Infra configuration is in the 14th century. Introducing the 21st century printing press
+## Infra configuration is in the 14th century. Introducing the 21st century printing press. Advil optional, finally.
 
 We've merged Kubernetes & Temporal orchestration and added state management using a relational database to manage distributed infra setups. We exposed control of this system orchestrator to an SDK and UI that allows you to glue sophisticated distributed systems together in a fraction of the time it took previously which lets you focus on research and product development instead of figuring out how to build a distributed system or understand Kubernetes.
 
