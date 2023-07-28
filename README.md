@@ -17,6 +17,10 @@ Contains full kubernetes infra setup templates for microservices, injectable cho
 #### ```zeus/cookbooks/microservices/deployments ```
 #### ```zeus/cookbooks/microservices/choreography ```
 
+#### Redis ###
+
+#### ```zeus/cookbooks/redis ```
+
 ## Zeus Apps & Clients ##
 
 Core Zeus Infra Automation Client
