@@ -94,7 +94,7 @@ We've merged Kubernetes & Temporal orchestration and added state management usin
 3. PortforwardReqToPods
 4. DeletePods
 
-Not every possible field type is supported, but the most common ones are, and even a decent amount of the uncommon ones.
+Not every possible field type is supported, but the most common ones are, and even a decent amount of the uncommon ones. If you find a field you need isn't supported please send us an email at support@zeus.fyi
 
 ![Screenshot 2022-11-17 at 8 09 48 PM](https://user-images.githubusercontent.com/17446735/202614955-2708063e-1547-4dae-9332-f712102c287e.png)
 
