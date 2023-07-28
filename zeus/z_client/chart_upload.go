@@ -36,10 +36,10 @@ func (z *ZeusClient) UploadChart(ctx context.Context, p filepaths.Path, tar zeus
 		Post(zeus_endpoints.InfraCreateV1Path)
 
 	if err != nil || resp.StatusCode() != http.StatusOK {
-		log.Ctx(ctx).Err(err).Msg("ZeusClient: UploadChart")
 		if err == nil {
 			err = fmt.Errorf("non-OK status code: %d", resp.StatusCode())
 		}
+		log.Ctx(ctx).Err(err).Msg("ZeusClient: UploadChart")
 		return respJson, err
 	}
 	z.PrintRespJson(resp.Body())

@@ -2,7 +2,6 @@ package zeus_client
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"net/http"
 
@@ -22,13 +21,10 @@ func (z *ZeusClient) CreateClass(ctx context.Context, tar zeus_req_types.Topolog
 		Post(zeus_endpoints.InfraCreateClassV1Path)
 
 	if err != nil || resp.StatusCode() != http.StatusOK {
-		log.Ctx(ctx).Err(err).Msg("ZeusClient: CreateClass")
-		if resp.StatusCode() == http.StatusBadRequest {
-			err = errors.New("bad request")
-		}
 		if err == nil {
 			err = fmt.Errorf("non-OK status code: %d", resp.StatusCode())
 		}
+		log.Ctx(ctx).Err(err).Msg("ZeusClient: CreateClass")
 		return respJson, err
 	}
 	z.PrintRespJson(resp.Body())
