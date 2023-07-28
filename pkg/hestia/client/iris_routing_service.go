@@ -42,24 +42,6 @@ func (h *Hestia) ReadIrisRoutes(ctx context.Context) (hestia_resp_types.OrgRoute
 	return respJson, err
 }
 
-func (h *Hestia) UpdateIrisRoutes(ctx context.Context, rr hestia_req_types.IrisOrgGroupRoutesRequest) (hestia_resp_types.Response, error) {
-	h.PrintReqJson(rr)
-	respJson := hestia_resp_types.Response{}
-	resp, err := h.R().
-		SetBody(rr).
-		SetResult(&respJson).
-		Put(hestia_endpoints.IrisUpdateRoutesPath)
-	if err != nil || resp.StatusCode() >= 400 {
-		if err == nil {
-			err = fmt.Errorf("non-OK status code: %d", resp.StatusCode())
-		}
-		log.Ctx(ctx).Err(err).Msg("Hestia: IrisUpdateRoutesPath")
-		return respJson, err
-	}
-	h.PrintRespJson(resp.Body())
-	return respJson, err
-}
-
 func (h *Hestia) DeleteIrisRoutes(ctx context.Context, rr hestia_req_types.IrisOrgGroupRoutesRequest) (hestia_resp_types.Response, error) {
 	h.PrintReqJson(rr)
 	respJson := hestia_resp_types.Response{}

@@ -38,15 +38,6 @@ func (i *Iris) ReadRoutingEndpoints(ctx context.Context) (any, error) {
 	return resp, nil
 }
 
-func (i *Iris) UpdateRoutingEndpoints(ctx context.Context, rr hestia_req_types.IrisOrgGroupRoutesRequest) (any, error) {
-	hc := hestia_client.NewHestia(i.BaseURL, i.Token)
-	resp, err := hc.UpdateIrisRoutes(ctx, rr)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (i *Iris) DeleteRoutingEndpoints(ctx context.Context, rr hestia_req_types.IrisOrgGroupRoutesRequest) (any, error) {
 	hc := hestia_client.NewHestia(i.BaseURL, i.Token)
 	resp, err := hc.DeleteIrisRoutes(ctx, rr)
