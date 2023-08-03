@@ -1,8 +1,12 @@
-Iris Load Balancer Programmable Proxy: QuickNode Marketplace Setup
+# Iris Load Balancer Programmable Proxy: QuickNode Marketplace Setup
 
-Exclusively running Iris services through the QuickNode Marketplace until our v1 release later this year.
+#### Exclusively running Iris services through the QuickNode Marketplace until our v1 release later this year.
 
-This is a guide to help you set up your own programmable proxy for the Iris Load Balancer.
+## This is a guide to help you set up your own programmable proxy for the Iris Load Balancer.
+
+Prerequisites: You'll need to generate an API key from the access panel if you don't have an existing one.
+
+![zzzzzz.png](..%2F..%2F..%2F..%2F..%2FDesktop%2FBiz%2Fzzzzzz.png)
 
 Part A. Configuration Setup Complete
 
@@ -38,6 +42,18 @@ Step One Payload Example:
   ]
 }
 ```
+Step One Curl Example:
+```sh
+curl --location 'https://hestia.zeus.fyi/v1/iris/routes/create' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer YOUR_BEARER_TOKEN' \
+--data '{
+  "routes": [
+    "https://alarmingly-bitter-lambos.quiknode.pro/743c191e-31b5-11ee-be56-0242ac120002/",
+    "https://eth-mainnet.g.alchemy.com/v2/cdVqiD1o29wcb558mc9g74c2l"
+  ]
+}'
+```
 Step Two: Register a routing group table from saved endpoints
 
 ```text    
@@ -55,7 +71,19 @@ Step Two Payload Example:
   ]
 }
 ```
-
+Step Two Curl Example:
+```sh
+curl --location 'https://hestia.zeus.fyi/v1/iris/routes/groups/create' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer YOUR_BEARER_TOKEN' \
+--data '{
+  "groupName": "quicknode-mainnet",
+  "routes": [
+    "https://alarmingly-bitter-lambos.quiknode.pro/743c191e-31b5-11ee-be56-0242ac120002/",
+    "https://eth-mainnet.g.alchemy.com/v2/cdVqiD1o29wcb558mc9g74c2l"
+  ]
+}'
+```
 Part B. Using the Programmable Proxy
 
 ```go
@@ -79,8 +107,9 @@ IrisClientProd = Iris{
 routeGroup := "quicknode-mainnet"
 path := fmt.Sprintf("https://iris.zeus.fyi/v1/router/group?routeGroup=%s", routeGroup)
 
-/*
-   You can see our round-robin load_balancing_test.go for an example of how to use the programmable proxy to query 
-    the block number from a routing group of ethereum node urls endpoints.
-*/
+// e.g. https://iris.zeus.fyi/v1/router/group?routeGroup=quicknode-mainnet
 ```
+
+You can also check out our round-robin load_balancing_test.go for an example of how to use the programmable proxy to query 
+the block number from a routing group of ethereum node urls endpoints.
+
