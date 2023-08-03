@@ -1,4 +1,4 @@
-package iris_programmable_proxy
+package iris_programmable_proxy_v1_beta
 
 const (
 	DurableExecutionID = "Durable-Execution-ID"
