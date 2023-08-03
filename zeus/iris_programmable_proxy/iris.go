@@ -5,7 +5,8 @@ import (
 )
 
 const (
-	IrisServiceRoute = "https://iris.zeus.fyi"
+	IrisServiceRoute            = "https://iris.zeus.fyi"
+	SelectedRouteResponseHeader = "X-Selected-Route"
 )
 
 type Iris struct {
