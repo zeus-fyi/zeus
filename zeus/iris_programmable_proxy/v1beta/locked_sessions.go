@@ -1,4 +1,4 @@
-package iris_programmable_proxy
+package iris_programmable_proxy_v1_beta
 
 import zeus_client "github.com/zeus-fyi/zeus/zeus/z_client"
 
