@@ -1,3 +1,5 @@
+## Recent Guides ##
+
 ### Zeus K8s & Cloud Infra as Go Code Concepts
 
 Here we overview the core concepts needed to understand how you can build, deploy, configure K8s apps using Zeus, with a full walkthrough example of how we created an Ethereum beacon.
@@ -7,23 +9,6 @@ https://medium.com/@zeusfyi/zeus-k8s-infra-as-code-concepts-47e690c6e3c5
 ### Zeus UI Tutorial: No Code Kubernetes: Create an Authenticated API Within 5 Minutes
 
 https://medium.com/@zeusfyi/zeus-ui-no-code-kubernetes-authenticated-api-tutorial-c468d5ef0446
-
-## Cookbooks ##
-
-Contains common web2 & web3 building components like ethereum infra setups with customization driven through code, blurring the line between infra configuration and app development, and contains microservice designs & patterns like api servers and injectable choreography, their setups in kubernetes, golang, docker, and startup commands, and useful tools for debugging, interacting, and automating actions.
-
-### Cookbook Structure ###
-
-#### Microservices ###
-
-Contains full kubernetes infra setup templates for microservices, injectable choreography for clusters, and more continually being added.
-
-#### ```zeus/cookbooks/microservices/deployments ```
-#### ```zeus/cookbooks/microservices/choreography ```
-
-#### Redis ###
-
-#### ```zeus/cookbooks/redis ```
 
 ## Zeus Apps & Clients ##
 
@@ -64,6 +49,71 @@ This client uses the OpenAI API to generate code with AI. This service is availa
 #### ```pkg/hades```
 
 Hades is used to interact with kubernetes workloads via API, and can apply saved Zeus workloads & cookbooks onto your own in house infrastructure.
+
+## Cookbooks ##
+
+Contains common web2 & web3 building components like ethereum infra setups with customization driven through code, blurring the line between infra configuration and app development, and contains microservice designs & patterns like api servers and injectable choreography, their setups in kubernetes, golang, docker, and startup commands, and useful tools for debugging, interacting, and automating actions.
+
+### Cookbook Structure ###
+
+#### Microservices ###
+
+Contains full kubernetes infra setup templates for microservices, injectable choreography for clusters, and more continually being added.
+
+#### ```zeus/cookbooks/microservices/deployments ```
+#### ```zeus/cookbooks/microservices/choreography ```
+
+#### Redis ###
+
+#### ```zeus/cookbooks/redis ```
+
+### Web3 Cookbook 
+
+### Artemis ###
+
+#### ```artemis.zeus.fyi``` ####
+#### ```pkg/artemis/client```
+
+Our web3 Artemis client is a tx orchestrator. It reliably submits & confirms ethereum transactions and logs their receipts. Chain with 
+the in memory db for storing web3 signer keys to build highly reliable web3 api actions with other users and smart contracts. You'll need
+a bearer token to use this client. A more advanced orchestrator that can handle high volume DeFi trading & simulation, which manages nonce sequences, sets up event triggers & scheduling, and has queriable event artifacts is available only via enterprise licensing or other pre-arranged agreements at the moment.
+
+### Hercules ###
+
+#### ```apps/hercules``` ####
+#### ```pkg/hercules/client```
+
+Hercules is middleware that manages web infrastructure and connections to other middleware packages. It also contains useful apis to debug and troubleshoot web infrastructure.
+
+### Snapshots ###
+
+#### ```apps/snapshots``` ####
+
+Snapshot app is embedded into the hercules docker app, and it can be used as an init container to download snapshot data on new node creation.
+
+#### Ethereum ####
+
+#### ```protocol/components```
+
+Contains smart contract automation kits. This testcase shows a full end-end seed, create, and deposits validators on the Ethereum ephemery testnet.
+
+#### ```cookbooks/ethereum/automation```
+#### ```cookbooks/ethereum/automation/deposits_test.go ```
+
+Cookbook items listed by protocol & component class. Eg. Ethereum has a beacon component group. Contains Kubernetes config setup templates. Here's a few example paths. Also contains an actions folder, which does log dumps, pod restarts, configuration changes on demand for k8s applications, and more.
+
+#### ```cookbooks/ethereum/beacons/infra/consensus_client```
+#### ```cookbooks/ethereum/beacons/infra/exec_client```
+#### ```cookbooks/ethereum/validators/infra/validators```
+#### ```cookbooks/ethereum/web3signers/infra/consensys_web3signer```
+
+Complete, and powerful Ethereum infra automation 
+
+#### ```zeus/cookbooks/ethereum/beacons/beacon_cluster_test.go ```
+#### ```zeus/cookbooks/ethereum/validators/validator_cluster_test.go ```
+#### ```zeus/cookbooks/ethereum/web3signers/web3signer_cluster_test.go ```
+
+See this test case to see how a beacon cluster class was created, and then extended to support choreography to reset configs on a scheduled interval for the Ephemery testnet, and then added validator clients, and then again to add web3signing integration.
 
 ## Infra configuration is in the 14th century. Introducing the 21st century printing press. Advil optional, finally.
 
@@ -106,7 +156,7 @@ Not every possible field type is supported, but the most common ones are, and ev
 
 ### Network Orchestration Topology ###
 
-One or many network matrix system topologies that are combined with orchestration workflows from Artemis, and Zeus, to build complex control flows and/or sequenced network states. This could be an enterprise fleet of infrastructure, a complex devops operation done at scale, or a built-in orchestration flow for automating maitenance procedures & service restoration and sending them notifications and prompts.
+One or many network matrix system topologies that are combined with orchestration workflows from Artemis, and Zeus, to build complex control flows and/or sequenced network states. This could be an enterprise fleet of infrastructure, a complex devops operation done at scale, or a built-in orchestration flow for automating maintenance procedures & service restoration and sending them notifications and prompts.
 
 At this stage you can manage complex topologies of infrastructure at the highest of scale over numerous regions and cloud providers, and include workflow hooks & event triggers, and long running control loops and batch processes. Which lets you control your environment on demand with complete automation.
 
@@ -141,7 +191,7 @@ An abstract atomic component base that needs additional pieces to create deploya
 
 We’ve built technology significantly improving Kubernetes in both scalability and usability enabling you to automate complex devops procedures, schedule resource management allocations, design cost performant applications, and manage distributed cloud infra setups at scale with far less effort and with almost zero knowledge of Kubernetes needed so you can reduce your engineering time managing infra and spend that time on research and product development instead. 
 
-We built an orchestration engine using Temporal over Kubernetes itself for managing, and controlling infrastructure which lets you automate deployments without GitOps and the complex operator installments needed for each cloud provider that come with them, and mapped all the infrastructure configuration into our Postgres database, saving you from managing Helm charts with hundreds of obscure conditionals in templated YAML. Since we also store all the cloud provider infra data and manage the API for provisioning it lets us prefilter relevant servers for your applications that saves you time from having to research or keep track of the hundreds of machines types each cloud provider offers and lets you preview the expected cost of deployment. This also means you need zero Terraform, saving you immense amount of time from managing hundreds of pages of brittle pseudo infra as code languages in your Git repos.
+We built an orchestration engine using Temporal over Kubernetes itself for managing, and controlling infrastructure which lets you automate deployments without GitOps and the complex operator installments needed for each cloud provider that comes with them, and mapped all the infrastructure configuration into our Postgres database, saving you from managing Helm charts with hundreds of obscure conditionals in templated YAML. Since we also store all the cloud provider infra data and manage the API for provisioning it lets us prefilter relevant servers for your applications that saves you time from having to research or keep track of the hundreds of machines types each cloud provider offers and lets you preview the expected cost of deployment. This also means you need zero Terraform, saving you immense amount of time from managing hundreds of pages of brittle pseudo infra as code languages in your Git repos.
 
 This also makes the entire infrastructure layout completely searchable and controllable on demand through automated tagging for node taints and pod affinity requests, making it easily mappable to business logic requirements making it much easier to get higher utilization of your cloud resources directly and via scheduled resource sharing that help drive big costs saving with your cloud spend. 
 
@@ -154,54 +204,6 @@ This also makes the entire infrastructure layout completely searchable and contr
 ![Screenshot 2023-04-07 at 6 46 08 PM](https://user-images.githubusercontent.com/17446735/231288683-a350f36b-d103-428f-88b3-eac80742a9c4.png)
 
 ![Screenshot 2023-04-05 at 2 11 33 PM](https://user-images.githubusercontent.com/17446735/231288689-f970cd81-76b3-4b85-9241-3f30ad7c80b9.png)
-
-### Web3 Cookbook 
-
-### Artemis ###
-
-#### ```artemis.zeus.fyi``` ####
-#### ```pkg/artemis/client```
-
-Artemis is a tx orchestrator. It reliably submits & confirms ethereum transactions and logs their receipts. Chain with 
-the in memory db for storing web3 signer keys to build highly reliable web3 api actions with other users and smart contracts. You'll need
-a bearer token to use this client. A more advanced orchestrator that can handle high volume DeFi trading, which manages nonce sequences, sets up event triggers & scheduling, and has queriable event artifacts is in works, targeted release by end of March.
-
-### Hercules ###
-
-#### ```apps/hercules``` ####
-#### ```pkg/hercules/client```
-
-Hercules is web3 middleware that manages web3 infrastructure and connections to other middleware packages. It also contains useful apis to debug and troubleshoot web3 infrastructure.
-
-### Snapshots ###
-
-#### ```apps/snapshots``` ####
-
-Snapshot app is embedded into the hercules docker app, and it can be used as an init container to download snapshot data on new node creation.
-
-#### Ethereum ####
-
-#### ```protocol/components```
-
-Contains smart contract automation kits. This testcase shows a full end-end seed, create, and deposits validators on the Ethereum ephemery testnet.
-
-#### ```cookbooks/ethereum/automation```
-#### ```cookbooks/ethereum/automation/deposits_test.go ```
-
-Cookbook items listed by protocol & component class. Eg. Ethereum has a beacon component group. Contains Kubernetes config setup templates. Here's a few example paths. Also contains an actions folder, which does log dumps, pod restarts, configuration changes on demand for k8s applications, and more.
-
-#### ```cookbooks/ethereum/beacons/infra/consensus_client```
-#### ```cookbooks/ethereum/beacons/infra/exec_client```
-#### ```cookbooks/ethereum/validators/infra/validators```
-#### ```cookbooks/ethereum/web3signers/infra/consensys_web3signer```
-
-Complete, and powerful Ethereum infra automation 
-
-#### ```zeus/cookbooks/ethereum/beacons/beacon_cluster_test.go ```
-#### ```zeus/cookbooks/ethereum/validators/validator_cluster_test.go ```
-#### ```zeus/cookbooks/ethereum/web3signers/web3signer_cluster_test.go ```
-
-See this test case to see how a beacon cluster class was created, and then extended to support choreography to reset configs on a scheduled interval for the Ephemery testnet, and then added validator clients, and then again to add web3signing integration.
 
 ### Ethereum staking from your wallets & private secret managers.
 
