@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	web3_actions "github.com/zeus-fyi/gochain/web3/client"
+	resty_base "github.com/zeus-fyi/zeus/zeus/z_client/base"
 )
 
 func (t *IrisConfigTestSuite) TestRPCLoadBalancing() {
@@ -21,5 +22,25 @@ func (t *IrisConfigTestSuite) TestRPCLoadBalancing() {
 		t.NoError(err)
 		t.NotNil(resp)
 		fmt.Println(resp)
+	}
+}
+
+func (t *IrisConfigTestSuite) TestGetLoadBalancing() {
+	routeGroup := "olympus"
+	path := fmt.Sprintf("https://iris.zeus.fyi/v1/router/group?routeGroup=%s", routeGroup)
+
+	/* olympus routes:
+	https://hestia.zeus.fyi/health
+	https://iris.zeus.fyi/health
+	*/
+
+	r := resty_base.GetBaseRestyClient(path, t.IrisClient.Token)
+	for i := 0; i < 10; i++ {
+		resp, err := r.R().Get(path)
+		t.NoError(err)
+
+		selectedHeader := resp.Header().Get("X-Selected-Route")
+		t.NotEmpty(selectedHeader)
+		fmt.Println(selectedHeader)
 	}
 }
