@@ -3,8 +3,10 @@ package iris_programmable_proxy
 import (
 	"context"
 	"fmt"
+	"time"
 
 	web3_actions "github.com/zeus-fyi/gochain/web3/client"
+	hestia_req_types "github.com/zeus-fyi/zeus/pkg/hestia/client/req_types"
 	resty_base "github.com/zeus-fyi/zeus/zeus/z_client/base"
 )
 
@@ -34,13 +36,52 @@ func (t *IrisConfigTestSuite) TestGetLoadBalancing() {
 	https://iris.zeus.fyi/health
 	*/
 
-	r := resty_base.GetBaseRestyClient(path, t.IrisClient.Token)
-	for i := 0; i < 10; i++ {
+	routeOne := "https://hestia.zeus.fyi/health"
+	routeTwo := "https://iris.zeus.fyi/health"
+
+	reqCount := 4
+	m := make(map[string]int)
+	m[routeOne] = 0
+	m[routeTwo] = 0
+	r := resty_base.GetBaseRestyClient(path, t.IrisClientProd.Token)
+	for i := 0; i < reqCount; i++ {
 		resp, err := r.R().Get(path)
 		t.NoError(err)
+		t.NotNil(resp)
 
 		selectedHeader := resp.Header().Get("X-Selected-Route")
 		t.NotEmpty(selectedHeader)
 		fmt.Println(selectedHeader)
+
+		m[selectedHeader]++
 	}
+
+	t.GreaterOrEqual(m[routeOne], 1)
+	t.GreaterOrEqual(m[routeTwo], 1)
+
+	rr := hestia_req_types.IrisOrgGroupRoutesRequest{
+		Routes: []string{routeOne},
+	}
+	resp, err := t.IrisClientProd.DeleteRoutingEndpoints(ctx, rr)
+	t.NoError(err)
+	t.NotNil(resp)
+
+	m[routeOne] = 0
+	m[routeTwo] = 0
+
+	// gives time for the routing group to update
+	time.Sleep(5 * time.Second)
+	for i := 0; i < reqCount; i++ {
+		resp, err := r.R().Get(path)
+		t.NoError(err)
+		t.NotNil(resp)
+
+		selectedHeader := resp.Header().Get("X-Selected-Route")
+		t.NotEmpty(selectedHeader)
+		fmt.Println(selectedHeader)
+
+		m[selectedHeader]++
+	}
+	t.Assert().Zero(m[routeOne])
+	t.Assert().Equal(reqCount, m[routeTwo])
 }

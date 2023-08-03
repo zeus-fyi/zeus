@@ -20,8 +20,15 @@ type RoutingGroups struct {
 	Slice          []Routes          `json:"routingSlice,omitempty"`
 }
 
+func (i *Iris) GetHestiaRoute() string {
+	if i.BaseURL == "http://localhost:8080" {
+		return "http://localhost:9002"
+	}
+	return hestia_client.HestiaEndpoint
+}
+
 func (i *Iris) CreateRoutingEndpoints(ctx context.Context, rr hestia_req_types.IrisOrgGroupRoutesRequest) error {
-	hc := hestia_client.NewHestia(i.BaseURL, i.Token)
+	hc := hestia_client.NewHestia(i.GetHestiaRoute(), i.Token)
 	err := hc.CreateIrisRoutes(ctx, rr)
 	if err != nil {
 		return err
@@ -30,7 +37,7 @@ func (i *Iris) CreateRoutingEndpoints(ctx context.Context, rr hestia_req_types.I
 }
 
 func (i *Iris) ReadRoutingEndpoints(ctx context.Context) (any, error) {
-	hc := hestia_client.NewHestia(i.BaseURL, i.Token)
+	hc := hestia_client.NewHestia(i.GetHestiaRoute(), i.Token)
 	resp, err := hc.ReadIrisRoutes(ctx)
 	if err != nil {
 		return nil, err
@@ -39,7 +46,7 @@ func (i *Iris) ReadRoutingEndpoints(ctx context.Context) (any, error) {
 }
 
 func (i *Iris) DeleteRoutingEndpoints(ctx context.Context, rr hestia_req_types.IrisOrgGroupRoutesRequest) (any, error) {
-	hc := hestia_client.NewHestia(i.BaseURL, i.Token)
+	hc := hestia_client.NewHestia(i.GetHestiaRoute(), i.Token)
 	resp, err := hc.DeleteIrisRoutes(ctx, rr)
 	if err != nil {
 		return nil, err
@@ -48,7 +55,7 @@ func (i *Iris) DeleteRoutingEndpoints(ctx context.Context, rr hestia_req_types.I
 }
 
 func (i *Iris) CreateRoutingGroup(ctx context.Context, rr hestia_req_types.IrisOrgGroupRoutesRequest) error {
-	hc := hestia_client.NewHestia(i.BaseURL, i.Token)
+	hc := hestia_client.NewHestia(i.GetHestiaRoute(), i.Token)
 	err := hc.CreateIrisGroupRoutes(ctx, rr)
 	if err != nil {
 		return err
@@ -57,7 +64,7 @@ func (i *Iris) CreateRoutingGroup(ctx context.Context, rr hestia_req_types.IrisO
 }
 
 func (i *Iris) ReadRoutingGroupEndpoints(ctx context.Context, groupName string) (hestia_resp_types.OrgGroupRoutesResponse, error) {
-	hc := hestia_client.NewHestia(i.BaseURL, i.Token)
+	hc := hestia_client.NewHestia(i.GetHestiaRoute(), i.Token)
 	resp, err := hc.ReadIrisGroupRoutes(ctx, groupName)
 	if err != nil {
 		return resp, err
@@ -66,7 +73,7 @@ func (i *Iris) ReadRoutingGroupEndpoints(ctx context.Context, groupName string) 
 }
 
 func (i *Iris) ReadAllRoutingGroupsEndpoints(ctx context.Context) (hestia_resp_types.OrgGroupsRoutesResponse, error) {
-	hc := hestia_client.NewHestia(i.BaseURL, i.Token)
+	hc := hestia_client.NewHestia(i.GetHestiaRoute(), i.Token)
 	resp, err := hc.ReadIrisGroupsRoutes(ctx)
 	if err != nil {
 		return resp, err
@@ -75,7 +82,7 @@ func (i *Iris) ReadAllRoutingGroupsEndpoints(ctx context.Context) (hestia_resp_t
 }
 
 func (i *Iris) UpdateRoutingGroupEndpoints(ctx context.Context, rr hestia_req_types.IrisOrgGroupRoutesRequest) error {
-	hc := hestia_client.NewHestia(i.BaseURL, i.Token)
+	hc := hestia_client.NewHestia(i.GetHestiaRoute(), i.Token)
 	err := hc.UpdateIrisGroupRoutes(ctx, rr)
 	if err != nil {
 		return err
@@ -84,7 +91,7 @@ func (i *Iris) UpdateRoutingGroupEndpoints(ctx context.Context, rr hestia_req_ty
 }
 
 func (i *Iris) DeleteRoutingGroupEndpoints(ctx context.Context, rr hestia_req_types.IrisOrgGroupRoutesRequest) error {
-	hc := hestia_client.NewHestia(i.BaseURL, i.Token)
+	hc := hestia_client.NewHestia(i.GetHestiaRoute(), i.Token)
 	err := hc.DeleteIrisGroupRoutes(ctx, rr)
 	if err != nil {
 		return err
