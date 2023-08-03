@@ -1,4 +1,4 @@
-# Iris Load Balancer Programmable Proxy: QuickNode Marketplace Setup
+# Iris Load Balancer Programmable Proxy: QuickNode Marketplace
 
 #### Exclusively running Iris services through the QuickNode Marketplace until our v1 release later this year.
 
