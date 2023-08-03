@@ -69,6 +69,8 @@ Complete list of endpoints: pkg/hestia/client/endpoints/endpoints.go
 ```
 
 Step One: Register new endpoints
+
+Note that only https routes are supported, http routes will be ignored.
 ```text    
     // POST request to register new endpoints
     const HestiaEndpoint = "https://hestia.zeus.fyi/v1/iris/routes/create"    
