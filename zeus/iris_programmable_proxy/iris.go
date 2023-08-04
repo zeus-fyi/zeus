@@ -1,11 +1,12 @@
-package iris_proxy_rules_configs
+package iris_programmable_proxy
 
 import (
 	resty_base "github.com/zeus-fyi/zeus/zeus/z_client/base"
 )
 
 const (
-	IrisServiceRoute = "https://iris.zeus.fyi"
+	IrisServiceRoute            = "https://iris.zeus.fyi"
+	SelectedRouteResponseHeader = "X-Selected-Route"
 )
 
 type Iris struct {

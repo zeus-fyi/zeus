@@ -10,29 +10,25 @@ import (
 	hestia_resp_types "github.com/zeus-fyi/zeus/pkg/hestia/client/resp_types"
 )
 
-func (h *Hestia) CreateIrisRoutes(ctx context.Context, rr hestia_req_types.CreateOrgRoutesRequest) (hestia_resp_types.Response, error) {
+func (h *Hestia) CreateIrisRoutes(ctx context.Context, rr hestia_req_types.IrisOrgGroupRoutesRequest) error {
 	h.PrintReqJson(rr)
-	respJson := hestia_resp_types.Response{}
 	resp, err := h.R().
 		SetBody(rr).
-		SetResult(&respJson).
 		Post(hestia_endpoints.IrisCreateRoutesPath)
 	if err != nil || resp.StatusCode() >= 400 {
 		if err == nil {
 			err = fmt.Errorf("non-OK status code: %d", resp.StatusCode())
 		}
 		log.Ctx(ctx).Err(err).Msg("Hestia: CreateIrisRoutes")
-		return respJson, err
+		return err
 	}
 	h.PrintRespJson(resp.Body())
-	return respJson, err
+	return err
 }
 
-func (h *Hestia) ReadIrisRoutes(ctx context.Context, rr any) (hestia_resp_types.Response, error) {
-	h.PrintReqJson(rr)
-	respJson := hestia_resp_types.Response{}
+func (h *Hestia) ReadIrisRoutes(ctx context.Context) (hestia_resp_types.OrgRoutesResponse, error) {
+	respJson := hestia_resp_types.OrgRoutesResponse{}
 	resp, err := h.R().
-		SetBody(rr).
 		SetResult(&respJson).
 		Get(hestia_endpoints.IrisReadRoutesPath)
 	if err != nil || resp.StatusCode() >= 400 {
@@ -46,25 +42,7 @@ func (h *Hestia) ReadIrisRoutes(ctx context.Context, rr any) (hestia_resp_types.
 	return respJson, err
 }
 
-func (h *Hestia) UpdateIrisRoutes(ctx context.Context, rr any) (hestia_resp_types.Response, error) {
-	h.PrintReqJson(rr)
-	respJson := hestia_resp_types.Response{}
-	resp, err := h.R().
-		SetBody(rr).
-		SetResult(&respJson).
-		Put(hestia_endpoints.IrisUpdateRoutesPath)
-	if err != nil || resp.StatusCode() >= 400 {
-		if err == nil {
-			err = fmt.Errorf("non-OK status code: %d", resp.StatusCode())
-		}
-		log.Ctx(ctx).Err(err).Msg("Hestia: IrisUpdateRoutesPath")
-		return respJson, err
-	}
-	h.PrintRespJson(resp.Body())
-	return respJson, err
-}
-
-func (h *Hestia) DeleteIrisRoutes(ctx context.Context, rr any) (hestia_resp_types.Response, error) {
+func (h *Hestia) DeleteIrisRoutes(ctx context.Context, rr hestia_req_types.IrisOrgGroupRoutesRequest) (hestia_resp_types.Response, error) {
 	h.PrintReqJson(rr)
 	respJson := hestia_resp_types.Response{}
 	resp, err := h.R().

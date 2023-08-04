@@ -1,4 +1,4 @@
-package iris_proxy_rules_configs
+package iris_programmable_proxy_v1_beta
 
 func (t *IrisConfigTestSuite) TestLockedSessions() {
 

@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: "anvil"
+  labels:
+    app.kubernetes.io/instance: "anvil"
+    app.kubernetes.io/name: "anvil"
+    app.kubernetes.io/managed-by: "zeus"
+spec:
+  type: ClusterIP
+  ports:
+    - port: 9003
+      targetPort: hercules
+      protocol: TCP
+      name: hercules
+    - port: 8545
+      targetPort: http-rpc
+      protocol: TCP
+      name: http-rpc
+    - port: 80
+      targetPort: http-rpc
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/instance: "anvil"
+    app.kubernetes.io/name: "anvil"

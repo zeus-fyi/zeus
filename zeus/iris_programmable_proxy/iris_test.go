@@ -1,4 +1,4 @@
-package iris_proxy_rules_configs
+package iris_programmable_proxy
 
 import (
 	"testing"
@@ -7,18 +7,25 @@ import (
 	"github.com/zeus-fyi/zeus/cookbooks"
 	"github.com/zeus-fyi/zeus/test/configs"
 	"github.com/zeus-fyi/zeus/test/test_suites"
+	resty_base "github.com/zeus-fyi/zeus/zeus/z_client/base"
 )
 
 type IrisConfigTestSuite struct {
 	test_suites.BaseTestSuite
-	IrisClient Iris
+	IrisClient     Iris
+	IrisClientProd Iris
 }
 
 func (t *IrisConfigTestSuite) SetupTest() {
 	// points dir to test/configs
 	tc := configs.InitLocalTestConfigs()
 
-	t.IrisClient = NewIrisClient(tc.Bearer)
+	t.IrisClient = Iris{
+		resty_base.GetBaseRestyClient("http://localhost:8080", tc.Bearer),
+	}
+	t.IrisClientProd = Iris{
+		resty_base.GetBaseRestyClient("https://iris.zeus.fyi", tc.Bearer),
+	}
 	// points dir to cookbooks
 	cookbooks.ChangeToCookbookDir()
 }
