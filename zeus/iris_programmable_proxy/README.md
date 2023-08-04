@@ -2,7 +2,6 @@
 
 #### Exclusively running Iris services through the QuickNode Marketplace until our v1 release later this year.
 
-
 ## Overview
 
 We use ZU to denote Zeus compute units. These derived units are composed from server bandwidth, cpu, memory usage and average and peak traffic usage, and operational costs for development & maintenance. 
@@ -44,7 +43,8 @@ This is a guide to help you set up your own programmable proxy for the Iris Load
 Prerequisites: You'll need to generate an API key from the access panel if you don't have an existing one.
 
 QuickNode marketplace customers will use an SSO link from QuickNode and be directed to their load balancing stored endpoints 
-table, you'll then be able to generate an API key from the access panel.
+table, you'll then be able to generate an API key from the access panel. QuickNode users will also have their endpoints
+automatically registered with the load balancer.
 
 ![accessPanel](https://github.com/zeus-fyi/zeus/assets/17446735/c54a01e0-91fa-48a0-9fba-ff55050848eb)
 
@@ -81,7 +81,7 @@ Step One Payload Example:
 {
   "routes": [
     "https://alarmingly-bitter-lambos.quiknode.pro/743c191e-31b5-11ee-be56-0242ac120002/",
-    "https://eth-mainnet.g.alchemy.com/v2/cdVqiD1o29wcb558mc9g74c2l"
+    "https://shockingly-bitter-lambos.quiknode.pro/743c191e-31b5-11ee-be56-0242ac120003/"
   ]
 }
 ```
@@ -93,7 +93,7 @@ curl --location 'https://hestia.zeus.fyi/v1/iris/routes/create' \
 --data '{
   "routes": [
     "https://alarmingly-bitter-lambos.quiknode.pro/743c191e-31b5-11ee-be56-0242ac120002/",
-    "https://eth-mainnet.g.alchemy.com/v2/cdVqiD1o29wcb558mc9g74c2l"
+    "https://shockingly-bitter-lambos.quiknode.pro/743c191e-31b5-11ee-be56-0242ac120003/"
   ]
 }'
 ```
@@ -110,7 +110,7 @@ Step Two Payload Example:
   "groupName": "quicknode-mainnet",
   "routes": [
     "https://alarmingly-bitter-lambos.quiknode.pro/743c191e-31b5-11ee-be56-0242ac120002/",
-    "https://eth-mainnet.g.alchemy.com/v2/cdVqiD1o29wcb558mc9g74c2l"
+    "https://shockingly-bitter-lambos.quiknode.pro/743c191e-31b5-11ee-be56-0242ac120003/"
   ]
 }
 ```
@@ -123,7 +123,7 @@ curl --location 'https://hestia.zeus.fyi/v1/iris/routes/groups/create' \
   "groupName": "quicknode-mainnet",
   "routes": [
     "https://alarmingly-bitter-lambos.quiknode.pro/743c191e-31b5-11ee-be56-0242ac120002/",
-    "https://eth-mainnet.g.alchemy.com/v2/cdVqiD1o29wcb558mc9g74c2l"
+    "https://shockingly-bitter-lambos.quiknode.pro/743c191e-31b5-11ee-be56-0242ac120003/"
   ]
 }'
 ```
