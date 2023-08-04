@@ -13,13 +13,14 @@ import (
 func (t *IrisConfigTestSuite) TestRPCLoadBalancing() {
 	routeGroup := "quicknode-mainnet"
 	path := fmt.Sprintf("https://iris.zeus.fyi/v1/router/group?routeGroup=%s", routeGroup)
-	//path = fmt.Sprintf("http://localhost:8080/v1/router/group?routeGroup=%s", routeGroup)
+	path = fmt.Sprintf("http://localhost:8080/v1/router/group?routeGroup=%s", routeGroup)
 
 	web3a := web3_actions.NewWeb3ActionsClient(path)
 	web3a.AddBearerToken(t.IrisClient.Token)
 	web3a.Dial()
+	reqCount := 4
 	defer web3a.Close()
-	for i := 0; i < 10; i++ {
+	for i := 0; i < reqCount; i++ {
 		resp, err := web3a.C.BlockNumber(context.Background())
 		t.NoError(err)
 		t.NotNil(resp)
@@ -30,11 +31,14 @@ func (t *IrisConfigTestSuite) TestRPCLoadBalancing() {
 func (t *IrisConfigTestSuite) TestGetLoadBalancing() {
 	routeGroup := "olympus"
 	path := fmt.Sprintf("https://iris.zeus.fyi/v1/router/group?routeGroup=%s", routeGroup)
+	path = fmt.Sprintf("http://localhost:8080/v1/router/group?routeGroup=%s", routeGroup)
 
 	/* olympus routes:
 	https://hestia.zeus.fyi/health
 	https://iris.zeus.fyi/health
 	*/
+
+	r := resty_base.GetBaseRestyClient(path, t.IrisClientProd.Token)
 
 	routeOne := "https://hestia.zeus.fyi/health"
 	routeTwo := "https://iris.zeus.fyi/health"
@@ -43,7 +47,6 @@ func (t *IrisConfigTestSuite) TestGetLoadBalancing() {
 	m := make(map[string]int)
 	m[routeOne] = 0
 	m[routeTwo] = 0
-	r := resty_base.GetBaseRestyClient(path, t.IrisClientProd.Token)
 	for i := 0; i < reqCount; i++ {
 		resp, err := r.R().Get(path)
 		t.NoError(err)
