@@ -12,14 +12,16 @@ import (
 
 func (t *IrisConfigTestSuite) TestRPCLoadBalancing() {
 	routeGroup := "quicknode-mainnet"
-	path := fmt.Sprintf("https://iris.zeus.fyi/v1/router/group?routeGroup=%s", routeGroup)
-	//path = fmt.Sprintf("http://localhost:8080/v1/router/group?routeGroup=%s", routeGroup)
+	path := fmt.Sprintf("https://iris.zeus.fyi/v1/router")
+	path = fmt.Sprintf("http://localhost:8080/v1/router")
 
 	web3a := web3_actions.NewWeb3ActionsClient(path)
+	web3a.AddRoutingGroupHeader(routeGroup)
 	web3a.AddBearerToken(t.IrisClient.Token)
 	web3a.Dial()
+	reqCount := 4
 	defer web3a.Close()
-	for i := 0; i < 10; i++ {
+	for i := 0; i < reqCount; i++ {
 		resp, err := web3a.C.BlockNumber(context.Background())
 		t.NoError(err)
 		t.NotNil(resp)
@@ -29,27 +31,31 @@ func (t *IrisConfigTestSuite) TestRPCLoadBalancing() {
 
 func (t *IrisConfigTestSuite) TestGetLoadBalancing() {
 	routeGroup := "olympus"
-	path := fmt.Sprintf("https://iris.zeus.fyi/v1/router/group?routeGroup=%s", routeGroup)
-
-	/* olympus routes:
-	https://hestia.zeus.fyi/health
-	https://iris.zeus.fyi/health
-	*/
-
+	path := fmt.Sprintf("https://iris.zeus.fyi/v1/router")
+	//path = fmt.Sprintf("http://localhost:8080/v1/router")
 	routeOne := "https://hestia.zeus.fyi/health"
 	routeTwo := "https://iris.zeus.fyi/health"
 
+	err := t.IrisClientProd.UpdateRoutingGroupEndpoints(ctx, hestia_req_types.IrisOrgGroupRoutesRequest{
+		GroupName: routeGroup,
+		Routes: []string{
+			"https://hestia.zeus.fyi/health",
+			"https://iris.zeus.fyi/health",
+		},
+	})
+	t.Nil(err)
+	r := resty_base.GetBaseRestyClient(path, t.IrisClientProd.Token)
+	r.SetRoutingGroupHeader(routeGroup)
 	reqCount := 4
 	m := make(map[string]int)
 	m[routeOne] = 0
 	m[routeTwo] = 0
-	r := resty_base.GetBaseRestyClient(path, t.IrisClientProd.Token)
 	for i := 0; i < reqCount; i++ {
-		resp, err := r.R().Get(path)
-		t.NoError(err)
-		t.NotNil(resp)
+		resp1, err1 := r.R().Get(path)
+		t.NoError(err1)
+		t.NotNil(resp1)
 
-		selectedHeader := resp.Header().Get("X-Selected-Route")
+		selectedHeader := resp1.Header().Get("X-Selected-Route")
 		t.NotEmpty(selectedHeader)
 		fmt.Println(selectedHeader)
 
@@ -72,11 +78,11 @@ func (t *IrisConfigTestSuite) TestGetLoadBalancing() {
 	// gives time for the routing group to update
 	time.Sleep(5 * time.Second)
 	for i := 0; i < reqCount; i++ {
-		resp, err := r.R().Get(path)
-		t.NoError(err)
+		resp2, err2 := r.R().Get(path)
+		t.NoError(err2)
 		t.NotNil(resp)
 
-		selectedHeader := resp.Header().Get("X-Selected-Route")
+		selectedHeader := resp2.Header().Get("X-Selected-Route")
 		t.NotEmpty(selectedHeader)
 		fmt.Println(selectedHeader)
 
