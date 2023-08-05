@@ -32,7 +32,7 @@ func (t *IrisConfigTestSuite) TestRPCLoadBalancing() {
 func (t *IrisConfigTestSuite) TestGetLoadBalancing() {
 	routeGroup := "olympus"
 	path := fmt.Sprintf("https://iris.zeus.fyi/v1/router")
-	path = fmt.Sprintf("http://localhost:8080/v1/router")
+	//path = fmt.Sprintf("http://localhost:8080/v1/router")
 	routeOne := "https://hestia.zeus.fyi/health"
 	routeTwo := "https://iris.zeus.fyi/health"
 
@@ -45,7 +45,7 @@ func (t *IrisConfigTestSuite) TestGetLoadBalancing() {
 	})
 	t.Nil(err)
 	r := resty_base.GetBaseRestyClient(path, t.IrisClientProd.Token)
-
+	r.SetRoutingGroupHeader(routeGroup)
 	reqCount := 4
 	m := make(map[string]int)
 	m[routeOne] = 0
