@@ -7,6 +7,7 @@ import (
 const (
 	IrisServiceRoute            = "https://iris.zeus.fyi"
 	SelectedRouteResponseHeader = "X-Selected-Route"
+	RouteGroupHeader            = "X-Route-Group"
 )
 
 type Iris struct {
