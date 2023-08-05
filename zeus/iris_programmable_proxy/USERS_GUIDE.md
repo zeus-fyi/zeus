@@ -56,7 +56,7 @@ The proxy will pass through & respond according to these rules:
         limit: with a value of 10
 
  5. Your extended route path
-    a. Here's an example of a request path that you might send to the proxy:
+       Here's an example of a request path that you might send to the proxy:
         
        HEADER: X-Route-Group: avalanche-mainnet
        https://iris.zeus.fyi/v1/router/
