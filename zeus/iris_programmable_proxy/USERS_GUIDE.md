@@ -80,9 +80,9 @@ The proxy will pass through & respond according to these rules:
        
        POST: https://avalanche-avalanche-mainnet.sandbox.quiknode.net/2f568e4df78544629ce9af64bbe3cef9145895f5/ext/bc/P
        
- 6. The proxy will return the response from the node to you.
+ 6. The proxy will return the response from the route to you.
  
- 7. The proxy will return the response headers from the node to you.
+ 7. The proxy will return the response headers from the route to you.
     
     Additionally, Iris will return a response header: "X-Selected-Route" with the value of the route that was used for the request.
  
