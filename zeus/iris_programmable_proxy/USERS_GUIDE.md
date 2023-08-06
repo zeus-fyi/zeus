@@ -48,7 +48,7 @@ The proxy will respond based on the following rules:
 
 6. **Proxy Response**: It will return the response from the route.
 
-7. **Response Headers**: It will return the response headers from the route, and additionally, a response header called "X-Selected-Route" with the value of the route used.
+7. **Response Headers**: It will return a response header called "X-Selected-Route" with the value of the route used.
 
 8. **Response Status Code**: If a response is received from the route, the proxy will use the response status code as the response status code to you.
     - E.g. If the node returns a 404, the proxy will return a 404 to you & the raw response body from the request.
