@@ -2,6 +2,7 @@ package iris_programmable_proxy
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"math/big"
 	"sync"
@@ -69,8 +70,16 @@ func (t *IrisConfigTestSuite) TestParallelRPCLoadBalancing() {
 				errCh <- err
 				return
 			}
-			t.NotNil(resp)
-			fmt.Println(*resp)
+			t.NotNil(resp.Body())
+
+			b, err := json.Marshal(*resp.Body())
+			t.Nil(err)
+
+			// uncomment to see full block body printed
+			//fmt.Println(string(b))
+
+			// resp body portion of the block ~125KB, total block size ~200-300KB
+			fmt.Printf("Size of resp: %.2f KB\n", float64(len(string(b))/1024.0))
 		}(offset)
 	}
 	offset++
