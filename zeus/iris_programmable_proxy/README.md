@@ -25,12 +25,12 @@ generated routing group tables based on the network-chain type for that endpoint
 automatically registered to the ethereum-mainnet routing group table. These won't count against your 
 routing table limits unless you make any manual changes to them. 
 
-### Free
+### Lite
 ```text
-50M ZU
-Up to 1k ZU/s ~ 100 req/s
-Up to ~5M requests (with responses)
-1 Custom Routing Group Table 
+250M ZU per $99
+Up to 10k ZU/s ~ 1k req/s
+Up to ~25M requests (with responses)
+25 Custom Routing Group Table 
 ```
 ### Standard
 ```text
@@ -159,6 +159,15 @@ routeGroup := "quicknode-mainnet"
 
 Add HEADER "X-Route-Group" with value "quicknode-mainnet"
 path := "https://iris.zeus.fyi/v1/router"
+```
+Curl Example:
+
+```shell
+curl --location 'https://iris.zeus.fyi/v1/router' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer YOUR-BEARER-TOKEN' \
+--header 'X-Route-Group: quicknode-mainnet' \
+--data '{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["latest", true],"id":1}'
 ```
 
 You can also check out our round-robin load_balancing_test.go for an example of how to use the programmable proxy to query 
