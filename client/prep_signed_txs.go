@@ -3,6 +3,8 @@ package web3_actions
 import (
 	"context"
 	"fmt"
+	"math/big"
+	"strings"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
@@ -12,28 +14,44 @@ import (
 func (w *Web3Actions) GetSignedSendTx(ctx context.Context, params SendEtherPayload) (*types.Transaction, error) {
 	w.Dial()
 	defer w.C.Close()
-	err := w.SetGasPriceAndLimit(ctx, &params.GasPriceLimits)
-	if err != nil {
-		log.Ctx(ctx).Err(err).Msg("Send: SignTx")
-		return nil, fmt.Errorf("cannot sign transaction: %v", err)
-	}
 	nonce, err := w.GetNonce(ctx)
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("Send: GetNonce")
 		return nil, err
 	}
-	chainID, err := w.C.ChainID(ctx)
-	if err != nil {
-		log.Ctx(ctx).Err(err).Msg("Send: GetChainID")
-		return nil, fmt.Errorf("couldn't get chain ID: %v", err)
+	var chainID *big.Int
+	switch strings.ToLower(w.Network) {
+	case "mainnet":
+		chainID = new(big.Int).SetInt64(1)
+	case "goerli":
+		chainID = new(big.Int).SetInt64(5)
+	default:
+		chainID, err = w.C.ChainID(ctx)
+		if err != nil {
+			log.Ctx(ctx).Err(err).Msg("CallFunctionWithData: GetChainID")
+			return nil, fmt.Errorf("couldn't get chain ID: %v", err)
+		}
 	}
 	scAddr := common.HexToAddress(params.ToAddress.Hex())
-	if params.GasFeeCap == nil {
-		params.GasFeeCap = params.GasPrice
+	payload := &SendContractTxPayload{
+		SmartContractAddr: scAddr.String(),
+		SendEtherPayload: SendEtherPayload{
+			TransferArgs: TransferArgs{
+				ToAddress: params.ToAddress,
+				Amount:    params.Amount,
+			},
+			GasPriceLimits: params.GasPriceLimits,
+		},
 	}
+	err = w.SuggestAndSetGasPriceAndLimitForTx(ctx, payload, common.HexToAddress(params.ToAddress.Hex()))
+	if err != nil {
+		log.Ctx(ctx).Err(err).Msg("Send: SuggestAndSetGasPriceAndLimitForTx")
+		return nil, err
+	}
+	nonceOffset := GetNonceOffset(ctx)
 	baseTx := &types.DynamicFeeTx{
 		To:        &scAddr,
-		Nonce:     nonce,
+		Nonce:     nonce + nonceOffset,
 		GasFeeCap: params.GasFeeCap,
 		GasTipCap: params.GasTipCap,
 		Gas:       params.GasLimit,

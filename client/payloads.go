@@ -1,10 +1,14 @@
 package web3_actions
 
 import (
+	"context"
+	"fmt"
 	"math/big"
 
 	"github.com/ethereum/go-ethereum/accounts/abi"
+	"github.com/rs/zerolog/log"
 	"github.com/zeus-fyi/gochain/web3/accounts"
+	web3_types "github.com/zeus-fyi/gochain/web3/types"
 )
 
 type SendContractTxPayload struct {
@@ -14,11 +18,37 @@ type SendContractTxPayload struct {
 	ContractABI       *abi.ABI // this has first priority, if nil will check default contracts using contract file
 	MethodName        string   // name of the smart contract function
 	Params            []interface{}
+	Data              []byte
 }
 
 type SendEtherPayload struct {
 	TransferArgs
 	GasPriceLimits
+}
+
+func (s *SendContractTxPayload) GenerateBinDataFromParamsAbi(ctx context.Context) error {
+	myabi := s.ContractABI
+	if myabi == nil {
+		abiInternal, aerr := web3_types.GetABI(s.ContractFile)
+		if aerr != nil {
+			log.Ctx(ctx).Err(aerr).Msg("CallContract: GetABI")
+			return aerr
+		}
+		myabi = abiInternal
+	}
+	fn := myabi.Methods[s.MethodName]
+	goParams, err := web3_types.ConvertArguments(fn.Inputs, s.Params)
+	if err != nil {
+		log.Ctx(ctx).Err(err).Msg("CallFunctionWithArgs")
+		return err
+	}
+	data, err := myabi.Pack(s.MethodName, goParams...)
+	if err != nil {
+		log.Ctx(ctx).Err(err).Msg("CallFunctionWithArgs")
+		return fmt.Errorf("failed to pack values: %v", err)
+	}
+	s.Data = data
+	return nil
 }
 
 func (tx *SendEtherPayload) EffectiveGasPrice(dst *big.Int, baseFee *big.Int) *big.Int {

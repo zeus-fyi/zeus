@@ -79,13 +79,14 @@ func (w *Web3Actions) AddEndSessionLockToHeaderIfExisting() {
 	}
 }
 
-func (w *Web3Actions) EndHardHatSessionReset(ctx context.Context, nodeURL string, blockNum int) {
+func (w *Web3Actions) EndHardHatSessionReset(ctx context.Context, nodeURL string, blockNum int) error {
 	w.AddEndSessionLockToHeaderIfExisting()
 	err := w.ResetNetwork(ctx, nodeURL, blockNum)
 	if err != nil {
 		zlog.Warn().Err(err).Msg("error resetting hardhat session")
-		return
+		return err
 	}
+	return nil
 }
 
 func (w *Web3Actions) AddDurableExecutionIDHeader(reqID string) {
@@ -100,6 +101,14 @@ func (w *Web3Actions) AddSessionLockHeader(sessionID string) {
 		w.Headers = make(map[string]string)
 	}
 	w.Headers[SessionLockHeader] = sessionID
+}
+
+func (w *Web3Actions) GetSessionLockHeader() string {
+	if w.Headers == nil {
+		w.Headers = make(map[string]string)
+	}
+	sessionID := w.Headers[SessionLockHeader]
+	return sessionID
 }
 
 func (w *Web3Actions) AddBearerToken(token string) {
@@ -140,13 +149,6 @@ func NewWeb3ActionsClientWithAccount(nodeUrl string, account *accounts.Account) 
 		NodeURL: nodeUrl,
 		Account: account,
 	}
-}
-
-type RpcMessage struct {
-	Method string        `json:"method"`
-	Id     int           `json:"id"`
-	Result any           `json:"result,omitempty"`
-	Params []interface{} `json:"params"`
 }
 
 func replacePrefix(input string, prefix string, replacement string) string {
@@ -209,13 +211,10 @@ func (w *Web3Actions) GetNodeInfo(ctx context.Context) (NodeInfo, error) {
 	if w.IsAnvilNode {
 		cmdValue = "anvil_nodeInfo"
 	}
-	msg := RpcMessage{
-		Method: cmdValue,
-		Id:     1,
-		Params: []interface{}{},
-	}
+
+	var params []interface{}
 	var result NodeInfo
-	err := w.C.Client().CallContext(ctx, &result, msg.Method, msg.Params...)
+	err := w.C.Client().CallContext(ctx, &result, cmdValue, params...)
 	if err != nil {
 		return result, err
 	}
@@ -223,15 +222,23 @@ func (w *Web3Actions) GetNodeInfo(ctx context.Context) (NodeInfo, error) {
 }
 
 func (w *Web3Actions) ResetNetwork(ctx context.Context, rpcUrl string, blockNumber int) error {
+	methodName := w.swapToAnvil("hardhat_reset")
 	if rpcUrl != "" && blockNumber != 0 {
 		args := toForkingArg(rpcUrl, blockNumber)
-		err := w.C.Client().CallContext(ctx, nil, w.swapToAnvil("hardhat_reset"), args)
+		params := []interface{}{args}
+		err := w.C.Client().CallContext(ctx, nil, methodName, params...)
 		if err != nil {
 			return err
 		}
 		return err
 	}
-	return w.C.Client().CallContext(ctx, nil, w.swapToAnvil("hardhat_reset"))
+	args := toForkingArgResetToLatest(rpcUrl)
+	params := []interface{}{args}
+	err := w.C.Client().CallContext(ctx, nil, methodName, params...)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func (w *Web3Actions) ImpersonateAccount(ctx context.Context, address string) error {
@@ -316,6 +323,15 @@ func toForkingArg(jsonRpcURL string, blockNumber int) interface{} {
 		"forking": {
 			"jsonRpcUrl":  jsonRpcURL,
 			"blockNumber": blockNumber,
+		},
+	}
+	return arg
+}
+
+func toForkingArgResetToLatest(jsonRpcURL string) interface{} {
+	arg := map[string]map[string]any{
+		"forking": {
+			"jsonRpcUrl": jsonRpcURL,
 		},
 	}
 	return arg

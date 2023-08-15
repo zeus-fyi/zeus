@@ -38,12 +38,6 @@ var Networks = map[string]Network{
 		Unit:        "ETH",
 		ExplorerURL: "https://etherscan.io",
 	},
-	"ropsten": {
-		Name:    "ropsten",
-		URL:     "https://ropsten-rpc.linkpool.io",
-		ChainID: big.NewInt(3),
-		Unit:    "ETH",
-	},
 }
 
 type Network struct {

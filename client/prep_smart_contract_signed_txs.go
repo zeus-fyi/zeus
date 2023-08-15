@@ -3,12 +3,13 @@ package web3_actions
 import (
 	"context"
 	"fmt"
+	"math/big"
+	"strings"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/rs/zerolog/log"
-	web3_types "github.com/zeus-fyi/gochain/web3/types"
 )
 
 // GetSignedTxToCallFunctionWithData prepares the tx for broadcast
@@ -16,19 +17,31 @@ func (w *Web3Actions) GetSignedTxToCallFunctionWithData(ctx context.Context, pay
 	var err error
 	w.Dial()
 	defer w.C.Close()
-	err = w.SetGasPriceAndLimit(ctx, &payload.GasPriceLimits)
+	if payload == nil {
+		return nil, fmt.Errorf("payload is nil")
+	}
+	scAddr := common.HexToAddress(payload.SmartContractAddr)
+	if data != nil {
+		payload.Data = data
+	}
+	err = w.SuggestAndSetGasPriceAndLimitForTx(ctx, payload, scAddr)
 	if err != nil {
-		log.Ctx(ctx).Err(err).Msg("GetSignedTxToCallFunctionWithData: SetGasPriceAndLimit")
+		log.Warn().Err(err).Msg("Send: SuggestAndSetGasPriceAndLimitForTx")
+		log.Ctx(ctx).Err(err).Msg("Send: SuggestAndSetGasPriceAndLimitForTx")
 		return nil, err
 	}
-	if payload.GasLimit == 21000 {
-		payload.GasLimit = 3000000
-	}
-
-	chainID, err := w.C.ChainID(ctx)
-	if err != nil {
-		log.Ctx(ctx).Err(err).Msg("CallFunctionWithData: GetChainID")
-		return nil, fmt.Errorf("couldn't get chain ID: %v", err)
+	var chainID *big.Int
+	switch strings.ToLower(w.Network) {
+	case "mainnet":
+		chainID = new(big.Int).SetInt64(1)
+	case "goerli":
+		chainID = new(big.Int).SetInt64(5)
+	default:
+		chainID, err = w.C.ChainID(ctx)
+		if err != nil {
+			log.Ctx(ctx).Err(err).Msg("CallFunctionWithData: GetChainID")
+			return nil, fmt.Errorf("couldn't get chain ID: %v", err)
+		}
 	}
 	publicKeyECDSA := w.EcdsaPublicKey()
 	fromAddress := crypto.PubkeyToAddress(*publicKeyECDSA)
@@ -37,13 +50,10 @@ func (w *Web3Actions) GetSignedTxToCallFunctionWithData(ctx context.Context, pay
 		log.Ctx(ctx).Err(err).Msg("CallFunctionWithData: GetPendingTransactionCount")
 		return nil, fmt.Errorf("cannot get nonce: %v", err)
 	}
-	if payload.GasFeeCap == nil {
-		payload.GasFeeCap = payload.GasPrice
-	}
-	scAddr := common.HexToAddress(payload.SmartContractAddr)
+	nonceOffset := GetNonceOffset(ctx)
 	baseTx := &types.DynamicFeeTx{
 		To:        &scAddr,
-		Nonce:     nonce,
+		Nonce:     nonce + nonceOffset,
 		GasFeeCap: payload.GasFeeCap,
 		GasTipCap: payload.GasTipCap,
 		Gas:       payload.GasLimit,
@@ -64,27 +74,12 @@ func (w *Web3Actions) GetSignedTxToCallFunctionWithData(ctx context.Context, pay
 func (w *Web3Actions) GetSignedTxToCallFunctionWithArgs(ctx context.Context, payload *SendContractTxPayload) (*types.Transaction, error) {
 	w.Dial()
 	defer w.C.Close()
-	myabi := payload.ContractABI
-	if myabi == nil {
-		abiInternal, aerr := web3_types.GetABI(payload.ContractFile)
-		if aerr != nil {
-			log.Ctx(ctx).Err(aerr).Msg("CallContract: GetABI")
-			return nil, aerr
-		}
-		myabi = abiInternal
-	}
-	fn := myabi.Methods[payload.MethodName]
-	goParams, err := web3_types.ConvertArguments(fn.Inputs, payload.Params)
+	err := payload.GenerateBinDataFromParamsAbi(ctx)
 	if err != nil {
-		log.Ctx(ctx).Err(err).Msg("CallFunctionWithArgs")
+		log.Ctx(ctx).Err(err).Msg("CallFunctionWithArgs: GetDataPayload")
 		return nil, err
 	}
-	data, err := myabi.Pack(payload.MethodName, goParams...)
-	if err != nil {
-		log.Ctx(ctx).Err(err).Msg("CallFunctionWithArgs")
-		return nil, fmt.Errorf("failed to pack values: %v", err)
-	}
-	signedTx, err := w.GetSignedTxToCallFunctionWithData(ctx, payload, data)
+	signedTx, err := w.GetSignedTxToCallFunctionWithData(ctx, payload, payload.Data)
 	if err != nil {
 		log.Ctx(ctx).Err(err).Msg("CallFunctionWithData: GetSignedTxToCallFunctionWithData")
 		return nil, err
