@@ -2,10 +2,9 @@
 
 #### Exclusively running Iris services through the QuickNode Marketplace until our v1 release later this year.
 
-
 ## Overview
 
-We use ZU to denote Zeus compute units. These derived units are composed from server bandwidth, cpu, memory usage and average and peak traffic usage, and operational costs for development & maintenance. 
+We use ZU to denote Zeus compute units. These units are derived from server bandwidth, cpu, memory usage and average and peak traffic usage, and operational costs for development & maintenance. 
 
 4 ZU per request & response. 
 1 ZU per 1 kB, minimum 1 ZU per req/resp
@@ -14,26 +13,38 @@ Each user can store up to 1000 endpoints for free, you can then use these endpoi
 
 10 ZU minimum size for round trip request & response, up to 1kB payload request and up to 1kB response
 
-### Free
+## QuickNode Marketplace Users
+
+QuickNode marketplace customers will use an SSO link from QuickNode and be directed to their load balancing stored endpoints
+table, you'll then be able to generate an API key from the access panel.
+
+### Additional Benefits:
+
+QuickNode users will have their endpoints automatically registered with the load balancer, and will have automatically
+generated routing group tables based on the network-chain type for that endpoint. E.g. ethereum mainnet endpoints will be
+automatically registered to the ethereum-mainnet routing group table. These won't count against your 
+routing table limits unless you make any manual changes to them. 
+
+### Lite
 ```text
-50M ZU
-Up to 1k ZU/s ~ 100 req/s
-Up to ~5M requests (with responses)
-1 Routing Group Table
+250M ZU per $99
+Up to 10k ZU/s ~ 1k req/s
+Up to ~25M requests (with responses)
+25 Custom Routing Group Table 
 ```
 ### Standard
 ```text
 1B ZU per $299
 Up to 25k ZU/s, ~2.5k req/s
 Up to ~ 100M  requests (with responses)
-50 Routing Group Tables
+50 Custom Routing Group Tables
 ```
 ### Performance
 ```text
 3B ZU per $999, 
 Up to 50k ZU/s, ~5k req/s
 Up to ~300M requests (with responses)
-250 Routing Group Tables
+250 Custom Routing Group Tables
 ```
 Need more? Send us a message at support@zeus.fyi
 
@@ -42,9 +53,6 @@ Need more? Send us a message at support@zeus.fyi
 This is a guide to help you set up your own programmable proxy for the Iris Load Balancer.
 
 Prerequisites: You'll need to generate an API key from the access panel if you don't have an existing one.
-
-QuickNode marketplace customers will use an SSO link from QuickNode and be directed to their load balancing stored endpoints 
-table, you'll then be able to generate an API key from the access panel.
 
 ![accessPanel](https://github.com/zeus-fyi/zeus/assets/17446735/c54a01e0-91fa-48a0-9fba-ff55050848eb)
 
@@ -81,7 +89,7 @@ Step One Payload Example:
 {
   "routes": [
     "https://alarmingly-bitter-lambos.quiknode.pro/743c191e-31b5-11ee-be56-0242ac120002/",
-    "https://eth-mainnet.g.alchemy.com/v2/cdVqiD1o29wcb558mc9g74c2l"
+    "https://shockingly-bitter-lambos.quiknode.pro/743c191e-31b5-11ee-be56-0242ac120003/"
   ]
 }
 ```
@@ -93,7 +101,7 @@ curl --location 'https://hestia.zeus.fyi/v1/iris/routes/create' \
 --data '{
   "routes": [
     "https://alarmingly-bitter-lambos.quiknode.pro/743c191e-31b5-11ee-be56-0242ac120002/",
-    "https://eth-mainnet.g.alchemy.com/v2/cdVqiD1o29wcb558mc9g74c2l"
+    "https://shockingly-bitter-lambos.quiknode.pro/743c191e-31b5-11ee-be56-0242ac120003/"
   ]
 }'
 ```
@@ -110,7 +118,7 @@ Step Two Payload Example:
   "groupName": "quicknode-mainnet",
   "routes": [
     "https://alarmingly-bitter-lambos.quiknode.pro/743c191e-31b5-11ee-be56-0242ac120002/",
-    "https://eth-mainnet.g.alchemy.com/v2/cdVqiD1o29wcb558mc9g74c2l"
+    "https://shockingly-bitter-lambos.quiknode.pro/743c191e-31b5-11ee-be56-0242ac120003/"
   ]
 }
 ```
@@ -123,7 +131,7 @@ curl --location 'https://hestia.zeus.fyi/v1/iris/routes/groups/create' \
   "groupName": "quicknode-mainnet",
   "routes": [
     "https://alarmingly-bitter-lambos.quiknode.pro/743c191e-31b5-11ee-be56-0242ac120002/",
-    "https://eth-mainnet.g.alchemy.com/v2/cdVqiD1o29wcb558mc9g74c2l"
+    "https://shockingly-bitter-lambos.quiknode.pro/743c191e-31b5-11ee-be56-0242ac120003/"
   ]
 }'
 ```
@@ -148,9 +156,18 @@ IrisClientProd = Iris{
  */
 
 routeGroup := "quicknode-mainnet"
-path := fmt.Sprintf("https://iris.zeus.fyi/v1/router/group?routeGroup=%s", routeGroup)
 
-// e.g. https://iris.zeus.fyi/v1/router/group?routeGroup=quicknode-mainnet
+Add HEADER "X-Route-Group" with value "quicknode-mainnet"
+path := "https://iris.zeus.fyi/v1/router"
+```
+Curl Example:
+
+```shell
+curl --location 'https://iris.zeus.fyi/v1/router' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer YOUR-BEARER-TOKEN' \
+--header 'X-Route-Group: quicknode-mainnet' \
+--data '{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["latest", true],"id":1}'
 ```
 
 You can also check out our round-robin load_balancing_test.go for an example of how to use the programmable proxy to query 
