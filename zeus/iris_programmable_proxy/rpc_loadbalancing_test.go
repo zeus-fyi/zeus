@@ -2,7 +2,10 @@ package iris_programmable_proxy
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"math/big"
+	"sync"
 	"time"
 
 	web3_actions "github.com/zeus-fyi/gochain/web3/client"
@@ -13,7 +16,7 @@ import (
 func (t *IrisConfigTestSuite) TestRPCLoadBalancing() {
 	routeGroup := "quicknode-mainnet"
 	path := fmt.Sprintf("https://iris.zeus.fyi/v1/router")
-	path = fmt.Sprintf("http://localhost:8080/v1/router")
+	//path = fmt.Sprintf("http://localhost:8080/v1/router")
 
 	web3a := web3_actions.NewWeb3ActionsClient(path)
 	web3a.AddRoutingGroupHeader(routeGroup)
@@ -26,6 +29,67 @@ func (t *IrisConfigTestSuite) TestRPCLoadBalancing() {
 		t.NoError(err)
 		t.NotNil(resp)
 		fmt.Println(resp)
+	}
+}
+
+func (t *IrisConfigTestSuite) TestParallelRPCLoadBalancing() {
+	routeGroup := "ethereum-mainnet"
+	path := fmt.Sprintf("https://iris.zeus.fyi/v1/router")
+
+	reqCountInParallel := 100
+	// Define a channel for controlling the number of concurrent requests
+	sem := make(chan bool, reqCountInParallel)
+
+	// Define an error channel to catch errors from goroutines
+	errCh := make(chan error, reqCountInParallel)
+
+	var wg sync.WaitGroup
+
+	web3a := web3_actions.NewWeb3ActionsClient(path)
+	web3a.AddRoutingGroupHeader(routeGroup)
+	web3a.AddBearerToken(t.BearerToken)
+	web3a.Dial()
+	defer web3a.Close()
+
+	bn := 17500000
+	offset := 0
+	for i := 0; i < reqCountInParallel*100; i++ {
+		// Acquire a semaphore
+		sem <- true
+
+		wg.Add(1)
+		go func(offset int) {
+			defer func() {
+				// Release the semaphore
+				<-sem
+				wg.Done()
+			}()
+
+			resp, err := web3a.C.BlockByNumber(context.Background(), new(big.Int).SetInt64(int64(bn+offset)))
+			if err != nil {
+				errCh <- err
+				return
+			}
+			t.NotNil(resp.Body())
+
+			b, err := json.Marshal(*resp.Body())
+			t.Nil(err)
+
+			// uncomment to see full block body printed
+			//fmt.Println(string(b))
+
+			// resp body portion of the block ~125KB, total block size ~200-300KB
+			fmt.Printf("Size of resp: %.2f KB\n", float64(len(string(b))/1024.0))
+		}(offset)
+	}
+	offset++
+	// Wait for all the goroutines to complete
+	wg.Wait()
+	close(errCh)
+
+	// Check for any errors in the error channel
+	for err := range errCh {
+		t.NoError(err)
 	}
 }
 
