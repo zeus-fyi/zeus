@@ -29,7 +29,7 @@ spec:
     spec:
       containers:
         - name: "redis-master"
-          image: "redis:7.0.12"
+          image: "redis:7.0.13"
           volumeMounts:
             - mountPath: "/data"
               name: "redis-storage"
