@@ -80,7 +80,9 @@ spec:
               cpu: 100m
               memory: 100Mi
           ports:
-            - containerPort: 9121
+            - name: "metrics"
+              protocol: "TCP"
+              containerPort: 9121
       volumes:
         - name: cm-redis-replicas
           configMap:

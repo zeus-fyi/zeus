@@ -82,6 +82,8 @@ spec:
               memory: 100Mi
           ports:
             - containerPort: 9121
+              name: metrics
+              protocol: TCP
       volumes:
         - name: cm-redis-master
           configMap:
