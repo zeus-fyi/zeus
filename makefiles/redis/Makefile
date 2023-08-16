@@ -11,3 +11,6 @@ T_DIGEST_VERSION := master
 
 docker.pubbuildx:
 	@ docker buildx build -t ${IMG} -t ${LATEST} --build-arg VERSION=${T_DIGEST_VERSION} --build-arg GOOS=${GOOS} --build-arg GOARCH=${GOARCH} --platform=${GOOS}/${GOARCH} -f ../../docker/redis/Dockerfile ../../ --push
+
+docker.debug:
+	docker run -it --entrypoint /bin/bash zeusfyi/redis:latest
