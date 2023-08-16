@@ -1,21 +1,19 @@
 #syntax=docker/dockerfile:1.4
-FROM ubuntu:22.04 as t-digest-builder
+FROM rust:latest as t-digest-builder
 WORKDIR /app
 
 ARG VERSION
-RUN apt-get update && apt-get install -y ca-certificates git build-essential cmake clang-format
-RUN git clone https://github.com/RedisBloom/t-digest-c.git --branch ${VERSION} --single-branch
 
-WORKDIR /app/t-digest-c
-RUN git checkout ${VERSION} && git pull && git submodule update --init --recursive
-RUN cmake
-RUN make library_all
+RUN apt-get update && apt-get install -y ca-certificates git libclang-dev libc6-dev llvm build-essential
+RUN git clone https://github.com/zeus-fyi/redis-percentile.git --branch ${VERSION} --single-branch
 
-FROM redis:7.0.13 as redis
+WORKDIR /app/redis-percentile
+RUN git checkout ${VERSION} && git pull
+RUN cargo build --release
+
+FROM redis:7.0.12 as redis
 WORKDIR /app
 
-# Copy the t-digest shared and static libraries
-COPY --from=t-digest-builder /app/t-digest-c/build/src/libtdigest.so /usr/local/lib/
-COPY --from=t-digest-builder /app/t-digest-c/build/src/libtdigest_static.a /usr/local/lib/
-
+COPY --from=t-digest-builder /app/redis-percentile/target/release/libredis_percentile.so /usr/local/lib/
 EXPOSE 6379
+
