@@ -57,6 +57,8 @@ data:
     #
     # loadmodule /path/to/my_module.so
     # loadmodule /path/to/other_module.so
+    
+    loadmodule /usr/local/lib/libredis_percentile.so
 
     ################################## NETWORK #####################################
 
