@@ -9,6 +9,7 @@ RUN git clone https://github.com/zeus-fyi/redis-percentile.git --branch ${VERSIO
 
 WORKDIR /app/redis-percentile
 RUN git checkout ${VERSION} && git pull
+RUN cargo update
 RUN cargo build --release
 
 FROM redis:7.0.12 as redis
