@@ -14,6 +14,14 @@ MICROSERVICE_LATEST := ${MICROSERVICE_REPO}/${MICROSERVICE_NAME}:latest
 docker.microservice.pub.buildx:
 	@ docker buildx build -t ${MICROSERVICE_IMG} -t ${MICROSERVICE_LATEST} --build-arg GOMODCACHE=${GOMODCACHE} --build-arg GOCACHE=${GOCACHE} --build-arg GOOS=${GOOS} --build-arg GOARCH=${GOARCH} --platform=${GOOS}/${GOARCH} -f ../../docker/microservices/server_template/Dockerfile ../../ --push
 
+LOAD_SIMULATOR_NAME 	:= load-simulator
+LOAD_SIMULATOR_IMG  	:= ${MICROSERVICE_REPO}/${LOAD_SIMULATOR_NAME}:${GIT_SHA}
+LOAD_SIMULATOR_LATEST := ${MICROSERVICE_REPO}/${LOAD_SIMULATOR_NAME}:latest
+
+docker.loadsim.buildx:
+	@ docker buildx build -t ${LOAD_SIMULATOR_IMG} -t ${LOAD_SIMULATOR_LATEST} --build-arg GOMODCACHE=${GOMODCACHE} --build-arg GOCACHE=${GOCACHE} --build-arg GOOS=${GOOS} --build-arg GOARCH=${GOARCH} --platform=${GOOS}/${GOARCH} -f ../../docker/microservices/load_simulator/Dockerfile ../../ --push
+
+
 CHOREOGRAPHY_NAME 	:= choreography
 CHOREOGRAPHY_IMG  	:= ${MICROSERVICE_REPO}/${CHOREOGRAPHY_NAME}:${GIT_SHA}
 CHOREOGRAPHY_LATEST := ${MICROSERVICE_REPO}/${CHOREOGRAPHY_NAME}:latest

@@ -1,9 +1,10 @@
-go 1.20
+go 1.21
 
 use (
 	.
 
 	./apps/cookbooks/microservices/choreography
+	./apps/cookbooks/microservices/load_simulator
 	./apps/cookbooks/microservices/server_template
 	./apps/cookbooks/serverless/aws/secrets_fetch
 	./apps/cookbooks/serverless/ethereum/bls_encrypted_zip_gen

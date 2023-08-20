@@ -7,7 +7,9 @@ GOMODCACHE := $(shell go env GOMODCACHE)
 GOCACHE := $(shell go env GOCACHE)
 GOOS 	:= linux
 GOARCH  := amd64
-T_DIGEST_VERSION := v1.0.0
+T_DIGEST_VERSION := v1.0.0-rc.1
+
+# --no-cache
 
 docker.pubbuildx:
 	@ docker buildx build -t ${IMG} -t ${LATEST} --build-arg VERSION=${T_DIGEST_VERSION} --build-arg GOOS=${GOOS} --build-arg GOARCH=${GOARCH} --platform=${GOOS}/${GOARCH} -f ../../docker/redis/Dockerfile ../../ --push
