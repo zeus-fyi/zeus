@@ -1,0 +1,127 @@
+apiVersion: v1
+data:
+  download.sh: |-
+    #!/bin/sh
+    exec snapshots --downloadURL="" --clientName="geth" --protocol="eth" --network="mainnet" --workload-type="beacon" --bearer="${BEARER}"
+  downloadGethEphemeral.sh: |-
+    #!/bin/sh
+    exec snapshots --downloadURL="" --clientName="gethEphemeral" --network="ephemery" --protocol="eth" --workload-type="beacon"
+  downloadReth.sh: |-
+    #!/bin/sh
+    exec snapshots --downloadURL="" --clientName="reth" --network="mainnet" --protocol="eth" --workload-type="beacon"
+  geth.sh: |-
+    #!/bin/sh
+    exec geth \
+      --datadir=/data \
+      --port=30303 \
+      --http \
+      --http.addr=0.0.0.0 \
+      --http.port=8545 \
+      --http.vhosts=* \
+      --http.corsdomain=* \
+      --ws \
+      --ws.addr=0.0.0.0 \
+      --ws.port=8546 \
+      --ws.origins=* \
+      --metrics \
+      --metrics.addr=0.0.0.0 \
+      --metrics.port=6060 \
+      --authrpc.jwtsecret=/data/jwt.hex \
+      --authrpc.addr=0.0.0.0 \
+      --authrpc.port=8551 \
+      --authrpc.vhosts=*
+  gethEphemeral.sh: |-
+    #!/bin/sh
+    exec geth \
+      --datadir=/data \
+      --port=30303 \
+      --http \
+      --http.addr=0.0.0.0 \
+      --http.port=8545 \
+      --http.vhosts=* \
+      --http.corsdomain=* \
+      --ws \
+      --ws.addr=0.0.0.0 \
+      --ws.port=8546 \
+      --ws.origins=* \
+      --authrpc.jwtsecret=/data/jwt.hex \
+      --authrpc.addr=0.0.0.0 \
+      --authrpc.port=8551 \
+      --authrpc.vhosts=* \
+      --metrics \
+      --metrics.addr=0.0.0.0 \
+      --metrics.port=6060 \
+      --rpc.gascap=0 \
+      --rpc.txfeecap=0 \
+      --networkid=$(grep CHAIN_ID /data/nodevars_env.txt | cut -d '=' -f 2 | tr -d '"') \
+      --bootnodes=enode://0f2c301a9a3f9fa2ccfa362b79552c052905d8c2982f707f46cd29ece5a9e1c14ecd06f4ac951b228f059a43c6284a1a14fce709e8976cac93b50345218bf2e9@135.181.140.168:30343
+  gethGoerli.sh: |-
+    #!/bin/sh
+    exec geth \
+      --datadir=/data \
+      --port=30303 \
+      --goerli \
+      --http \
+      --http.addr=0.0.0.0 \
+      --http.port=8545 \
+      --http.vhosts=* \
+      --http.corsdomain=* \
+      --ws \
+      --ws.addr=0.0.0.0 \
+      --ws.port=8546 \
+      --ws.origins=* \
+      --metrics \
+      --metrics.addr=0.0.0.0 \
+      --metrics.port=6060 \
+      --authrpc.jwtsecret=/data/jwt.hex \
+      --authrpc.addr=0.0.0.0 \
+      --authrpc.port=8551 \
+      --authrpc.vhosts=*
+  hercules.sh: "#!/bin/sh \nhercules"
+  herculesEphemeral.sh: "#!/bin/sh \nhercules --network=\"ephemery\" --clientName=\"geth\""
+  pause.sh: |-
+    #!/bin/sh
+    exec sleep 100000000000000000
+  reth.sh: |-
+    #!/bin/sh
+    exec reth node \
+    --datadir=/data \
+    --authrpc.jwtsecret /data/jwt.hex \
+    --authrpc.addr=0.0.0.0 \
+    --authrpc.port=8551 \
+    --metrics 0.0.0.0:6060 \
+    --http \
+    --http.addr=0.0.0.0 \
+    --http.port=8545 \
+    --http.corsdomain=* \
+    --ws \
+    --ws.addr=0.0.0.0 \
+    --ws.port=8546 \
+    --ws.origins=*
+  start.sh: |-
+    #!/bin/sh
+    exec geth \
+      --datadir=/data \
+      --port=30303 \
+      --http \
+      --http.addr=0.0.0.0 \
+      --http.port=8545 \
+      --http.vhosts=* \
+      --http.corsdomain=* \
+      --ws \
+      --ws.addr=0.0.0.0 \
+      --ws.port=8546 \
+      --ws.origins=* \
+      --metrics \
+      --metrics.addr=0.0.0.0 \
+      --metrics.port=6060 \
+      --authrpc.jwtsecret=/data/jwt.hex \
+      --authrpc.addr=0.0.0.0 \
+      --authrpc.port=8551 \
+      --authrpc.vhosts=*
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  labels:
+    version: version-1688769332126223857
+  name: cm-exec-client

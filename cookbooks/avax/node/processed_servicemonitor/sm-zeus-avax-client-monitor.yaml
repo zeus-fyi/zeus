@@ -1,0 +1,21 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  creationTimestamp: null
+  labels:
+    app: zeus-avax-client
+    release: kube-prometheus-stack
+    version: version-1681518137007605241
+  name: zeus-avax-client-monitor
+spec:
+  endpoints:
+  - bearerTokenSecret:
+      key: ""
+    interval: 30s
+    path: /metrics
+    port: metrics
+  namespaceSelector: {}
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: zeus-avax-client
+      app.kubernetes.io/name: zeus-avax-client

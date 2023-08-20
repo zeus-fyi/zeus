@@ -1,0 +1,107 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  creationTimestamp: null
+  labels:
+    app: redis-master
+    app.kubernetes.io/instance: redis-master
+    app.kubernetes.io/managed-by: zeus
+    app.kubernetes.io/name: redis-master
+    version: version-1692419158669199879
+  name: redis-master
+spec:
+  podManagementPolicy: OrderedReady
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis-master
+      app.kubernetes.io/instance: redis-master
+      app.kubernetes.io/name: redis-master
+  serviceName: redis-master
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: redis-master
+        app.kubernetes.io/instance: redis-master
+        app.kubernetes.io/name: redis-master
+        version: version-1692419158670777333
+    spec:
+      containers:
+      - image: oliver006/redis_exporter:v1.52.0
+        imagePullPolicy: IfNotPresent
+        name: redis-exporter
+        ports:
+        - containerPort: 9121
+          name: metrics
+          protocol: TCP
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          runAsGroup: 59000
+          runAsUser: 59000
+      - command:
+        - redis-server
+        - /configs/redis.conf
+        image: zeusfyi/redis:latest
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          failureThreshold: 5
+          initialDelaySeconds: 30
+          periodSeconds: 5
+          successThreshold: 1
+          tcpSocket:
+            port: redis
+          timeoutSeconds: 5
+        name: redis-master
+        ports:
+        - containerPort: 6379
+          name: redis
+          protocol: TCP
+        readinessProbe:
+          exec:
+            command:
+            - redis-cli
+            - ping
+          initialDelaySeconds: 20
+          periodSeconds: 3
+          timeoutSeconds: 5
+        resources:
+          limits:
+            cpu: 1800m
+            memory: 28160Mi
+          requests:
+            cpu: 1800m
+            memory: 28160Mi
+        volumeMounts:
+        - mountPath: /data
+          name: redis-storage
+        - mountPath: /configs
+          name: cm-redis-master
+      volumes:
+      - configMap:
+          defaultMode: 484
+          name: cm-redis-master
+        name: cm-redis-master
+  updateStrategy:
+    type: RollingUpdate
+  volumeClaimTemplates:
+  - metadata:
+      creationTimestamp: null
+      name: redis-storage
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 50Gi
+    status: {}
+status:
+  availableReplicas: 0
+  replicas: 0

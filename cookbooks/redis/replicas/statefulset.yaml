@@ -29,7 +29,7 @@ spec:
     spec:
       containers:
         - name: "redis-replicas"
-          image: "redis:7.0.12"
+          image: "zeusfyi/redis:latest"
           volumeMounts:
             - mountPath: "/data"
               name: "redis-storage"
@@ -65,6 +65,24 @@ spec:
             requests:
               cpu: "1800m"
               memory: 27.5Gi
+        - name: redis-exporter
+          image: oliver006/redis_exporter:v1.52.0
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            runAsUser: 59000
+            runAsGroup: 59000
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+          ports:
+            - name: "metrics"
+              protocol: "TCP"
+              containerPort: 9121
       volumes:
         - name: cm-redis-replicas
           configMap:
