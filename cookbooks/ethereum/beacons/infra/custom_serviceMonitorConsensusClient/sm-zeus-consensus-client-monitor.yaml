@@ -1,0 +1,20 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  creationTimestamp: null
+  labels:
+    app: zeus-consensus-client
+    release: kube-prometheus-stack
+  name: zeus-consensus-client-monitor
+spec:
+  endpoints:
+  - bearerTokenSecret:
+      key: ""
+    interval: 30s
+    path: /metrics
+    port: metrics
+  namespaceSelector: {}
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: zeus-consensus-client
+      app.kubernetes.io/name: zeus-consensus-client

@@ -1,0 +1,11 @@
+apiVersion: v1
+data:
+  start.sh: |
+    #!/bin/sh
+    exec redis-server --loadmodule /usr/local/lib/libredis_percentile.so --protected-mode no --bind 0.0.0.0 --dir /data --maxmemory 27gb --maxmemory-policy volatile-lru --slaveof "redis-master.redis.svc.cluster.local" 6379
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  labels:
+    version: version-1692419159003479173
+  name: cm-redis-replicas
