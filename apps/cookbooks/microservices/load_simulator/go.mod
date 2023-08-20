@@ -1,4 +1,4 @@
-module github.com/zeus-fyi/zeus/echo-server-template
+module github.com/zeus-fyi/zeus/load-simulator
 
 go 1.21
 

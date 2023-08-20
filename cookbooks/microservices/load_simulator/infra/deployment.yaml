@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "zeus-load-simulator"
+  labels:
+    app.kubernetes.io/instance: "zeus-load-simulator"
+    app.kubernetes.io/name: "zeus-load-simulator"
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "zeus-load-simulator"
+      app.kubernetes.io/instance: "zeus-load-simulator"
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: "zeus-load-simulator"
+        app.kubernetes.io/instance: "zeus-load-simulator"
+    spec:
+      containers:
+        - name: "zeus-load-simulator"
+          image: "zeusfyi/load-simulator:latest"
+          volumeMounts:
+            - mountPath: "/scripts"
+              name: "cm-zeus-load-simulator"
+          imagePullPolicy: Always
+          command: [ "/bin/sh" ]
+          args: [ "-c","/scripts/start.sh" ]
+          ports:
+            - name: "http"
+              containerPort: 8888
+              protocol: "TCP"
+          livenessProbe:
+            httpGet:
+              path: "/health"
+              port: "http"
+          readinessProbe:
+            httpGet:
+              path: "/health"
+              port: "http"
+          resources:
+            { }
+      volumes:
+        - name: cm-zeus-load-simulator
+          configMap:
+            name: cm-zeus-load-simulator
+            defaultMode: 0744
+      nodeSelector:
+        { }
+      affinity:
+        { }
+      tolerations:
+        [ ]
