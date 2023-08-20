@@ -1,0 +1,11 @@
+apiVersion: v1
+data:
+  start.sh: |-
+    #!/bin/sh
+    exec http-echo -text="hello world"
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  labels:
+    version: version-1669101767426987115
+  name: cm-demo
