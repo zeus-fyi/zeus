@@ -140,7 +140,6 @@ func SimulatedLoadResponse(c echo.Context) error {
 			failureStatusCode = http.StatusInternalServerError
 		}
 	}
-
 	failureRate := FailureOffset
 	failureRateStr := c.Request().Header.Get(RouteResponseFailurePercentage)
 	if failureRateStr != "" {
@@ -150,6 +149,11 @@ func SimulatedLoadResponse(c echo.Context) error {
 			log.Err(err).Msgf("SimulatedLoadResponse: strconv.ParseFloat")
 			failureRate = 0.0
 		}
+	}
+	data := make([]byte, respUnitSizeTotal)
+	if _, err := rand.Read(data); err != nil {
+		log.Err(err).Msgf("SimulatedLoadResponse: rand.Read")
+		return c.JSON(failureStatusCode, nil)
 	}
 	if failureRate > 0.0 {
 		r := rand2.Float64() * 100.0
@@ -162,18 +166,8 @@ func SimulatedLoadResponse(c echo.Context) error {
 	respFormat := c.Request().Header.Get(RouteResponseFormat)
 	switch respFormat {
 	case "bytes":
-		data := make([]byte, respUnitSizeTotal)
-		if _, err := rand.Read(data); err != nil {
-			log.Err(err).Msgf("SimulatedLoadResponse: rand.Read")
-			return c.JSON(failureStatusCode, nil)
-		}
 		return c.Blob(respStatusCode, "application/octet-stream", data)
 	case "json":
-		data := make([]byte, respUnitSizeTotal)
-		if _, err := rand.Read(data); err != nil {
-			log.Err(err).Msgf("SimulatedLoadResponse: rand.Read")
-			return c.JSON(failureStatusCode, nil)
-		}
 		type RandomJSON struct {
 			Data []byte `json:"data"`
 		}
@@ -182,11 +176,6 @@ func SimulatedLoadResponse(c echo.Context) error {
 		}
 		return c.JSON(respStatusCode, randomObject)
 	case "string":
-		data := make([]byte, respUnitSizeTotal)
-		if _, err := rand.Read(data); err != nil {
-			log.Err(err).Msgf("SimulatedLoadResponse: rand.Read")
-			return c.JSON(failureStatusCode, nil)
-		}
 		return c.String(respStatusCode, string(data))
 	default:
 		return c.String(http.StatusOK, "")
