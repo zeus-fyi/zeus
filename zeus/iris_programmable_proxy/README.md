@@ -30,7 +30,8 @@ routing table limits unless you make any manual changes to them.
 250M ZU per $99
 Up to 10k ZU/s ~ 1k req/s
 Up to ~25M requests (with responses)
-25 Custom Routing Group Table 
+25 Custom Routing Group Tables
+Round Robin 
 ```
 ### Standard
 ```text
@@ -38,6 +39,7 @@ Up to ~25M requests (with responses)
 Up to 25k ZU/s, ~2.5k req/s
 Up to ~ 100M  requests (with responses)
 50 Custom Routing Group Tables
+Adaptive Load Balancing + Round Robin
 ```
 ### Performance
 ```text
@@ -45,6 +47,7 @@ Up to ~ 100M  requests (with responses)
 Up to 50k ZU/s, ~5k req/s
 Up to ~300M requests (with responses)
 250 Custom Routing Group Tables
+Adaptive Load Balancing + Round Robin
 ```
 Need more? Send us a message at support@zeus.fyi
 
@@ -169,6 +172,33 @@ curl --location 'https://iris.zeus.fyi/v1/router' \
 --header 'X-Route-Group: quicknode-mainnet' \
 --data '{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["latest", true],"id":1}'
 ```
+
+Part C. Using the Adaptive Load Balancer
+
+```go
+package iris_programmable_proxy
+
+
+routeGroup := "quicknode-mainnet"
+
+Add HEADER "X-Route-Group" with value "quicknode-mainnet"
+
+Add HEADER "X-Load-Balancing-Strategy" with value "Adaptive"
+Add HEADER "X-Adaptive-Metrics-Key" with value "Ethereum" (or "Other Metric Keys...")
+- Ethereum is a reserved value for this key, it collects stats by the method value in the json rpc POST request
+
+/*
+Once you have ~20 or so request samples for the same method, the load balancer will start to use the adaptive strategy automatically and
+manage the routing group table for you based on the best predicted performing endpoint for that method that's available.
+
+Stats will only persist for 24 hours since the last API call for that method, so you'll need to keep making requests to keep the stats.
+It doesn't take long, <10 min to get to a near optimal routing group table from scratch, so it's really not a big deal to reset the stats.
+*/
+path := "https://iris.zeus.fyi/v1/router"
+*/
+```
+
+Curl Example:
 
 You can also check out our round-robin load_balancing_test.go for an example of how to use the programmable proxy to query 
 the block number from a routing group of ethereum node urls endpoints.
