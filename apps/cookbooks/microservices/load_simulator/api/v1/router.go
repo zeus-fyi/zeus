@@ -2,6 +2,7 @@ package v1_load_simulator
 
 import (
 	"crypto/rand"
+	"fmt"
 	rand2 "math/rand"
 	"net/http"
 	"strconv"
@@ -38,6 +39,8 @@ func Routes(e *echo.Echo) *echo.Echo {
 	e.GET("/health", Health)
 	e.GET("/healthz", Health)
 
+	e.PUT("/v1/load/bias", BiasLoadResponse)
+
 	e.GET("/v1/load/simulate", SimulatedLoadResponse)
 	e.POST("/v1/load/simulate", SimulatedLoadResponse)
 	e.PUT("/v1/load/simulate", SimulatedLoadResponse)
@@ -46,8 +49,30 @@ func Routes(e *echo.Echo) *echo.Echo {
 	return e
 }
 
+type Response struct {
+	Message string `json:"message"`
+}
+
 func Health(c echo.Context) error {
 	return c.String(http.StatusOK, "Healthy")
+}
+
+var failureOffset = 0.0
+
+func BiasLoadResponse(c echo.Context) error {
+	failureRateStr := c.Request().Header.Get(RouteResponseFailurePercentage)
+	if failureRateStr != "" {
+		var err error
+		failureRate, err := strconv.ParseFloat(failureRateStr, 64)
+		if err != nil {
+			log.Err(err).Msgf("SimulatedLoadResponse: strconv.ParseFloat")
+			return c.JSON(http.StatusInternalServerError, nil)
+		}
+		failureOffset = failureRate
+	}
+	return c.JSON(http.StatusOK, Response{
+		Message: "OK",
+	})
 }
 
 func SimulatedLoadResponse(c echo.Context) error {
@@ -68,6 +93,8 @@ func SimulatedLoadResponse(c echo.Context) error {
 
 	unitBytes := 1024
 	switch respSizeUnit {
+	case "B":
+		unitBytes = 1
 	case "KiB":
 		unitBytes = 1024
 	case "MiB":
@@ -114,7 +141,7 @@ func SimulatedLoadResponse(c echo.Context) error {
 		}
 	}
 
-	failureRate := 0.0
+	failureRate := failureOffset
 	failureRateStr := c.Request().Header.Get(RouteResponseFailurePercentage)
 	if failureRateStr != "" {
 		var err error
@@ -127,7 +154,9 @@ func SimulatedLoadResponse(c echo.Context) error {
 	if failureRate > 0.0 {
 		r := rand2.Float64() * 100.0
 		if r <= failureRate {
-			return c.JSON(failureStatusCode, nil)
+			return c.JSON(failureStatusCode, Response{
+				Message: fmt.Sprintf("Failure rate: %f: triggered", failureRate),
+			})
 		}
 	}
 	respFormat := c.Request().Header.Get(RouteResponseFormat)
