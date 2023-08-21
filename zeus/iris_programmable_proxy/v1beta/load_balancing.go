@@ -5,6 +5,10 @@ const (
 	Adaptive                 = "Adaptive"
 	AdaptiveLoadBalancingKey = "X-Adaptive-Metrics-Key"
 	EthereumJsonRPC          = "Ethereum"
+	QuickNodeAPIs            = "QuickNode"
+
+	XResponseLatencyMillisecondsHeader = "X-Response-Latency-Milliseconds"
+	XResponseReceivedAtUTCHeader       = "X-Response-Received-At-UTC"
 )
 
 func (i *IrisProxyRulesConfigs) AddLoadBalancingStrategyHeaderToHeaders(lbs string) {
