@@ -57,7 +57,7 @@ func Health(c echo.Context) error {
 	return c.String(http.StatusOK, "Healthy")
 }
 
-var failureOffset = 0.0
+var FailureOffset = 0.0
 
 func BiasLoadResponse(c echo.Context) error {
 	failureRateStr := c.Request().Header.Get(RouteResponseFailurePercentage)
@@ -68,7 +68,7 @@ func BiasLoadResponse(c echo.Context) error {
 			log.Err(err).Msgf("SimulatedLoadResponse: strconv.ParseFloat")
 			return c.JSON(http.StatusInternalServerError, nil)
 		}
-		failureOffset = failureRate
+		FailureOffset = failureRate
 	}
 	return c.JSON(http.StatusOK, Response{
 		Message: "OK",
@@ -141,7 +141,7 @@ func SimulatedLoadResponse(c echo.Context) error {
 		}
 	}
 
-	failureRate := failureOffset
+	failureRate := FailureOffset
 	failureRateStr := c.Request().Header.Get(RouteResponseFailurePercentage)
 	if failureRateStr != "" {
 		var err error

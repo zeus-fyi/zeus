@@ -6,7 +6,9 @@ import (
 	v1_load_simulator "github.com/zeus-fyi/zeus/load-simulator/api/v1"
 )
 
-var cfg = Config{}
+var (
+	cfg = Config{}
+)
 
 func Api() {
 	cfg.Host = "0.0.0.0"
@@ -14,12 +16,14 @@ func Api() {
 	// Echo instance
 	srv.E = v1_load_simulator.Routes(srv.E)
 	// Start server
+	// failureOffset
 	srv.Start()
 }
 
 func init() {
 	viper.AutomaticEnv()
 	Cmd.Flags().StringVar(&cfg.Port, "port", "8888", "server port")
+	Cmd.Flags().Float64Var(&v1_load_simulator.FailureOffset, "failureRate", 0.0, "failure rate [0-100.0] float -> 0-100%")
 }
 
 // Cmd represents the base command when called without any subcommands
