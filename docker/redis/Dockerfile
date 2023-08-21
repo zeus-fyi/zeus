@@ -12,7 +12,7 @@ RUN git checkout ${VERSION} && git pull
 RUN cargo update
 RUN cargo build --release
 
-FROM redis:7.0.12 as redis
+FROM redis:7.2.0-bookworm as redis
 WORKDIR /app
 
 COPY --from=t-digest-builder /app/redis-percentile/target/release/libredis_percentile.so /usr/local/lib/
