@@ -13,7 +13,7 @@ func (t *IrisConfigTestSuite) TestAdaptiveRPCLoadBalancing() {
 	t.IrisClientProd.SetRoutingGroupHeader(groupName)
 	t.IrisClientProd.SetDebug(false)
 	t.IrisClientProd.SetHeader(iris_programmable_proxy_v1_beta.LoadBalancingStrategy, iris_programmable_proxy_v1_beta.Adaptive)
-	t.IrisClientProd.SetHeader(iris_programmable_proxy_v1_beta.AdaptiveLoadBalancingKey, iris_programmable_proxy_v1_beta.EthereumJsonRPC)
+	t.IrisClientProd.SetHeader(iris_programmable_proxy_v1_beta.AdaptiveLoadBalancingKey, iris_programmable_proxy_v1_beta.JsonRpcAdaptiveMetrics)
 	t.IrisClientProd.SetHeader("X-Sim-Response-Format", "json")
 	t.IrisClientProd.SetHeader("X-Sim-Response-Size", "1")
 
