@@ -28,7 +28,7 @@ routing table limits unless you make any manual changes to them.
 ### Lite
 ```text
 250M ZU per $99
-Up to 10k ZU/s ~ 1k req/s
+Up to 25k ZU/s ~ 2.5k req/s
 Up to ~25M requests (with responses)
 25 Custom Routing Group Tables
 Round Robin 
@@ -36,7 +36,7 @@ Round Robin
 ### Standard
 ```text
 1B ZU per $299
-Up to 25k ZU/s, ~2.5k req/s
+Up to 50k ZU/s, ~5k req/s
 Up to ~ 100M  requests (with responses)
 50 Custom Routing Group Tables
 Adaptive Load Balancing + Round Robin
@@ -44,7 +44,7 @@ Adaptive Load Balancing + Round Robin
 ### Performance
 ```text
 3B ZU per $999, 
-Up to 50k ZU/s, ~5k req/s
+Up to 100k ZU/s, ~10k req/s
 Up to ~300M requests (with responses)
 250 Custom Routing Group Tables
 Adaptive Load Balancing + Round Robin
