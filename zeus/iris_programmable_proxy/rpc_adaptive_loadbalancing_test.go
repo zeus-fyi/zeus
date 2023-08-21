@@ -60,7 +60,7 @@ func (t *IrisConfigTestSuite) TestAdaptiveRPCLoadBalancing() {
 			t.Require().NoError(err)
 
 			endpoint := resp.Header().Get(SelectedRouteResponseHeader)
-			latencyStr := resp.Header().Get("X-Response-Latency-Ms")
+			latencyStr := resp.Header().Get("X-Response-Latency-Milliseconds")
 			latency, err := strconv.ParseInt(latencyStr, 10, 64)
 			if err == nil {
 				mu.Lock()
@@ -91,3 +91,14 @@ func (t *IrisConfigTestSuite) TestAdaptiveRPCLoadBalancing() {
 		fmt.Printf("Endpoint: %s | Average Latency: %.2f ms | Total Samples Count: %d | Total Errors Count: %d\n", endpoint, averageLatency, samplesCount, errorCount)
 	}
 }
+
+/*
+Test One: Using Load-Sim:
+
+endpoint A was set to fail 12.5% of the time
+adaptive LB -> reduced 125 expected failures to 42
+			-> 12.5% round robin lb failure -> 4.2% adaptive lb failure
+
+Endpoint A: Average Latency: 90.02 ms | Total Samples Count: 378 | Total Errors Count: 42
+Endpoint B: Average Latency: 94.96 ms | Total Samples Count: 622 | Total Errors Count: 0
+*/
