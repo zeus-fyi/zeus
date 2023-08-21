@@ -56,6 +56,14 @@ func SimulatedLoadResponse(c echo.Context) error {
 	var respSizeNum int
 	if respSize == "" {
 		respSizeNum = 0
+	} else {
+		sz, err := strconv.Atoi(respSize)
+		if err != nil {
+			log.Err(err).Msgf("SimulatedLoadResponse: strconv.Atoi")
+			respSizeNum = 0
+		} else {
+			respSizeNum = sz
+		}
 	}
 
 	unitBytes := 1024
