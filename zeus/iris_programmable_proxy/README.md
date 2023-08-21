@@ -192,7 +192,7 @@ Once you have ~20 or so request samples for the same method, the load balancer w
 manage the routing group table for you based on the best predicted performing endpoint for that method that's available.
 
 Stats will only persist for 24 hours since the last API call for that method, so you'll need to keep making requests to keep the stats.
-It doesn't take long, <10 min to get to a near optimal routing group table from scratch, so it's really not a big deal to reset the stats.
+It doesn't take long, only ~20 samples per metric to trend towards a near optimal routing group table from scratch, so it's really not a big deal to reset the stats.
 */
 path := "https://iris.zeus.fyi/v1/router"
 */
