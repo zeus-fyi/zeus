@@ -4,7 +4,7 @@ const (
 	LoadBalancingStrategy    = "X-Load-Balancing-Strategy"
 	Adaptive                 = "Adaptive"
 	AdaptiveLoadBalancingKey = "X-Adaptive-Metrics-Key"
-	EthereumJsonRPC          = "Ethereum"
+	JsonRpcAdaptiveMetrics   = "JSON-RPC"
 	QuickNodeAPIs            = "QuickNode"
 
 	XResponseLatencyMillisecondsHeader = "X-Response-Latency-Milliseconds"
@@ -17,12 +17,12 @@ func (i *IrisProxyRulesConfigs) AddLoadBalancingStrategyHeaderToHeaders(lbs stri
 
 func (i *IrisProxyRulesConfigs) AddEthereumJsonRpcAdaptiveLoadBalancingStrategyHeaderToHeaders() {
 	i.Headers[LoadBalancingStrategy] = Adaptive
-	i.Headers[AdaptiveLoadBalancingKey] = EthereumJsonRPC
+	i.Headers[AdaptiveLoadBalancingKey] = JsonRpcAdaptiveMetrics
 }
 
 /*
 
-EthereumJsonRPC will build stats on the payload using the method value in the JSON RPC request,
+JsonRpcAdaptiveMetrics will build stats on the payload using the method value in the JSON RPC request,
 and is a reserved key-value pair for the Adaptive load balancing strategy designed for QuickNode's Marketplace.
 
 It uses generated table stats to optimize latency and throughput for Ethereum JSON RPC requests once enough samples

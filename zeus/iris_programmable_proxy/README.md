@@ -184,8 +184,8 @@ routeGroup := "quicknode-mainnet"
 Add HEADER "X-Route-Group" with value "quicknode-mainnet"
 
 Add HEADER "X-Load-Balancing-Strategy" with value "Adaptive"
-Add HEADER "X-Adaptive-Metrics-Key" with value "Ethereum" (or "Other Metric Keys...")
-- Ethereum is a reserved value for this key, it collects stats by the method value in the json rpc POST request
+Add HEADER "X-Adaptive-Metrics-Key" with value "JSON-RPC" (or "Other Metric Keys...")
+- JSON-RPC is a reserved value for json-rpc based POST apis, it collects stats by the method value in the json rpc POST request
 
 /*
 Once you have ~20 or so request samples for the same method, the load balancer will start to use the adaptive strategy automatically and
