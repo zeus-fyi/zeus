@@ -30,7 +30,7 @@ const (
 	// if it is less than or equal to the failure percentage
 	RouteResponseFailurePercentage = "X-Sim-Failure-Percentage"
 
-	RouteResponseLatency = "X-Sim-Latency-ms"
+	RouteResponseLatency = "X-Sim-Latency-Milliseconds"
 )
 
 func Routes(e *echo.Echo) *echo.Echo {
