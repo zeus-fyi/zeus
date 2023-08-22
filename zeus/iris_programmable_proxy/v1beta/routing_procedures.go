@@ -47,7 +47,7 @@ func (r *IrisRoutingProcedureStep) Aggregate() error {
 		if !ok {
 			continue
 		}
-		err := agg.AggregateOn(v.Value)
+		err := agg.AggregateOn(v.Value, v)
 		if err != nil {
 			return err
 		}

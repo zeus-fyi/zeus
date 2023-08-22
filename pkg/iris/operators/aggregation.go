@@ -19,46 +19,46 @@ const (
 	Max = "max"
 )
 
-func (a *Aggregation) AggregateOn(x any) error {
+func (a *Aggregation) AggregateOn(x any, y any) error {
 	switch a.Operator + a.DataType {
 	case Max + DataTypeInt:
 		val, ok := ConvertToInt(x)
 		if !ok {
 			return errors.New(fmt.Sprintf("could not convert %v to int", x))
 		}
-		return a.AggregateMaxInt(val)
+		return a.AggregateMaxInt(val, y)
 	case Max + DataTypeFloat64:
 		val, ok := ConvertToFloat64(x)
 		if !ok {
 			return errors.New(fmt.Sprintf("could not convert %v to float64", x))
 		}
-		return a.AggregateMaxFloat64(val)
+		return a.AggregateMaxFloat64(val, y)
 	default:
 		return errors.New(fmt.Sprintf("could not aggregate on %s", a.DataType))
 	}
 }
 
-func (a *Aggregation) AggregateMaxFloat64(x float64) error {
+func (a *Aggregation) AggregateMaxFloat64(x float64, y any) error {
 	a.Operator = Max
 	if len(a.DataSlice) == 0 || x >= a.CurrentMaxFloat64 {
 		if x > a.CurrentMaxFloat64 {
 			a.CurrentMaxFloat64 = x
-			a.DataSlice = []any{x} // Keep only the new maximum value
+			a.DataSlice = []any{y} // Keep only the new maximum value
 		} else {
-			a.DataSlice = append(a.DataSlice, x) // Append the value if it's equal to the current maximum
+			a.DataSlice = append(a.DataSlice, y) // Append the value if it's equal to the current maximum
 		}
 	}
 	return nil
 }
 
-func (a *Aggregation) AggregateMaxInt(x int) error {
+func (a *Aggregation) AggregateMaxInt(x int, y any) error {
 	a.Operator = Max
 	if len(a.DataSlice) == 0 || x >= a.CurrentMaxInt {
 		if x > a.CurrentMaxInt {
 			a.CurrentMaxInt = x
-			a.DataSlice = []any{x} // Keep only the new maximum value
+			a.DataSlice = []any{y} // Keep only the new maximum value
 		} else {
-			a.DataSlice = append(a.DataSlice, x) // Append the value if it's equal to the current maximum
+			a.DataSlice = append(a.DataSlice, y) // Append the value if it's equal to the current maximum
 		}
 	}
 	return nil

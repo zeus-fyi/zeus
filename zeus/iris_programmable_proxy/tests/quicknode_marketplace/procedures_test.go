@@ -28,22 +28,29 @@ func (t *IrisConfigTestSuite) TestMaxBlockAggProcedure() {
 	t.Require().NoError(err)
 	t.Require().NotNil(resp)
 
-	extMap := iris_programmable_proxy_v1_beta.IrisRoutingResponseETL{
+	source := resp.Header().Get("X-Selected-Route")
+	t.Assert().NotEmpty(source)
+
+	extResp := iris_programmable_proxy_v1_beta.IrisRoutingResponseETL{
+		Source:        source,
 		ExtractionKey: "result",
 		DataType:      "",
 	}
 
-	extMap.ExtractKeyValue(m)
-	t.Assert().NotEmpty(extMap.Value)
-	fmt.Println(extMap)
+	extResp.ExtractKeyValue(m)
+	t.Assert().NotEmpty(extResp.Value)
+	fmt.Println(extResp)
 
 	agg := iris_operators.Aggregation{
 		Operator: "max",
 		DataType: "int",
 	}
 
-	err = agg.AggregateOn(extMap.Value)
+	err = agg.AggregateOn(extResp.Value, extResp)
 	t.Require().NoError(err)
 
 	fmt.Println(agg)
+	t.Assert().NotEmpty(agg.DataSlice)
+
+	fmt.Println(agg.DataSlice)
 }
