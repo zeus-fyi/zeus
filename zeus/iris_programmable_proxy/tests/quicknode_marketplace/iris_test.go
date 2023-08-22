@@ -1,4 +1,4 @@
-package iris_tests_suite
+package iris_quicknode
 
 import (
 	"testing"
