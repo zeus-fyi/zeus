@@ -1,6 +1,11 @@
 package iris_programmable_proxy_v1_beta
 
-import "time"
+import (
+	"reflect"
+	"time"
+
+	iris_operators "github.com/zeus-fyi/zeus/pkg/iris/operators"
+)
 
 const (
 	RoutingProcedureHeader = "X-Routing-Procedure"
@@ -27,16 +32,40 @@ type BroadcastInstructions struct {
 }
 
 type IrisRoutingProcedureStep struct {
-	BroadcastInstructions BroadcastInstructions             `json:"broadcastInstructions,omitempty"`
-	TransformMap          map[string]IrisRoutingResponseETL `json:"transformMap,omitempty"`
-	AggregateMap          map[string]IrisRoutingResponseETL `json:"aggregateMap,omitempty"`
-	NextProcedure         *IrisRoutingProcedure             `json:"nextProcedure,omitempty"`
+	BroadcastInstructions BroadcastInstructions                 `json:"broadcastInstructions,omitempty"`
+	TransformSlice        []IrisRoutingResponseETL              `json:"transformSlice,omitempty"`
+	AggregateMap          map[string]iris_operators.Aggregation `json:"aggregateMap,omitempty"`
+	NextProcedure         *IrisRoutingProcedure                 `json:"nextProcedure,omitempty"`
+}
+
+func (r *IrisRoutingProcedureStep) Aggregate() error {
+	if len(r.AggregateMap) == 0 {
+		return nil
+	}
+	for _, v := range r.TransformSlice {
+		agg, ok := r.AggregateMap[v.ExtractionKey]
+		if !ok {
+			continue
+		}
+		err := agg.AggregateOn(v.Value)
+		if err != nil {
+			return err
+		}
+		r.AggregateMap[v.ExtractionKey] = agg
+	}
+	return nil
 }
 
 type IrisRoutingResponseETL struct {
-	//Operations []Operation `json:"operation"`
-	DataType string `json:"dataType"`
-	Result   any    `json:"result"`
+	Source        string `json:"source"`
+	ExtractionKey string `json:"extractionKey"`
+	DataType      string `json:"dataType"`
+	Value         any    `json:"result"`
+}
+
+func (r *IrisRoutingResponseETL) ExtractKeyValue(m map[string]any) {
+	r.Value = m[r.ExtractionKey]
+	r.DataType = reflect.TypeOf(r.Value).String()
 }
 
 func (r *IrisRoutingProcedure) GetNextProcedure() *IrisRoutingProcedure {

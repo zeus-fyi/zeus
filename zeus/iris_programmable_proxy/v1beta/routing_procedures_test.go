@@ -10,6 +10,6 @@ func (t *IrisConfigTestSuite) TestETLOperators() {
 	//	Operations: []string{OperatorGt},
 	//
 	//	DataType: "",
-	//	Result:   nil,
+	//	Value:   nil,
 	//}
 }

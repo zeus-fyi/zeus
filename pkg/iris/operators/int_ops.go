@@ -4,6 +4,9 @@ import (
 	"errors"
 	"fmt"
 	"strconv"
+	"strings"
+
+	strings_filter "github.com/zeus-fyi/zeus/pkg/utils/strings"
 )
 
 func compareIntInt(operation string, x, y int) (bool, error) {
@@ -51,6 +54,13 @@ func ConvertToInt(value any) (int, bool) {
 	case float64:
 		return int(v), true
 	case string:
+		if strings.HasPrefix(v, "0x") {
+			dec, err := strings_filter.ParseIntFromHexStr(v)
+			if err != nil {
+				return 0, false
+			}
+			return dec, true
+		}
 		newV, err := strconv.Atoi(v)
 		if err != nil {
 			return 0, false

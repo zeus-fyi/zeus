@@ -1,6 +1,9 @@
 package strings_filter
 
-import "strings"
+import (
+	"strconv"
+	"strings"
+)
 
 func AddHexPrefix(hex string) string {
 	if len(hex) >= 2 && hex[0:2] == "0x" {
@@ -14,4 +17,13 @@ func Trim0xPrefix(input string) string {
 		return input[2:]
 	}
 	return input
+}
+
+// ParseIntFromHexStr parse hex string value to int
+func ParseIntFromHexStr(value string) (int, error) {
+	i, err := strconv.ParseInt(Trim0xPrefix(value), 16, 64)
+	if err != nil {
+		return 0, err
+	}
+	return int(i), nil
 }

@@ -1,5 +1,10 @@
 package iris_operators
 
+import (
+	"errors"
+	"fmt"
+)
+
 type Aggregation struct {
 	Operator  string `json:"operator"`
 	DataType  string `json:"dataType"`
@@ -13,6 +18,25 @@ type Aggregation struct {
 const (
 	Max = "max"
 )
+
+func (a *Aggregation) AggregateOn(x any) error {
+	switch a.Operator + a.DataType {
+	case Max + DataTypeInt:
+		val, ok := ConvertToInt(x)
+		if !ok {
+			return errors.New(fmt.Sprintf("could not convert %v to int", x))
+		}
+		return a.AggregateMaxInt(val)
+	case Max + DataTypeFloat64:
+		val, ok := ConvertToFloat64(x)
+		if !ok {
+			return errors.New(fmt.Sprintf("could not convert %v to float64", x))
+		}
+		return a.AggregateMaxFloat64(val)
+	default:
+		return errors.New(fmt.Sprintf("could not aggregate on %s", a.DataType))
+	}
+}
 
 func (a *Aggregation) AggregateMaxFloat64(x float64) error {
 	a.Operator = Max

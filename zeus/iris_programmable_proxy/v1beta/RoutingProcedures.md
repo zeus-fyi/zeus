@@ -4,6 +4,7 @@ RoutingPath string `json:"routingPath"`
 RestType    string `json:"restType"`
 Payload     any    `json:"payload"`
 
+ExtractMap    map[string]IrisRoutingResponseETL `json:"extractMap"`
 TransformMap  map[string]IrisRoutingResponseETL `json:"transformMap"`
 AggregateMap  map[string]IrisRoutingResponseETL `json:"aggregateMap"`
 NextProcedure IrisRoutingProcedure              `json:"nextProcedure"`
