@@ -14,7 +14,7 @@ import (
 )
 
 func (t *IrisConfigTestSuite) TestRPCLoadBalancing() {
-	routeGroup := "quicknode-mainnet"
+	routeGroup := "ethereum-mainnet"
 	path := fmt.Sprintf("https://iris.zeus.fyi/v1/router")
 	//path = fmt.Sprintf("http://localhost:8080/v1/router")
 
