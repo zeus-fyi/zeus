@@ -63,7 +63,3 @@ func (a *Aggregation) AggregateMaxInt(x int, y any) error {
 	}
 	return nil
 }
-
-//func (a *Aggregation) AggregateMaxHexstr(x string) error {
-//	return nil
-//}
