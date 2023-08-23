@@ -4,6 +4,7 @@ import (
 	"reflect"
 	"time"
 
+	"github.com/phf/go-queue/queue"
 	iris_operators "github.com/zeus-fyi/zeus/pkg/iris/operators"
 )
 
@@ -20,7 +21,7 @@ const (
 type IrisRoutingProcedure struct {
 	Name string `json:"name"`
 
-	OrderedSteps []IrisRoutingProcedureStep `json:"steps"`
+	OrderedSteps queue.Queue `json:"steps"`
 }
 
 type BroadcastInstructions struct {
@@ -36,7 +37,6 @@ type IrisRoutingProcedureStep struct {
 	BroadcastInstructions BroadcastInstructions                 `json:"broadcastInstructions,omitempty"`
 	TransformSlice        []IrisRoutingResponseETL              `json:"transformSlice,omitempty"`
 	AggregateMap          map[string]iris_operators.Aggregation `json:"aggregateMap,omitempty"`
-	NextProcedure         *IrisRoutingProcedure                 `json:"nextProcedure,omitempty"`
 }
 
 func (r *IrisRoutingProcedureStep) Aggregate() error {
@@ -68,14 +68,3 @@ func (r *IrisRoutingResponseETL) ExtractKeyValue(m map[string]any) {
 	r.Value = m[r.ExtractionKey]
 	r.DataType = reflect.TypeOf(r.Value).String()
 }
-
-func (r *IrisRoutingProcedure) GetNextProcedure() *IrisRoutingProcedure {
-	for _, step := range r.OrderedSteps {
-		if step.NextProcedure != nil {
-			return step.NextProcedure
-		}
-	}
-	return nil
-}
-
-// gets key's value from response body, then does operation on it
