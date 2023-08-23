@@ -200,6 +200,15 @@ path := "https://iris.zeus.fyi/v1/router"
 
 Curl Example:
 
+```sh
+curl --location ‘https://iris.zeus.fyi/v1/router’ \
+--header ‘Content-Type: application/json’ \
+--header ‘Authorization: Bearer YOUR-BEARER-TOKEN’ \
+--header ‘X-Route-Group: ethereum-mainnet’ \
+--header ‘X-Load-Balancing-Strategy: Adaptive’ \
+--header ‘X-Adaptive-Metrics-Key: JSON-RPC’ \
+--data ‘{“jsonrpc”:“2.0”,“method”:“eth_getBlockByNumber”,“params”:[“latest”, true],“id”:1}’
+```
 You can also check out our round-robin load_balancing_test.go for an example of how to use the programmable proxy to query 
 the block number from a routing group of ethereum node urls endpoints.
 
