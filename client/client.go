@@ -16,11 +16,17 @@ import (
 )
 
 const (
-	defaultProxyUrl    = "https://iris.zeus.fyi/v1/"
+	defaultProxyUrl    = "https://iris.zeus.fyi/v1/router"
 	proxyHeader        = "Proxy-Relay-To"
 	SessionLockHeader  = "Session-Lock-ID"
 	DurableExecutionID = "Durable-Execution-ID"
 	EndSessionLockID   = "End-Session-Lock-ID"
+	RouteGroupHeader   = "X-Route-Group"
+
+	LoadBalancingStrategy    = "X-Load-Balancing-Strategy"
+	Adaptive                 = "Adaptive"
+	AdaptiveLoadBalancingKey = "X-Adaptive-Metrics-Key"
+	JsonRpcAdaptiveMetrics   = "JSON-RPC"
 )
 
 type Web3Actions struct {
@@ -101,6 +107,22 @@ func (w *Web3Actions) AddSessionLockHeader(sessionID string) {
 		w.Headers = make(map[string]string)
 	}
 	w.Headers[SessionLockHeader] = sessionID
+}
+
+func (w *Web3Actions) AddRoutingGroupHeader(routingGroup string) {
+	if w.Headers == nil {
+		w.Headers = make(map[string]string)
+	}
+	w.Headers[RouteGroupHeader] = routingGroup
+}
+
+func (w *Web3Actions) AddAdaptiveLoadBalancerHeaders() {
+	if w.Headers == nil {
+		w.Headers = make(map[string]string)
+	}
+
+	w.Headers[LoadBalancingStrategy] = Adaptive
+	w.Headers[AdaptiveLoadBalancingKey] = JsonRpcAdaptiveMetrics
 }
 
 func (w *Web3Actions) GetSessionLockHeader() string {
