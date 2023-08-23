@@ -11,12 +11,14 @@ type Aggregation struct {
 	DataSlice []any  `json:"dataSlice"`
 	//WindowFilter any    `json:"windowFilter,omitempty"`
 
+	SumInt            int     `json:"sumInt,omitempty"`
 	CurrentMaxInt     int     `json:"currentMaxInt,omitempty"`
 	CurrentMaxFloat64 float64 `json:"CurrentMaxFloat64,omitempty"`
 }
 
 const (
 	Max = "max"
+	Sum = "sum"
 )
 
 func (a *Aggregation) AggregateOn(x any, y any) error {
@@ -27,6 +29,12 @@ func (a *Aggregation) AggregateOn(x any, y any) error {
 			return errors.New(fmt.Sprintf("could not convert %v to int", x))
 		}
 		return a.AggregateMaxInt(val, y)
+	case Sum + DataTypeInt:
+		val, ok := ConvertToInt(x)
+		if !ok {
+			return errors.New(fmt.Sprintf("could not convert %v to int", x))
+		}
+		return a.AggregateSumInt(val, y)
 	case Max + DataTypeFloat64:
 		val, ok := ConvertToFloat64(x)
 		if !ok {
@@ -36,6 +44,13 @@ func (a *Aggregation) AggregateOn(x any, y any) error {
 	default:
 		return errors.New(fmt.Sprintf("could not aggregate on %s", a.DataType))
 	}
+}
+
+func (a *Aggregation) AggregateSumInt(x int, y any) error {
+	a.Operator = Sum
+	a.SumInt += x
+	a.DataSlice = append(a.DataSlice, y) // Append the value if it's equal to the current maximum
+	return nil
 }
 
 func (a *Aggregation) AggregateMaxFloat64(x float64, y any) error {
