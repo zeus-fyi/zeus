@@ -26,6 +26,7 @@ type IrisRoutingProcedure struct {
 type BroadcastInstructions struct {
 	RoutingPath  string        `json:"routingPath"`
 	RestType     string        `json:"restType"`
+	Payload      any           `json:"payload,omitempty"`
 	MaxDuration  time.Duration `json:"maxRuntime"`
 	MaxTries     int           `json:"maxTries"`
 	RoutingTable string        `json:"routingTable"`
