@@ -21,7 +21,7 @@ const (
 type IrisRoutingProcedure struct {
 	Name string `json:"name"`
 
-	OrderedSteps queue.Queue `json:"steps"`
+	OrderedSteps *queue.Queue `json:"steps"`
 }
 
 type BroadcastInstructions struct {
