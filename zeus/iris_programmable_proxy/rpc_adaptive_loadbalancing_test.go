@@ -96,9 +96,8 @@ func (t *IrisConfigTestSuite) TestAdaptiveRPCLoadBalancing() {
 Test One: Using Load-Sim:
 
 endpoint A was set to fail 12.5% of the time
-adaptive LB -> reduced 125 expected failures to 42
-			-> 12.5% round robin lb failure -> 4.2% adaptive lb failure
-
+adaptive LB -> reduced 62.5 expected failures to 42
+			-> 6.25% round robin lb failure -> 4.2% adaptive lb failure
 Endpoint A: Average Latency: 90.02 ms | Total Samples Count: 378 | Total Errors Count: 42
 Endpoint B: Average Latency: 94.96 ms | Total Samples Count: 622 | Total Errors Count: 0
 */
