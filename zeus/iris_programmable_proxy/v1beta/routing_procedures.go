@@ -31,6 +31,22 @@ type BroadcastInstructions struct {
 	MaxDuration  time.Duration `json:"maxRuntime"`
 	MaxTries     int           `json:"maxTries"`
 	RoutingTable string        `json:"routingTable"`
+	FanInRules   *FanInRules   `json:"fanInRules"`
+}
+
+type FanInRules struct {
+	Rule BroadcastRules `json:"rule"`
+}
+
+type BroadcastRules string
+
+const (
+	FanInRuleFirstValidResponse = "returnFirstValidResponse"
+)
+
+// ReturnFirstResult returns the first result from the fan-in that is not an error
+func (b BroadcastRules) ReturnFirstResult() string {
+	return FanInRuleFirstValidResponse
 }
 
 type IrisRoutingProcedureStep struct {
