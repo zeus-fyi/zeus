@@ -9,7 +9,9 @@ import (
 )
 
 const (
-	RoutingProcedureHeader = "X-Routing-Procedure"
+	RequestHeaderRoutingProcedureHeader = "X-Routing-Procedure"
+
+	ResponseHeaderProcedureLatency = "X-Procedure-Latency-Milliseconds"
 )
 
 // pre-canned routing procedures for QuickNode marketplace users
@@ -28,10 +30,10 @@ type BroadcastInstructions struct {
 	RoutingPath  string        `json:"routingPath"`
 	RestType     string        `json:"restType"`
 	Payload      any           `json:"payload,omitempty"`
-	MaxDuration  time.Duration `json:"maxRuntime"`
-	MaxTries     int           `json:"maxTries"`
+	MaxDuration  time.Duration `json:"maxRuntime,omitempty"`
+	MaxTries     int           `json:"maxTries,omitempty"`
 	RoutingTable string        `json:"routingTable"`
-	FanInRules   *FanInRules   `json:"fanInRules"`
+	FanInRules   *FanInRules   `json:"fanInRules,omitempty"`
 }
 
 type FanInRules struct {
