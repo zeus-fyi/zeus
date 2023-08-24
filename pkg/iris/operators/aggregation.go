@@ -7,6 +7,7 @@ import (
 )
 
 type Aggregation struct {
+	Name      string                   `json:"name,omitempty"`
 	Operator  string                   `json:"operator"`
 	DataType  string                   `json:"dataType"`
 	DataSlice []IrisRoutingResponseETL `json:"dataSlice"`
