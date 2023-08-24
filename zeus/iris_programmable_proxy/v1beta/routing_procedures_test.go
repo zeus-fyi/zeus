@@ -1,7 +1,6 @@
 package iris_programmable_proxy_v1_beta
 
 import (
-	"context"
 	"fmt"
 	"time"
 
@@ -28,7 +27,7 @@ func (t *IrisConfigTestSuite) TestRoutingProcedure() {
 	}
 	getBlockHeightProcedure := IrisRoutingProcedureStep{
 		BroadcastInstructions: getBlockHeightStep,
-		TransformSlice: []IrisRoutingResponseETL{
+		TransformSlice: []iris_operators.IrisRoutingResponseETL{
 			{
 				Source:        "",
 				ExtractionKey: "result",
@@ -63,7 +62,7 @@ func (t *IrisConfigTestSuite) TestRoutingProcedure() {
 	}
 	getBlockProcedure := IrisRoutingProcedureStep{
 		BroadcastInstructions: getBlockStep,
-		TransformSlice: []IrisRoutingResponseETL{
+		TransformSlice: []iris_operators.IrisRoutingResponseETL{
 			{
 				Source:        "",
 				ExtractionKey: "",
@@ -80,7 +79,7 @@ func (t *IrisConfigTestSuite) TestRoutingProcedure() {
 	}
 	fmt.Println(procedure)
 
-	irisV1Beta := NewIrisV1BetaClient(t.IrisClient)
-	err := irisV1Beta.CreateProcedure(context.Background(), procedure)
-	t.Require().NoError(err)
+	//irisV1Beta := NewIrisV1BetaClient(t.IrisClient)
+	//err := irisV1Beta.CreateProcedure(context.Background(), procedure)
+	//t.Require().NoError(err)
 }

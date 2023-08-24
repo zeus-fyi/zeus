@@ -1,7 +1,6 @@
 package iris_programmable_proxy_v1_beta
 
 import (
-	"reflect"
 	"time"
 
 	"github.com/phf/go-queue/queue"
@@ -52,9 +51,9 @@ func (b BroadcastRules) ReturnFirstResult() string {
 }
 
 type IrisRoutingProcedureStep struct {
-	BroadcastInstructions BroadcastInstructions                 `json:"broadcastInstructions,omitempty"`
-	TransformSlice        []IrisRoutingResponseETL              `json:"transformSlice,omitempty"`
-	AggregateMap          map[string]iris_operators.Aggregation `json:"aggregateMap,omitempty"`
+	BroadcastInstructions BroadcastInstructions                   `json:"broadcastInstructions,omitempty"`
+	TransformSlice        []iris_operators.IrisRoutingResponseETL `json:"transformSlice,omitempty"`
+	AggregateMap          map[string]iris_operators.Aggregation   `json:"aggregateMap,omitempty"`
 }
 
 func (r *IrisRoutingProcedureStep) Aggregate() error {
@@ -73,23 +72,4 @@ func (r *IrisRoutingProcedureStep) Aggregate() error {
 		r.AggregateMap[v.ExtractionKey] = agg
 	}
 	return nil
-}
-
-type IrisRoutingResponseETL struct {
-	Source        string `json:"source"`
-	ExtractionKey string `json:"extractionKey"`
-	DataType      string `json:"dataType"`
-	Value         any    `json:"result"`
-}
-
-func (r *IrisRoutingResponseETL) ExtractKeyValue(m map[string]any) {
-	if r.ExtractionKey == "" {
-		r.Value = m
-		return
-	}
-	r.Value = m[r.ExtractionKey]
-	if r.Value == nil {
-		return
-	}
-	r.DataType = reflect.TypeOf(r.Value).String()
 }
