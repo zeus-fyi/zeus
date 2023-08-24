@@ -82,6 +82,7 @@ type IrisRoutingResponseETL struct {
 
 func (r *IrisRoutingResponseETL) ExtractKeyValue(m map[string]any) {
 	if r.ExtractionKey == "" {
+		r.Value = m
 		return
 	}
 	r.Value = m[r.ExtractionKey]
