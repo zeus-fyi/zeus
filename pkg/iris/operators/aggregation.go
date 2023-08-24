@@ -3,14 +3,12 @@ package iris_operators
 import (
 	"errors"
 	"fmt"
-
-	iris_programmable_proxy_v1_beta "github.com/zeus-fyi/zeus/zeus/iris_programmable_proxy/v1beta"
 )
 
 type Aggregation struct {
-	Operator  string                                                   `json:"operator"`
-	DataType  string                                                   `json:"dataType"`
-	DataSlice []iris_programmable_proxy_v1_beta.IrisRoutingResponseETL `json:"dataSlice"`
+	Operator  string `json:"operator"`
+	DataType  string `json:"dataType"`
+	DataSlice []any  `json:"dataSlice"`
 	//WindowFilter any    `json:"windowFilter,omitempty"`
 
 	SumInt            int     `json:"sumInt,omitempty"`
@@ -23,7 +21,7 @@ const (
 	Sum = "sum"
 )
 
-func (a *Aggregation) AggregateOn(x any, y iris_programmable_proxy_v1_beta.IrisRoutingResponseETL) error {
+func (a *Aggregation) AggregateOn(x any, y any) error {
 	switch a.Operator + a.DataType {
 	case Max + DataTypeInt:
 		val, ok := ConvertToInt(x)
@@ -48,19 +46,19 @@ func (a *Aggregation) AggregateOn(x any, y iris_programmable_proxy_v1_beta.IrisR
 	}
 }
 
-func (a *Aggregation) AggregateSumInt(x int, y iris_programmable_proxy_v1_beta.IrisRoutingResponseETL) error {
+func (a *Aggregation) AggregateSumInt(x int, y any) error {
 	a.Operator = Sum
 	a.SumInt += x
 	a.DataSlice = append(a.DataSlice, y) // Append the value if it's equal to the current maximum
 	return nil
 }
 
-func (a *Aggregation) AggregateMaxFloat64(x float64, y iris_programmable_proxy_v1_beta.IrisRoutingResponseETL) error {
+func (a *Aggregation) AggregateMaxFloat64(x float64, y any) error {
 	a.Operator = Max
 	if len(a.DataSlice) == 0 || x >= a.CurrentMaxFloat64 {
 		if x > a.CurrentMaxFloat64 {
 			a.CurrentMaxFloat64 = x
-			a.DataSlice = []iris_programmable_proxy_v1_beta.IrisRoutingResponseETL{y} // Keep only the new maximum value
+			a.DataSlice = []any{y} // Keep only the new maximum value
 		} else {
 			a.DataSlice = append(a.DataSlice, y) // Append the value if it's equal to the current maximum
 		}
@@ -68,12 +66,12 @@ func (a *Aggregation) AggregateMaxFloat64(x float64, y iris_programmable_proxy_v
 	return nil
 }
 
-func (a *Aggregation) AggregateMaxInt(x int, y iris_programmable_proxy_v1_beta.IrisRoutingResponseETL) error {
+func (a *Aggregation) AggregateMaxInt(x int, y any) error {
 	a.Operator = Max
 	if len(a.DataSlice) == 0 || x >= a.CurrentMaxInt {
 		if x > a.CurrentMaxInt {
 			a.CurrentMaxInt = x
-			a.DataSlice = []iris_programmable_proxy_v1_beta.IrisRoutingResponseETL{y} // Keep only the new maximum value
+			a.DataSlice = []any{y} // Keep only the new maximum value
 		} else {
 			a.DataSlice = append(a.DataSlice, y) // Append the value if it's equal to the current maximum
 		}
