@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app.kubernetes.io/instance: redis-master
+    app.kubernetes.io/managed-by: zeus
+    app.kubernetes.io/name: redis-master
+    version: version-1692419158670787545
+  name: redis-master
+spec:
+  ports:
+  - name: metrics
+    port: 9121
+    protocol: TCP
+    targetPort: metrics
+  - name: redis
+    port: 6379
+    protocol: TCP
+    targetPort: redis
+  selector:
+    app.kubernetes.io/instance: redis-master
+    app.kubernetes.io/name: redis-master
+  type: ClusterIP
+status:
+  loadBalancer: {}

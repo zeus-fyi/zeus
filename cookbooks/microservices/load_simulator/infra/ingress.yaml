@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: "zeus-load-simulator"
+  namespace: "zeus-load-simulator"
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  ingressClassName: "nginx"
+  tls:
+    - secretName: zeus-load-simulator-tls
+      hosts:
+        - sim.load.zeus.fyi
+  rules:
+    - host: sim.load.zeus.fyi
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: zeus-load-simulator
+                port:
+                  number: 80

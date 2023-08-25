@@ -13,6 +13,10 @@ spec:
       targetPort: redis
       protocol: TCP
       name: redis
+    - port: 9121
+      targetPort: metrics
+      protocol: TCP
+      name: metrics
   selector:
     app.kubernetes.io/instance: "redis-master"
     app.kubernetes.io/name: "redis-master"

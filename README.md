@@ -26,6 +26,8 @@ Workflow & Proxy Programmable Automation (Rolling releases coming through end of
 #### ```pkg/zeus/artemis_workflows ```
 #### ```pkg/zeus/iris_programmable_proxy ```
 
+QuickNode MarketPlace users can find Load Balancing documentation in the iris programmable proxy directory.
+
 #### API Endpoints 
 
 Documentation and code examples are found here
@@ -48,24 +50,27 @@ This client uses the OpenAI API to generate code with AI. This service is availa
 
 #### ```pkg/hades```
 
-Hades is used to interact with kubernetes workloads via API, and can apply saved Zeus workloads & cookbooks onto your own in house infrastructure.
+Hades is used to interact with Kubernetes workloads via API, and can apply saved Zeus workloads & cookbooks onto your own in house infrastructure.
 
 ## Cookbooks ##
 
-Contains common web2 & web3 building components like ethereum infra setups with customization driven through code, blurring the line between infra configuration and app development, and contains microservice designs & patterns like api servers and injectable choreography, their setups in kubernetes, golang, docker, and startup commands, and useful tools for debugging, interacting, and automating actions.
+Contains common web2 & web3 building components like ethereum infra setups with customization driven through code, blurring the line between infra configuration and app development, and contains microservice designs & patterns like api servers and injectable choreography, their setups in Kubernetes, Golang, Docker, and startup commands, and useful tools for debugging, interacting, and automating actions.
 
 ### Cookbook Structure ###
 
-#### Microservices ###
+#### Microservice Template Recipes ###
 
-Contains full kubernetes infra setup templates for microservices, injectable choreography for clusters, and more continually being added.
+Contains full Kubernetes infra setup templates for microservices, simulating loads, injectable choreography for clusters, and more continually being added.
 
-#### ```zeus/cookbooks/microservices/deployments ```
 #### ```zeus/cookbooks/microservices/choreography ```
+#### ```zeus/cookbooks/microservices/deployments ```
+#### ```zeus/cookbooks/microservices/load_simulator ```
 
 #### Redis ###
 
 #### ```zeus/cookbooks/redis ```
+
+Contains full Kubernetes infra setup for open source BSD 3-Clause version of Redis with one master, two replicas, and including t-digest integration. You can find the pre-built bundle on our Docker repo: zeusfyi/redis:latest 
 
 ### Web3 Cookbook 
 

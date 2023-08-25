@@ -8,6 +8,10 @@ import (
 	"github.com/tidwall/pretty"
 )
 
+const (
+	RoutingGroupHeader = "X-Route-Group"
+)
+
 type Resty struct {
 	*resty.Client
 	PrintReq  bool
@@ -21,6 +25,10 @@ func GetBaseRestyClient(baseURL, bearer string) Resty {
 	r.Client.SetAuthToken(bearer)
 	r.PrintResp = true
 	return r
+}
+
+func (r *Resty) SetRoutingGroupHeader(group string) {
+	r.SetHeader(RoutingGroupHeader, group)
 }
 
 func (r *Resty) PrintReqJson(payload interface{}) {

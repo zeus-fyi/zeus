@@ -4,6 +4,9 @@ const (
 	EthereumValidatorsCreateServiceRequestV1Path = "/v1/validators/service/create"
 
 	IrisCreateRoutesPath = "/v1/iris/routes/create"
+
+	IrisCreateProcedurePath = "/v1/iris/procedure/create"
+
 	IrisReadRoutesPath   = "/v1/iris/routes/read"
 	IrisDeleteRoutesPath = "/v1/iris/routes/delete"
 

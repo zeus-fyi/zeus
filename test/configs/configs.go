@@ -14,6 +14,8 @@ type TestContainer struct {
 	GoerliNodeURL      string
 	EphemeralNodeURL   string
 
+	QuickNodeIrisToken string
+
 	LocalMnemonic24Words string
 	LocalBLSTestPkey     string
 	LocalWdBLSTestPkey   string
@@ -78,5 +80,7 @@ func InitLocalTestConfigs() TestContainer {
 
 	testCont.AwsAccessKeyLambdaInvoke = viper.GetString("AWS_LAMBDA_INVOKE_ACCESS_KEY")
 	testCont.AwsSecretKeyLambdaInvoke = viper.GetString("AWS_LAMBDA_INVOKE_SECRET_KEY")
+
+	testCont.QuickNodeIrisToken = viper.GetString("QUICKNODE_IRIS_TOKEN")
 	return testCont
 }
