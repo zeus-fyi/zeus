@@ -11,17 +11,17 @@ import (
 
 func compareIntInt(operation string, x, y int) (bool, error) {
 	switch operation {
-	case OperatorEq:
+	case OperatorEq, Eq:
 		return x == y, nil
-	case OperatorNeq:
+	case OperatorNeq, Neq:
 		return x != y, nil
-	case OperatorLt:
+	case OperatorLt, Lt:
 		return x < y, nil
-	case OperatorLte:
+	case OperatorLte, Lte:
 		return x <= y, nil
-	case OperatorGte:
+	case OperatorGte, Gte:
 		return x >= y, nil
-	case OperatorGt:
+	case OperatorGt, Gt:
 		return x > y, nil
 	}
 	return false, errors.New(fmt.Sprintf("invalid operation: %s", operation))

@@ -78,9 +78,9 @@ type Operation struct {
 	DataTypeX string `json:"dataTypeX"`
 	DataTypeY string `json:"dataTypeY"`
 	DataTypeZ string `json:"dataTypeZ"`
-	X         any    `json:"dataInX"`
-	Y         any    `json:"dataInY"`
-	Z         any    `json:"dataOutZ"`
+	X         any    `json:"dataInX,"`
+	Y         any    `json:"dataInY,omitempty"`
+	Z         any    `json:"-,omitempty"`
 }
 
 func (o *Operation) Compute(operator Op, x any, y any) error {
