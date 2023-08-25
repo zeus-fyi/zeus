@@ -5,6 +5,8 @@ import (
 	"fmt"
 )
 
+const ()
+
 const (
 	OperatorGt  = ">"
 	OperatorLt  = "<"
@@ -12,6 +14,13 @@ const (
 	OperatorNeq = "!="
 	OperatorGte = ">="
 	OperatorLte = "<="
+
+	Gt  = "gt"
+	Gte = "gte"
+	Lt  = "lt"
+	Lte = "lte"
+	Eq  = "eq"
+	Neq = "neq"
 
 	DataTypeBool    = "bool"
 	DataTypeInt     = "int"
@@ -41,8 +50,31 @@ func (o Op) Gte() string {
 	return OperatorGte
 }
 
+func (o Op) Lte() string {
+	return OperatorLte
+}
+
+func GetOp(op string) (string, error) {
+	var o Op
+	switch op {
+	case Gt:
+		return o.Gt(), nil
+	case Gte:
+		return o.Gte(), nil
+	case Lt:
+		return o.Lt(), nil
+	case Lte:
+		return o.Lte(), nil
+	case Eq:
+		return o.Eq(), nil
+	case Neq:
+		return o.Neq(), nil
+	}
+	return "", errors.New(fmt.Sprintf("operator %s not supported", op))
+}
+
 type Operation struct {
-	Operator  string `json:"operator"`
+	Operator  Op     `json:"operator"`
 	DataTypeX string `json:"dataTypeX"`
 	DataTypeY string `json:"dataTypeY"`
 	DataTypeZ string `json:"dataTypeZ"`
@@ -51,10 +83,10 @@ type Operation struct {
 	Z         any    `json:"dataOutZ"`
 }
 
-func (o *Operation) Compute(x any, y any, operator Op) error {
+func (o *Operation) Compute(operator Op, x any, y any) error {
 	o.X = x
 	o.Y = y
-	o.Operator = string(operator)
+	o.Operator = operator
 	switch o.DataTypeX + o.DataTypeY + o.DataTypeZ {
 	case DataTypeInt + DataTypeInt + DataTypeBool:
 		xt, ok := ConvertToInt(x)
@@ -66,7 +98,7 @@ func (o *Operation) Compute(x any, y any, operator Op) error {
 			return errors.New(fmt.Sprintf("could not convert %s to int", y))
 		}
 		var err error
-		o.Z, err = compareIntInt(o.Operator, xt, yt)
+		o.Z, err = compareIntInt(string(o.Operator), xt, yt)
 		return err
 	case DataTypeFloat64 + DataTypeFloat64 + DataTypeBool:
 		xt, ok := ConvertToFloat64(x)
@@ -78,7 +110,7 @@ func (o *Operation) Compute(x any, y any, operator Op) error {
 			return errors.New(fmt.Sprintf("could not convert %s to float64", y))
 		}
 		var err error
-		o.Z, err = compareFloat64Float64(o.Operator, xt, yt)
+		o.Z, err = compareFloat64Float64(string(o.Operator), xt, yt)
 		return err
 	default:
 		return errors.New(fmt.Sprintf("unregistered data types: %s, %s", o.DataTypeX, o.DataTypeY))

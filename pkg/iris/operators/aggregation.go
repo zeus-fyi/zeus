@@ -1,22 +1,22 @@
 package iris_operators
 
 import (
-	"errors"
-	"fmt"
 	"reflect"
 )
 
 // adding a name will generate this header: fmt.Sprintf("X-Agg-Max-Value-%s", v.Name)
-// etc agg operation. only max is supported for now for this feature
+// etc agg operation. only max, gt, gte are supported for now for this feature
 
 type Aggregation struct {
-	Name      string                   `json:"name,omitempty"`
-	Operator  string                   `json:"operator"`
-	DataType  string                   `json:"dataType"`
-	DataSlice []IrisRoutingResponseETL `json:"dataSlice"`
+	Name       string                   `json:"name,omitempty"`
+	Operator   string                   `json:"operator"`
+	Comparison *Operation               `json:"comparison,omitempty"`
+	DataType   string                   `json:"dataType"`
+	DataSlice  []IrisRoutingResponseETL `json:"dataSlice"`
 	//WindowFilter any    `json:"windowFilter,omitempty"`
 
 	SumInt            int     `json:"sumInt,omitempty"`
+	CurrentMinInt     int     `json:"currentMinInt,omitempty"`
 	CurrentMaxInt     int     `json:"currentMaxInt,omitempty"`
 	CurrentMaxFloat64 float64 `json:"CurrentMaxFloat64,omitempty"`
 }
@@ -43,31 +43,6 @@ const (
 	Max = "max"
 	Sum = "sum"
 )
-
-func (a *Aggregation) AggregateOn(x any, y IrisRoutingResponseETL) error {
-	switch a.Operator + a.DataType {
-	case Max + DataTypeInt:
-		val, ok := ConvertToInt(x)
-		if !ok {
-			return errors.New(fmt.Sprintf("could not convert %v to int", x))
-		}
-		return a.AggregateMaxInt(val, y)
-	case Sum + DataTypeInt:
-		val, ok := ConvertToInt(x)
-		if !ok {
-			return errors.New(fmt.Sprintf("could not convert %v to int", x))
-		}
-		return a.AggregateSumInt(val, y)
-	case Max + DataTypeFloat64:
-		val, ok := ConvertToFloat64(x)
-		if !ok {
-			return errors.New(fmt.Sprintf("could not convert %v to float64", x))
-		}
-		return a.AggregateMaxFloat64(val, y)
-	default:
-		return errors.New(fmt.Sprintf("could not aggregate on %s", a.DataType))
-	}
-}
 
 func (a *Aggregation) AggregateSumInt(x int, y IrisRoutingResponseETL) error {
 	a.Operator = Sum
