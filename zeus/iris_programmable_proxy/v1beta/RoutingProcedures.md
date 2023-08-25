@@ -263,7 +263,7 @@ during v1 beta. Unofficially, you can use any of the fan-in rules supported in [
 So in our example this is what gets executed:
 
 Stage One:
-  - we concurrently send the eth_blockNumber request to all the endpoints in our table, by default it will aggregate all the successful response
+  - we concurrently send the eth_blockNumber request to all the endpoints in our table, by default it will aggregate on all the successful responses seen during the sample window
   - since we specify a max aggregate on the block nubmer value, our final result are the endpoints at the max block number seen.
 
 Stage Two:
