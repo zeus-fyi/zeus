@@ -243,11 +243,24 @@ After the aggregate function completes, you will have your endpoints reduced to 
 This stage is for the final request & response formatting and it has access to the results of the first stage for continued processing steps.
 
   1.  In our example we use the following header for the final response. This effectively means that we'll send a request to any remaining endpoints that meet the max block number aggregation threshold from the previous stage.
-      Since nodes that have the same block height should have the same expected result for the block value, we'll just return the first successful response.
+      Since nodes that have the same block height should have the same expected result for the block value, we'll just return the first successful response. The default behavior is to process all results and forward all successful ones.
 
 `--header 'X-Agg-Filter-Fan-In: returnOnFirstSuccess' \`
 
+  2. Since we want to send a different payload to the aggregated endpoints, you can specify the payload in the header directly like below. Larger payloads will require created a stored procedure. More details on creating these coming in a later release.
 
+`--header 'X-Agg-Filter-Payload: {"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["latest", true],"id":1}' \`
+
+#### Summary
+
+So in our example this is what gets executed:
+
+Stage One:
+  - we concurrently send the eth_blockNumber request to all the endpoints in our table, by default it will aggregate all the successful response
+  - since we specify a max aggregate on the block nubmer value, our final result are the endpoints at the max block number seen.
+
+Stage Two:
+  - we concurrently send the eth_getBlockByNumber request to all the endpoints we aggregated in stage one, and we return the first successful response we see, meaning status code 2xx.
 
 ### Initial Request
 
