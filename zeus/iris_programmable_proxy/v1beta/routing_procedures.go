@@ -51,9 +51,9 @@ func (b BroadcastRules) ReturnFirstResultOnSuccess() string {
 	return FanInRuleFirstValidResponse
 }
 
-// ReturnAResultsOnSuccess returns all results from the fan-in that are not errors that complete before any timeouts occur
+// ReturnResultsOnSuccess returns all results from the fan-in that are not errors that complete before any timeouts occur
 // this is the default behavior
-func (b BroadcastRules) ReturnAResultsOnSuccess() string {
+func (b BroadcastRules) ReturnResultsOnSuccess() string {
 	return FanInRuleReturnAllResponses
 }
 
