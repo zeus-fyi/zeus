@@ -42,7 +42,7 @@ type FanInRules struct {
 type BroadcastRules string
 
 const (
-	FanInRuleFirstValidResponse = "returnFirstValidResponse"
+	FanInRuleFirstValidResponse = "returnOnFirstSuccess"
 )
 
 // ReturnFirstResult returns the first result from the fan-in that is not an error
