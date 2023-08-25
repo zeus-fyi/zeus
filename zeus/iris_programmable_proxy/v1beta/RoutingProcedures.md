@@ -7,9 +7,9 @@ This feature is currently in beta, and is subject to change
 
 ```go
 type IrisRoutingProcedureStep struct {
-BroadcastInstructions BroadcastInstructions                   `json:"broadcastInstructions,omitempty"`
-TransformSlice        []iris_operators.IrisRoutingResponseETL `json:"transformSlice,omitempty"`
-AggregateMap          map[string]iris_operators.Aggregation   `json:"aggregateMap,omitempty"`
+    BroadcastInstructions BroadcastInstructions                   `json:"broadcastInstructions,omitempty"`
+    TransformSlice        []iris_operators.IrisRoutingResponseETL `json:"transformSlice,omitempty"`
+    AggregateMap          map[string]iris_operators.Aggregation   `json:"aggregateMap,omitempty"`
 }
 ```
 
@@ -24,23 +24,23 @@ Order of ETL Operations:
 
 ```go
 type BroadcastInstructions struct {
-RoutingPath  string        `json:"routingPath"`
-RestType     string        `json:"restType"`
-Payload      any           `json:"payload,omitempty"`
-MaxDuration  time.Duration `json:"maxRuntime,omitempty"`
-MaxTries     int           `json:"maxTries,omitempty"`
-RoutingTable string        `json:"routingTable"`
-FanInRules   *FanInRules   `json:"fanInRules,omitempty"`
+    RoutingPath  string        `json:"routingPath"`
+    RestType     string        `json:"restType"`
+    Payload      any           `json:"payload,omitempty"`
+    MaxDuration  time.Duration `json:"maxRuntime,omitempty"`
+    MaxTries     int           `json:"maxTries,omitempty"`
+    RoutingTable string        `json:"routingTable"`
+    FanInRules   *FanInRules   `json:"fanInRules,omitempty"`
 }
 
 type FanInRules struct {
-Rule BroadcastRules `json:"rule"`
+    Rule BroadcastRules `json:"rule"`
 }
 
 type BroadcastRules string
 
 const (
-FanInRuleFirstValidResponse = "returnOnFirstSuccess"
+    FanInRuleFirstValidResponse = "returnOnFirstSuccess"
 )
 ```
 
