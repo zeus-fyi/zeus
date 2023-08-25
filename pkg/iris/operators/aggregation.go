@@ -71,6 +71,14 @@ func (a *Aggregation) AggregateOn(x any, y IrisRoutingResponseETL) error {
 				return a.AggregateGtInt(y)
 			case Gte:
 				return a.AggregateGtEqInt(y)
+			case Lt:
+				return a.AggregateLtInt(y)
+			case Lte:
+				return a.AggregateLtEqInt(y)
+			case Eq:
+				return a.AggregateEqInt(y)
+			case Neq:
+				return a.AggregateNeqInt(y)
 			}
 		}
 	}

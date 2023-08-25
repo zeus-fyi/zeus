@@ -21,6 +21,14 @@ func (a *Aggregation) AggregateGtEqInt(x IrisRoutingResponseETL) error {
 	return a.aggregateCompInt(Gte, x)
 }
 
+func (a *Aggregation) AggregateEqInt(x IrisRoutingResponseETL) error {
+	return a.aggregateCompInt(Eq, x)
+}
+
+func (a *Aggregation) AggregateNeqInt(x IrisRoutingResponseETL) error {
+	return a.aggregateCompInt(Neq, x)
+}
+
 func (a *Aggregation) aggregateCompInt(op Op, xt IrisRoutingResponseETL) error {
 	a.Comparison.Operator = op
 	a.Comparison.DataTypeX = DataTypeInt
