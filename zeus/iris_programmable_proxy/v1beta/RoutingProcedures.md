@@ -140,7 +140,11 @@ You can use one or two stages that work like this:
 
 #### Stage One (X-Agg prefixed)
 
-Only one transformation & one aggregation per stage is officially supported while in v1Beta. Unofficially, you should be able to chain arbitrary amounts within reasonable boundaries, eg don't use 100 stages, but if you need 1-10 and expect your procedure to complete within 60s or so, then you should be fine. Additionally, only `POST` requests are officially supported at this time, but unofficially you can use any HTTP method that Iris supports: `GET, POST, PUT, DELETE`
+Only one transformation & one aggregation in stage one is officially supported while in v1Beta. Unofficially, you should
+be able to chain arbitrary amounts within reasonable boundaries, eg don't use 100 stages, but if you need 1-10 and
+expect your procedure to complete within 60s or so, then you should be fine. Additionally, only `POST` requests are
+officially supported at this time, but unofficially you can use any HTTP method that Iris
+supports: `GET, POST, PUT, DELETE`
 
 you provide:
   1. The routing group table header you want to send requests
@@ -240,7 +244,10 @@ After the aggregate function completes, you will have your endpoints reduced to 
 
 #### Stage Two (X-Agg-Filter prefixed)
 
-This stage is for the final request & response formatting and it has access to the results of the first stage for continued processing steps.
+This stage is for the final request & response formatting and it has access to the results of the first stage for
+continued processing steps. ETL transforms
+are currently not officially supported, and only fan-in: returnOnFirstSuccess is officially supported at this time
+during v1 beta. Unofficially, you can use any of the fan-in rules supported in [pkg/iris/fanin]
 
   1.  In our example we use the following header for the final response. This effectively means that we'll send a request to any remaining endpoints that meet the max block number aggregation threshold from the previous stage.
       Since nodes that have the same block height should have the same expected result for the block value, we'll just return the first successful response. The default behavior is to process all results and forward all successful ones.
