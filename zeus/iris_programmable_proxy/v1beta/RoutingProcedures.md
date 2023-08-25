@@ -16,9 +16,7 @@ type IrisRoutingProcedureStep struct {
 Order of ETL Operations:
 
 1. the elements in the TransformSlice will run the ETL operations in the order they are listed and the results will be
-   passed if applicable
-   to the next step, eg. if the filter is a max aggregate, it will pass the max endpoints to the next step, and discard
-   the rest
+   passed to the aggregates or otherwise next processing step
 2. the elements in the AggregateMap are then passed to the next step, eg. if the aggregate map has a max aggregate,
    it will pass the endpoints meeting the max value reference point to the next step, and discard the rest
 
