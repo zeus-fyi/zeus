@@ -51,7 +51,7 @@ The `FanInRules` struct is used to specify:
 1. how to handle the responses from the broadcast requests, "returnOnFirstSuccess" will return the first
    successful response, meaning a status code less than 400.
 
-Dynamic Routing
+### Dynamic ETL Function Routing
 
 This is a feature that allows you to dynamically perform ETL and aggregation window filtering on route requests from
 headers in the request. This is useful for when you want to perform different ETL and aggregation operations on the
