@@ -280,26 +280,44 @@ Stage Two:
 
 #### X-Routing-Procedure [any(string)]:
 
-- set this value with any non-empty key to enable dynamic routing
+- Set this value with any non-empty key to enable dynamic routing
 
 #### X-Agg-Op [max(int, float64, hexstr(int))]:
 
-- set this value to the aggregation operation you want to perform on the results of the broadcast requests
-- only the max aggregation operation is officially supported at this time
-- unofficially, you can set this value to any of the aggregation operations supported in [pkg/iris/operators]
-- it converts hexstr to int as long as you set the X-Agg-Key-Value-Data-Type header to int
+- Set this value to the aggregation operation you want to perform on the results of the broadcast requests
+- Only the max aggregation operation is officially supported at this time
+- Unofficially, you can set this value to any of the aggregation operations supported in [pkg/iris/operators]
+- It converts hexstr to int as long as you set the X-Agg-Key-Value-Data-Type header to int
 
 #### X-Agg-Key-Value-Data-Type [int, float64]:
 
-- set this value to the data type of the key-value you want to aggregate on
+- Set this value to the data type of the key-value you want to aggregate on
 
 #### X-Agg-Key [key(string)]:
 
-- set this value to the key-value you want to aggregate on
-- for ethereum, eth_blockNumber returns a map with blockNumber(hexstr) = map[result], so you can set this value to "
+- Set this value to the key-value you want to aggregate on
+- For ethereum, eth_blockNumber returns a map with blockNumber(hexstr) = map[result], so you can set this value to "
   result" to aggregate on the block number.
-- nested key-values are not officially supported.
+- Nested key-values are supported. To specify a nested key just provide a comma seperated string value
+  see: [pkg/iris/operators/extraction_test.go] for additional code examples
 
+```go
+	data := map[string]interface{}{
+		"jsonrpc": "2.0",
+		"result": map[string]interface{}{
+			"chain_id": "mainnet",
+			"sync_info": map[string]interface{}{
+				"latest_block_height": 99656805,
+			},
+		},
+	}
+	
+	// Create an instance of the IrisRoutingResponseETL
+	r := &IrisRoutingResponseETL{
+		ExtractionKey: "result,sync_info,latest_block_height",
+	}
+```
+  
 #### X-Agg-Filter-Fan-In [returnOnFirstSuccess(string)]:
 
 - set this value to the fan-in rule you want to apply to the results of the broadcast requests
