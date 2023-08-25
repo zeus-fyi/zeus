@@ -125,7 +125,7 @@ curl --location 'https://iris.zeus.fyi/v1/router' \
 - in the example, this is because I'm using eth_blockNumber to get the latest block number, and then I aggregate only
   endpoints that have the max block number found, and then only sending the eth_getBlockByNumber to the filtered
   endpoints
-- this is will default to a POST request, and other REST types are not officially supported at this time 
+- this is will default to a POST request if provided and not empty, and other REST types are not officially supported at this time 
 
 #### Upcoming Features:
 
