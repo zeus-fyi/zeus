@@ -6,6 +6,9 @@ import (
 	"reflect"
 )
 
+// adding a name will generate this header: fmt.Sprintf("X-Agg-Max-Value-%s", v.Name)
+// etc agg operation. only max is supported for now for this feature
+
 type Aggregation struct {
 	Name      string                   `json:"name,omitempty"`
 	Operator  string                   `json:"operator"`
