@@ -15,9 +15,9 @@ type IrisRoutingProcedureStep struct {
 
 Order of ETL Operations:
 
-1. the elements in the TransformSlice will run the ETL operations in the order they are listed and the results will be
+1. The elements in the TransformSlice will run the ETL operations in the order they are listed and the results will be
    passed to the aggregates or otherwise next processing step
-2. the elements in the AggregateMap are then passed to the next step, eg. if the aggregate map has a max aggregate,
+2. The elements in the AggregateMap are then passed to the next step, eg. if the aggregate map has a max aggregate,
    it will pass the endpoints meeting the max value reference point to the next step, and discard the rest
 
 ```go
@@ -61,9 +61,6 @@ type IrisRoutingProcedureStep struct {
 
 // This is the pattern of expected order processing you should expect during execution
 func (r *IrisRoutingProcedureStep) Aggregate() error {
-  if len(r.AggregateMap) == 0 {
-    return nil
-  }
   for _, v := range r.TransformSlice {
     agg, ok := r.AggregateMap[v.ExtractionKey]
     if !ok {
@@ -264,7 +261,7 @@ So in our example this is what gets executed:
 
 Stage One:
   - we concurrently send the eth_blockNumber request to all the endpoints in our table, by default it will aggregate on all the successful responses seen during the sample window
-  - since we specify a max aggregate on the block nubmer value, our final result are the endpoints at the max block number seen.
+  - since we specify a max aggregate on the block number value, our final result are the endpoints at the max block number seen.
 
 Stage Two:
   - we concurrently send the eth_getBlockByNumber request to all the endpoints we aggregated in stage one, and we return the first successful response we see, meaning status code 2xx.
