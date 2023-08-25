@@ -43,11 +43,18 @@ type BroadcastRules string
 
 const (
 	FanInRuleFirstValidResponse = "returnOnFirstSuccess"
+	FanInRuleReturnAllResponses = "returnAllSuccessful"
 )
 
-// ReturnFirstResult returns the first result from the fan-in that is not an error
-func (b BroadcastRules) ReturnFirstResult() string {
+// ReturnFirstResultOnSuccess returns the first result from the fan-in that is not an error
+func (b BroadcastRules) ReturnFirstResultOnSuccess() string {
 	return FanInRuleFirstValidResponse
+}
+
+// ReturnAResultsOnSuccess returns all results from the fan-in that are not errors that complete before any timeouts occur
+// this is the default behavior
+func (b BroadcastRules) ReturnAResultsOnSuccess() string {
+	return FanInRuleReturnAllResponses
 }
 
 type IrisRoutingProcedureStep struct {
