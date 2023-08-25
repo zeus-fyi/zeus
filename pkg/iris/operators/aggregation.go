@@ -132,6 +132,7 @@ func (a *Aggregation) AggregateMaxInt(x int, y IrisRoutingResponseETL) error {
 	if len(a.DataSlice) == 0 || x >= a.CurrentMaxInt {
 		if x > a.CurrentMaxInt {
 			a.CurrentMaxInt = x
+			a.CurrentMinInt = x
 			a.DataSlice = []IrisRoutingResponseETL{y} // Keep only the new maximum value
 		} else {
 			a.DataSlice = append(a.DataSlice, y) // Append the value if it's equal to the current maximum
