@@ -92,8 +92,8 @@ This is a feature that allows you to dynamically perform ETL and aggregation win
 headers in the request. This is useful for when you want to perform different ETL and aggregation operations on the
 as if it were a stored procedure function without having to create a stored procedure function.
 
-This example shows you how to filter out endpoints that are not the max block number, and then only send the
-eth_getBlockByNumber request to the filtered endpoints, and returns the first successful response containing
+This example shows you how to filter out endpoints that are not returning the max block number found across all the sampled endpoints
+and then only sends the eth_getBlockByNumber request to the filtered endpoints, and returns the first successful response containing
 the full block payload at the max seen block number.
 
 ```shell
