@@ -53,7 +53,7 @@ The `FanInRules` struct is used to specify:
 
 ### Dynamic ETL Function Routing
 
-This is a feature that allows you to dynamically perform ETL and aggregation window filtering on route requests from
+This is a feature that allows you to dynamically perform ETL and aggregation window filtering on route requests using only
 headers in the request. This is useful for when you want to perform different ETL and aggregation operations on the
 as if it were a stored procedure function without having to create a stored procedure function.
 
