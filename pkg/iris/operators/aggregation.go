@@ -3,7 +3,6 @@ package iris_operators
 import (
 	"errors"
 	"fmt"
-	"reflect"
 )
 
 // adding a name will generate this header: fmt.Sprintf("X-Agg-Max-Value-%s", v.Name)
@@ -33,26 +32,7 @@ func (a AggOp) Sum() string {
 	return Sum
 }
 
-type IrisRoutingResponseETL struct {
-	Source        string `json:"source"`
-	ExtractionKey string `json:"extractionKey"`
-	DataType      string `json:"dataType"`
-	Value         any    `json:"result"`
-}
-
-func (r *IrisRoutingResponseETL) ExtractKeyValue(m map[string]any) {
-	if r.ExtractionKey == "" {
-		r.Value = m
-		return
-	}
-	r.Value = m[r.ExtractionKey]
-	if r.Value == nil {
-		return
-	}
-	r.DataType = reflect.TypeOf(r.Value).String()
-}
-
-// aggregation comparison
+// aggregation ops
 
 const (
 	Max = "max"
