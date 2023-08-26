@@ -1,7 +1,7 @@
 ### Routing Procedures
 
 Routing Procedures are a way to create a stored procedure function that can be called by the router to perform
-ETL and aggregation operations on the results of the broadcast requests with only a single request to the router.
+ETL and aggregation operations on the results of the broadcast requests to routing tables with only a single request to the router.
 
 This feature is currently in beta, and is subject to change
 
@@ -116,8 +116,7 @@ curl --location 'https://iris.zeus.fyi/v1/router' \
 
 ### Key Concepts 
 
-The Dynamic ETL function is purposely limited to two procedure steps, since it makes much more sense to use durable execution functions, or message streaming for long-running and/or more complex multi-stage, multi-state procedures, which
-you'll be able to use in a later release.
+The Dynamic ETL function is purposely limited to two procedure steps, since it makes much more sense to use durable execution functions, or message streaming for long-running and/or more complex multi-stage, multi-state procedures, which you'll be able to use in a later release.
 
 These headers aren't strictly required
 
@@ -241,10 +240,7 @@ After the aggregate function completes, you will have your endpoints reduced to 
 
 #### Stage Two (X-Agg-Filter prefixed)
 
-This stage is for the final request & response formatting and it has access to the results of the first stage for
-continued processing steps. ETL transforms
-are currently not officially supported, and only fan-in: returnOnFirstSuccess is officially supported at this time
-during v1 beta. Unofficially, you can use any of the fan-in rules supported in [pkg/iris/fanin]
+This stage is for the final request & response formatting and it has access to the results of the first stage for continued processing steps. ETL transforms are currently not officially supported, and only fan-in: returnOnFirstSuccess is officially supported at this time during v1 beta. Unofficially, you can use any of the fan-in rules supported in [pkg/iris/fanin]
 
   1.  In our example we use the following header for the final response. This effectively means that we'll send a request to any remaining endpoints that meet the max block number aggregation threshold from the previous stage.
       Since nodes that have the same block height should have the same expected result for the block value, we'll just return the first successful response. The default behavior is to process all results and forward all successful ones.
@@ -260,17 +256,17 @@ during v1 beta. Unofficially, you can use any of the fan-in rules supported in [
 So in our example this is what gets executed:
 
 Stage One:
-  - we concurrently send the eth_blockNumber request to all the endpoints in our table, by default it will aggregate on all the successful responses seen during the sample window
-  - since we specify a max aggregate on the block number value, our final result are the endpoints at the max block number seen.
+  - We concurrently send the eth_blockNumber request to all the endpoints in our table, by default it will aggregate on all the successful responses seen during the sample window
+  - Since we specify a max aggregate on the block number value, our final result are the endpoints at the max block number seen.
 
 Stage Two:
-  - we concurrently send the eth_getBlockByNumber request to all the endpoints we aggregated in stage one, and we return the first successful response we see, meaning status code 2xx.
+  - We concurrently send the eth_getBlockByNumber request to all the endpoints we aggregated in stage one, and we return the first successful response we see, meaning status code 2xx.
 
 ### Initial Request
 
 #### --data payload
 
-- the data payload will be sent to the table endpoints specified in the X-Route-Group header, and will be used for the
+- The data payload will be sent to the table endpoints specified in the X-Route-Group header, and will be used for the
   first broadcast request
 
 ### Headers
@@ -317,19 +313,19 @@ Stage Two:
   
 #### X-Agg-Filter-Fan-In [returnOnFirstSuccess(string)]:
 
-- set this value to the fan-in rule you want to apply to the results of the broadcast requests
-- only the returnOnFirstSuccess fan-in rule is officially supported at this time, which will return the first successful
+- Set this value to the Fan-In rule you want to apply to the results of the broadcast requests
+- Only the returnOnFirstSuccess Fan-In rule is officially supported at this time, which will return the first successful
   response, meaning a status code less than 400
 
 #### X-Agg-Filter-Payload [payload(any, map[string]interface{})]:
 
-- set this value to the payload you want to send with to the filtered aggregate routes
-- e.g. for ethereum: {"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["latest", true],"id":1}
-- in the example, this is because I'm using eth_blockNumber to get the latest block number, and then I aggregate only
+- Set this value to the payload you want to send with to the filtered aggregate routes
+- E.g. for ethereum: {"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["latest", true],"id":1}
+- In the example, this is because I'm using eth_blockNumber to get the latest block number, and then I aggregate only
   endpoints that have the max block number found, and then only sending the eth_getBlockByNumber to the filtered
   endpoints
-- this is will default to a POST request if provided and not empty, and other REST types are not officially supported at this time 
+- This is will default to a POST request if provided and not empty, and other REST types are not officially supported at this time 
 
 #### Upcoming Features:
 
-- support for more creating & using stored procedures
+- Support for more creating & using stored procedures as well as using durable execution functions
