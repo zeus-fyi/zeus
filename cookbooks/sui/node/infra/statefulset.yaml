@@ -79,9 +79,6 @@ spec:
             - name: sui-client-storage
               mountPath: "/data"
           ports:
-            - name: p2p-tcp
-              containerPort: 26656
-              protocol: TCP
             - name: http-rpc
               containerPort: 9000
               protocol: TCP
