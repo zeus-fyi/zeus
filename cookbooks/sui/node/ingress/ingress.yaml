@@ -7,7 +7,7 @@ metadata:
 spec:
   ingressClassName: "nginx"
   tls:
-    - secretName: avax-tls
+    - secretName: sui-tls
       hosts:
         - sui.zeus.fyi
   rules:
