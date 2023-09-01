@@ -49,7 +49,7 @@ func (t *IrisConfigTestSuite) TestParallelRPCLoadBalancing() {
 	web3a := web3_actions.NewWeb3ActionsClient(path)
 	web3a.AddRoutingGroupHeader(routeGroup)
 	web3a.Headers[iris_programmable_proxy_v1_beta.LoadBalancingStrategy] = iris_programmable_proxy_v1_beta.Adaptive
-	web3a.Headers[iris_programmable_proxy_v1_beta.AdaptiveLoadBalancingKey] = iris_programmable_proxy_v1_beta.AdaptiveLoadBalancingKey
+	web3a.Headers[iris_programmable_proxy_v1_beta.AdaptiveLoadBalancingKey] = iris_programmable_proxy_v1_beta.JsonRpcAdaptiveMetrics
 	web3a.AddBearerToken(t.BearerToken)
 	web3a.Dial()
 	defer web3a.Close()
