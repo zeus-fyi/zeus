@@ -8,6 +8,7 @@ metadata:
     app.kubernetes.io/managed-by: "zeus"
 spec:
   type: ClusterIP
+  clusterIP: None
   ports:
     - port: 6379
       targetPort: keydb

@@ -17,5 +17,5 @@ data:
     bind 0.0.0.0
     maxmemory 2gb
     maxmemory-policy volatile-lru
-    replicaof <masterip> <masterport>
+    replicaof "keydb.keydb.svc.cluster.local" 6379
 
