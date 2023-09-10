@@ -1155,7 +1155,7 @@ data:
     #
     # maxmemory-policy noeviction
 
-    maxmemory 27gb
+    maxmemory 1gb
     maxmemory-policy volatile-lru
     
     # LRU, LFU and minimal TTL algorithms are not precise algorithms but approximated
