@@ -43,6 +43,9 @@ spec:
             - name: "redis"
               containerPort: 6379
               protocol: "TCP"
+            - name: "gossip"
+              containerPort: 16379
+              protocol: "TCP"
           livenessProbe:
             tcpSocket:
               port: redis
