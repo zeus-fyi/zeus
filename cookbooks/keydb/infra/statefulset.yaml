@@ -1,0 +1,102 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: keydb
+  labels:
+    app: "keydb"
+    app.kubernetes.io/name: keydb
+    app.kubernetes.io/instance: keydb
+    app.kubernetes.io/managed-by: zeus
+  annotations:
+    { }
+spec:
+  podManagementPolicy: OrderedReady
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "keydb"
+      app.kubernetes.io/name: keydb
+      app.kubernetes.io/instance: keydb
+  serviceName: keydb
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: "keydb"
+        app.kubernetes.io/name: keydb
+        app.kubernetes.io/instance: keydb
+    spec:
+      containers:
+        - name: "keydb"
+          image: "zeusfyi/keydb:latest"
+          volumeMounts:
+            - mountPath: "/data"
+              name: "keydb-storage"
+            - mountPath: "/configs"
+              name: "cm-keydb"
+          imagePullPolicy: IfNotPresent
+          command:
+            - keydb-server
+            - "/configs/keydb.conf"
+          ports:
+            - name: "keydb"
+              containerPort: 6379
+              protocol: "TCP"
+          livenessProbe:
+            tcpSocket:
+              port: keydb
+            initialDelaySeconds: 30
+            timeoutSeconds: 5
+            periodSeconds: 5
+            failureThreshold: 5
+            successThreshold: 1
+          readinessProbe:
+            exec:
+              command:
+                - keydb-cli
+                - ping
+            initialDelaySeconds: 20
+            timeoutSeconds: 5
+            periodSeconds: 3
+          resources:
+            limits:
+              cpu: "1800m"
+              memory: 27.5Gi
+            requests:
+              cpu: "1800m"
+              memory: 27.5Gi
+        - name: keydb-exporter
+          image: oliver006/keydb_exporter:v1.52.0
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            runAsUser: 59000
+            runAsGroup: 59000
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+          ports:
+            - containerPort: 9121
+              name: metrics
+              protocol: TCP
+      volumes:
+        - name: cm-keydb
+          configMap:
+            name: cm-keydb
+            defaultMode: 0744
+  volumeClaimTemplates:
+    - metadata:
+        name: keydb-storage
+        annotations:
+          { }
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: "50Gi"
