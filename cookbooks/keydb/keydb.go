@@ -34,7 +34,7 @@ var (
 	}
 	keyDBMasterChartPath = filepaths.Path{
 		PackageName: "",
-		DirIn:       "./keydb/master",
+		DirIn:       "./keydb/infra",
 		DirOut:      "./keydb/outputs",
 		FnIn:        "keydb", // filename for your gzip workload
 		FnOut:       "",
