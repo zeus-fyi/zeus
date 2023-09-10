@@ -36,9 +36,25 @@ spec:
             - mountPath: "/configs"
               name: "cm-keydb"
           imagePullPolicy: IfNotPresent
-          command:
-            - keydb-server
-            - "/configs/keydb.conf"
+          command: [ "/bin/sh", "-c" ]
+          args:
+            - |
+              # Get the pod's index from its hostname
+              INDEX=$(hostname | awk -F'-' '{print $2}')
+              
+              # Compute the two indices for replication, wrapping around based on the replica count
+              NEXT_INDEX=$(( ($INDEX + 1) % $REPLICA_COUNT ))
+              NEXT_NEXT_INDEX=$(( ($INDEX + 2) % $REPLICA_COUNT ))
+              
+              # Append the replicaof configuration to the configuration file
+              echo "replicaof keydb-$NEXT_INDEX.keydb.svc.cluster.local 6379" >> /configs/keydb.conf
+              echo "replicaof keydb-$NEXT_NEXT_INDEX.keydb.svc.cluster.local 6379" >> /configs/keydb.conf
+              
+              # Start KeyDB with the dynamically generated configuration
+              exec keydb-server /configs/keydb.conf
+          env:
+            - name: REPLICA_COUNT
+              value: "6"
           ports:
             - name: "keydb"
               containerPort: 6379

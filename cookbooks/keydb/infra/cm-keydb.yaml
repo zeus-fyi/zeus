@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: cm-keydb
 data:
-  redis.conf: |-
+  keydb.conf: |-
     active-replica yes
     multi-master yes
     port 6379
@@ -17,5 +17,3 @@ data:
     bind 0.0.0.0
     maxmemory 2gb
     maxmemory-policy volatile-lru
-    replicaof "keydb.keydb.svc.cluster.local" 6379
-
