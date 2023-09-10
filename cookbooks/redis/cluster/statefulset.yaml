@@ -1,0 +1,102 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: redis-cluster
+  labels:
+    app: "redis-cluster"
+    app.kubernetes.io/name: redis-cluster
+    app.kubernetes.io/instance: redis-cluster
+    app.kubernetes.io/managed-by: zeus
+  annotations:
+    { }
+spec:
+  podManagementPolicy: OrderedReady
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "redis-cluster"
+      app.kubernetes.io/name: redis-cluster
+      app.kubernetes.io/instance: redis-cluster
+  serviceName: redis-cluster
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: "redis-cluster"
+        app.kubernetes.io/name: redis-cluster
+        app.kubernetes.io/instance: redis-cluster
+    spec:
+      containers:
+        - name: "redis-cluster"
+          image: "zeusfyi/redis:latest"
+          volumeMounts:
+            - mountPath: "/data"
+              name: "redis-storage"
+            - mountPath: "/configs"
+              name: "cm-redis-cluster"
+          imagePullPolicy: IfNotPresent
+          command:
+            - redis-server
+            - "/configs/redis.conf"
+          ports:
+            - name: "redis"
+              containerPort: 6379
+              protocol: "TCP"
+          livenessProbe:
+            tcpSocket:
+              port: redis
+            initialDelaySeconds: 30
+            timeoutSeconds: 5
+            periodSeconds: 5
+            failureThreshold: 5
+            successThreshold: 1
+          readinessProbe:
+            exec:
+              command:
+                - redis-cli
+                - ping
+            initialDelaySeconds: 20
+            timeoutSeconds: 5
+            periodSeconds: 3
+          resources:
+            limits:
+              cpu: "1800m"
+              memory: 27.5Gi
+            requests:
+              cpu: "1800m"
+              memory: 27.5Gi
+        - name: redis-exporter
+          image: oliver006/redis_exporter:v1.54.0
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            runAsUser: 59000
+            runAsGroup: 59000
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+          ports:
+            - containerPort: 9121
+              name: metrics
+              protocol: TCP
+      volumes:
+        - name: cm-redis-cluster
+          configMap:
+            name: cm-redis-cluster
+            defaultMode: 0744
+  volumeClaimTemplates:
+    - metadata:
+        name: redis-storage
+        annotations:
+          { }
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: "50Gi"

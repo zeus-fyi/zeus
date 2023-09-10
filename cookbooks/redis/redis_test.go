@@ -35,6 +35,11 @@ func (t *RedisCookbookTestSuite) TestUploadRedis() {
 	t.Require().Nil(rerr)
 }
 
+func (t *RedisCookbookTestSuite) TestUploadRedisCluster() {
+	_, rerr := redisClusterConfigDefinition.UploadChartsFromClusterDefinition(ctx, t.ZeusTestClient, true)
+	t.Require().Nil(rerr)
+}
+
 func (t *RedisCookbookTestSuite) TestCreateClusterClassRedis() {
 	cd := redisClusterDefinition
 	gcd := cd.BuildClusterDefinitions()
