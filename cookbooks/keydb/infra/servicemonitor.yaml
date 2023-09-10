@@ -1,15 +1,15 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: keydb-master-monitor
+  name: keydb-monitor
   labels:
-    app: "keydb-master"
+    app: "keydb"
     release: kube-prometheus-stack
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/instance: "keydb-master"
-      app.kubernetes.io/name: "keydb-master"
+      app.kubernetes.io/instance: "keydb"
+      app.kubernetes.io/name: "keydb"
   endpoints:
     - port: metrics
       interval: 10s

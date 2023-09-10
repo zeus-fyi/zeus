@@ -61,11 +61,11 @@ spec:
             periodSeconds: 3
           resources:
             limits:
-              cpu: "1800m"
-              memory: 27.5Gi
+              cpu: "200m"
+              memory: 1Gi
             requests:
-              cpu: "1800m"
-              memory: 27.5Gi
+              cpu: "200m"
+              memory: 1Gi
         - name: keydb-exporter
           image: oliver006/keydb_exporter:v1.52.0
           imagePullPolicy: IfNotPresent

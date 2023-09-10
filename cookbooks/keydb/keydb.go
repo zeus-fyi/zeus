@@ -9,29 +9,19 @@ import (
 var (
 	keyDBClusterDefinition = zeus_cluster_config_drivers.ClusterDefinition{
 		ClusterClassName: "keydb",
-
-		CloudCtxNs:     keyDBCloudCtxNs,
-		ComponentBases: keyDBComponentBases,
+		CloudCtxNs:       keyDBCloudCtxNs,
+		ComponentBases:   keyDBComponentBases,
 	}
 	keyDBComponentBases = map[string]zeus_cluster_config_drivers.ComponentBaseDefinition{
-		"master":   keyDBMasterComponentBase,
-		"replicas": keyDBReplicasComponentBase,
+		"keydb": keyDBComponentBase,
 	}
-	keyDBMasterComponentBase = zeus_cluster_config_drivers.ComponentBaseDefinition{
+	keyDBComponentBase = zeus_cluster_config_drivers.ComponentBaseDefinition{
 		SkeletonBases: map[string]zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
-			"keydb-master": keyDBMasterSkeletonBaseConfig,
+			"keydb": keyDBSkeletonBaseConfig,
 		},
 	}
-	keyDBReplicasComponentBase = zeus_cluster_config_drivers.ComponentBaseDefinition{
-		SkeletonBases: map[string]zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
-			"keydb-replicas": keyDBReplicasSkeletonBaseConfig,
-		},
-	}
-	keyDBMasterSkeletonBaseConfig = zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
+	keyDBSkeletonBaseConfig = zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
 		SkeletonBaseNameChartPath: keyDBMasterChartPath,
-	}
-	keyDBReplicasSkeletonBaseConfig = zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
-		SkeletonBaseNameChartPath: keyDBReplicasChartPath,
 	}
 )
 var (
@@ -46,15 +36,7 @@ var (
 		PackageName: "",
 		DirIn:       "./keydb/master",
 		DirOut:      "./keydb/outputs",
-		FnIn:        "keydb-master", // filename for your gzip workload
-		FnOut:       "",
-		Env:         "",
-	}
-	keyDBReplicasChartPath = filepaths.Path{
-		PackageName: "",
-		DirIn:       "./keydb/replicas",
-		DirOut:      "./keydb/outputs",
-		FnIn:        "keydb-replicas", // filename for your gzip workload
+		FnIn:        "keydb", // filename for your gzip workload
 		FnOut:       "",
 		Env:         "",
 	}

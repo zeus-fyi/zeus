@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: "keydb-master"
+  name: "keydb"
   labels:
-    app.kubernetes.io/instance: "keydb-master"
-    app.kubernetes.io/name: "keydb-master"
+    app.kubernetes.io/instance: "keydb"
+    app.kubernetes.io/name: "keydb"
     app.kubernetes.io/managed-by: "zeus"
 spec:
   type: ClusterIP
@@ -18,5 +18,5 @@ spec:
       protocol: TCP
       name: metrics
   selector:
-    app.kubernetes.io/instance: "keydb-master"
-    app.kubernetes.io/name: "keydb-master"
+    app.kubernetes.io/instance: "keydb"
+    app.kubernetes.io/name: "keydb"
