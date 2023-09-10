@@ -13,15 +13,15 @@ import (
 	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_req_types"
 )
 
-func (t *KeyDBCookbookTestSuite) TestDeployRedis() {
-	t.TestUploadRedis()
+func (t *KeyDBCookbookTestSuite) TestDeployKeyDB() {
+	t.TestUploadKeyDB()
 	cdep := keyDBClusterDefinition.GenerateDeploymentRequest()
 
 	_, err := t.ZeusTestClient.DeployCluster(ctx, cdep)
 	t.Require().Nil(err)
 }
 
-func (t *KeyDBCookbookTestSuite) TestDestroyRedis() {
+func (t *KeyDBCookbookTestSuite) TestDestroyKeyDB() {
 	d := zeus_req_types.TopologyDeployRequest{
 		CloudCtxNs: keyDBCloudCtxNs,
 	}
@@ -30,12 +30,12 @@ func (t *KeyDBCookbookTestSuite) TestDestroyRedis() {
 	t.Assert().NotEmpty(resp)
 }
 
-func (t *KeyDBCookbookTestSuite) TestUploadRedis() {
+func (t *KeyDBCookbookTestSuite) TestUploadKeyDB() {
 	_, rerr := keyDBClusterDefinition.UploadChartsFromClusterDefinition(ctx, t.ZeusTestClient, true)
 	t.Require().Nil(rerr)
 }
 
-func (t *KeyDBCookbookTestSuite) TestCreateClusterClassRedis() {
+func (t *KeyDBCookbookTestSuite) TestCreateClusterClassKeyDB() {
 	cd := keyDBClusterDefinition
 	gcd := cd.BuildClusterDefinitions()
 	t.Assert().NotEmpty(gcd)

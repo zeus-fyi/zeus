@@ -8,7 +8,7 @@ import (
 
 var (
 	keyDBClusterDefinition = zeus_cluster_config_drivers.ClusterDefinition{
-		ClusterClassName: "keyDB",
+		ClusterClassName: "keydb",
 
 		CloudCtxNs:     keyDBCloudCtxNs,
 		ComponentBases: keyDBComponentBases,
@@ -19,12 +19,12 @@ var (
 	}
 	keyDBMasterComponentBase = zeus_cluster_config_drivers.ComponentBaseDefinition{
 		SkeletonBases: map[string]zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
-			"keyDB-master": keyDBMasterSkeletonBaseConfig,
+			"keydb-master": keyDBMasterSkeletonBaseConfig,
 		},
 	}
 	keyDBReplicasComponentBase = zeus_cluster_config_drivers.ComponentBaseDefinition{
 		SkeletonBases: map[string]zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
-			"keyDB-replicas": keyDBReplicasSkeletonBaseConfig,
+			"keydb-replicas": keyDBReplicasSkeletonBaseConfig,
 		},
 	}
 	keyDBMasterSkeletonBaseConfig = zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
@@ -39,14 +39,14 @@ var (
 		CloudProvider: "do",
 		Region:        "sfo3",
 		Context:       "do-sfo3-dev-do-sfo3-zeus",
-		Namespace:     "keyDB", // set with your own namespace
+		Namespace:     "keydb", // set with your own namespace
 		Env:           "production",
 	}
 	keyDBMasterChartPath = filepaths.Path{
 		PackageName: "",
 		DirIn:       "./keydb/master",
 		DirOut:      "./keydb/outputs",
-		FnIn:        "keydb", // filename for your gzip workload
+		FnIn:        "keydb-master", // filename for your gzip workload
 		FnOut:       "",
 		Env:         "",
 	}
@@ -54,7 +54,7 @@ var (
 		PackageName: "",
 		DirIn:       "./keydb/replicas",
 		DirOut:      "./keydb/outputs",
-		FnIn:        "keydb", // filename for your gzip workload
+		FnIn:        "keydb-replicas", // filename for your gzip workload
 		FnOut:       "",
 		Env:         "",
 	}
