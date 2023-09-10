@@ -11,7 +11,7 @@ metadata:
     { }
 spec:
   podManagementPolicy: OrderedReady
-  replicas: 1
+  replicas: 6
   selector:
     matchLabels:
       app: "redis-cluster"
