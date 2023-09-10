@@ -5,14 +5,12 @@ metadata:
 data:
   keydb.conf: |-
     active-replica yes
-    multi-master yes
     port 6379
     cluster-enabled yes
     cluster-config-file /data/nodes.conf
     cluster-node-timeout 5000
     appendonly no
     dir /data
-    loadmodule /usr/local/lib/libredis_percentile.so
     protected-mode no
     bind 0.0.0.0
     maxmemory 2gb

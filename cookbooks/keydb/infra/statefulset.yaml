@@ -36,22 +36,9 @@ spec:
             - mountPath: "/configs"
               name: "cm-keydb"
           imagePullPolicy: IfNotPresent
-          command: [ "/bin/sh", "-c" ]
-          args:
-            - |
-              # Get the pod's index from its hostname
-              INDEX=$(hostname | awk -F'-' '{print $2}')
-              
-              # Compute the two indices for replication, wrapping around based on the replica count
-              NEXT_INDEX=$(( ($INDEX + 1) % $REPLICA_COUNT ))
-              NEXT_NEXT_INDEX=$(( ($INDEX + 2) % $REPLICA_COUNT ))
-              
-              # Append the replicaof configuration to the configuration file
-              echo "replicaof keydb-$NEXT_INDEX.keydb.svc.cluster.local 6379" >> /configs/keydb.conf
-              echo "replicaof keydb-$NEXT_NEXT_INDEX.keydb.svc.cluster.local 6379" >> /configs/keydb.conf
-              
-              # Start KeyDB with the dynamically generated configuration
-              exec keydb-server /configs/keydb.conf
+          command:
+            - keydb-server
+            - "/configs/keydb.conf"
           env:
             - name: REPLICA_COUNT
               value: "6"
@@ -82,24 +69,24 @@ spec:
             requests:
               cpu: "200m"
               memory: 1Gi
-        - name: keydb-exporter
-          image: oliver006/redis_exporter:v1.54.0
-          imagePullPolicy: IfNotPresent
-          securityContext:
-            runAsUser: 59000
-            runAsGroup: 59000
-            allowPrivilegeEscalation: false
-            capabilities:
-              drop:
-                - ALL
-          resources:
-            requests:
-              cpu: 100m
-              memory: 100Mi
-          ports:
-            - containerPort: 9121
-              name: metrics
-              protocol: TCP
+      #        - name: keydb-exporter
+      #          image: oliver006/redis_exporter:v1.54.0
+      #          imagePullPolicy: IfNotPresent
+      #          securityContext:
+      #            runAsUser: 59000
+      #            runAsGroup: 59000
+      #            allowPrivilegeEscalation: false
+      #            capabilities:
+      #              drop:
+      #                - ALL
+      #          resources:
+      #            requests:
+      #              cpu: 100m
+      #              memory: 100Mi
+      #          ports:
+      #            - containerPort: 9121
+      #              name: metrics
+      #              protocol: TCP
       volumes:
         - name: cm-keydb
           configMap:
