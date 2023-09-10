@@ -1,22 +1,22 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: "redis-master"
+  name: "keydb-master"
   labels:
-    app.kubernetes.io/instance: "redis-master"
-    app.kubernetes.io/name: "redis-master"
+    app.kubernetes.io/instance: "keydb-master"
+    app.kubernetes.io/name: "keydb-master"
     app.kubernetes.io/managed-by: "zeus"
 spec:
   type: ClusterIP
   ports:
     - port: 6379
-      targetPort: redis
+      targetPort: keydb
       protocol: TCP
-      name: redis
+      name: keydb
     - port: 9121
       targetPort: metrics
       protocol: TCP
       name: metrics
   selector:
-    app.kubernetes.io/instance: "redis-master"
-    app.kubernetes.io/name: "redis-master"
+    app.kubernetes.io/instance: "keydb-master"
+    app.kubernetes.io/name: "keydb-master"
