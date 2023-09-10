@@ -1,4 +1,4 @@
-package zeus_redis
+package zeus_keydb
 
 import (
 	"context"
@@ -13,35 +13,30 @@ import (
 	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_req_types"
 )
 
-func (t *RedisCookbookTestSuite) TestDeployRedis() {
-	t.TestUploadRedis()
-	cdep := redisClusterDefinition.GenerateDeploymentRequest()
+func (t *KeyDBCookbookTestSuite) TestDeployKeyDB() {
+	t.TestUploadKeyDB()
+	cdep := keyDBClusterDefinition.GenerateDeploymentRequest()
 
 	_, err := t.ZeusTestClient.DeployCluster(ctx, cdep)
 	t.Require().Nil(err)
 }
 
-func (t *RedisCookbookTestSuite) TestDestroyRedis() {
+func (t *KeyDBCookbookTestSuite) TestDestroyKeyDB() {
 	d := zeus_req_types.TopologyDeployRequest{
-		CloudCtxNs: redisCloudCtxNs,
+		CloudCtxNs: keyDBCloudCtxNs,
 	}
 	resp, err := t.ZeusTestClient.DestroyDeploy(ctx, d)
 	t.Require().Nil(err)
 	t.Assert().NotEmpty(resp)
 }
 
-func (t *RedisCookbookTestSuite) TestUploadRedis() {
-	_, rerr := redisClusterDefinition.UploadChartsFromClusterDefinition(ctx, t.ZeusTestClient, true)
+func (t *KeyDBCookbookTestSuite) TestUploadKeyDB() {
+	_, rerr := keyDBClusterDefinition.UploadChartsFromClusterDefinition(ctx, t.ZeusTestClient, true)
 	t.Require().Nil(rerr)
 }
 
-func (t *RedisCookbookTestSuite) TestUploadRedisCluster() {
-	_, rerr := redisClusterConfigDefinition.UploadChartsFromClusterDefinition(ctx, t.ZeusTestClient, true)
-	t.Require().Nil(rerr)
-}
-
-func (t *RedisCookbookTestSuite) TestCreateClusterClassRedis() {
-	cd := redisClusterDefinition
+func (t *KeyDBCookbookTestSuite) TestCreateClusterClassKeyDB() {
+	cd := keyDBClusterDefinition
 	gcd := cd.BuildClusterDefinitions()
 	t.Assert().NotEmpty(gcd)
 	fmt.Println(gcd)
@@ -50,14 +45,14 @@ func (t *RedisCookbookTestSuite) TestCreateClusterClassRedis() {
 	t.Require().Nil(err)
 }
 
-type RedisCookbookTestSuite struct {
+type KeyDBCookbookTestSuite struct {
 	test_suites.BaseTestSuite
 	ZeusTestClient zeus_client.ZeusClient
 }
 
 var ctx = context.Background()
 
-func (t *RedisCookbookTestSuite) SetupTest() {
+func (t *KeyDBCookbookTestSuite) SetupTest() {
 	// points dir to test/configs
 	tc := configs.InitLocalTestConfigs()
 	t.Tc = tc
@@ -67,6 +62,6 @@ func (t *RedisCookbookTestSuite) SetupTest() {
 	cookbooks.ChangeToCookbookDir()
 }
 
-func TestRedisCookbookTestSuite(t *testing.T) {
-	suite.Run(t, new(RedisCookbookTestSuite))
+func TestKeyDBCookbookTestSuite(t *testing.T) {
+	suite.Run(t, new(KeyDBCookbookTestSuite))
 }

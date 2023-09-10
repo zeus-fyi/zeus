@@ -1,40 +1,40 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: redis-master
+  name: redis-cluster
   labels:
-    app: "redis-master"
-    app.kubernetes.io/name: redis-master
-    app.kubernetes.io/instance: redis-master
+    app: "redis-cluster"
+    app.kubernetes.io/name: redis-cluster
+    app.kubernetes.io/instance: redis-cluster
     app.kubernetes.io/managed-by: zeus
   annotations:
-    {}
+    { }
 spec:
   podManagementPolicy: OrderedReady
-  replicas: 1
+  replicas: 6
   selector:
     matchLabels:
-      app: "redis-master"
-      app.kubernetes.io/name: redis-master
-      app.kubernetes.io/instance: redis-master
-  serviceName: redis-master
+      app: "redis-cluster"
+      app.kubernetes.io/name: redis-cluster
+      app.kubernetes.io/instance: redis-cluster
+  serviceName: redis-cluster
   updateStrategy:
     type: RollingUpdate
   template:
     metadata:
       labels:
-        app: "redis-master"
-        app.kubernetes.io/name: redis-master
-        app.kubernetes.io/instance: redis-master
+        app: "redis-cluster"
+        app.kubernetes.io/name: redis-cluster
+        app.kubernetes.io/instance: redis-cluster
     spec:
       containers:
-        - name: "redis-master"
+        - name: "redis-cluster"
           image: "zeusfyi/redis:latest"
           volumeMounts:
             - mountPath: "/data"
               name: "redis-storage"
             - mountPath: "/configs"
-              name: "cm-redis-master"
+              name: "cm-redis-cluster"
           imagePullPolicy: IfNotPresent
           command:
             - redis-server
@@ -42,6 +42,9 @@ spec:
           ports:
             - name: "redis"
               containerPort: 6379
+              protocol: "TCP"
+            - name: "gossip"
+              containerPort: 16379
               protocol: "TCP"
           livenessProbe:
             tcpSocket:
@@ -61,11 +64,11 @@ spec:
             periodSeconds: 3
           resources:
             limits:
-              cpu: "1800m"
-              memory: 27.5Gi
+              cpu: "200m"
+              memory: 1Gi
             requests:
-              cpu: "1800m"
-              memory: 27.5Gi
+              cpu: "200m"
+              memory: 1Gi
         - name: redis-exporter
           image: oliver006/redis_exporter:v1.54.0
           imagePullPolicy: IfNotPresent
@@ -85,15 +88,15 @@ spec:
               name: metrics
               protocol: TCP
       volumes:
-        - name: cm-redis-master
+        - name: cm-redis-cluster
           configMap:
-            name: cm-redis-master
+            name: cm-redis-cluster
             defaultMode: 0744
   volumeClaimTemplates:
     - metadata:
         name: redis-storage
         annotations:
-          {}
+          { }
       spec:
         accessModes:
           - ReadWriteOnce
