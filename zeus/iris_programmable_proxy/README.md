@@ -39,6 +39,8 @@ Round Robin
 Up to 50k ZU/s, ~5k req/s
 Up to ~ 100M  requests (with responses)
 50 Custom Routing Group Tables
+Embedded Routing Procedures
+Adaptive Priority Score Tuning
 Adaptive Load Balancing + Round Robin
 ```
 ### Performance
@@ -47,6 +49,8 @@ Adaptive Load Balancing + Round Robin
 Up to 100k ZU/s, ~10k req/s
 Up to ~300M requests (with responses)
 250 Custom Routing Group Tables
+Embedded Routing Procedures
+Adaptive Priority Score Tuning
 Adaptive Load Balancing + Round Robin
 ```
 Need more? Send us a message at support@zeus.fyi
@@ -87,7 +91,7 @@ Note that only https routes are supported, http routes will be ignored.
     const HestiaEndpoint = "https://hestia.zeus.fyi/v1/iris/routes/create"    
 ```
 
-Step One Payload Example:
+### Step One Payload Example:
 ```json
 {
   "routes": [
@@ -96,7 +100,7 @@ Step One Payload Example:
   ]
 }
 ```
-Step One Curl Example:
+### Step One Curl Example:
 ```sh
 curl --location 'https://hestia.zeus.fyi/v1/iris/routes/create' \
 --header 'Content-Type: application/json' \
@@ -115,7 +119,7 @@ Step Two: Register a routing group table from saved endpoints
     const IrisCreateGroupRoutesPath = "https://hestia.zeus.fyi/v1/iris/routes/groups/create"
 ```
 
-Step Two Payload Example:
+### Step Two Payload Example:
 ```json
 {
   "groupName": "quicknode-mainnet",
@@ -125,7 +129,7 @@ Step Two Payload Example:
   ]
 }
 ```
-Step Two Curl Example:
+### Step Two Curl Example:
 ```sh
 curl --location 'https://hestia.zeus.fyi/v1/iris/routes/groups/create' \
 --header 'Content-Type: application/json' \
@@ -138,7 +142,7 @@ curl --location 'https://hestia.zeus.fyi/v1/iris/routes/groups/create' \
   ]
 }'
 ```
-Part B. Using the Programmable Proxy
+### Part B. Using the Programmable Proxy
 
 ```go
 package iris_programmable_proxy
@@ -163,7 +167,7 @@ routeGroup := "quicknode-mainnet"
 Add HEADER "X-Route-Group" with value "quicknode-mainnet"
 path := "https://iris.zeus.fyi/v1/router"
 ```
-Curl Example:
+### Curl Example:
 
 ```shell
 curl --location 'https://iris.zeus.fyi/v1/router' \
@@ -173,7 +177,7 @@ curl --location 'https://iris.zeus.fyi/v1/router' \
 --data '{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["latest", true],"id":1}'
 ```
 
-Part C. Using the Adaptive Load Balancer
+### Part C. Using the Adaptive Load Balancer
 
 ```go
 package iris_programmable_proxy
@@ -198,7 +202,7 @@ path := "https://iris.zeus.fyi/v1/router"
 */
 ```
 
-Curl Example:
+### Curl Example:
 
 ```sh
 curl --location ‘https://iris.zeus.fyi/v1/router’ \
@@ -212,3 +216,22 @@ curl --location ‘https://iris.zeus.fyi/v1/router’ \
 You can also check out our round-robin load_balancing_test.go for an example of how to use the programmable proxy to query 
 the block number from a routing group of ethereum node urls endpoints.
 
+### Part D. Using Procedures
+
+To use embedded protocol procedures you only need to add the key value to your payload. In this example, to use the max block procedure for Ethereum, which polls your routing table for the current block number, and then forwards your request to the endpoints returning the highest block number seen and then returns the first successful response.
+
+"procedure": "eth_maxBlockAggReduce"
+
+```
+curl --location 'https://iris.zeus.fyi/v1/router' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer YOUR-BEARER-TOKEN' \
+--header 'X-Route-Group: ethereum-mainnet' \
+--data '{
+    "jsonrpc": "2.0",
+    "procedure": "eth_maxBlockAggReduce",
+    "method": "eth_getBlockByNumber",
+    "params": ["latest", true],
+    "id": 1
+}'
+```
