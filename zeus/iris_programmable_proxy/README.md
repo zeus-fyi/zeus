@@ -58,12 +58,8 @@ Need more? Send us a message at support@zeus.fyi
 ## Setup
 
 This is a guide to help you set up your own programmable proxy for the Iris Load Balancer.
-
 Prerequisites: You'll need to generate an API key from the access panel if you don't have an existing one.
 
-![accessPanel](https://github.com/zeus-fyi/zeus/assets/17446735/c54a01e0-91fa-48a0-9fba-ff55050848eb)
-
-![Screenshot 2023-08-02 at 10 28 22 PM](https://github.com/zeus-fyi/zeus/assets/17446735/5e61cb1b-f051-408d-8964-82c6835c11f4)
 ### Part A. Configuration Setup: Registering your endpoints & routing tables
 
 ```go
