@@ -40,7 +40,7 @@ Up to 50k ZU/s, ~5k req/s
 Up to ~ 100M  requests (with responses)
 50 Custom Routing Group Tables
 Embedded Routing Procedures
-Adaptive Priority Score Tuning
+Priority Score Weight Tuning
 Adaptive Load Balancing + Round Robin
 ```
 ### Performance
@@ -50,7 +50,7 @@ Up to 100k ZU/s, ~10k req/s
 Up to ~300M requests (with responses)
 250 Custom Routing Group Tables
 Embedded Routing Procedures
-Adaptive Priority Score Tuning
+Priority Score Weight Tuning
 Adaptive Load Balancing + Round Robin
 ```
 Need more? Send us a message at support@zeus.fyi
