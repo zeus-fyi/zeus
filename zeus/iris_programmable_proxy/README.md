@@ -64,7 +64,7 @@ Prerequisites: You'll need to generate an API key from the access panel if you d
 ![accessPanel](https://github.com/zeus-fyi/zeus/assets/17446735/c54a01e0-91fa-48a0-9fba-ff55050848eb)
 
 ![Screenshot 2023-08-02 at 10 28 22 PM](https://github.com/zeus-fyi/zeus/assets/17446735/5e61cb1b-f051-408d-8964-82c6835c11f4)
-Part A. Configuration Setup: Registering your endpoints & routing tables
+### Part A. Configuration Setup: Registering your endpoints & routing tables
 
 ```go
 /*
@@ -83,7 +83,7 @@ Complete list of endpoints: pkg/hestia/client/endpoints/endpoints.go
     const IrisCreateGroupRoutesPath = "https://hestia.zeus.fyi/v1/iris/routes/groups/create"
 ```
 
-Step One: Register new endpoints
+### Step One: Register new endpoints
 
 Note that only https routes are supported, http routes will be ignored.
 ```text    
