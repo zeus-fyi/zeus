@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cm-keydb
+data:
+  keydb.conf: |-
+    active-replica yes
+    port 6379
+    cluster-enabled yes
+    cluster-config-file /data/nodes.conf
+    cluster-node-timeout 5000
+    appendonly no
+    dir /data
+    protected-mode no
+    bind 0.0.0.0
+    maxmemory 2gb
+    maxmemory-policy volatile-lru

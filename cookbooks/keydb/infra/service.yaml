@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: "keydb"
+  labels:
+    app.kubernetes.io/instance: "keydb"
+    app.kubernetes.io/name: "keydb"
+    app.kubernetes.io/managed-by: "zeus"
+spec:
+  type: ClusterIP
+  clusterIP: None
+  ports:
+    - port: 6379
+      targetPort: keydb
+      protocol: TCP
+      name: keydb
+    - port: 9121
+      targetPort: metrics
+      protocol: TCP
+      name: metrics
+  selector:
+    app.kubernetes.io/instance: "keydb"
+    app.kubernetes.io/name: "keydb"
