@@ -1,8 +1,7 @@
 import random
 
-num_simulations = 10000
-results_A = []
-results_B = []
+num_simulations = 1000
+num_requests = 1000
 
 latency_scale_factor = 0.6
 decay_scale_factor = 0.95
