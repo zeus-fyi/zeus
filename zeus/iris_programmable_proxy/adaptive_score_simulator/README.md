@@ -37,7 +37,7 @@ def random_b_latency_percentile():
 Then you can select the route specific latency based on the endpoint selected
 
 ```python
-    if score_a < score_b:
+if score_a < score_b:
     selected_endpoint = "A"
     latency = random_a_latency_percentile()
 else:
