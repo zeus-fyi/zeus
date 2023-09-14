@@ -34,6 +34,7 @@ const (
 	testnet = "testnet"
 )
 
+// GetSuiClientNetworkConfigBase TODO: add nvme cfg & labels -> set local pv
 func GetSuiClientNetworkConfigBase(workloadType, network string) zeus_cluster_config_drivers.ComponentBaseDefinition {
 	cmConfig := ""
 	downloadStartup := ""
