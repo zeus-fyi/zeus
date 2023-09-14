@@ -55,7 +55,7 @@ WORKDIR /app
 RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 
 FROM golang:1.21-bookworm
-RUN apt-get update && apt-get install -y ca-certificates unzip
+RUN apt-get update && apt-get install -y ca-certificates unzip less
 
 COPY --from=snapshot_builder /app/snapshots /usr/bin/snapshots
 COPY --from=rclone_builder /usr/bin/rclone /usr/bin/rclone
