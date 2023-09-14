@@ -22,6 +22,11 @@ func SuiStartup(ctx context.Context, w WorkloadInfo) {
 	// mainnet default
 	urlPath := "https://github.com/MystenLabs/sui-genesis/raw/main/mainnet/genesis.blob"
 
+	w.DataDir.FnIn = "genesis.blob"
+	if w.DataDir.FileInPathExists() {
+		log.Info().Msg("genesis.blob already exists, skipping download")
+		return
+	}
 	switch w.Network {
 	case "devnet":
 		//urlPath = "https://github.com/MystenLabs/sui-genesis/raw/main/devnet/genesis.blob"
