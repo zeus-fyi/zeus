@@ -53,11 +53,9 @@ RUN apt-get update && apt-get install -y curl unzip
 WORKDIR /app
 
 RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-RUN unzip awscliv2.zip
-RUN ./aws/install
 
 FROM golang:1.21-bookworm
-RUN apt-get update && apt-get install -y ca-certificates
+RUN apt-get update && apt-get install -y ca-certificates unzip
 
 COPY --from=snapshot_builder /app/snapshots /usr/bin/snapshots
 COPY --from=rclone_builder /usr/bin/rclone /usr/bin/rclone
@@ -65,7 +63,12 @@ COPY --from=rclone_builder /usr/bin/rclone /usr/bin/rclone
 COPY --from=gaiad-builder /app/gaiad /usr/local/go/bin/
 COPY --from=cosmos-testnet-genesis /app/genesis.json /etc/cosmos/testnet/genesis.json
 COPY --from=cosmos-mainnet-genesis /app/genesis.json /etc/cosmos/mainnet/genesis.json
-COPY --from=aws-cli /usr/local/bin/aws /usr/local/bin/aws
-COPY --from=aws-cli /usr/local/aws-cli /usr/local/aws-cli
+COPY --from=aws-cli /app/awscliv2.zip /
+
+RUN unzip awscliv2.zip
+RUN rm awscliv2.zip
+RUN chmod +x ./aws/install
+
+RUN ./aws/install
 
 RUN mkdir -p ~/.config/rclone
