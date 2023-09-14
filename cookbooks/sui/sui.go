@@ -34,8 +34,8 @@ var (
 	}
 	suiMasterChartPath = filepaths.Path{
 		PackageName: "",
-		DirIn:       "./sui/infra",
-		DirOut:      "./sui/infra",
+		DirIn:       "./sui/node/infra",
+		DirOut:      "./sui/output",
 		FnIn:        "sui", // filename for your gzip workload
 		FnOut:       "",
 		Env:         "",
