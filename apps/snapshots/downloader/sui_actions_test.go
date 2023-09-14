@@ -18,7 +18,7 @@ func (t *SuiStartupTestSuite) TestGenesisBlobDownloader() {
 	forceDirToTestDirLocation()
 	blobUrl := "https://github.com/MystenLabs/sui-genesis/raw/main/devnet/genesis.blob"
 	w := WorkloadInfo{
-		WorkloadType: "suiNode",
+		WorkloadType: "full",
 		Protocol:     "sui",
 		Network:      "devnet",
 		DataDir: filepaths.Path{
@@ -31,7 +31,18 @@ func (t *SuiStartupTestSuite) TestGenesisBlobDownloader() {
 }
 
 func (t *SuiStartupTestSuite) TestS3SnapshotDownloader() {
-	// TODO
+	forceDirToTestDirLocation()
+	w := WorkloadInfo{
+		WorkloadType: "full",
+		Protocol:     "sui",
+		Network:      "testnet",
+		DataDir: filepaths.Path{
+			DirIn: "/tmp",
+		},
+	}
+
+	err := SuiDownloadSnapshotS3(w)
+	t.Require().Nil(err)
 }
 
 func TestSuiStartupTestSuite(t *testing.T) {

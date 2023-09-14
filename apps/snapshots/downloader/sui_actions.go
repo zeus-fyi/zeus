@@ -71,16 +71,9 @@ func SuiDownloadSnapshotS3(w WorkloadInfo) error {
 	)
 	err := cmd.Run()
 	if err != nil {
+		log.Warn().Err(err).Msg("error downloading snapshot from S3")
+		log.Err(err).Msg("error downloading snapshot from S3")
 		return fmt.Errorf("error downloading snapshot from S3: %v", err)
-	}
-
-	// Update ownership of the directory
-	chownCmd := exec.Command("sudo", "chown", "-R", "sui:sui", w.DataDir.DirIn)
-	err = chownCmd.Run()
-	if err != nil {
-		err = fmt.Errorf("error changing ownership of the directory: %v", err)
-		log.Err(err).Msg("DownloadSnapshotS3")
-		return err
 	}
 	return nil
 }
