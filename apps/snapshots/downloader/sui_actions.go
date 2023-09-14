@@ -15,10 +15,6 @@ const (
 	suiTestnetSnapshotS3 = "s3://mysten-testnet-snapshots/"
 )
 
-// TODO: finish setup for sui s3 downloads, and genesis
-// wget https://github.com/MystenLabs/sui/raw/main/crates/sui-config/data/fullnode-template.yaml
-// curl -fLJO https://github.com/MystenLabs/sui-genesis/raw/main/devnet/genesis.blob
-
 func SuiStartup(ctx context.Context, w WorkloadInfo) {
 	// mainnet default
 	urlPath := "https://github.com/MystenLabs/sui-genesis/raw/main/mainnet/genesis.blob"
