@@ -6,6 +6,12 @@ import (
 	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_common_types"
 )
 
+const (
+	Sui       = "sui"
+	Full      = "full"
+	Validator = "validator"
+)
+
 var (
 	suiNodeDefinition = zeus_cluster_config_drivers.ClusterDefinition{
 		ClusterClassName: "sui",

@@ -35,6 +35,13 @@ func (t *SuiCookbookTestSuite) TestUpload() {
 	t.Require().Nil(rerr)
 }
 
+func (t *SuiCookbookTestSuite) TestUploadTestnet() {
+	suiNodeDefinition.ComponentBases[Sui] = GetSuiClientNetworkConfigBase(Full, "testnet")
+	t.Require().NotNil(suiNodeDefinition.ComponentBases[Sui])
+	//_, rerr := suiNodeDefinition.UploadChartsFromClusterDefinition(ctx, t.ZeusTestClient, true)
+	//t.Require().Nil(rerr)
+}
+
 func (t *SuiCookbookTestSuite) TestCreateClusterClass() {
 	cd := suiNodeDefinition
 	gcd := cd.BuildClusterDefinitions()
