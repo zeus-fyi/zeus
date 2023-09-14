@@ -75,7 +75,7 @@ spec:
         - name: sui
           image: "mysten/sui-node:stable"
           imagePullPolicy: IfNotPresent
-          command: [ "/opt/sui/bin/sui-node", "--config-path", "/scripts/fullnode.yaml" ]
+          command: [ "sui-node", "--config-path", "/scripts/fullnode.yaml" ]
           volumeMounts:
             - name: cm-sui
               mountPath: "/scripts"
