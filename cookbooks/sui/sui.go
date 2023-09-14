@@ -14,16 +14,16 @@ const (
 
 var (
 	suiNodeDefinition = zeus_cluster_config_drivers.ClusterDefinition{
-		ClusterClassName: "sui",
+		ClusterClassName: Sui,
 		CloudCtxNs:       suiCloudCtxNs,
 		ComponentBases:   suiComponentBases,
 	}
 	suiComponentBases = map[string]zeus_cluster_config_drivers.ComponentBaseDefinition{
-		"sui": suiMasterComponentBase,
+		Sui: suiMasterComponentBase,
 	}
 	suiMasterComponentBase = zeus_cluster_config_drivers.ComponentBaseDefinition{
 		SkeletonBases: map[string]zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
-			"sui": suiSkeletonBaseConfig,
+			Sui: suiSkeletonBaseConfig,
 		},
 	}
 	suiSkeletonBaseConfig = zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
@@ -35,14 +35,14 @@ var (
 		CloudProvider: "do",
 		Region:        "sfo3",
 		Context:       "do-sfo3-dev-do-sfo3-zeus",
-		Namespace:     "sui", // set with your own namespace
+		Namespace:     Sui, // set with your own namespace
 		Env:           "production",
 	}
 	suiMasterChartPath = filepaths.Path{
 		PackageName: "",
 		DirIn:       "./sui/node/infra",
 		DirOut:      "./sui/output",
-		FnIn:        "sui", // filename for your gzip workload
+		FnIn:        Sui, // filename for your gzip workload
 		FnOut:       "",
 		Env:         "",
 	}
