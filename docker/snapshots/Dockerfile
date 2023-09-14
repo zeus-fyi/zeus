@@ -56,7 +56,7 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2
 RUN unzip awscliv2.zip
 RUN ./aws/install
 
-FROM golang:1.20.3-buster
+FROM golang:1.21-bookworm
 RUN apt-get update && apt-get install -y ca-certificates
 
 COPY --from=snapshot_builder /app/snapshots /usr/bin/snapshots
