@@ -1,6 +1,7 @@
 package snapshot_init
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"os/exec"
@@ -59,8 +60,15 @@ func SuiDownloadSnapshotS3(w WorkloadInfo) error {
 		log.Warn().Msg("SuiDownloadSnapshotS3: network type not supported and/or provided")
 		return nil
 	}
+
+	log.Info().Msgf("SuiDownloadSnapshotS3: downloading snapshot from %s", s3)
 	// Form the S3 path for the snapshot
 	// Execute AWS CLI command to download the snapshot
+
+	// Capture stdout and stderr
+	var out bytes.Buffer
+	var stderr bytes.Buffer
+
 	cmd := exec.Command(
 		"aws",
 		"s3",
@@ -70,10 +78,14 @@ func SuiDownloadSnapshotS3(w WorkloadInfo) error {
 		"--recursive",
 		"--no-sign-request",
 	)
+	log.Info().Msgf("SuiDownloadSnapshotS3: downloading snapshot using aws cli cmd:", cmd.String())
+
+	cmd.Stdout = &out
+	cmd.Stderr = &stderr
 	err := cmd.Run()
 	if err != nil {
-		log.Warn().Err(err).Msg("error downloading snapshot from S3")
-		log.Err(err).Msg("error downloading snapshot from S3")
+		log.Warn().Err(err).Str("stdout", out.String()).Str("stderr", stderr.String()).Msg("error downloading snapshot from S3")
+		log.Err(err).Str("stdout", out.String()).Str("stderr", stderr.String()).Msg("error downloading snapshot from S3")
 		return fmt.Errorf("error downloading snapshot from S3: %v", err)
 	}
 	return nil
