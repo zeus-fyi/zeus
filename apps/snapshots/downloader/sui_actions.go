@@ -59,14 +59,12 @@ func SuiDownloadSnapshotS3(w WorkloadInfo) error {
 		return nil
 	}
 	// Form the S3 path for the snapshot
-	s3Path := fmt.Sprintf("s3://%s", s3)
-
 	// Execute AWS CLI command to download the snapshot
 	cmd := exec.Command(
 		"aws",
 		"s3",
 		"cp",
-		s3Path,
+		s3,
 		w.DataDir.DirIn,
 		"--recursive",
 		"--no-sign-request",
