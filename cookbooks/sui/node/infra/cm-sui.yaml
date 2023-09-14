@@ -3,6 +3,9 @@ kind: ConfigMap
 metadata:
   name: cm-sui
 data:
+  hercules.sh: |-
+    #!/bin/sh
+    exec hercules
   downloadMainnetNode.sh: |-
     #!/bin/sh
     exec snapshots --downloadURL="" --protocol="sui" --network="mainnet" --workload-type="full"
