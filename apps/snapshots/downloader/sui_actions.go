@@ -43,6 +43,7 @@ func SuiDownloadSnapshotS3(w WorkloadInfo) error {
 	switch w.WorkloadType {
 	case "full":
 	case "validator":
+		// TODO adjust path for validator
 	default:
 		log.Warn().Msg("SuiDownloadSnapshotS3: workload type not supported and/or provided")
 		return nil
