@@ -41,7 +41,10 @@ spec:
           image: "zeusfyi/snapshots:latest"
           imagePullPolicy: Always
           command: [ "/bin/sh" ]
-          args: [ "-c","/scripts/download.sh" ]
+          args: [ "-c","/scripts/downloadMainnetNode.sh" ]
+          env:
+            - name: AWS_DEFAULT_REGION
+              value: "us-east-1"
           resources:
             { }
           volumeMounts:
