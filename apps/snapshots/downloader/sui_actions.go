@@ -3,6 +3,7 @@ package snapshot_init
 import (
 	"context"
 	"fmt"
+	"os/exec"
 	"time"
 
 	"github.com/cavaliergopher/grab/v3"
@@ -40,6 +41,54 @@ func SuiStartup(ctx context.Context, w WorkloadInfo) {
 	if err != nil {
 		panic(err)
 	}
+}
+
+func SuiDownloadSnapshotS3(w WorkloadInfo) error {
+	switch w.WorkloadType {
+	case "full":
+	case "validator":
+	default:
+		log.Warn().Msg("SuiDownloadSnapshotS3: workload type not supported and/or provided")
+		return nil
+	}
+
+	s3 := ""
+	switch w.Network {
+	case "mainnet":
+		s3 = suiMainnetSnapshotS3
+	case "testnet":
+		s3 = suiTestnetSnapshotS3
+	default:
+		log.Warn().Msg("SuiDownloadSnapshotS3: network type not supported and/or provided")
+		return nil
+	}
+	// Form the S3 path for the snapshot
+	s3Path := fmt.Sprintf("s3://%s", s3)
+
+	// Execute AWS CLI command to download the snapshot
+	cmd := exec.Command(
+		"aws",
+		"s3",
+		"cp",
+		s3Path,
+		w.DataDir.DirIn,
+		"--recursive",
+		"--no-sign-request",
+	)
+	err := cmd.Run()
+	if err != nil {
+		return fmt.Errorf("error downloading snapshot from S3: %v", err)
+	}
+
+	// Update ownership of the directory
+	chownCmd := exec.Command("sudo", "chown", "-R", "sui:sui", w.DataDir.DirIn)
+	err = chownCmd.Run()
+	if err != nil {
+		err = fmt.Errorf("error changing ownership of the directory: %v", err)
+		log.Err(err).Msg("DownloadSnapshotS3")
+		return err
+	}
+	return nil
 }
 
 func DownloadGenesisBlob(w WorkloadInfo, blobURL string) error {

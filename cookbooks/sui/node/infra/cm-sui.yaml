@@ -3,9 +3,12 @@ kind: ConfigMap
 metadata:
   name: cm-sui
 data:
-  download.sh: |-
+  downloadMainnetNode.sh: |-
     #!/bin/sh
-    exec snapshots --downloadURL="" --clientName=""
+    exec snapshots --downloadURL="" --protocol="sui" --network="mainnet" --workload-type="full"
+  downloadTestnetNode.sh: |-
+    #!/bin/sh
+    exec snapshots --downloadURL="" --protocol="sui" --network="testnet" --workload-type="full"
   fullnode.yaml: |-
     # Update this value to the location you want Sui to store its database
     db-path: "/data"
