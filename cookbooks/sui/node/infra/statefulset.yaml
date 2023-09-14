@@ -1,0 +1,126 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: sui
+  labels:
+    app.kubernetes.io/name: sui
+    app.kubernetes.io/instance: sui
+    app.kubernetes.io/managed-by: zeus
+  annotations:
+    { }
+spec:
+  podManagementPolicy: OrderedReady
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: sui
+      app.kubernetes.io/instance: sui
+  serviceName: sui
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: sui
+        app.kubernetes.io/instance: sui
+    spec:
+      initContainers:
+        - name: init-chown-data
+          image: "busybox:1.34.0"
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            runAsNonRoot: false
+            runAsUser: 0
+          command: [ "chown", "-R", "10001:10001", "/data" ]
+          resources:
+            { }
+          volumeMounts:
+            - name: sui-client-storage
+              mountPath: "/data"
+        - name: init-snapshots
+          image: "zeusfyi/snapshots:latest"
+          imagePullPolicy: Always
+          command: [ "/bin/sh" ]
+          args: [ "-c","/scripts/downloadMainnetNode.sh" ]
+          env:
+            - name: AWS_DEFAULT_REGION
+              value: "us-east-1"
+          resources:
+            { }
+          volumeMounts:
+            - name: cm-sui
+              mountPath: "/scripts"
+            - name: sui-client-storage
+              mountPath: "/data"
+      containers:
+        - name: hercules
+          image: "zeusfyi/hercules:latest"
+          imagePullPolicy: Always
+          command: [ "/bin/sh" ]
+          args: [ "-c","/scripts/hercules.sh" ]
+          volumeMounts:
+            - name: cm-sui
+              mountPath: "/scripts"
+            - name: sui-client-storage
+              mountPath: "/data"
+          ports:
+            - name: hercules
+              containerPort: 9003
+              protocol: TCP
+          livenessProbe:
+            initialDelaySeconds: 60
+            periodSeconds: 120
+            tcpSocket:
+              port: hercules
+        - name: sui
+          image: "mysten/sui-node:stable"
+          imagePullPolicy: IfNotPresent
+          command: [ "sui-node", "--config-path", "/scripts/fullnode.yaml" ]
+          volumeMounts:
+            - name: cm-sui
+              mountPath: "/scripts"
+            - name: sui-client-storage
+              mountPath: "/data"
+          ports:
+            - name: http-rpc
+              containerPort: 9000
+              protocol: TCP
+            - name: metrics
+              containerPort: 9184
+              protocol: TCP
+          livenessProbe:
+            initialDelaySeconds: 60
+            periodSeconds: 120
+            tcpSocket:
+              port: http-rpc
+          resources:
+            limits:
+              cpu: "16"
+              memory: "128Gi"
+            requests:
+              cpu: "16"
+              memory: "128Gi"
+      nodeSelector:
+        { }
+      affinity:
+        { }
+      tolerations:
+        [ ]
+      volumes:
+        - name: cm-sui
+          configMap:
+            name: cm-sui
+            defaultMode: 0744
+  volumeClaimTemplates:
+    - metadata:
+        name: sui-client-storage
+        annotations:
+          { }
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: "6Ti"
+
+

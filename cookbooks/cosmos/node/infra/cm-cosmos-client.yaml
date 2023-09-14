@@ -14,4 +14,4 @@ data:
     exec snapshots --downloadURL="" --clientName="cosmosClient" --network="theta-testnet-001" --protocol="cosmos"
   hercules.sh: |-
     #!/bin/sh 
-    hercules
+    exec hercules

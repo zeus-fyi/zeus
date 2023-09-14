@@ -1,21 +1,14 @@
 package snapshot_init
 
 import (
-	"context"
 	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/suite"
-	"github.com/zeus-fyi/zeus/test/test_suites"
 )
 
-var ctx = context.Background()
-
 type CosmosStartupTestSuite struct {
-	test_suites.BaseTestSuite
-}
-
-func (t *CosmosStartupTestSuite) SetupTest() {
+	SnapshotStartupTestSuite
 }
 
 func (t *CosmosStartupTestSuite) TestGetMainnetPersistentPeers() {
