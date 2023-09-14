@@ -54,7 +54,7 @@ WORKDIR /app
 
 RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 
-FROM golang:1.21-bookworm
+FROM ubuntu:22.04
 RUN apt-get update && apt-get install -y ca-certificates unzip less
 
 COPY --from=snapshot_builder /app/snapshots /usr/bin/snapshots
