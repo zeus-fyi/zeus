@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: "redis-cluster"
+  labels:
+    app.kubernetes.io/instance: "redis-cluster"
+    app.kubernetes.io/name: "redis-cluster"
+    app.kubernetes.io/managed-by: "zeus"
+spec:
+  type: ClusterIP
+  ports:
+    - port: 6379
+      targetPort: redis
+      protocol: TCP
+      name: redis
+    - port: 16379
+      targetPort: gossip
+      protocol: TCP
+      name: gossip
+    - port: 9121
+      targetPort: metrics
+      protocol: TCP
+      name: metrics
+  selector:
+    app.kubernetes.io/instance: "redis-cluster"
+    app.kubernetes.io/name: "redis-cluster"
