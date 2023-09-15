@@ -14,7 +14,7 @@ https://medium.com/zeusfyi/adaptive-rpc-load-balancer-on-quicknode-marketplace-e
 Beta Testing Sign Up (free to use): 
 https://marketplace.quicknode.com/add-on/zeusfyi-4
 
-## zK8s; Kubernetes + Zeus
+## zK8s == Kubernetes + Zeus
 Here we overview the core concepts needed to understand how you can build, deploy, configure K8s apps using Zeus, with a full walkthrough example of how we created an Ethereum beacon.
 
 https://medium.com/@zeusfyi/zeus-k8s-infra-as-code-concepts-47e690c6e3c5
