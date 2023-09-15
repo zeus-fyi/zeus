@@ -68,9 +68,9 @@ Contains common web2 & web3 building components like ethereum infra setups with 
 
 Contains full Kubernetes infra setup templates for microservices, simulating loads, injectable choreography for clusters, and more continually being added.
 
-#### ```zeus/cookbooks/microservices/choreography ```
-#### ```zeus/cookbooks/microservices/deployments ```
-#### ```zeus/cookbooks/microservices/load_simulator ```
+#### ```cookbooks/microservices/choreography ```
+#### ```cookbooks/microservices/deployments ```
+#### ```cookbooks/microservices/load_simulator ```
 
 #### Redis ###
 
@@ -120,9 +120,9 @@ Cookbook items listed by protocol & component class. Eg. Ethereum has a beacon c
 
 Complete, and powerful Ethereum infra automation 
 
-#### ```zeus/cookbooks/ethereum/beacons/beacon_cluster_test.go ```
-#### ```zeus/cookbooks/ethereum/validators/validator_cluster_test.go ```
-#### ```zeus/cookbooks/ethereum/web3signers/web3signer_cluster_test.go ```
+#### ```cookbooks/ethereum/beacons/beacon_cluster_test.go ```
+#### ```cookbooks/ethereum/validators/validator_cluster_test.go ```
+#### ```cookbooks/ethereum/web3signers/web3signer_cluster_test.go ```
 
 See this test case to see how a beacon cluster class was created, and then extended to support choreography to reset configs on a scheduled interval for the Ephemery testnet, and then added validator clients, and then again to add web3signing integration.
 
