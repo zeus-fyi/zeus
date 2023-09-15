@@ -22,7 +22,7 @@ https://medium.com/@zeusfyi/zeus-k8s-infra-as-code-concepts-47e690c6e3c5
 ## UI Tutorial: Authenticated API in 5 Minutes
 https://medium.com/@zeusfyi/zeus-ui-no-code-kubernetes-authenticated-api-tutorial-c468d5ef0446
 
-## Zeus (zK8s) Apps & Clients ##
+## zK8s Apps & Clients ##
 zK8s is an expressive language for cloud infrastructure, used for building, assembling, and keeping them running over their entire lifecycle. Enabling cost efficient, effortless large scale infra automation, coordination, customization, and control.
 
 #### ```cluster_config_drivers ```
