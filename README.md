@@ -11,32 +11,33 @@ Accurate, Reliable, Performant Node Traffic at Web3 Scale
 
 https://medium.com/zeusfyi/adaptive-rpc-load-balancer-on-quicknode-marketplace-e68bb7c9d8ac
 
-## Zeus K8s & Cloud Infra as Go Code Concepts
+## Zeusfyi Cloud Infra into Go Code
 Here we overview the core concepts needed to understand how you can build, deploy, configure K8s apps using Zeus, with a full walkthrough example of how we created an Ethereum beacon.
 
 https://medium.com/@zeusfyi/zeus-k8s-infra-as-code-concepts-47e690c6e3c5
 
-## Zeus UI Tutorial: No Code Kubernetes: Create an Authenticated API Within 5 Minutes
+## UI Tutorial: Create an Authenticated API in 5 Minutes
 https://medium.com/@zeusfyi/zeus-ui-no-code-kubernetes-authenticated-api-tutorial-c468d5ef0446
 
 ## Zeus Apps & Clients ##
 
 Core Zeus Infra Automation Client
-#### ```pkg/zeus/client```
+#### ```zeus```
 
 Powerful Cluster Building, Allowing for Large Scale Infra Automation, Customization, Control
 
-#### ```pkg/zeus/cluster_config_drivers ```
-#### ```pkg/zeus/system_config_drivers ```
-#### ```pkg/zeus/workload_config_drivers ```
+#### ```cluster_config_drivers ```
+#### ```system_config_drivers ```
+#### ```workload_config_drivers ```
 
 Workflow & Proxy Programmable Automation (Rolling releases coming through end of year)
 
-#### ```pkg/zeus/artemis_workflows ```
-#### ```pkg/zeus/iris_programmable_proxy ```
+#### ```artemis_workflows ```
+#### ```iris_programmable_proxy ```
 
-QuickNode MarketPlace users can find Load Balancing documentation in the iris programmable proxy directory.
-
+QuickNode MarketPlace users can find Load Balancing documentation in the iris programmable proxy directory
++ Adaptive Load Balancer Documentation
+  
 #### API Endpoints 
 
 Documentation and code examples are found here
@@ -51,13 +52,9 @@ use the demo code to create your first api request in seconds
 
 ### Hera Client
 
-#### ```pkg/hera/client```
-
 This client uses the OpenAI API to generate code with AI. This service is available at OpenAI cost, so just pay for the token cost, otherwise it is free to use.
 
 ### Hades Library
-
-#### ```pkg/hades```
 
 Hades is used to interact with Kubernetes workloads via API, and can apply saved Zeus workloads & cookbooks onto your own in house infrastructure.
 
