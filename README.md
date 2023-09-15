@@ -1,4 +1,4 @@
-## Recent Articles ##
+# Recent Articles ##
 
 ## Show Me the Stats
 Optimal adaptive load balancing in stochastic environments.
