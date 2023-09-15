@@ -107,21 +107,21 @@ Snapshot app is embedded into the hercules docker app, and it can be used as an 
 
 Contains smart contract automation kits. This testcase shows a full end-end seed, create, and deposits validators on the Ethereum ephemery testnet.
 
-#### ```cookbooks/ethereum/automation```
-#### ```cookbooks/ethereum/automation/deposits_test.go ```
+#### ```ethereum/automation```
+#### ```ethereum/automation/deposits_test.go ```
 
 Cookbook items listed by protocol & component class. Eg. Ethereum has a beacon component group. Contains Kubernetes config setup templates. Here's a few example paths. Also contains an actions folder, which does log dumps, pod restarts, configuration changes on demand for k8s applications, and more.
 
-#### ```cookbooks/ethereum/beacons/infra/consensus_client```
-#### ```cookbooks/ethereum/beacons/infra/exec_client```
-#### ```cookbooks/ethereum/validators/infra/validators```
-#### ```cookbooks/ethereum/web3signers/infra/consensys_web3signer```
+#### ```ethereum/beacons/infra/consensus_client```
+#### ```ethereum/beacons/infra/exec_client```
+#### ```ethereum/validators/infra/validators```
+#### ```ethereum/web3signers/infra/consensys_web3signer```
 
 Complete, and powerful Ethereum infra automation 
 
-#### ```cookbooks/ethereum/beacons/beacon_cluster_test.go ```
-#### ```cookbooks/ethereum/validators/validator_cluster_test.go ```
-#### ```cookbooks/ethereum/web3signers/web3signer_cluster_test.go ```
+#### ```ethereum/beacons/beacon_cluster_test.go ```
+#### ```ethereum/validators/validator_cluster_test.go ```
+#### ```ethereum/web3signers/web3signer_cluster_test.go ```
 
 See this test case to see how a beacon cluster class was created, and then extended to support choreography to reset configs on a scheduled interval for the Ephemery testnet, and then added validator clients, and then again to add web3signing integration.
 
