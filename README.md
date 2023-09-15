@@ -11,15 +11,15 @@ Accurate, Reliable, Performant Node Traffic at Web3 Scale
 
 https://medium.com/zeusfyi/adaptive-rpc-load-balancer-on-quicknode-marketplace-e68bb7c9d8ac
 
-## Zeusfyi Cloud Infra Into Go Code
+## zK8s; Kubernetes +Zeus
 Here we overview the core concepts needed to understand how you can build, deploy, configure K8s apps using Zeus, with a full walkthrough example of how we created an Ethereum beacon.
 
 https://medium.com/@zeusfyi/zeus-k8s-infra-as-code-concepts-47e690c6e3c5
 
-## UI Tutorial: Create an Authenticated API in 5 Minutes
+## UI Tutorial: Authenticated API in 5 Minutes
 https://medium.com/@zeusfyi/zeus-ui-no-code-kubernetes-authenticated-api-tutorial-c468d5ef0446
 
-## Zeus Apps & Clients ##
+## Zeus (zk8s) Apps & Clients ##
 
 Core Zeus Infra Automation Client
 #### ```zeus```
