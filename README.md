@@ -73,7 +73,7 @@ Contains full Kubernetes infra setup templates for microservices, simulating loa
 
 #### Redis ###
 
-#### ```zeus/cookbooks/redis ```
+#### ```cookbooks/redis ```
 
 Contains full Kubernetes infra setup for open source BSD 3-Clause version of Redis with one master, two replicas, and including t-digest integration. You can find the pre-built bundle on our Docker repo: zeusfyi/redis:latest 
 
