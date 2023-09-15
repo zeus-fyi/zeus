@@ -11,6 +11,9 @@ Accurate, Reliable, Performant Node Traffic at Web3 Scale
 
 https://medium.com/zeusfyi/adaptive-rpc-load-balancer-on-quicknode-marketplace-e68bb7c9d8ac
 
+Beta Testing Sign Up (free to use): 
+https://marketplace.quicknode.com/add-on/zeusfyi-4
+
 ## zK8s; Kubernetes + Zeus
 Here we overview the core concepts needed to understand how you can build, deploy, configure K8s apps using Zeus, with a full walkthrough example of how we created an Ethereum beacon.
 
