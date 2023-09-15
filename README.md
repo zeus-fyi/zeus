@@ -1,7 +1,7 @@
 ## Recent Articles ##
 
 ## Show Me the Stats
-Optimal adaptive load balancing in stochastic environments
+Optimal adaptive load balancing in stochastic environments.
 Recommended reading for scientists, engineers, data driven individuals
 
 https://medium.com/zeusfyi/show-me-the-stats-6740f8d6d0b7
