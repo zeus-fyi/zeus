@@ -19,10 +19,10 @@ https://medium.com/@zeusfyi/zeus-k8s-infra-as-code-concepts-47e690c6e3c5
 ## UI Tutorial: Authenticated API in 5 Minutes
 https://medium.com/@zeusfyi/zeus-ui-no-code-kubernetes-authenticated-api-tutorial-c468d5ef0446
 
-## Zeus (zk8s) Apps & Clients ##
+## Zeus (zK8s) Apps & Clients ##
 
 Core Zeus Infra Automation Client
-#### ```zeus```
+#### ```zeus (zK8s)```
 
 Powerful Cluster Building, Allowing for Large Scale Infra Automation, Customization, Control
 
