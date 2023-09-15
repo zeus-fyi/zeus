@@ -4,12 +4,18 @@
 Optimal adaptive load balancing in stochastic environments.
 Recommended reading for scientists, engineers, data driven individuals
 
+![Screenshot 2023-09-14 at 11 12 23 PM](https://github.com/zeus-fyi/zeus/assets/17446735/025d3201-9236-40e9-8723-3a7d2d7a3e0a)
+
 https://medium.com/zeusfyi/show-me-the-stats-6740f8d6d0b7
 
 ## Adaptive RPC Load Balancer on QuickNode Marketplace
 Accurate, Reliable, Performant Node Traffic at Web3 Scale
 
+![Screenshot 2023-09-14 at 11 11 30 PM](https://github.com/zeus-fyi/zeus/assets/17446735/802b7670-6b30-4e65-9348-e45e2a0cfcac)
+
 https://medium.com/zeusfyi/adaptive-rpc-load-balancer-on-quicknode-marketplace-e68bb7c9d8ac
+
+![Screenshot 2023-09-14 at 11 13 55 PM](https://github.com/zeus-fyi/zeus/assets/17446735/1d2a263e-5aa7-418c-a0f0-1f497cab0353)
 
 Beta Testing Sign Up (free to use): 
 https://marketplace.quicknode.com/add-on/zeusfyi-4
@@ -69,9 +75,9 @@ Contains common web2 & web3 building components like ethereum infra setups with 
 
 Contains full Kubernetes infra setup templates for microservices, simulating loads, injectable choreography for clusters, and more continually being added.
 
-#### ```cookbooks/microservices/choreography ```
-#### ```cookbooks/microservices/deployments ```
-#### ```cookbooks/microservices/load_simulator ```
+#### ```microservices/choreography ```
+#### ```microservices/deployments ```
+#### ```microservices/load_simulator ```
 
 #### Redis ###
 
@@ -84,7 +90,7 @@ Contains full Kubernetes infra setup for open source BSD 3-Clause version of Red
 ### Artemis ###
 
 #### ```artemis.zeus.fyi``` ####
-#### ```pkg/artemis/client```
+#### ```artemis/client```
 
 Our web3 Artemis client is a tx orchestrator. It reliably submits & confirms ethereum transactions and logs their receipts. Chain with 
 the in memory db for storing web3 signer keys to build highly reliable web3 api actions with other users and smart contracts. You'll need
@@ -114,16 +120,16 @@ Contains smart contract automation kits. This testcase shows a full end-end seed
 
 Cookbook items listed by protocol & component class. Eg. Ethereum has a beacon component group. Contains Kubernetes config setup templates. Here's a few example paths. Also contains an actions folder, which does log dumps, pod restarts, configuration changes on demand for k8s applications, and more.
 
-#### ```ethereum/beacons/infra/consensus_client```
-#### ```ethereum/beacons/infra/exec_client```
-#### ```ethereum/validators/infra/validators```
-#### ```ethereum/web3signers/infra/consensys_web3signer```
+#### ```beacons/infra/consensus_client```
+#### ```beacons/infra/exec_client```
+#### ```validators/infra/validators```
+#### ```web3signers/infra/consensys_web3signer```
 
 Complete, and powerful Ethereum infra automation 
 
-#### ```ethereum/beacons/beacon_cluster_test.go ```
-#### ```ethereum/validators/validator_cluster_test.go ```
-#### ```ethereum/web3signers/web3signer_cluster_test.go ```
+#### ```beacons/beacon_cluster_test.go ```
+#### ```validators/validator_cluster_test.go ```
+#### ```web3signers/web3signer_cluster_test.go ```
 
 See this test case to see how a beacon cluster class was created, and then extended to support choreography to reset configs on a scheduled interval for the Ephemery testnet, and then added validator clients, and then again to add web3signing integration.
 
@@ -158,13 +164,9 @@ We've merged Kubernetes & Temporal orchestration and added state management usin
 
 Not every possible field type is supported, but the most common ones are, and even a decent amount of the uncommon ones. If you find a field you need isn't supported please send us an email at support@zeus.fyi
 
-![Screenshot 2022-11-17 at 8 09 48 PM](https://user-images.githubusercontent.com/17446735/202614955-2708063e-1547-4dae-9332-f712102c287e.png)
-
 ![sys](https://user-images.githubusercontent.com/17446735/236006394-d7782657-c2a8-4ee6-a53c-a55f07dbc2b8.png)
 
-### Cluster Topology Class Hierarchy Definitions ###
-
-### Highest to Lowest Level &# Deployable Topologies ###
+##  Cluster Topology Class Hierarchy Definitions: Highest to Lowest Level
 
 ### Network Orchestration Topology ###
 
@@ -198,6 +200,8 @@ An abstract atomic configuration base that needs an Infrastructure Base and Skel
 
 ### Skeleton Base ###
 An abstract atomic component base that needs additional pieces to create deployable infrastructure like config map, docker image links, etc. Needs an Infrastructure and Configuration Base to create a Base Topology
+
+![Screenshot 2022-11-17 at 8 09 48 PM](https://user-images.githubusercontent.com/17446735/202614955-2708063e-1547-4dae-9332-f712102c287e.png)
 
 ## Zeus ##
 
