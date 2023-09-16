@@ -40,27 +40,12 @@ Need more? Send us a message at support@zeus.fyi
 This is a guide to help you set up your own programmable proxy for the Iris Load Balancer.
 Prerequisites: You'll need to generate an API key from the access panel if you don't have an existing one.
 
-### Part B. Using the Programmable Proxy
+### Using the Load Balancer
 
 You'll use the API bearer token that you generate from the Access panel to authenticate with the load balancer.
 You then use the name of your route table group as a query parameter like the below,
-and it will round-robin the requests between the endpoints in that group table.
-
-```go
-package iris_programmable_proxy
-
-const IrisEndpoint = "https://iris.zeus.fyi"
-
-
-IrisClientProd = Iris{
-resty_base.GetBaseRestyClient("https://iris.zeus.fyi", tc.Bearer),
-}
-
-routeGroup := "quicknode-mainnet"
-
-Add HEADER "X-Route-Group" with value "quicknode-mainnet"
-path := "https://iris.zeus.fyi/v1/router"
-```
+and it will default to round-robin the requests between the endpoints in that group table if you have a lite plan, and
+adaptive for standard+ plans.
 
 ### Curl Example:
 
