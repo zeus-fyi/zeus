@@ -33,40 +33,6 @@ be
 automatically registered to the ethereum-mainnet routing group table. These won't count against your
 routing table limits unless you make any manual changes to them.
 
-### Lite
-
-```text
-250M ZU per $99
-Up to 25k ZU/s ~ 2.5k req/s
-Up to ~25M requests (with responses)
-25 Custom Routing Group Tables
-Round Robin 
-```
-
-### Standard
-
-```text
-1B ZU per $299
-Up to 50k ZU/s, ~5k req/s
-Up to ~ 100M  requests (with responses)
-50 Custom Routing Group Tables
-Embedded Routing Procedures
-Priority Score Weight Tuning
-Adaptive Load Balancing + Round Robin
-```
-
-### Performance
-
-```text
-3B ZU per $999, 
-Up to 100k ZU/s, ~10k req/s
-Up to ~300M requests (with responses)
-250 Custom Routing Group Tables
-Embedded Routing Procedures
-Priority Score Weight Tuning
-Adaptive Load Balancing + Round Robin
-```
-
 Need more? Send us a message at support@zeus.fyi
 
 ## Setup
