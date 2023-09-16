@@ -184,8 +184,6 @@ It can be any combination of lower level system topologies or components. At thi
 
 A fully working single component cluster topology that accomplishes one system component on its own and combined with a Zeus injection deploys this topology onto the network. Some but not all of these topologies can be stacked with another cluster topology or a base topology to create a higher level system component.
 
-### Deployable but Incomplete Topologies ###
-
 ### Base Topology ###
 
 A fully working single cluster topology that needs at least one other Base Topology to create a higher level component. An example would be deploying an execution client by itself post-merge on ethereum. It would be able to download chain data, but it wouldn’t be able to fulfill a useful purpose without another piece e.g. a consensus client component.  
