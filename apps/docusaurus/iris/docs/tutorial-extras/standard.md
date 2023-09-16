@@ -2,7 +2,7 @@
 sidebar_position: 2
 ---
 
-# Lite
+# Standard
 
 Let's translate `docs/intro.md` to French.
 

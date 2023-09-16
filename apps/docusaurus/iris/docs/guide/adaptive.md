@@ -1,8 +1,8 @@
 ---
-sidebar_position: 2
+sidebar_position: 4
 ---
 
-# Create a Document
+# Adaptive
 
 Documents are **groups of pages** connected through:
 

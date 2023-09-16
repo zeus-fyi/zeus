@@ -1,8 +1,9 @@
 ---
-sidebar_position: 3
+sidebar_position: 5
+
 ---
 
-# Create a Blog Post
+# Benchmarks
 
 Docusaurus creates a **page for each blog post**, but also a **blog index page**, a **tag system**, an **RSS** feed...
 

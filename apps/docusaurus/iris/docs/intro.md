@@ -2,7 +2,7 @@
 sidebar_position: 1
 ---
 
-# Adaptive Load Balancer
+# Setup
 
 #### Exclusively running Iris services through the QuickNode Marketplace until our v1 release later this year.
 
@@ -103,11 +103,14 @@ IrisDeleteGroupRoutesPath = "/v1/iris/routes/groups/delete"
 
 Source: pkg/hestia/client/endpoints/endpoints.go
 
+POST request to register new endpoints
 ```go    
-// POST request to register new endpoints
 const HestiaEndpoint = "https://hestia.zeus.fyi/v1/iris/routes/create"
+```
 
-// POST request: to create a routing group from a list of stored endpoints
+POST request: to create a routing group from a list of stored endpoints
+
+```go
 const IrisCreateGroupRoutesPath = "https://hestia.zeus.fyi/v1/iris/routes/groups/create"
 ```
 
@@ -117,7 +120,7 @@ Note that only https routes are supported, http routes will be ignored.
 
 POST request to register new endpoints
 
-```text    
+```go    
     const HestiaEndpoint = "https://hestia.zeus.fyi/v1/iris/routes/create"    
 ```
 
