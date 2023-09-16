@@ -103,12 +103,12 @@ IrisDeleteGroupRoutesPath = "/v1/iris/routes/groups/delete"
 
 Source: pkg/hestia/client/endpoints/endpoints.go
 
-```text    
-    // POST request to register new endpoints
-    const HestiaEndpoint = "https://hestia.zeus.fyi/v1/iris/routes/create"
-    
-    // POST request: to create a routing group from a list of stored endpoints
-    const IrisCreateGroupRoutesPath = "https://hestia.zeus.fyi/v1/iris/routes/groups/create"
+```go    
+// POST request to register new endpoints
+const HestiaEndpoint = "https://hestia.zeus.fyi/v1/iris/routes/create"
+
+// POST request: to create a routing group from a list of stored endpoints
+const IrisCreateGroupRoutesPath = "https://hestia.zeus.fyi/v1/iris/routes/groups/create"
 ```
 
 ### Step One: Register new endpoints
@@ -183,7 +183,7 @@ curl --location 'https://hestia.zeus.fyi/v1/iris/routes/groups/create' \
 
 ### Part B. Using the Programmable Proxy
 
-You'll use the API bearer token that you generate from the Access panel to authenticate with the load balancer. </b
+You'll use the API bearer token that you generate from the Access panel to authenticate with the load balancer.
 You then use the name of your route table group as a query parameter like the below,
 and it will round-robin the requests between the endpoints in that group table.
 
