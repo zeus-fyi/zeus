@@ -5,29 +5,22 @@ sidebar_position: 4
 
 # Procedures
 
-Docusaurus is a **static-site-generator** (also called **[Jamstack](https://jamstack.org/)**).
+To use embedded protocol procedures you only need to add the key value to your payload. In this example, to use the max
+block procedure for Ethereum, which polls your routing table for the current block number, and then forwards your
+request to the endpoints returning the highest block number seen and then returns the first successful response.
 
-It builds your site as simple **static HTML, JavaScript and CSS files**.
+"procedure": "eth_maxBlockAggReduce"
 
-## Build your site
-
-Build your site **for production**:
-
-```bash
-npm run build
 ```
-
-The static files are generated in the `build` folder.
-
-## Deploy your site
-
-Test your production build locally:
-
-```bash
-npm run serve
+curl --location 'https://iris.zeus.fyi/v1/router' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer YOUR-BEARER-TOKEN' \
+--header 'X-Route-Group: ethereum-mainnet' \
+--data '{
+    "jsonrpc": "2.0",
+    "procedure": "eth_maxBlockAggReduce",
+    "method": "eth_getBlockByNumber",
+    "params": ["latest", true],
+    "id": 1
+}'
 ```
-
-The `build` folder is now served at [http://localhost:3000/](http://localhost:3000/).
-
-You can now deploy the `build` folder **almost anywhere** easily, **for free** or very small cost (read the *
-*[Deployment Guide](https://docusaurus.io/docs/deployment)**).

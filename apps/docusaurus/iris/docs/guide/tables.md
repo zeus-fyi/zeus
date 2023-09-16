@@ -4,22 +4,110 @@ sidebar_position: 1
 
 # Tables
 
-You have just learned the **basics of Docusaurus** and made some changes to the **initial template**.
+### Registering your endpoints & routing tables
 
-Docusaurus has **much more to offer**!
+You'll use the Hestia endpoint to make any configuration changes to your routing groups. You'll have a separate one
+to use for the actual load balancer.
 
-Have **5 more minutes**? Take a look at **[versioning](../tutorial-extras/professional.md)** and *
-*[i18n](../tutorial-extras/lite.md)**.
+```go
+const (
+HestiaEndpoint = "https://hestia.zeus.fyi"
 
-Anything **unclear** or **buggy** in this
-tutorial? [Please report it!](https://github.com/facebook/docusaurus/discussions/4610)
+IrisCreateRoutesPath = "/v1/iris/routes/create"
+IrisCreateProcedurePath = "/v1/iris/procedure/create"
 
-## What's next?
+IrisReadRoutesPath = "/v1/iris/routes/read"
+IrisDeleteRoutesPath = "/v1/iris/routes/delete"
 
-- Read the [official documentation](https://docusaurus.io/)
-- Modify your site configuration with [`docusaurus.config.js`](https://docusaurus.io/docs/api/docusaurus-config)
-- Add navbar and footer items with [`themeConfig`](https://docusaurus.io/docs/api/themes/configuration)
-- Add a custom [Design and Layout](https://docusaurus.io/docs/styling-layout)
-- Add a [search bar](https://docusaurus.io/docs/search)
-- Find inspirations in the [Docusaurus showcase](https://docusaurus.io/showcase)
-- Get involved in the [Docusaurus Community](https://docusaurus.io/community/support)
+IrisReadGroupRoutesPath = "/v1/iris/routes/group/:groupName/read"
+IrisUpdateGroupRoutesPath = "/v1/iris/routes/group/:groupName/update"
+
+IrisCreateGroupRoutesPath = "/v1/iris/routes/groups/create"
+IrisReadGroupsRoutesPath = "/v1/iris/routes/groups/read"
+IrisDeleteGroupRoutesPath = "/v1/iris/routes/groups/delete"
+)
+```
+
+Source: pkg/hestia/client/endpoints/endpoints.go
+
+POST request to register new endpoints
+
+```go    
+const HestiaEndpoint = "https://hestia.zeus.fyi/v1/iris/routes/create"
+```
+
+POST request: to create a routing group from a list of stored endpoints
+
+```go
+const IrisCreateGroupRoutesPath = "https://hestia.zeus.fyi/v1/iris/routes/groups/create"
+```
+
+### Step One: Register new endpoints
+
+Note that only https routes are supported, http routes will be ignored.
+
+POST request to register new endpoints
+
+```go    
+    const HestiaEndpoint = "https://hestia.zeus.fyi/v1/iris/routes/create"    
+```
+
+### Step One Payload Example:
+
+```json
+{
+  "routes": [
+    "https://alarmingly-bitter-lambos.quiknode.pro/743c191e-31b5-11ee-be56-0242ac120002/",
+    "https://shockingly-bitter-lambos.quiknode.pro/743c191e-31b5-11ee-be56-0242ac120003/"
+  ]
+}
+```
+
+### Step One Curl Example:
+
+```sh
+curl --location 'https://hestia.zeus.fyi/v1/iris/routes/create' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer YOUR_BEARER_TOKEN' \
+--data '{
+  "routes": [
+    "https://alarmingly-bitter-lambos.quiknode.pro/743c191e-31b5-11ee-be56-0242ac120002/",
+    "https://shockingly-bitter-lambos.quiknode.pro/743c191e-31b5-11ee-be56-0242ac120003/"
+  ]
+}'
+```
+
+### Step Two: Register a routing group table from saved endpoints
+
+POST request: to create a routing group from a list of stored endpoints
+
+```text    
+    const IrisCreateGroupRoutesPath = "https://hestia.zeus.fyi/v1/iris/routes/groups/create"
+```
+
+### Step Two Payload Example:
+
+```json
+{
+  "groupName": "quicknode-mainnet",
+  "routes": [
+    "https://alarmingly-bitter-lambos.quiknode.pro/743c191e-31b5-11ee-be56-0242ac120002/",
+    "https://shockingly-bitter-lambos.quiknode.pro/743c191e-31b5-11ee-be56-0242ac120003/"
+  ]
+}
+```
+
+### Step Two Curl Example:
+
+```sh
+curl --location 'https://hestia.zeus.fyi/v1/iris/routes/groups/create' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer YOUR_BEARER_TOKEN' \
+--data '{
+  "groupName": "quicknode-mainnet",
+  "routes": [
+    "https://alarmingly-bitter-lambos.quiknode.pro/743c191e-31b5-11ee-be56-0242ac120002/",
+    "https://shockingly-bitter-lambos.quiknode.pro/743c191e-31b5-11ee-be56-0242ac120003/"
+  ]
+}'
+```

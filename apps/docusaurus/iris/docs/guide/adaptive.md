@@ -4,54 +4,36 @@ sidebar_position: 4
 
 # Adaptive
 
-Documents are **groups of pages** connected through:
+Once you have ~20 or so request samples for the same method, the load balancer will start to use the adaptive strategy
+automatically and
+manage the routing group table for you based on the best predicted performing endpoint for that method that's available.
 
-- a **sidebar**
-- **previous/next navigation**
-- **versioning**
+Stats will only persist for one hour since the last API call for that method, so you'll need to keep making requests to
+keep the stats.
+It doesn't take long, only ~20 samples per metric to trend towards a near optimal routing group table from scratch, so
+it's really not a big deal to reset the stats.
 
-## Create your first Doc
-
-Create a Markdown file at `docs/hello.md`:
-
-```md title="docs/hello.md"
-# Hello
-
-This is my **first Docusaurus document**!
+```text
+Add HEADER "X-Route-Group" with value "quicknode-mainnet"
+Add HEADER "X-Load-Balancing-Strategy" with value "Adaptive"
+Add HEADER "X-Adaptive-Metrics-Key" with value "JSON-RPC" (or "Other Metric Keys...")
 ```
 
-A new document is now available at [http://localhost:3000/docs/hello](http://localhost:3000/docs/hello).
+JSON-RPC is a reserved value for json-rpc based POST api metrics, it collects stats by the method value in the json rpc
+POST request
 
-## Configure the Sidebar
+### Curl Example:
 
-Docusaurus automatically **creates a sidebar** from the `docs` folder.
-
-Add metadata to customize the sidebar label and position:
-
-```md title="docs/hello.md" {1-4}
----
-sidebar_label: 'Hi!'
-sidebar_position: 3
----
-
-# Hello
-
-This is my **first Docusaurus document**!
+```sh
+curl --location ‘https://iris.zeus.fyi/v1/router’ \
+--header ‘Content-Type: application/json’ \
+--header ‘Authorization: Bearer YOUR-BEARER-TOKEN’ \
+--header ‘X-Route-Group: ethereum-mainnet’ \
+--header ‘X-Load-Balancing-Strategy: Adaptive’ \
+--header ‘X-Adaptive-Metrics-Key: JSON-RPC’ \
+--data ‘{“jsonrpc”:“2.0”,“method”:“eth_getBlockByNumber”,“params”:[“latest”, true],“id”:1}’
 ```
 
-It is also possible to create your sidebar explicitly in `sidebars.js`:
-
-```js title="sidebars.js"
-module.exports = {
-  tutorialSidebar: [
-    'intro',
-    // highlight-next-line
-    'hello',
-    {
-      type: 'category',
-      label: 'Tutorial',
-      items: ['tutorial-basics/create-a-document'],
-    },
-  ],
-};
-```
+You can also check out our round-robin load_balancing_test.go for an example of how to use the programmable proxy to
+query
+the block number from a routing group of ethereum node urls endpoints.
