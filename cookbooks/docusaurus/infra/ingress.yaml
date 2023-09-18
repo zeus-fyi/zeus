@@ -8,7 +8,7 @@ metadata:
 spec:
   ingressClassName: "nginx"
   tls:
-    - secretName: docusaurus-tls
+    - secretName: docs-tls
       hosts:
         - docs.zeus.fyi
   rules:
