@@ -4,11 +4,11 @@ sidebar_position: 1
 
 # Tables
 
-# Adding routes via the dashboard
+### Adding routes via the dashboard
 
 ![addendpoints](https://github.com/zeus-fyi/zeus/assets/17446735/98eb761a-9ab3-4eff-9c2a-65c9c957f13f)
 
-# Adding new tables via the dashboard
+### Adding new tables via the dashboard
 
 ![addgroups](https://github.com/zeus-fyi/zeus/assets/17446735/a499b3f2-de4d-4ec8-8a5e-652412dea4f7)
 

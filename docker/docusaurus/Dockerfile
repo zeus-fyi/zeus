@@ -4,7 +4,8 @@ FROM node:lts as base
 WORKDIR /app
 
 # Copy the package.json and package-lock.json files into the container
-COPY apps/docusaurus/zeusfyi/package.json ./
+COPY apps/docusaurus/zeusfyi/package.json apps/docusaurus/zeusfyi/package-lock.json ./
+
 # Install any needed packages
 RUN yarn install --frozen-lockfile
 
