@@ -8,6 +8,11 @@
     text-align: center;
     position: relative;
     overflow: hidden;
+
+    background-color: #808080;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
 }
 
 @media screen and (max-width: 996px) {
@@ -20,4 +25,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.backgroundHome {
+    background-image: url("../../static/img/home-background.svg");
+    background-size: cover;
+    background-position: center center;
+    background-color: #808080; /* Fallback color */
 }
