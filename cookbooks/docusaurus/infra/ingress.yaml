@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: "docusaurus"
+  namespace: "docusaurus"
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  ingressClassName: "nginx"
+  tls:
+    - secretName: docusaurus-tls
+      hosts:
+        - docs.zeus.fyi
+  rules:
+    - host: docs.zeus.fyi
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: docusaurus
+                port:
+                  number: 80

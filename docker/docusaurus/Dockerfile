@@ -4,16 +4,15 @@ FROM node:lts as base
 WORKDIR /app
 
 # Copy the package.json and package-lock.json files into the container
-COPY . .
-
+COPY apps/docusaurus/zeusfyi/package.json ./
 # Install any needed packages
-RUN npm ci
+RUN yarn install --frozen-lockfile
 
 # Copy the rest of the application code into the container
 COPY apps/docusaurus/zeusfyi/ ./
 
 # Build the React app for production
-RUN npm run build --nomaps
+RUN yarn run build
 
 ENV NODE_ENV=production
 

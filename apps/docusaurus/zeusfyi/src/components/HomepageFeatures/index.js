@@ -5,7 +5,7 @@ import styles from './styles.module.css';
 const FeatureList = [
     {
         title: 'Lite',
-        Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
+        Svg: require('@site/static/img/icon.svg').default,
         description: (
             <>
 
@@ -14,7 +14,7 @@ const FeatureList = [
     },
     {
         title: 'Standard',
-        Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
+        Svg: require('@site/static/img/icon.svg').default,
         description: (
             <>
 
@@ -23,7 +23,7 @@ const FeatureList = [
     },
     {
         title: 'Professional',
-        Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
+        Svg: require('@site/static/img/icon.svg').default,
         description: (
             <>
 

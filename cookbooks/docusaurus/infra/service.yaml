@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: "docusaurus"
+  labels:
+    app.kubernetes.io/instance: "docusaurus"
+    app.kubernetes.io/name: "docusaurus"
+    app.kubernetes.io/managed-by: "zeus"
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/instance: "docusaurus"
+    app.kubernetes.io/name: "docusaurus"
+
