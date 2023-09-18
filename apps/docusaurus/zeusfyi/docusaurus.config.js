@@ -78,6 +78,7 @@ const config = {
                     {
                         label: 'Medium',
                         href: 'https://medium.com/zeusfyi',
+                        position: 'right',
                     },
                     {
                         label: 'GitHub',
