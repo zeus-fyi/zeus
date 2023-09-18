@@ -3,7 +3,7 @@ name: Build Serverless BLS Signer
 on:
   push:
     paths:
-      - apps/cookbooks/serverless/ethereum/**
+      - apps/serverless/ethereum/**
       - .github/workflows/bls_serverless.yml
     branches:
       - main
