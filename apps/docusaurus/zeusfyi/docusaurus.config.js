@@ -71,9 +71,14 @@ const config = {
                 },
                 items: [
                     {
-                        href: 'https://github.com/zeus-fyi/zeus',
+                        label: 'Sign Up',
+                        position: 'right',
+                        href: 'https://marketplace.quicknode.com/add-on/zeusfyi-4',
+                    },
+                    {
                         label: 'GitHub',
                         position: 'right',
+                        href: 'https://github.com/zeus-fyi/zeus',
                     },
                     {
                         label: 'Discord',
