@@ -32,7 +32,7 @@ export default function Home() {
 
         <Layout
             wrapperClassName={styles.backgroundHome}
-            title={`Hello from ${siteConfig.title}`}
+            title={`${siteConfig.title} documentation`}
             description="Description will go into a meta tag in <head />">
             <HomepageHeader/>
             <main>
