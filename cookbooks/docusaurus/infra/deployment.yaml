@@ -20,12 +20,7 @@ spec:
       containers:
         - name: "docusaurus"
           image: "zeusfyi/docusaurus:latest"
-          volumeMounts:
-            - mountPath: "/scripts"
-              name: "cm-docusaurus"
           imagePullPolicy: Always
-          command: [ "/bin/sh" ]
-          args: [ "yarn","start" ]
           ports:
             - name: "http"
               containerPort: 3000
@@ -42,11 +37,6 @@ spec:
               port: http
           resources:
             { }
-      volumes:
-        - name: cm-docusaurus
-          configMap:
-            name: cm-docusaurus
-            defaultMode: 0744
       nodeSelector:
         { }
       affinity:

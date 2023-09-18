@@ -13,3 +13,4 @@ docker.pubbuildx:
 
 docker.debug:
 	docker run -it -p 3000:3000 --entrypoint /bin/bash zeusfyi/docusaurus:latest
+
