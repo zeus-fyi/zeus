@@ -7,7 +7,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 /** @type {import('@docusaurus/types').Config} */
 const config = {
     title: 'zeusfyi',
-    tagline: 'adaptive load balancing',
+    tagline: 'Adaptive RPC Load Balancing',
     favicon: 'img/icon.svg',
 
     // Set the production url of your site here
@@ -64,7 +64,7 @@ const config = {
             // Replace with your project's social card
             image: 'img/icon.png',
             navbar: {
-                title: 'Documentation',
+                title: 'zeusfyi',
                 logo: {
                     alt: 'zeusfyi logo',
                     src: 'img/icon.svg',
@@ -75,30 +75,57 @@ const config = {
                         label: 'GitHub',
                         position: 'right',
                     },
+                    {
+                        label: 'Discord',
+                        href: 'https://discord.gg/g3jtumw7B7',
+                        position: 'right',
+                    }
                 ],
             },
             footer: {
                 style: 'dark',
                 links: [
                     {
-                        title: 'Docs',
+                        title: 'Documentation',
                         items: [
                             {
-                                label: 'Tutorial',
+                                label: 'Introduction',
                                 to: '/docs/intro',
                             },
                         ],
                     },
                     {
-                        title: 'More',
+                        title: 'Support',
                         items: [
                             {
-                                label: 'Blog',
-                                to: '/blog',
+                                label: 'Discord',
+                                href: 'https://discord.gg/g3jtumw7B7',
+                            },
+                        ],
+                    },
+                    {
+                        title: 'Social Media',
+                        items: [
+                            {
+                                label: 'LinkedIn',
+                                href: 'https://www.linkedin.com/company/zeusfyi',
+                            },
+                            {
+                                label: 'Twitter',
+                                href: 'https://twitter.com/zeus_fyi',
+                            },
+                        ],
+                    },
+                    {
+                        title: 'Resources',
+                        items: [
+                            {
+                                label: 'Medium',
+                                href: 'https://medium.com/zeusfyi',
                             },
                             {
                                 label: 'GitHub',
-                                href: 'https://github.com/facebook/docusaurus',
+                                href: 'https://github.com/zeus-fyi/zeus',
                             },
                         ],
                     },
