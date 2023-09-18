@@ -10,8 +10,9 @@ import (
 	"github.com/zeus-fyi/zeus/test/configs"
 	"github.com/zeus-fyi/zeus/test/test_suites"
 	zeus_client "github.com/zeus-fyi/zeus/zeus/z_client"
-	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_req_types"
 )
+
+var ctx = context.Background()
 
 type DocusaurusCookbookTestSuite struct {
 	test_suites.BaseTestSuite
@@ -19,26 +20,14 @@ type DocusaurusCookbookTestSuite struct {
 }
 
 func (t *DocusaurusCookbookTestSuite) TestDeployDocusaurus() {
-	ctx := context.Background()
 	resp, err := t.ZeusTestClient.Deploy(ctx, docusaurusKnsReq)
 	t.Require().Nil(err)
 	t.Assert().NotEmpty(resp)
 }
 
-func (t *DocusaurusCookbookTestSuite) TestUploadCharts() {
-	ctx := context.Background()
-	resp, err := t.ZeusTestClient.UploadChart(ctx, DocusaurusChartPath, docusaurusChart)
-	t.Require().Nil(err)
-	t.Assert().NotZero(resp.TopologyID)
-
-	docusaurusKnsReq.TopologyID = resp.TopologyID
-	tar := zeus_req_types.TopologyRequest{TopologyID: docusaurusKnsReq.TopologyID}
-	chartResp, err := t.ZeusTestClient.ReadChart(ctx, tar)
-	t.Require().Nil(err)
-	t.Assert().NotEmpty(chartResp)
-
-	err = chartResp.PrintWorkload(DocusaurusChartPath)
-	t.Require().Nil(err)
+func (t *DocusaurusCookbookTestSuite) TestUploadDocusaurus() {
+	_, rerr := DocusaurusClusterDefinition.UploadChartsFromClusterDefinition(ctx, t.ZeusTestClient, true)
+	t.Require().Nil(rerr)
 }
 
 func (t *DocusaurusCookbookTestSuite) TestCreateDocusaurusClass() {

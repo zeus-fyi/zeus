@@ -8,8 +8,6 @@ GOCACHE := $(shell go env GOCACHE)
 GOOS 	:= linux
 GOARCH  := amd64
 
-# --no-cache
-
 docker.pubbuildx:
 	@ docker buildx build -t ${IMG} -t ${LATEST} --build-arg GOOS=${GOOS} --build-arg GOARCH=${GOARCH} --platform=${GOOS}/${GOARCH} -f ../../docker/docusaurus/Dockerfile ../../ --push
 

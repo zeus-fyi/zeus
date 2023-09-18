@@ -18,4 +18,3 @@ ENV NODE_ENV=production
 
 EXPOSE 3000
 
-CMD ["node", "/app/node_modules/.bin/serve", "-s", "/app/build", "-l", "3000"]
