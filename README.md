@@ -1,33 +1,50 @@
-## Recent Guides ##
+# Recent Articles ##
 
-### Zeus K8s & Cloud Infra as Go Code Concepts
+## Show Me the Stats
+Optimal adaptive load balancing in stochastic environments.
+Recommended reading for scientists, engineers, data driven individuals
 
+![Screenshot 2023-09-14 at 11 12 23 PM](https://github.com/zeus-fyi/zeus/assets/17446735/025d3201-9236-40e9-8723-3a7d2d7a3e0a)
+
+https://medium.com/zeusfyi/show-me-the-stats-6740f8d6d0b7
+
+## Adaptive RPC Load Balancer on QuickNode Marketplace
+Accurate, Reliable, Performant Node Traffic at Web3 Scale
+
+![Screenshot 2023-09-14 at 11 11 30 PM](https://github.com/zeus-fyi/zeus/assets/17446735/802b7670-6b30-4e65-9348-e45e2a0cfcac)
+
+https://medium.com/zeusfyi/adaptive-rpc-load-balancer-on-quicknode-marketplace-e68bb7c9d8ac
+
+![Screenshot 2023-09-14 at 11 13 55 PM](https://github.com/zeus-fyi/zeus/assets/17446735/1d2a263e-5aa7-418c-a0f0-1f497cab0353)
+
+Beta Testing Sign Up (free to use): 
+https://marketplace.quicknode.com/add-on/zeusfyi-4
+
+## zK8s == Kubernetes + Zeus
 Here we overview the core concepts needed to understand how you can build, deploy, configure K8s apps using Zeus, with a full walkthrough example of how we created an Ethereum beacon.
 
 https://medium.com/@zeusfyi/zeus-k8s-infra-as-code-concepts-47e690c6e3c5
 
-### Zeus UI Tutorial: No Code Kubernetes: Create an Authenticated API Within 5 Minutes
+## Authenticated API in 5 Minutes
+Step by step tutorial using our UI
 
 https://medium.com/@zeusfyi/zeus-ui-no-code-kubernetes-authenticated-api-tutorial-c468d5ef0446
 
-## Zeus Apps & Clients ##
+## zK8s Apps & Clients ##
+zK8s is an expressive language for cloud infrastructure, used for building, assembling, and keeping them running over their entire lifecycle. Enabling cost efficient, effortless large scale infra automation, coordination, customization, and control.
 
-Core Zeus Infra Automation Client
-#### ```pkg/zeus/client```
-
-Powerful Cluster Building, Allowing for Large Scale Infra Automation, Customization, Control
-
-#### ```pkg/zeus/cluster_config_drivers ```
-#### ```pkg/zeus/system_config_drivers ```
-#### ```pkg/zeus/workload_config_drivers ```
+#### ```cluster_config_drivers ```
+#### ```system_config_drivers ```
+#### ```workload_config_drivers ```
 
 Workflow & Proxy Programmable Automation (Rolling releases coming through end of year)
 
-#### ```pkg/zeus/artemis_workflows ```
-#### ```pkg/zeus/iris_programmable_proxy ```
+#### ```artemis_workflows ```
+#### ```iris_programmable_proxy ```
 
-QuickNode MarketPlace users can find Load Balancing documentation in the iris programmable proxy directory.
-
+QuickNode MarketPlace users can find Load Balancing documentation in the iris programmable proxy directory
++ Adaptive Load Balancer Documentation
+  
 #### API Endpoints 
 
 Documentation and code examples are found here
@@ -42,13 +59,9 @@ use the demo code to create your first api request in seconds
 
 ### Hera Client
 
-#### ```pkg/hera/client```
-
 This client uses the OpenAI API to generate code with AI. This service is available at OpenAI cost, so just pay for the token cost, otherwise it is free to use.
 
 ### Hades Library
-
-#### ```pkg/hades```
 
 Hades is used to interact with Kubernetes workloads via API, and can apply saved Zeus workloads & cookbooks onto your own in house infrastructure.
 
@@ -62,13 +75,13 @@ Contains common web2 & web3 building components like ethereum infra setups with 
 
 Contains full Kubernetes infra setup templates for microservices, simulating loads, injectable choreography for clusters, and more continually being added.
 
-#### ```zeus/cookbooks/microservices/choreography ```
-#### ```zeus/cookbooks/microservices/deployments ```
-#### ```zeus/cookbooks/microservices/load_simulator ```
+#### ```microservices/choreography ```
+#### ```microservices/deployments ```
+#### ```microservices/load_simulator ```
 
 #### Redis ###
 
-#### ```zeus/cookbooks/redis ```
+#### ```cookbooks/redis ```
 
 Contains full Kubernetes infra setup for open source BSD 3-Clause version of Redis with one master, two replicas, and including t-digest integration. You can find the pre-built bundle on our Docker repo: zeusfyi/redis:latest 
 
@@ -77,7 +90,7 @@ Contains full Kubernetes infra setup for open source BSD 3-Clause version of Red
 ### Artemis ###
 
 #### ```artemis.zeus.fyi``` ####
-#### ```pkg/artemis/client```
+#### ```artemis/client```
 
 Our web3 Artemis client is a tx orchestrator. It reliably submits & confirms ethereum transactions and logs their receipts. Chain with 
 the in memory db for storing web3 signer keys to build highly reliable web3 api actions with other users and smart contracts. You'll need
@@ -102,21 +115,21 @@ Snapshot app is embedded into the hercules docker app, and it can be used as an 
 
 Contains smart contract automation kits. This testcase shows a full end-end seed, create, and deposits validators on the Ethereum ephemery testnet.
 
-#### ```cookbooks/ethereum/automation```
-#### ```cookbooks/ethereum/automation/deposits_test.go ```
+#### ```ethereum/automation```
+#### ```ethereum/automation/deposits_test.go ```
 
 Cookbook items listed by protocol & component class. Eg. Ethereum has a beacon component group. Contains Kubernetes config setup templates. Here's a few example paths. Also contains an actions folder, which does log dumps, pod restarts, configuration changes on demand for k8s applications, and more.
 
-#### ```cookbooks/ethereum/beacons/infra/consensus_client```
-#### ```cookbooks/ethereum/beacons/infra/exec_client```
-#### ```cookbooks/ethereum/validators/infra/validators```
-#### ```cookbooks/ethereum/web3signers/infra/consensys_web3signer```
+#### ```beacons/infra/consensus_client```
+#### ```beacons/infra/exec_client```
+#### ```validators/infra/validators```
+#### ```web3signers/infra/consensys_web3signer```
 
 Complete, and powerful Ethereum infra automation 
 
-#### ```zeus/cookbooks/ethereum/beacons/beacon_cluster_test.go ```
-#### ```zeus/cookbooks/ethereum/validators/validator_cluster_test.go ```
-#### ```zeus/cookbooks/ethereum/web3signers/web3signer_cluster_test.go ```
+#### ```beacons/beacon_cluster_test.go ```
+#### ```validators/validator_cluster_test.go ```
+#### ```web3signers/web3signer_cluster_test.go ```
 
 See this test case to see how a beacon cluster class was created, and then extended to support choreography to reset configs on a scheduled interval for the Ephemery testnet, and then added validator clients, and then again to add web3signing integration.
 
@@ -151,13 +164,9 @@ We've merged Kubernetes & Temporal orchestration and added state management usin
 
 Not every possible field type is supported, but the most common ones are, and even a decent amount of the uncommon ones. If you find a field you need isn't supported please send us an email at support@zeus.fyi
 
-![Screenshot 2022-11-17 at 8 09 48 PM](https://user-images.githubusercontent.com/17446735/202614955-2708063e-1547-4dae-9332-f712102c287e.png)
-
 ![sys](https://user-images.githubusercontent.com/17446735/236006394-d7782657-c2a8-4ee6-a53c-a55f07dbc2b8.png)
 
-### Cluster Topology Class Hierarchy Definitions ###
-
-### Highest to Lowest Level &# Deployable Topologies ###
+##  Cluster Topology Class Hierarchy Definitions: Highest to Lowest Level
 
 ### Network Orchestration Topology ###
 
@@ -175,8 +184,6 @@ It can be any combination of lower level system topologies or components. At thi
 
 A fully working single component cluster topology that accomplishes one system component on its own and combined with a Zeus injection deploys this topology onto the network. Some but not all of these topologies can be stacked with another cluster topology or a base topology to create a higher level system component.
 
-### Deployable but Incomplete Topologies ###
-
 ### Base Topology ###
 
 A fully working single cluster topology that needs at least one other Base Topology to create a higher level component. An example would be deploying an execution client by itself post-merge on ethereum. It would be able to download chain data, but it wouldn’t be able to fulfill a useful purpose without another piece e.g. a consensus client component.  
@@ -191,6 +198,8 @@ An abstract atomic configuration base that needs an Infrastructure Base and Skel
 
 ### Skeleton Base ###
 An abstract atomic component base that needs additional pieces to create deployable infrastructure like config map, docker image links, etc. Needs an Infrastructure and Configuration Base to create a Base Topology
+
+![Screenshot 2022-11-17 at 8 09 48 PM](https://user-images.githubusercontent.com/17446735/202614955-2708063e-1547-4dae-9332-f712102c287e.png)
 
 ## Zeus ##
 
