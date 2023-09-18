@@ -76,6 +76,10 @@ const config = {
                         href: 'https://marketplace.quicknode.com/add-on/zeusfyi-4',
                     },
                     {
+                        label: 'Medium',
+                        href: 'https://medium.com/zeusfyi',
+                    },
+                    {
                         label: 'GitHub',
                         position: 'right',
                         href: 'https://github.com/zeus-fyi/zeus',
@@ -84,7 +88,7 @@ const config = {
                         label: 'Discord',
                         href: 'https://discord.gg/g3jtumw7B7',
                         position: 'right',
-                    }
+                    },
                 ],
             },
             footer: {
