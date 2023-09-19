@@ -23,6 +23,8 @@ const (
 	EndSessionLockID   = "End-Session-Lock-ID"
 	RouteGroupHeader   = "X-Route-Group"
 
+	EthereumMainnetTableHeaderKeyValue = "ethereum-mainnet"
+
 	LoadBalancingStrategy    = "X-Load-Balancing-Strategy"
 	Adaptive                 = "Adaptive"
 	AdaptiveLoadBalancingKey = "X-Adaptive-Metrics-Key"
@@ -109,6 +111,13 @@ func (w *Web3Actions) AddSessionLockHeader(sessionID string) {
 	w.Headers[SessionLockHeader] = sessionID
 }
 
+func (w *Web3Actions) AddDefaultEthereumMainnetTableHeader() {
+	if w.Headers == nil {
+		w.Headers = make(map[string]string)
+	}
+	w.Headers[RouteGroupHeader] = EthereumMainnetTableHeaderKeyValue
+}
+
 func (w *Web3Actions) AddRoutingGroupHeader(routingGroup string) {
 	if w.Headers == nil {
 		w.Headers = make(map[string]string)
@@ -159,18 +168,22 @@ func NewWeb3ActionsClientWithDefaultRelayProxy(nodeUrl string, accounts *account
 }
 
 func NewWeb3ActionsClientWithRelayProxy(relayProxyUrl, nodeUrl string, accounts *accounts.Account) Web3Actions {
-	return Web3Actions{
+	wa := Web3Actions{
 		NodeURL:       nodeUrl,
 		RelayProxyUrl: relayProxyUrl,
 		Account:       accounts,
 	}
+	wa.AddDefaultEthereumMainnetTableHeader()
+	return wa
 }
 
 func NewWeb3ActionsClientWithAccount(nodeUrl string, account *accounts.Account) Web3Actions {
-	return Web3Actions{
+	wa := Web3Actions{
 		NodeURL: nodeUrl,
 		Account: account,
 	}
+	wa.AddDefaultEthereumMainnetTableHeader()
+	return wa
 }
 
 func replacePrefix(input string, prefix string, replacement string) string {
