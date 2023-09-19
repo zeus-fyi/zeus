@@ -25,6 +25,10 @@ const (
 
 	EthereumMainnetTableHeaderKeyValue = "ethereum-mainnet"
 
+	XProcedureHeader = "X-Routing-Procedure"
+
+	EthJsonRpcMaxBlockAggReduceProcedureKeyValue = "eth_maxBlockAggReduce"
+
 	LoadBalancingStrategy    = "X-Load-Balancing-Strategy"
 	Adaptive                 = "Adaptive"
 	AdaptiveLoadBalancingKey = "X-Adaptive-Metrics-Key"
@@ -116,6 +120,13 @@ func (w *Web3Actions) AddDefaultEthereumMainnetTableHeader() {
 		w.Headers = make(map[string]string)
 	}
 	w.Headers[RouteGroupHeader] = EthereumMainnetTableHeaderKeyValue
+}
+
+func (w *Web3Actions) AddMaxBlockHeightProcedureEthJsonRpcHeader() {
+	if w.Headers == nil {
+		w.Headers = make(map[string]string)
+	}
+	w.Headers[XProcedureHeader] = EthJsonRpcMaxBlockAggReduceProcedureKeyValue
 }
 
 func (w *Web3Actions) AddRoutingGroupHeader(routingGroup string) {
