@@ -77,7 +77,7 @@ const config = {
                     },
                     {
                         label: 'Medium',
-                        href: 'https://medium.com/zeusfyi',
+                        href: 'https://medium.zeus.fyi/',
                         position: 'right',
                     },
                     {
@@ -131,7 +131,7 @@ const config = {
                         items: [
                             {
                                 label: 'Medium',
-                                href: 'https://medium.com/zeusfyi',
+                                href: 'https://medium.zeus.fyi/',
                             },
                             {
                                 label: 'GitHub',
