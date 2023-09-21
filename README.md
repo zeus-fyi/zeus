@@ -1,9 +1,6 @@
 # Documentation ##
 
-Adaptive RPC Load Balancer  
-
 https://docs.zeus.fyi
-
 
 # Recent Articles ##
 
