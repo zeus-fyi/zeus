@@ -9,7 +9,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Delete
-  storageClassName: local-storage
+  storageClassName: fast-disks
   local:
     path: /mnt/fast-disks
   nodeAffinity:
