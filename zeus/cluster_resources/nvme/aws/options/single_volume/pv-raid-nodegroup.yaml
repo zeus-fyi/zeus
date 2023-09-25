@@ -3,9 +3,9 @@ kind: ClusterConfig
 
 metadata:
   # Replace with your EKS Cluster's name
-  name: eksworkshop-eksctl
+  name: zeus-us-west-1
   # Replace with the AWS Region your cluster is deployed in
-  region: us-west-2
+  region: us-west-1
 
 managedNodeGroups:
   # Name to give the managed node-group
@@ -14,7 +14,7 @@ managedNodeGroups:
     labels: { fast-disk-node: "pv-raid" }
     instanceType: i3.8xlarge
     desiredCapacity: 2
-    volumeSize: 100 # EBS Boot Volume size
+    volumeSize: 20 # EBS Boot Volume size
     privateNetworking: true
     preBootstrapCommands:
       - |
