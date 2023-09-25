@@ -1,4 +1,4 @@
-package cluster_node_resources
+package nodes
 
 import (
 	"testing"

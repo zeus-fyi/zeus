@@ -1,0 +1,45 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  # Replace with your EKS Cluster's name
+  name: eksworkshop-eksctl
+  # Replace with the AWS Region your cluster is deployed in
+  region: us-west-2
+
+managedNodeGroups:
+  # Name to give the managed node-group
+  - name: eks-pv-nvme-ng
+    # Label the nodes that they contain fast-disks
+    labels: { fast-disk-node: "pv-nvme" }
+    instanceType: i3.8xlarge
+    desiredCapacity: 2
+    volumeSize: 100 # EBS Boot Volume size
+    privateNetworking: true
+    preBootstrapCommands:
+      - |
+        # Install NVMe CLI
+        yum install nvme-cli -y
+        
+        # Get a list of instance-store NVMe drives
+        nvme_drives=$(nvme list | grep "Amazon EC2 NVMe Instance Storage" | cut -d " " -f 1 || true)
+        readarray -t nvme_drives <<< "$nvme_drives"
+
+        for disk in "${nvme_drives[@]}"
+        do
+          # Format the disk to ext4
+          mkfs.ext4 -F $disk
+        
+          # Get disk UUID
+          uuid=$(blkid -o value -s UUID $disk)
+        
+          # Create a filesystem path to mount the disk
+          mount_location="/mnt/fast-disks/${uuid}"
+          mkdir -p $mount_location
+        
+          # Mount the disk
+          mount $disk $mount_location
+        
+          # Mount the disk during a reboot
+          echo $disk $mount_location ext4 defaults,noatime 0 2 >> /etc/fstab 
+        done

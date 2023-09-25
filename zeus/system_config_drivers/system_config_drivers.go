@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	"github.com/rs/zerolog/log"
-	cluster_node_resources "github.com/zeus-fyi/zeus/zeus/cluster_resources"
+	cluster_node_resources "github.com/zeus-fyi/zeus/zeus/cluster_resources/nodes"
 	zeus_client "github.com/zeus-fyi/zeus/zeus/z_client"
 	zeus_endpoints "github.com/zeus-fyi/zeus/zeus/z_client/endpoints"
 	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_resp_types"
