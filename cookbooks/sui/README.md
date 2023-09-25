@@ -1,3 +1,8 @@
+NVMe Setup Instructions:
+
+See cloud provider specific setup instructions for NVMe setup on EKS:
+[zeus/cluster_resources/nvme](https://github.com/zeus-fyi/zeus/tree/main/zeus/cluster_resources/nvmee)
+
 Sui Recommended Specs:
 
 CPUs: 8 physical cores / 16 vCPUs
