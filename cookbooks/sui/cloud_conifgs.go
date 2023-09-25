@@ -1,5 +1,7 @@
 package sui_cookbooks
 
+// TODO: use this to override local-pv per cloud provider
+
 func ConfigureCloudProvider(cp string) {
 	switch cp {
 	case "aws":
