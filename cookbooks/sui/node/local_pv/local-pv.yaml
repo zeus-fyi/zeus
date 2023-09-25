@@ -20,3 +20,4 @@ spec:
               operator: In
               values:
                 - pv-raid
+                - pv-nvme

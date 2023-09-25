@@ -107,6 +107,9 @@ spec:
       tolerations:
         [ ]
       volumes:
+        - name: local-nvme-storage
+          persistentVolumeClaim:
+            claimName: local-pv-nvme
         - name: cm-sui
           configMap:
             name: cm-sui
