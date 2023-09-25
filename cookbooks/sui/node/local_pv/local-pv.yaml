@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: local-pv
+  name: local-pv-nvme
 spec:
   capacity:
     storage: 4Ti
