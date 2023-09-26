@@ -2,19 +2,26 @@ apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
 
 metadata:
-  # Replace with your EKS Cluster's name
   name: zeus-us-west-1
-  # Replace with the AWS Region your cluster is deployed in
   region: us-west-1
 
+vpc:
+  id: "vpc-your-vpc-id"
+  securityGroup: "sg-your-security-group-id"
+  subnets:
+    private:
+      us-west-1a:
+        id: "subnet-your-subnet-id"
+      us-west-1b:
+        id: "subnet-your-subnet-id"
+
+
 managedNodeGroups:
-  # Name to give the managed node-group
   - name: eks-pv-raid-ng
-    # Label the nodes that they contain fast-disks
     labels: { fast-disk-node: "pv-raid" }
     instanceType: i3.8xlarge
-    desiredCapacity: 2
-    volumeSize: 20 # EBS Boot Volume size
+    desiredCapacity: 1
+    volumeSize: 20
     privateNetworking: true
     preBootstrapCommands:
       - |
