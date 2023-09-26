@@ -1,8 +1,24 @@
-Sui Recommended Specs:
+### NVMe Setup Instructions:
 
-CPUs: 8 physical cores / 16 vCPUs
-RAM: 128 GB
-Storage (SSD): 4 TB NVMe drive
+See cloud provider specific setup instructions for NVMe setup:<br>
+
+[zeus/cluster_resources/nvme](https://github.com/zeus-fyi/zeus/tree/main/zeus/cluster_resources/nvmee)
+
+~~Kubernetes Local Persistent Volume Setup Notes:
+
+- You must set a PersistentVolume nodeAffinity when using local volumes.~~
+
+[https://kubernetes.io/docs/concepts/storage/volumes/#local](https://kubernetes.io/docs/concepts/storage/volumes/#local)
+
+### AWS
+
+storageClass: fast-disks
+
+### Sui Recommended Specs:
+
+CPUs: 8 physical cores / 16 vCPUs<br>
+RAM: 128 GB<br>
+Storage (SSD): 4 TB NVMe drive<br>
 
 Additional Info: [https://docs.sui.io/build/fullnode](https://docs.sui.io/build/fullnode)
 

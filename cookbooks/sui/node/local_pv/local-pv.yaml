@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: local-pv-nvme
+spec:
+  capacity:
+    storage: 3584Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Delete
+  storageClassName: fast-disks
+  local:
+    path: /mnt/fast-disks
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: fast-disk-node
+              operator: In
+              values:
+                - pv-raid
+                - pv-nvme

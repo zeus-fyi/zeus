@@ -95,11 +95,11 @@ spec:
               port: http-rpc
           resources:
             limits:
-              cpu: "16"
-              memory: "128Gi"
+              cpu: "15"
+              memory: "110Gi"
             requests:
-              cpu: "16"
-              memory: "128Gi"
+              cpu: "15"
+              memory: "110Gi"
       nodeSelector:
         { }
       affinity:
@@ -114,13 +114,12 @@ spec:
   volumeClaimTemplates:
     - metadata:
         name: sui-client-storage
-        annotations:
-          { }
       spec:
         accessModes:
           - ReadWriteOnce
+        storageClassName: fast-disks
         resources:
           requests:
-            storage: "6Ti"
+            storage: "3.5Ti"
 
 
