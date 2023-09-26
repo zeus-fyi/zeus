@@ -21,7 +21,7 @@ spec:
         # In production, one might want to use the container digest hash
         # over version for improved security.
         # https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/CHANGELOG.md
-        - image: "registry.k8s.io/sig-storage/local-volume-provisioner:v2.5.0"
+        - image: "registry.k8s.io/sig-storage/local-volume-provisioner:v2.6.0"
           # In production you might want to set this to use a locally cached
           # image by setting this to: IfNotPresent
           imagePullPolicy: "Always"
