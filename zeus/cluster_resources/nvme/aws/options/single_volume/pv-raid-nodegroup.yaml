@@ -19,7 +19,7 @@ vpc:
 managedNodeGroups:
   - name: eks-pv-raid-ng
     labels: { fast-disk-node: "pv-raid" }
-    instanceType: i3.8xlarge
+    instanceType: i3.4xlarge
     desiredCapacity: 1
     volumeSize: 20
     privateNetworking: true
