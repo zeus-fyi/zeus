@@ -4,7 +4,7 @@ metadata:
   name: local-pv-nvme
 spec:
   capacity:
-    storage: 4Ti
+    storage: 3584Gi
   volumeMode: Filesystem
   accessModes:
     - ReadWriteOnce

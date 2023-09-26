@@ -4,9 +4,9 @@ See cloud provider specific setup instructions for NVMe setup:<br>
 
 [zeus/cluster_resources/nvme](https://github.com/zeus-fyi/zeus/tree/main/zeus/cluster_resources/nvmee)
 
-Kubernetes Local Persistent Volume Setup Notes:
+~~Kubernetes Local Persistent Volume Setup Notes:
 
-- You must set a PersistentVolume nodeAffinity when using local volumes.
+- You must set a PersistentVolume nodeAffinity when using local volumes.~~
 
 [https://kubernetes.io/docs/concepts/storage/volumes/#local](https://kubernetes.io/docs/concepts/storage/volumes/#local)
 
