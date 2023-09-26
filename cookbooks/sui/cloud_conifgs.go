@@ -6,7 +6,10 @@ func ConfigureCloudProvider(cp string) {
 	switch cp {
 	case "aws":
 		// TODO set storage class override
+
+		//aws_nvme.AwsStorageClass
 	case "gcp":
+		// gcp_nvme.GcpStorageClass
 	case "do":
 	case "ovh":
 		// TODO when nvme is available in public cloud (OvhCloud US)
