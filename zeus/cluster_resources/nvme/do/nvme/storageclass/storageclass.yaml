@@ -1,9 +1,8 @@
-kind: StorageClass
 apiVersion: storage.k8s.io/v1
+kind: StorageClass
 metadata:
-  name: nvme-ssd-block
-  annotations:
-    storageclass.kubernetes.io/is-default-class: "true"
-parameters:
-  zone: nyc1
-provisioner: external/digitalocean
+  name: fast-disks
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer
+# Supported policies: Delete, Retain
+reclaimPolicy: Retain
