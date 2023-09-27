@@ -4,7 +4,7 @@ See cloud provider specific setup instructions for NVMe setup:<br>
 
 [zeus/cluster_resources/nvme](https://github.com/zeus-fyi/zeus/tree/main/zeus/cluster_resources/nvmee)
 
-~~Kubernetes Local Persistent Volume Setup Notes:
+Kubernetes Local Persistent Volume Setup Notes:
 
 - You must set a PersistentVolume nodeAffinity when using local volumes.~~
 
@@ -13,6 +13,23 @@ See cloud provider specific setup instructions for NVMe setup:<br>
 ### AWS
 
 storageClass: fast-disks
+
+Recommended machine types:
+
+3rd gen: i3.8xlarge (32 vCPUs, 244 GB RAM, 4 x 1.9 TB NVMe SSD)<br>
+4th gen recommended instance type: i4i.8xlarge (32 vCPUs, 256 GB RAM, 2 x 3750 TB Nitro SSD*)<br>
+
+*Nitro SSDs are NVMe-based and custom-designed by AWS
+
+### GCP
+
+storageClass: nvme-ssd-block
+
+### DigitalOcean
+
+Recommended machine types:
+
+Storage-Optimized Droplet. SSD x1.5 (24 vCPUs, 192 GiB RAM, 5.27 TB NVMe SSD)<br>
 
 ### Sui Recommended Specs:
 
