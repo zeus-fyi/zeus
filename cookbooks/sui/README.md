@@ -14,6 +14,15 @@ See cloud provider specific setup instructions for NVMe setup:<br>
 
 storageClass: fast-disks
 
+3rd gen recommended instance type: i3.8xlarge (32 vCPUs, 244 GB RAM, 4 x 1.9 TB NVMe SSD)
+4th gen recommended instance type: i4i.8xlarge (32 vCPUs, 256 GB RAM, 2 x 3750 TB Nitro SSD*)
+
+*Nitro SSDs are NVMe-based and custom-designed by AWS
+
+### GCP
+
+storageClass: nvme-ssd-block
+
 ### Sui Recommended Specs:
 
 CPUs: 8 physical cores / 16 vCPUs<br>
