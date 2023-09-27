@@ -4,9 +4,7 @@ import (
 	"context"
 
 	"github.com/rs/zerolog/log"
-	"github.com/zeus-fyi/zeus/pkg/poseidon"
 	"github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/compression"
-	"github.com/zeus-fyi/zeus/pkg/utils/host_info"
 	resty_base "github.com/zeus-fyi/zeus/zeus/z_client/base"
 )
 
@@ -43,31 +41,20 @@ func EthereumChainDownload(ctx context.Context, w WorkloadInfo) {
 		log.Ctx(ctx).Info().Msg("No download url provided, skipping snapshot download")
 		return
 	}
-	stats, err := host_info.GetDiskUsageStats(ctx, w.DataDir.DirIn)
-	if err != nil {
-		log.Ctx(ctx).Panic().Err(err).Msg("GetDiskUsageStats")
-	}
-	switch {
-	// just approximates empty as <= 1% disk usage in dataDir
-	case onlyIfEmptyDir && stats.UsedPercent <= float64(1):
-		err = poseidon.DownloadFile(ctx, w.DataDir.DirIn, preSignedURL)
+
+	switch compressionType {
+	case ".tar.lz4":
+		dec := compression.NewCompression()
+		w.DataDir.DirOut = w.DataDir.DirIn
+		w.DataDir.FnIn = clientName + compressionType
+		err := dec.Lz4Decompress(&w.DataDir)
 		if err != nil {
-			log.Ctx(ctx).Panic().Err(err).Msg("DownloadFile")
+			log.Ctx(ctx).Panic().Err(err).Msg("Lz4Decompress")
 		}
-		switch compressionType {
-		case ".tar.lz4":
-			dec := compression.NewCompression()
-			w.DataDir.DirOut = w.DataDir.DirIn
-			w.DataDir.FnIn = clientName + compressionType
-			err = dec.Lz4Decompress(&w.DataDir)
-			if err != nil {
-				log.Ctx(ctx).Panic().Err(err).Msg("Lz4Decompress")
-			}
-			// cleans up, by deleting the compressed file
-			err = w.DataDir.RemoveFileInPath()
-			if err != nil {
-				log.Ctx(ctx).Err(err).Msg("RemoveFileInPath")
-			}
+		// cleans up, by deleting the compressed file
+		err = w.DataDir.RemoveFileInPath()
+		if err != nil {
+			log.Ctx(ctx).Err(err).Msg("RemoveFileInPath")
 		}
 	}
 }
