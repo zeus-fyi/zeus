@@ -40,6 +40,10 @@ const (
 	suiValidatorConfig = "validator"
 
 	SuiRpcPortName = "http-rpc"
+
+	DownloadMainnet = "downloadMainnetNode"
+	DownloadTestnet = "downloadTestnetNode"
+	NoDownload      = "noDownload"
 )
 
 type SuiConfigOpts struct {
@@ -62,15 +66,22 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 		cpuSize = cpuCores
 		memSize = memorySize
 		diskSize = mainnetDiskSize
-		downloadStartup = "downloadMainnetNode"
+		downloadStartup = DownloadMainnet
 	case testnet:
 		diskSize = testnetDiskSize
 		cpuSize = cpuCoresTestnet
 		memSize = memorySizeTestnet
-		downloadStartup = "downloadTestnetNode"
+		downloadStartup = DownloadTestnet
+	}
+	if !cfg.DownloadSnapshot {
+		downloadStartup = NoDownload
 	}
 	rr := v1Core.ResourceRequirements{
 		Requests: v1Core.ResourceList{
+			"cpu":    resource.MustParse(cpuSize),
+			"memory": resource.MustParse(memSize),
+		},
+		Limits: v1Core.ResourceList{
 			"cpu":    resource.MustParse(cpuSize),
 			"memory": resource.MustParse(memSize),
 		},

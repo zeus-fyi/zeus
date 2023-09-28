@@ -6,6 +6,9 @@ data:
   hercules.sh: |-
     #!/bin/sh
     exec hercules
+  noDownload.sh: |-
+    #!/bin/sh
+    exec snapshots --downloadURL="" --protocol="" --network="" --workload-type=""
   downloadMainnetNode.sh: |-
     #!/bin/sh
     exec snapshots --downloadURL="" --protocol="sui" --network="mainnet" --workload-type="full"
