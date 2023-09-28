@@ -10,7 +10,7 @@ import (
 	v1 "k8s.io/api/core/v1"
 )
 
-func (s *SuiActionsClient) GetSuiPodLogs(ctx context.Context, par zeus_pods_reqs.PodActionRequest) ([]byte, error) {
+func (s *SuiActionsClient) GetLogs(ctx context.Context, par zeus_pods_reqs.PodActionRequest) ([]byte, error) {
 	par.ContainerName = "sui"
 	filter := strings_filter.FilterOpts{Contains: "sui"}
 	logOpts := &v1.PodLogOptions{Container: par.ContainerName}

@@ -19,7 +19,7 @@ func (t *SuiActionsCookbookTestSuite) TestGetLogs() {
 			CloudCtxNs: cloudCtxNs,
 		},
 	}
-	resp, err := t.su.GetSuiPodLogs(ctx, basePar)
+	resp, err := t.su.GetLogs(ctx, basePar)
 	t.Assert().Nil(err)
 	t.Assert().NotNil(resp)
 }
