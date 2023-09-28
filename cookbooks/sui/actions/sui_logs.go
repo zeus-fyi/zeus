@@ -19,7 +19,7 @@ func (s *SuiActionsClient) GetLogs(ctx context.Context, par zeus_pods_reqs.PodAc
 
 	resp, err := s.GetPodLogs(ctx, par)
 	if err != nil {
-		log.Ctx(ctx).Err(err).Msg("SuiActionsClient: GetPodLogs")
+		log.Err(err).Msg("SuiActionsClient: GetPodLogs")
 		return nil, err
 	}
 	s.PrintPath.FnOut = "sui_logs"
