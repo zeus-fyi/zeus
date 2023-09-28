@@ -11,28 +11,33 @@ import (
 )
 
 const (
+	// networks
+	mainnet = "mainnet"
+	testnet = "testnet"
+
 	// docker image references
 	dockerImage = "mysten/sui-node:stable"
 	hercules    = "hercules"
 
-	// workload compute resources
+	// mainnet workload compute resources
 	cpuCores   = "16"
 	memorySize = "128Gi"
-	// workload disk sizes
+	// mainnet workload disk sizes
 	mainnetDiskSize = "4Ti"
-	testnetDiskSize = "2Ti"
 
-	// workload type
-	suiNodeConfig      = "full"
-	suiValidatorConfig = "validator"
+	// testnet compute resources
+	cpuCoresTestnet   = "7500m"
+	memorySizeTestnet = "63Gi"
+	// testnet workload disk sizes
+	testnetDiskSize = "2Ti"
 
 	// workload label, name, or k8s references
 	suiDiskName  = "sui-client-storage"
 	suiConfigMap = "cm-sui"
 
-	// networks
-	mainnet = "mainnet"
-	testnet = "testnet"
+	// workload type
+	suiNodeConfig      = "full"
+	suiValidatorConfig = "validator"
 )
 
 type SuiConfigOpts struct {
@@ -53,6 +58,7 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 	switch cfg.Network {
 	case mainnet:
 		// todo, add workload type conditional here
+		diskSize = mainnetDiskSize
 		downloadStartup = "downloadMainnetNode"
 	case testnet:
 		diskSize = testnetDiskSize
