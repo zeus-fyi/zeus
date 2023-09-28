@@ -10,6 +10,7 @@ func ConfigureCloudProvider(cp string) {
 	case "gcp":
 		// gcp_nvme.GcpStorageClass
 	case "do":
+		// do_nvme.DoStorageClass
 	case "ovh":
 		// TODO when nvme is available in public cloud (OvhCloud US)
 	}
