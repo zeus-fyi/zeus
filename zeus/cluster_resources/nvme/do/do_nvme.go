@@ -1,8 +1,8 @@
 package do_nvme
 
 const (
-	DoStorageClass = "fast-disks"
-	DoNvmePath     = "/mnt/fast-disks"
+	DoStorageClass = "nvme-ssd-block"
+	DoNvmePath     = "/"
 )
 
 func AddDoNvmeLabels(labels map[string]string) map[string]string {

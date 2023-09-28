@@ -65,3 +65,4 @@ Thumbs.db
 /builds/serverless/bls_signatures/keystores.zip
 /builds/serverless/tmp/
 /apps/docusaurus/zeusfyi/.gitignore
+/zeus/cluster_resources/nvme/do/nvme/debug/

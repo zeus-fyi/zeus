@@ -1,8 +1,12 @@
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
-  name: fast-disks
+  name: nvme-ssd-block
+  labels:
+    helm.sh/chart: local-static-provisioner-2.0.0
+    app.kubernetes.io/name: local-static-provisioner
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/instance: local-static-provisioner
 provisioner: kubernetes.io/no-provisioner
 volumeBindingMode: WaitForFirstConsumer
-# Supported policies: Delete, Retain
-reclaimPolicy: Retain
+reclaimPolicy: Delete

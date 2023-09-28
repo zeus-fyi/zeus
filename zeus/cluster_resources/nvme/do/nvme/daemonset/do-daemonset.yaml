@@ -46,16 +46,16 @@ spec:
             - name: provisioner-config
               mountPath: /etc/provisioner/config
               readOnly: true
-            - mountPath: /mnt/fast-disks
-              name: fast-disks
+            - mountPath: /
+              name: nvme-ssd-block
               mountPropagation: "HostToContainer"
       volumes:
         - name: provisioner-config
           configMap:
             name: local-volume-provisioner-config
-        - name: fast-disks
+        - name: nvme-ssd-block
           hostPath:
-            path: /mnt/fast-disks
+            path: /
       # Only run CSI Driver on the `fast-disk` tagged nodegroup
       affinity:
         nodeAffinity:

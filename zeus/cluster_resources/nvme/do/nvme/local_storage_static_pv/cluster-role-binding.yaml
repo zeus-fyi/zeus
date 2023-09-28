@@ -1,14 +1,17 @@
-# Attach the K8s ClusterRole to our K8s ServiceAccount
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: local-storage-provisioner-node-binding
-  namespace: kube-system
+  name: local-static-provisioner-node-binding
+  labels:
+    helm.sh/chart: local-static-provisioner-2.0.0
+    app.kubernetes.io/name: local-static-provisioner
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/instance: local-static-provisioner
 subjects:
   - kind: ServiceAccount
-    name: local-volume-provisioner
-    namespace: kube-system
+    name: local-static-provisioner
+    namespace: default
 roleRef:
   kind: ClusterRole
-  name: local-storage-provisioner-node-clusterrole
+  name: local-static-provisioner-node-clusterrole
   apiGroup: rbac.authorization.k8s.io

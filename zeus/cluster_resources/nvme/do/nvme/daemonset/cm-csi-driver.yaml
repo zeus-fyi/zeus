@@ -11,27 +11,6 @@ data:
     - kubernetes.io/hostname
 
   storageClassMap: |
-    fast-disks:
-      # Path on the host where local volumes of this storage class
-      # are mounted under.
-      hostDir: /mnt/fast-disks
-
-      # Optionally specify mount path of local volumes.
-      # By default, we use same path as hostDir in container.
-      mountDir: /mnt/fast-disks
-    
-      # The /scripts/shred.sh is contained in the CSI drivers container
-      # https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/deployment/docker/scripts/shred.sh
-      blockCleanerCommand:
-        - "/scripts/shred.sh"
-        - "2"
-
-      # The volume mode of PV defines whether a device volume is
-      # intended to use as a formatted filesystem volume or to remain in block
-      # state. Value of Filesystem is implied when omitted.
-      volumeMode: Filesystem
-      fsType: ext4
-    
-      # name pattern check
-      # only discover local disk mounted to path matching pattern("*" by default).
-      namePattern: "*"
+    nvme-ssd-block:
+      hostDir: /
+      mountDir: /

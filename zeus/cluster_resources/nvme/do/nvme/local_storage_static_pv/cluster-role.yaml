@@ -1,8 +1,12 @@
-# List of Permissions
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: local-storage-provisioner-node-clusterrole
+  name: local-static-provisioner-node-clusterrole
+  labels:
+    helm.sh/chart: local-static-provisioner-2.0.0
+    app.kubernetes.io/name: local-static-provisioner
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/instance: local-static-provisioner
 rules:
   - apiGroups: [ "" ]
     resources: [ "persistentvolumes" ]
