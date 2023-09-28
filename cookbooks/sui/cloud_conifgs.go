@@ -1,17 +1,23 @@
 package sui_cookbooks
 
-// TODO: use this to override local-pv per cloud provider
+import (
+	aws_nvme "github.com/zeus-fyi/zeus/zeus/cluster_resources/nvme/aws"
+	do_nvme "github.com/zeus-fyi/zeus/zeus/cluster_resources/nvme/do"
+	gcp_nvme "github.com/zeus-fyi/zeus/zeus/cluster_resources/nvme/gcp"
+)
 
-func ConfigureCloudProvider(cp string) {
+func ConfigureCloudProviderStorageClass(cp string) string {
 	switch cp {
 	case "aws":
-		// TODO set storage class override
-		//aws_nvme.AwsStorageClass
+		return aws_nvme.AwsStorageClass
 	case "gcp":
-		// gcp_nvme.GcpStorageClass
+		return gcp_nvme.GcpStorageClass
 	case "do":
-		// do_nvme.DoStorageClass
+		return do_nvme.DoStorageClass
 	case "ovh":
-		// TODO when nvme is available in public cloud (OvhCloud US)
+		return ""
+	// TODO when nvme is available in public cloud (OvhCloud US)
+	default:
+		return ""
 	}
 }

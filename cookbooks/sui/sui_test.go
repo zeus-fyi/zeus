@@ -36,7 +36,13 @@ func (t *SuiCookbookTestSuite) TestUpload() {
 }
 
 func (t *SuiCookbookTestSuite) TestUploadTestnet() {
-	suiNodeDefinition.ComponentBases[Sui] = GetSuiClientNetworkConfigBase(Full, "testnet")
+	cfg := SuiConfigOpts{
+		DownloadSnapshot: false,
+		AddIngress:       false,
+		CloudProvider:    "",
+		Network:          "",
+	}
+	suiNodeDefinition.ComponentBases[Sui] = GetSuiClientNetworkConfigBase(cfg)
 	t.Require().NotNil(suiNodeDefinition.ComponentBases[Sui])
 	//_, rerr := suiNodeDefinition.UploadChartsFromClusterDefinition(ctx, t.ZeusTestClient, true)
 	//t.Require().Nil(rerr)

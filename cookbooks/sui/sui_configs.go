@@ -1,6 +1,7 @@
 package sui_cookbooks
 
 import (
+	"github.com/aws/aws-sdk-go-v2/aws"
 	zeus_cluster_config_drivers "github.com/zeus-fyi/zeus/zeus/cluster_config_drivers"
 	zeus_topology_config_drivers "github.com/zeus-fyi/zeus/zeus/workload_config_drivers"
 	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_req_types"
@@ -18,7 +19,7 @@ const (
 	cpuCores   = "16"
 	memorySize = "128Gi"
 	// workload disk sizes
-	mainnetDiskSize = "6Ti"
+	mainnetDiskSize = "4Ti"
 	testnetDiskSize = "2Ti"
 
 	// workload type
@@ -34,15 +35,22 @@ const (
 	testnet = "testnet"
 )
 
+type SuiConfigOpts struct {
+	DownloadSnapshot bool
+	AddIngress       bool
+	CloudProvider    string
+	Network          string
+}
+
 // GetSuiClientNetworkConfigBase TODO: add nvme cfg & labels -> set local pv
-func GetSuiClientNetworkConfigBase(workloadType, network string) zeus_cluster_config_drivers.ComponentBaseDefinition {
+func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_drivers.ComponentBaseDefinition {
 	cmConfig := ""
 	downloadStartup := ""
 	diskSize := mainnetDiskSize
 	herculesStartup := hercules + ".sh"
 	cpuSize := cpuCores
 	memSize := memorySize
-	switch network {
+	switch cfg.Network {
 	case mainnet:
 		// todo, add workload type conditional here
 		downloadStartup = "downloadMainnetNode"
@@ -84,9 +92,12 @@ func GetSuiClientNetworkConfigBase(workloadType, network string) zeus_cluster_co
 					PersistentVolumeClaimDrivers: map[string]v1Core.PersistentVolumeClaim{
 						suiDiskName: {
 							ObjectMeta: metav1.ObjectMeta{Name: suiDiskName},
-							Spec: v1Core.PersistentVolumeClaimSpec{Resources: v1Core.ResourceRequirements{
-								Requests: v1Core.ResourceList{"storage": resource.MustParse(diskSize)},
-							}},
+							Spec: v1Core.PersistentVolumeClaimSpec{
+								Resources: v1Core.ResourceRequirements{
+									Requests: v1Core.ResourceList{"storage": resource.MustParse(diskSize)},
+								},
+								StorageClassName: aws.String(ConfigureCloudProviderStorageClass(cfg.CloudProvider)),
+							},
 						},
 					}},
 			},
