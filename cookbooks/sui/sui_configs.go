@@ -58,10 +58,14 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 	switch cfg.Network {
 	case mainnet:
 		// todo, add workload type conditional here
+		cpuSize = cpuCores
+		memSize = memorySize
 		diskSize = mainnetDiskSize
 		downloadStartup = "downloadMainnetNode"
 	case testnet:
 		diskSize = testnetDiskSize
+		cpuSize = cpuCoresTestnet
+		memSize = memorySizeTestnet
 		downloadStartup = "downloadTestnetNode"
 	}
 	rr := v1Core.ResourceRequirements{
