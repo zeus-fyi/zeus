@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 	strings_filter "github.com/zeus-fyi/zeus/pkg/utils/strings"
 	pods_client "github.com/zeus-fyi/zeus/zeus/z_client/workloads/pods"
 	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_common_types"
@@ -20,6 +21,8 @@ type SuiActionsClient struct {
 	pods_client.PodsClient
 
 	RpcPortNumber int
+
+	PrintPath filepaths.Path
 }
 
 type JsonRpcReq struct {

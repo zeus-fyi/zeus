@@ -17,14 +17,15 @@ func (z *PodsClient) GetPodLogs(ctx context.Context, par zeus_pods_reqs.PodActio
 	resp, err := z.R().
 		SetBody(par).
 		Post(zeus_endpoints.PodsActionV1Path)
-
 	if err != nil || resp.StatusCode() != http.StatusOK {
-		log.Ctx(ctx).Err(err).Msg("ZeusClient: GetPodLogs")
 		if err == nil {
-			err = fmt.Errorf("non-OK status code: %d", resp.StatusCode())
+			err = fmt.Errorf("GetPodLogs: non-OK status code: %d", resp.StatusCode())
 		}
+		log.Err(err).Msg("ZeusClient: GetPodLogs")
 		return resp.Body(), err
 	}
-	z.PrintRespJson(resp.Body())
+	if z.PrintResp {
+		z.PrintRespJson(resp.Body())
+	}
 	return resp.Body(), err
 }

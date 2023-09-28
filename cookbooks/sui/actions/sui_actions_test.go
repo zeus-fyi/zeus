@@ -2,6 +2,7 @@ package sui_actions
 
 import (
 	"context"
+	"path"
 	"testing"
 
 	"github.com/stretchr/testify/suite"
@@ -27,6 +28,10 @@ func (t *SuiActionsCookbookTestSuite) SetupTest() {
 	zc := zeus_client.NewDefaultZeusClient(tc.Bearer)
 	cookbooks.ChangeToCookbookDir()
 	t.su = InitSuiClient(pods_client.NewPodsClientFromZeusClient(zc))
+
+	dir := cookbooks.ChangeToCookbookDir()
+	t.su.PrintPath.DirIn = path.Join(dir, "/sui/actions/logs")
+	t.su.PrintPath.DirOut = path.Join(dir, "/sui/actions/logs")
 }
 
 func TestSuiActionsCookbookTestSuite(t *testing.T) {
