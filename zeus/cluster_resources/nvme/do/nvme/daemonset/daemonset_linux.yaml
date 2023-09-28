@@ -60,4 +60,4 @@ spec:
             name: local-static-provisioner-config
         - name: nvme-ssd-block
           hostPath:
-            path: /dev
+            path: /dev/vda

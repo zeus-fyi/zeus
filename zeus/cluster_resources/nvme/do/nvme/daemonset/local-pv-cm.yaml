@@ -13,9 +13,9 @@ data:
     # the name of local storage class
     nvme-ssd-block:
       # path to the directory of local volumes
-      hostDir: /dev/vda
+      hostDir: /dev
       # the mount path of host directory in provisioner pod
-      mountDir: /dev/vda
+      mountDir: /dev
       # If the local volume is a device, command configured here will be
       # used to clean it. This can be omitted and the default command
       # `/scripts/quick_reset.sh` will be used.
@@ -32,5 +32,5 @@ data:
       fsType: ext4
       # name pattern check
       # only discover file name matching pattern("*" by default).
-      namePattern: "vda"
+      namePattern: "vda1"
 
