@@ -1,43 +1,69 @@
-apiVersion: apps/v1beta2
+# The Local Persistent Volume CSI DaemonSet
+apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  labels:
-    app: digitalocean-flexplugin-deploy
-  name: digitalocean-flexplugin-deploy
+  name: local-volume-provisioner
   namespace: kube-system
+  labels:
+    app.kubernetes.io/name: local-volume-provisioner
 spec:
   selector:
     matchLabels:
-      app: digitalocean-flexplugin-deploy
+      app.kubernetes.io/name: local-volume-provisioner
   template:
     metadata:
       labels:
-        app: digitalocean-flexplugin-deploy
-      name: digitalocean-flexplugin-deploy
+        app.kubernetes.io/name: local-volume-provisioner
     spec:
+      serviceAccountName: local-volume-provisioner
       containers:
-        - env:
-            - name: DIGITALOCEAN_ACCESS_TOKEN
+        # The latest version can be found in the changelog.
+        # In production, one might want to use the container digest hash
+        # over version for improved security.
+        # https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/CHANGELOG.md
+        - image: "registry.k8s.io/sig-storage/local-volume-provisioner:v2.6.0"
+          # In production you might want to set this to use a locally cached
+          # image by setting this to: IfNotPresent
+          imagePullPolicy: "Always"
+          name: provisioner
+          securityContext:
+            privileged: true
+          env:
+            - name: MY_NODE_NAME
               valueFrom:
-                secretKeyRef:
-                  key: access-token
-                  name: digitalocean
-          image: quay.io/external_storage/digitalocean-flexplugin
-          imagePullPolicy: Always
-          name: flex-deploy
-          resources:
-            limits:
-              cpu: 25m
-              memory: 32Mi
-            requests:
-              cpu: 25m
-              memory: 32Mi
+                fieldRef:
+                  fieldPath: spec.nodeName
+            - name: MY_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          ports:
+            # List of metrics at
+            # https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/cee9e228dc28a4355f664b4fe2236b1857fe4eca/pkg/metrics/metrics.go
+            - name: metrics
+              containerPort: 8080
           volumeMounts:
-            - mountPath: /flexmnt
-              name: flexvolume-mount
-      tolerations:
-        - operator: Exists
+            - name: provisioner-config
+              mountPath: /etc/provisioner/config
+              readOnly: true
+            - mountPath: /
+              name: nvme-ssd-block
+              mountPropagation: "HostToContainer"
       volumes:
-        - hostPath:
-            path: /etc/kubernetes/kubelet-plugins/volume
-          name: flexvolume-mount
+        - name: provisioner-config
+          configMap:
+            name: local-volume-provisioner-config
+        - name: nvme-ssd-block
+          hostPath:
+            path: /
+      # Only run CSI Driver on the `fast-disk` tagged nodegroup
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: fast-disk-node
+                    operator: In
+                    values:
+                      - "pv-raid"
+                      - "pv-nvme"
