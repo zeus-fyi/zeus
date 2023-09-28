@@ -24,9 +24,11 @@ spec:
       serviceAccountName: local-static-provisioner
       nodeSelector:
         kubernetes.io/os: linux
+        fast-disk-node: "pv-raid"
       containers:
         - name: provisioner
           image: registry.k8s.io/sig-storage/local-volume-provisioner:v2.6.0
+          imagePullPolicy: Always
           securityContext:
             privileged: true
           env:
@@ -47,18 +49,13 @@ spec:
             - name: provisioner-config
               mountPath: /etc/provisioner/config
               readOnly: true
-            - name: provisioner-dev
-              mountPath: /dev
             - name: nvme-ssd-block
-              mountPath: /
+              mountPath: /dev/vda
               mountPropagation: HostToContainer
       volumes:
         - name: provisioner-config
           configMap:
             name: local-static-provisioner-config
-        - name: provisioner-dev
-          hostPath:
-            path: /dev
         - name: nvme-ssd-block
           hostPath:
-            path: /
+            path: /dev
