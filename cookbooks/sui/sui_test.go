@@ -31,12 +31,26 @@ func (t *SuiCookbookTestSuite) TestDestroy() {
 }
 
 func (t *SuiCookbookTestSuite) TestUpload() {
+	cfg := SuiConfigOpts{
+		DownloadSnapshot: false,
+		WithIngress:      false,
+		CloudProvider:    "do",
+		Network:          mainnet,
+	}
+	suiNodeDefinition.ComponentBases = GetSuiConfig(cfg)
+	t.Require().NotNil(suiNodeDefinition.ComponentBases[Sui])
 	_, rerr := suiNodeDefinition.UploadChartsFromClusterDefinition(ctx, t.ZeusTestClient, true)
 	t.Require().Nil(rerr)
 }
 
 func (t *SuiCookbookTestSuite) TestUploadTestnet() {
-	suiNodeDefinition.ComponentBases[Sui] = GetSuiClientNetworkConfigBase(Full, "testnet")
+	cfg := SuiConfigOpts{
+		DownloadSnapshot: false,
+		WithIngress:      false,
+		CloudProvider:    "aws",
+		Network:          testnet,
+	}
+	suiNodeDefinition.ComponentBases = GetSuiConfig(cfg)
 	t.Require().NotNil(suiNodeDefinition.ComponentBases[Sui])
 	//_, rerr := suiNodeDefinition.UploadChartsFromClusterDefinition(ctx, t.ZeusTestClient, true)
 	//t.Require().Nil(rerr)

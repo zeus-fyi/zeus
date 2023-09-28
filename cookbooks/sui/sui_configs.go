@@ -1,6 +1,7 @@
 package sui_cookbooks
 
 import (
+	"github.com/aws/aws-sdk-go-v2/aws"
 	zeus_cluster_config_drivers "github.com/zeus-fyi/zeus/zeus/cluster_config_drivers"
 	zeus_topology_config_drivers "github.com/zeus-fyi/zeus/zeus/workload_config_drivers"
 	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_req_types"
@@ -10,51 +11,84 @@ import (
 )
 
 const (
+	// networks
+	mainnet = "mainnet"
+	testnet = "testnet"
+
 	// docker image references
 	dockerImage = "mysten/sui-node:stable"
 	hercules    = "hercules"
 
-	// workload compute resources
+	// mainnet workload compute resources
 	cpuCores   = "16"
 	memorySize = "128Gi"
-	// workload disk sizes
-	mainnetDiskSize = "6Ti"
-	testnetDiskSize = "2Ti"
+	// mainnet workload disk sizes
+	mainnetDiskSize = "4Ti"
 
-	// workload type
-	suiNodeConfig      = "full"
-	suiValidatorConfig = "validator"
+	// testnet compute resources
+	cpuCoresTestnet   = "7500m"
+	memorySizeTestnet = "63Gi"
+	// testnet workload disk sizes
+	testnetDiskSize = "2Ti"
 
 	// workload label, name, or k8s references
 	suiDiskName  = "sui-client-storage"
 	suiConfigMap = "cm-sui"
 
-	// networks
-	mainnet = "mainnet"
-	testnet = "testnet"
+	// workload type
+	suiNodeConfig      = "full"
+	suiValidatorConfig = "validator"
+
+	SuiRpcPortName = "http-rpc"
+
+	DownloadMainnet = "downloadMainnetNode"
+	DownloadTestnet = "downloadTestnetNode"
+	NoDownload      = "noDownload"
 )
 
-// GetSuiClientNetworkConfigBase TODO: add nvme cfg & labels -> set local pv
-func GetSuiClientNetworkConfigBase(workloadType, network string) zeus_cluster_config_drivers.ComponentBaseDefinition {
+type SuiConfigOpts struct {
+	DownloadSnapshot bool
+	WithIngress      bool
+	CloudProvider    string
+	Network          string
+}
+
+func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_drivers.ComponentBaseDefinition {
 	cmConfig := ""
 	downloadStartup := ""
 	diskSize := mainnetDiskSize
 	herculesStartup := hercules + ".sh"
 	cpuSize := cpuCores
 	memSize := memorySize
-	switch network {
+	switch cfg.Network {
 	case mainnet:
 		// todo, add workload type conditional here
-		downloadStartup = "downloadMainnetNode"
+		cpuSize = cpuCores
+		memSize = memorySize
+		diskSize = mainnetDiskSize
+		downloadStartup = DownloadMainnet
 	case testnet:
 		diskSize = testnetDiskSize
-		downloadStartup = "downloadTestnetNode"
+		cpuSize = cpuCoresTestnet
+		memSize = memorySizeTestnet
+		downloadStartup = DownloadTestnet
+	}
+	if !cfg.DownloadSnapshot {
+		downloadStartup = NoDownload
 	}
 	rr := v1Core.ResourceRequirements{
 		Requests: v1Core.ResourceList{
 			"cpu":    resource.MustParse(cpuSize),
 			"memory": resource.MustParse(memSize),
 		},
+		Limits: v1Core.ResourceList{
+			"cpu":    resource.MustParse(cpuSize),
+			"memory": resource.MustParse(memSize),
+		},
+	}
+	sd := &zeus_topology_config_drivers.ServiceDriver{}
+	if cfg.WithIngress {
+		sd.AddNginxTargetPort("nginx", SuiRpcPortName)
 	}
 	sbCfg := zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
 		SkeletonBaseChart:         zeus_req_types.TopologyCreateRequest{},
@@ -70,6 +104,7 @@ func GetSuiClientNetworkConfigBase(workloadType, network string) zeus_cluster_co
 					downloadStartup + ".sh": downloadStartup,
 				},
 			},
+			ServiceDriver: sd,
 			StatefulSetDriver: &zeus_topology_config_drivers.StatefulSetDriver{
 				ContainerDrivers: map[string]zeus_topology_config_drivers.ContainerDriver{
 					Sui: {
@@ -84,9 +119,12 @@ func GetSuiClientNetworkConfigBase(workloadType, network string) zeus_cluster_co
 					PersistentVolumeClaimDrivers: map[string]v1Core.PersistentVolumeClaim{
 						suiDiskName: {
 							ObjectMeta: metav1.ObjectMeta{Name: suiDiskName},
-							Spec: v1Core.PersistentVolumeClaimSpec{Resources: v1Core.ResourceRequirements{
-								Requests: v1Core.ResourceList{"storage": resource.MustParse(diskSize)},
-							}},
+							Spec: v1Core.PersistentVolumeClaimSpec{
+								Resources: v1Core.ResourceRequirements{
+									Requests: v1Core.ResourceList{"storage": resource.MustParse(diskSize)},
+								},
+								StorageClassName: aws.String(ConfigureCloudProviderStorageClass(cfg.CloudProvider)),
+							},
 						},
 					}},
 			},
