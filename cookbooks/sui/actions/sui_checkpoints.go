@@ -45,11 +45,6 @@ func (s *SuiActionsClient) GetCheckpoint(ctx context.Context, cloudCtxNs zeus_co
 	return ss, err
 }
 
-type JsonRpcResult struct {
-	Jsonrpc string `json:"jsonrpc"`
-	Result  string `json:"result"`
-}
-
 func (s *SuiActionsClient) GetLatestCheckpointSeqNumber(ctx context.Context, cloudCtxNs zeus_common_types.CloudCtxNs) ([]JsonRpcResult, error) {
 	req := GetLatestCheckpointSequenceNumberReq
 	resp, err := s.SendRpcPayload(ctx, cloudCtxNs, req)
