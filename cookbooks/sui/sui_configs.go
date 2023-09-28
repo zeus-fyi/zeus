@@ -47,7 +47,6 @@ type SuiConfigOpts struct {
 	Network          string
 }
 
-// GetSuiClientNetworkConfigBase TODO: add nvme cfg & labels -> set local pv
 func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_drivers.ComponentBaseDefinition {
 	cmConfig := ""
 	downloadStartup := ""
