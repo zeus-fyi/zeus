@@ -1,6 +1,8 @@
 package sui_actions
 
 import (
+	"context"
+	"path"
 	"testing"
 
 	"github.com/stretchr/testify/suite"
@@ -8,11 +10,14 @@ import (
 	"github.com/zeus-fyi/zeus/test/configs"
 	"github.com/zeus-fyi/zeus/test/test_suites"
 	zeus_client "github.com/zeus-fyi/zeus/zeus/z_client"
+	pods_client "github.com/zeus-fyi/zeus/zeus/z_client/workloads/pods"
 )
+
+var ctx = context.Background()
 
 type SuiActionsCookbookTestSuite struct {
 	test_suites.BaseTestSuite
-	ZeusTestClient zeus_client.ZeusClient
+	su SuiActionsClient
 }
 
 func (t *SuiActionsCookbookTestSuite) SetupTest() {
@@ -20,8 +25,13 @@ func (t *SuiActionsCookbookTestSuite) SetupTest() {
 	tc := configs.InitLocalTestConfigs()
 
 	// uses the bearer token from test/configs/config.yaml
-	t.ZeusTestClient = zeus_client.NewDefaultZeusClient(tc.Bearer)
+	zc := zeus_client.NewDefaultZeusClient(tc.Bearer)
 	cookbooks.ChangeToCookbookDir()
+	t.su = InitSuiClient(pods_client.NewPodsClientFromZeusClient(zc))
+
+	dir := cookbooks.ChangeToCookbookDir()
+	t.su.PrintPath.DirIn = path.Join(dir, "/sui/actions/logs")
+	t.su.PrintPath.DirOut = path.Join(dir, "/sui/actions/logs")
 }
 
 func TestSuiActionsCookbookTestSuite(t *testing.T) {
