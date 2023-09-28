@@ -42,3 +42,13 @@ data:
       max-transactions-in-batch: 1000
       # Not documented anywhere but necessary for pruning to work
       use-range-deletion: true
+      # Used for tx pruning
+      # Number of epochs to wait before performing transaction pruning.
+      # When this is N (where N >= 2), Sui prunes transactions and effects from 
+      # checkpoints up to the `current - N` epoch. Sui never prunes transactions and effects from the current and
+      # immediately prior epoch. N = 2 is a recommended setting for Sui Validator nodes and Sui Full nodes that don't 
+      # serve RPC requests.
+      #num-epochs-to-retain-for-checkpoints: 2
+      # Ensures that individual database files periodically go through the compaction process.
+      # This helps reclaim disk space and avoid fragmentation issues
+      #periodic-compaction-threshold-days: 1
