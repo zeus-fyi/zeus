@@ -6,7 +6,7 @@ See cloud provider specific setup instructions for NVMe setup:<br>
 
 Kubernetes Local Persistent Volume Setup Notes:
 
-- You must set a PersistentVolume nodeAffinity when using local volumes.~~
+- You must set a PersistentVolume nodeAffinity when using local volumes.
 
 [https://kubernetes.io/docs/concepts/storage/volumes/#local](https://kubernetes.io/docs/concepts/storage/volumes/#local)
 
