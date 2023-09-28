@@ -25,3 +25,20 @@ data:
     genesis:
       # Update this to the location of where the genesis file is stored
       genesis-file-location: "/data/genesis.blob"
+    authority-store-pruning-config:
+      # Number of epoch dbs to keep 
+      # Not relevant for object pruning
+      num-latest-epoch-dbs-to-retain: 3
+      # The amount of time, in seconds, between running the object pruning task.
+      # Not relevant for object pruning
+      epoch-db-pruning-period-secs: 3600
+      # Number of epochs to wait before performing object pruning.
+      num-epochs-to-retain: 0
+      # Advanced setting: Maximum number of checkpoints to prune in a batch. The default
+      # settings are appropriate for most use cases.
+      max-checkpoints-in-batch: 10
+      # Advanced setting: Maximum number of transactions in one batch of pruning run. The default
+      # settings are appropriate for most use cases.
+      max-transactions-in-batch: 1000
+      # Not documented anywhere but necessary for pruning to work
+      use-range-deletion: true
