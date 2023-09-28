@@ -2,7 +2,7 @@
 
 See cloud provider specific setup instructions for NVMe setup:<br>
 
-[zeus/cluster_resources/nvme](https://github.com/zeus-fyi/zeus/tree/main/zeus/cluster_resources/nvmee)
+[zeus/cluster_resources/nvme](https://github.com/zeus-fyi/zeus/tree/main/zeus/cluster_resources/nvme)
 
 Kubernetes Local Persistent Volume Setup Notes:
 
