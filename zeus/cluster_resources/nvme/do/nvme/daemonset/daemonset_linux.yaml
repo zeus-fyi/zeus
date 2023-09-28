@@ -21,6 +21,8 @@ spec:
       annotations:
         checksum/config: d1ecfaa3b97cbc85da26d0c83192913ede08a624d630854de99db95c1a78a8bc
     spec:
+      tolerations:
+        - operator: "Exists"
       serviceAccountName: local-static-provisioner
       nodeSelector:
         kubernetes.io/os: linux
