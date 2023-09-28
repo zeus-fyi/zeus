@@ -4,6 +4,7 @@ import (
 	"context"
 	"net/http"
 
+	"github.com/labstack/echo/v4"
 	"github.com/rs/zerolog/log"
 	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_req_types"
 

@@ -32,6 +32,11 @@ type JsonRpcReq struct {
 	Params  []interface{} `json:"params"`
 }
 
+type JsonRpcResult struct {
+	Jsonrpc string `json:"jsonrpc"`
+	Result  string `json:"result"`
+}
+
 func InitSuiClient(p pods_client.PodsClient) SuiActionsClient {
 	return SuiActionsClient{
 		PodsClient:    p,
