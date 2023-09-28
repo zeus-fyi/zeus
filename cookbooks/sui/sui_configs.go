@@ -38,11 +38,13 @@ const (
 	// workload type
 	suiNodeConfig      = "full"
 	suiValidatorConfig = "validator"
+
+	SuiRpcPortName = "http-rpc"
 )
 
 type SuiConfigOpts struct {
 	DownloadSnapshot bool
-	AddIngress       bool
+	WithIngress      bool
 	CloudProvider    string
 	Network          string
 }
@@ -73,6 +75,10 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 			"memory": resource.MustParse(memSize),
 		},
 	}
+	sd := &zeus_topology_config_drivers.ServiceDriver{}
+	if cfg.WithIngress {
+		sd.AddNginxTargetPort("nginx", SuiRpcPortName)
+	}
 	sbCfg := zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
 		SkeletonBaseChart:         zeus_req_types.TopologyCreateRequest{},
 		SkeletonBaseNameChartPath: suiMasterChartPath,
@@ -87,6 +93,7 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 					downloadStartup + ".sh": downloadStartup,
 				},
 			},
+			ServiceDriver: sd,
 			StatefulSetDriver: &zeus_topology_config_drivers.StatefulSetDriver{
 				ContainerDrivers: map[string]zeus_topology_config_drivers.ContainerDriver{
 					Sui: {
