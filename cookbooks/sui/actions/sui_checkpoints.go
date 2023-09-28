@@ -44,3 +44,27 @@ func (s *SuiActionsClient) GetCheckpoint(ctx context.Context, cloudCtxNs zeus_co
 	}
 	return ss, err
 }
+
+type JsonRpcResult struct {
+	Jsonrpc string `json:"jsonrpc"`
+	Result  string `json:"result"`
+}
+
+func (s *SuiActionsClient) GetLatestCheckpointSeqNumber(ctx context.Context, cloudCtxNs zeus_common_types.CloudCtxNs) ([]JsonRpcResult, error) {
+	req := GetLatestCheckpointSequenceNumberReq
+	resp, err := s.SendRpcPayload(ctx, cloudCtxNs, req)
+	if err != nil {
+		return []JsonRpcResult{}, err
+	}
+	ss := make([]JsonRpcResult, len(resp.ReplyBodies))
+	i := 0
+	for _, v := range resp.ReplyBodies {
+		err = json.Unmarshal(v, &ss[i])
+		if err != nil {
+			log.Err(err).Msg("SuiActionsClient: GetCheckpoint")
+			return ss, err
+		}
+		i += 1
+	}
+	return ss, err
+}

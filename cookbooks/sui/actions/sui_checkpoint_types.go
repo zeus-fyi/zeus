@@ -19,4 +19,8 @@ type SuiCheckpointResponse struct {
 		CheckpointCommitments []interface{} `json:"checkpointCommitments"`
 		ValidatorSignature    string        `json:"validatorSignature"`
 	} `json:"result"`
+	Error struct {
+		Code    int    `json:"code"`
+		Message string `json:"message"`
+	} `json:"error,omitempty"`
 }
