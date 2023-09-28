@@ -7,30 +7,13 @@ import (
 )
 
 func (t *SuiActionsCookbookTestSuite) TestGetCheckpoint() {
-	// points dir to test/configs
 	cloudCtxNs := zeus_common_types.CloudCtxNs{
 		CloudProvider: "aws",
 		Region:        "us-west-1",
 		Context:       "zeus-us-west-1",
 		Namespace:     "sui-03e7d0b6",
 	}
-	resp, err := t.su.GetCheckpoint(ctx, cloudCtxNs, "10")
-	t.NoError(err)
-	t.Equal(1, len(resp))
-	for _, r := range resp {
-		fmt.Println(r)
-	}
-}
-
-func (t *SuiActionsCookbookTestSuite) TestGetLatestCheckpoint() {
-	// points dir to test/configs
-	cloudCtxNs := zeus_common_types.CloudCtxNs{
-		CloudProvider: "aws",
-		Region:        "us-west-1",
-		Context:       "zeus-us-west-1",
-		Namespace:     "sui-03e7d0b6",
-	}
-	resp, err := t.su.GetCheckpoint(ctx, cloudCtxNs, "10")
+	resp, err := t.su.GetCheckpoint(ctx, cloudCtxNs, "1000")
 	t.NoError(err)
 	t.Equal(1, len(resp))
 	for _, r := range resp {
