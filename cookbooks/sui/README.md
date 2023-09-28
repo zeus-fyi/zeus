@@ -27,6 +27,8 @@ storageClass: nvme-ssd-block
 
 ### DigitalOcean
 
+storageClass: nvme-ssd-block
+
 Recommended machine types:
 
 Storage-Optimized Droplet. SSD x1.5 (24 vCPUs, 192 GiB RAM, 5.27 TB NVMe SSD)<br>
