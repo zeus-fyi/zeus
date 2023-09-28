@@ -120,6 +120,6 @@ spec:
         storageClassName: fast-disks
         resources:
           requests:
-            storage: "3.5Ti"
+            storage: "4Ti"
 
 
