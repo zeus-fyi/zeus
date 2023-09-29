@@ -27,6 +27,10 @@
     justify-content: center;
 }
 
+.buttons a:not(:last-child) {
+    margin-right: 1rem; /* Adjust the margin value to your liking */
+}
+
 .backgroundHome {
     background-image: url("../../static/img/home-background.svg");
     background-size: cover;

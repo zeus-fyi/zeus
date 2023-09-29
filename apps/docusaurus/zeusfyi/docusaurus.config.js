@@ -7,7 +7,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 /** @type {import('@docusaurus/types').Config} */
 const config = {
     title: 'zeusfyi',
-    tagline: 'Adaptive RPC Load Balancing',
+    tagline: 'Show Me How To Use...',
     favicon: 'img/icon.svg',
 
     // Set the production url of your site here
@@ -45,13 +45,13 @@ const config = {
             'classic',
             /** @type {import('@docusaurus/preset-classic').Options} */
             ({
-                // docs: {
-                //     sidebarPath: require.resolve('./sidebars.js'),
-                //     // Please change this to your repo.
-                //     // Remove this to remove the "edit this page" links.
-                //     editUrl:
-                //         'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
-                // },
+                docs: {
+                    sidebarPath: require.resolve('./sidebars.js'),
+                    // Please change this to your repo.
+                    // Remove this to remove the "edit this page" links.
+                    editUrl:
+                        'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+                },
                 // blog: {
                 //     showReadingTime: true,
                 //     // Please change this to your repo.
