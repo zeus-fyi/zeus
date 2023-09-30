@@ -65,7 +65,7 @@ Complete, and powerful Ethereum infra automation
 
 #### ```validators/validator_cluster_test.go ```
 
-### Web3signer ###
+### Web3Signer ###
 
 #### ```web3signers/web3signer_cluster_test.go ```
 
