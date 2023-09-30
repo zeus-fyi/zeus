@@ -21,7 +21,7 @@ You can override the values in the test files we have and set to your own follow
 ## Table of Contents
 
 1. [Imports](#imports)
-2. [Data Structures](#data-structures)
+2. [Structures](#structures)
     - [ZeusClient](#zeusclient)
 3. [Functions](#functions)
     - [NewZeusClient](#newzeusclient)
@@ -56,7 +56,7 @@ func NewDefaultZeusClient(bearer string) ZeusClient {
 
 ---
 
-## Data Structures
+## Structures
 
 ### `ZeusClient`
 

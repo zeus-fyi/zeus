@@ -11,7 +11,7 @@ clusters in Zeus.
 ## Table of Contents
 
 1. [Imports](#imports)
-2. [Data Structures](#data-structures)
+2. [Structures](#structures)
    - [ClusterDefinition](#clusterdefinition)
    - [ComponentBaseDefinition](#componentbasedefinition)
    - [ClusterSkeletonBaseDefinition](#clusterskeletonbasedefinition)
@@ -53,7 +53,7 @@ type ClusterSkeletonBaseDefinitions []ClusterSkeletonBaseDefinition
 
 ---
 
-## Data Structures
+## Structures
 
 ### `ClusterDefinition`
 
