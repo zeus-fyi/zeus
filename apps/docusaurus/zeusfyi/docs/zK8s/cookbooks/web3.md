@@ -83,3 +83,53 @@ useful apis to debug and troubleshoot web infrastructure.
 
 Snapshot app is embedded into the hercules docker app, and it can be used as an init container to download snapshot data
 on new node creation.
+
+## Ethereum Staking ##
+
+Staking, in fact all of web3 is in fact only one thing, and that thing is the ability to sign & transmit signed messages
+with your keys. We've decoupled that everything else, the high technical barriers, and high costs, so that it no longer
+requires you to give up access to your validator keys to participate in staking, taking a step towards making
+validators, defined by their signing keys decentralized at scale.
+
+Event driven signature automation for Ethereum staking using our synthetic staking beacon, which bundles middleware like
+slashing protection and mev into the service which streams validator messages to you on demand to serverless functions,
+hosted signers, or mobile apps, with the benefit of letting you stake from your wallet without anyone having access to
+your signing or withdrawal keys and without any infrastructure setup, with only a few lines of code.
+
+### How much will staking services cost for Ethereum?
+
+$10/mo solo or large scale enterprise staking for Ethereum per validator.
+
+### How do I setup validators?
+
+You can use our UI which is in beta, which takes you from 0 -> deployed & serviced validators using Zeus without any
+coding, technical know-how, you get the picture. You can set it up within 5 minutes, and you have ZERO ongoing
+maintenance after setup, which is a first of its kind when it compared with other validator services you can get.
+
+> https://cloud.zeus.fyi/signup
+
+Networks supported:
+
+#### Mainnet - Request access. Includes MEV.
+
+#### Goerli - Request access. Includes MEV.
+
+#### Ephemery - All users have access by default.
+
+It also comes with an industry first toolkit of secure secrets key generation and deposit data generation. Your keys
+never get written to disk, or exposed at any point, and all of the secrets operations and storage happen on YOUR account
+not ours, we're 100% non-custodial for signing key & withdrawal keys. The next best alternative is pure cold storage
+generation. Read more here.
+
+https://medium.com/zeusfyi/in-depth-overview-serverless-aws-lambda-for-ethereum-staking-with-zeus-6ad87d3be77f
+
+Read our beta users notes:
+
+https://docs.google.com/document/d/1ciNOEJNEOkKFfhi0bQyhHydhdfp1zi8V0OHm-0oRN04/edit?usp=sharing
+
+Ephemery explorers
+
+> https://beaconchain.ephemery.pk910.de
+
+> https://explorer.ephemery.pk910.de
+
