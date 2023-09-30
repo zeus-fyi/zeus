@@ -1,82 +1,10 @@
 ---
-sidebar_position: 1
+sidebar_position: 3
 displayed_sidebar: zK8s
 ---
+# Infrastructure
 
-# zK8s Client #
-
-The zK8s client is used for interacting with our cloud platform's core infrastructure apis. You can override the values
-in the test files
-we have and set to your own following these steps
-
-1. In /test/configs -> create a config.yaml using the sample-config.yaml as a reference, the config.yaml should be in
-   .gitignore by default so it doesn't commit your tokens
-2. Add your bearer token to this config, otherwise config it directly in the client
-3. Override the zeus_client_test variables that are used to point to your desired chart and kubernetes location
-4. Then run the test, the zeus_client_integrated_test will upload and then query for the uploaded chart and then print
-   it.
-
-## Table of Contents
-
-1. [Imports](#imports)
-2. [Data Structures](#data-structures)
-   - [ZeusClient](#zeusclient)
-3. [Functions](#functions)
-   - [NewZeusClient](#newzeusclient)
-   - [NewDefaultZeusClient](#newdefaultzeusclient)
-
----
-
-## Imports
-
-```go
-import resty_base "github.com/zeus-fyi/zeus/zeus/z_client/base"
-```
-
----
-
-## Data Structures
-
-### `ZeusClient`
-
-Provides a client for interacting with Zeus, wrapping the base resty client.
-
-**Fields:**
-
-- `Resty`: The underlying REST client.
-
----
-
-## Functions
-
-### `NewZeusClient(baseURL, bearer string) ZeusClient`
-
-Creates a new Zeus client.
-
-**Parameters:**
-
-- `baseURL`: The base URL for the Zeus service.
-- `bearer`: The bearer token for authentication.
-
-**Returns:**
-
-- A new `ZeusClient` instance.
-
-### `NewDefaultZeusClient(bearer string) ZeusClient`
-
-Creates a new default Zeus client with the predefined Zeus endpoint.
-
-**Parameters:**
-
-- `bearer`: The bearer token for authentication.
-
-**Returns:**
-
-- A new `ZeusClient` instance.
-
----
-
-## Base API Endpoints Overview
+## API Endpoints Overview
 
 ### Upload Infrastructure
 
@@ -92,11 +20,11 @@ higher level topology.
 
 ```go
 type TopologyBaseInfraWorkload struct {
-*v1core.Service       `json:"service"`
-*v1core.ConfigMap     `json:"configMap"`
-*v1.Deployment        `json:"deployment"` // Only 1 StatefulSet, or 1 Deployment, not both
-*v1.StatefulSet       `json:"statefulSet"` // Only 1 StatefulSet, or 1 Deployment, not both
-*v1networking.Ingress `json:"ingress"`
+    *v1core.Service       `json:"service"`
+    *v1core.ConfigMap     `json:"configMap"`
+    *v1.Deployment        `json:"deployment"` // Only 1 StatefulSet, or 1 Deployment, not both
+    *v1.StatefulSet       `json:"statefulSet"` // Only 1 StatefulSet, or 1 Deployment, not both
+    *v1networking.Ingress `json:"ingress"`
 }
 ```
 
@@ -111,12 +39,12 @@ const InfraReadChartV1Path = "/v1/infra/read/chart"
 
 // Request 
 type TopologyRequest struct {
-TopologyID int `json:"topologyID"`
+    TopologyID int `json:"topologyID"`
 }
 
 // Response 
 type TopologyCreateResponse struct {
-TopologyID int `json:"topologyID"`
+    TopologyID int `json:"topologyID"`
 }
 
 ```
@@ -132,15 +60,15 @@ const InfraReadTopologyV1Path = "/v1/infra/read/topologies"
 
 // Response
 type ReadTopologiesMetadata struct {
-TopologyID       int            `json:"topologyID"`
-TopologyName     string         `json:"topologyName"`
-ChartName        string         `json:"chartName"`
-ChartVersion     string         `json:"chartVersion"`
-ChartDescription sql.NullString `json:"chartDescription"`
+    TopologyID       int            `json:"topologyID"`
+    TopologyName     string         `json:"topologyName"`
+    ChartName        string         `json:"chartName"`
+    ChartVersion     string         `json:"chartVersion"`
+    ChartDescription sql.NullString `json:"chartDescription"`
 }
 
 type ReadTopologiesMetadataGroup struct {
-Slice []ReadTopologiesMetadata
+  Slice []ReadTopologiesMetadata
 }
 ```
 
@@ -179,17 +107,17 @@ const DeployTopologyV1Path = "/v1/deploy"
 
 // Location for API to send request
 type CloudCtxNs struct {
-CloudProvider string `json:"cloudProvider"`
-Region        string `json:"region"`
-Context       string `json:"context"`
-Namespace     string `json:"namespace"`
-Env           string `json:"env"`
+  CloudProvider string `json:"cloudProvider"`
+  Region        string `json:"region"`
+  Context       string `json:"context"`
+  Namespace     string `json:"namespace"`
+  Env           string `json:"env"`
 }
 
 // Request Struct
 type TopologyDeployRequest struct {
-TopologyID int `json:"topologyID"`
-zeus_common_types.CloudCtxNs
+  TopologyID int `json:"topologyID"`
+  zeus_common_types.CloudCtxNs
 }
 ```
 
@@ -203,17 +131,17 @@ const DestroyDeployInfraV1Path = "/v1/deploy/destroy"
 
 // Location for API to send request
 type CloudCtxNs struct {
-CloudProvider string `json:"cloudProvider"`
-Region        string `json:"region"`
-Context       string `json:"context"`
-Namespace     string `json:"namespace"`
-Env           string `json:"env"`
+  CloudProvider string `json:"cloudProvider"`
+  Region        string `json:"region"`
+  Context       string `json:"context"`
+  Namespace     string `json:"namespace"`
+  Env           string `json:"env"`
 }
 
 // Request Struct
 type TopologyDeployRequest struct {
-TopologyID int `json:"topologyID"`
-zeus_common_types.CloudCtxNs
+  TopologyID int `json:"topologyID"`
+  zeus_common_types.CloudCtxNs
 }
 ```
 
@@ -227,17 +155,17 @@ const ReadWorkload = "/v1/workload/read"
 
 // req type
 type TopologyCloudCtxNsQueryRequest struct {
-zeus_common_types.CloudCtxNs
+  zeus_common_types.CloudCtxNs
 }
 
 // response type
 type NamespaceWorkload struct {
-*v1.PodList               `json:"podList"`
-*v1.ServiceList           `json:"serviceList"`
-*v1networking.IngressList `json:"ingressList"`
-*v1apps.StatefulSetList   `json:"statefulSetList"`
-*v1apps.DeploymentList    `json:"deploymentList"`
-*v1.ConfigMapList         `json:"configMapList"`
+  *v1.PodList               `json:"podList"`
+  *v1.ServiceList           `json:"serviceList"`
+  *v1networking.IngressList `json:"ingressList"`
+  *v1apps.StatefulSetList   `json:"statefulSetList"`
+  *v1apps.DeploymentList    `json:"deploymentList"`
+  *v1.ConfigMapList         `json:"configMapList"`
 }
 ```
 
@@ -252,20 +180,20 @@ const DeployStatusV1Path = "/v1/deploy/status"
 
 // Request
 type TopologyRequest struct {
-TopologyID int `json:"topologyID"`
+  TopologyID int `json:"topologyID"`
 }
 
 // Response
 type TopologyDeployStatuses struct {
-Slice []TopologyDeployStatus
+  Slice []TopologyDeployStatus
 }
 
 type TopologyDeployStatus struct {
-TopologyID     int       `json:"topologyID"`
-TopologyName   string    `json:"topologyName"`
-TopologyStatus string    `json:"topologyStatus"`
-UpdatedAt      time.Time `json:"updatedAt"`
-CloudCtxNs     zeus_common_types.CloudCtxNs
+  TopologyID     int       `json:"topologyID"`
+  TopologyName   string    `json:"topologyName"`
+  TopologyStatus string    `json:"topologyStatus"`
+  UpdatedAt      time.Time `json:"updatedAt"`
+  CloudCtxNs     zeus_common_types.CloudCtxNs
 }
 ```
 
