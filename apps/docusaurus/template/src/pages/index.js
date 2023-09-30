@@ -3,10 +3,9 @@ import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
+import HomepageFeatures from '@site/src/components/HomepageFeatures';
 
-import '@docsearch/css';
 import styles from './index.module.css';
-import HomepageFeatures from "../components/HomepageFeatures";
 
 function HomepageHeader() {
     const {siteConfig} = useDocusaurusContext();
@@ -18,13 +17,8 @@ function HomepageHeader() {
                 <div className={styles.buttons}>
                     <Link
                         className="button button--secondary button--lg"
-                        to="/docs/zk8s/intro">
-                        Platform & APIs
-                    </Link>
-                    <Link
-                        className="button button--secondary button--lg"
-                        to="/docs/lb/intro">
-                        RPC Load Balancer
+                        to="/docs/intro">
+                        Docusaurus Tutorial - 5min ⏱️
                     </Link>
                 </div>
             </div>
@@ -36,9 +30,8 @@ export default function Home() {
     const {siteConfig} = useDocusaurusContext();
     return (
         <Layout
-            wrapperClassName={styles.backgroundHome}
-            title={`${siteConfig.title} documentation`}
-            description="zeusfyi documentation">
+            title={`Hello from ${siteConfig.title}`}
+            description="Description will go into a meta tag in <head />">
             <HomepageHeader/>
             <main>
                 <HomepageFeatures/>

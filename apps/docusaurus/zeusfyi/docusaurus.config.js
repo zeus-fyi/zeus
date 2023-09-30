@@ -7,7 +7,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 /** @type {import('@docusaurus/types').Config} */
 const config = {
     title: 'zeusfyi',
-    tagline: 'Adaptive RPC Load Balancing',
+    tagline: 'Show Me How To Use...',
     favicon: 'img/icon.svg',
 
     // Set the production url of your site here
@@ -45,13 +45,10 @@ const config = {
             'classic',
             /** @type {import('@docusaurus/preset-classic').Options} */
             ({
-                // docs: {
-                //     sidebarPath: require.resolve('./sidebars.js'),
-                //     // Please change this to your repo.
-                //     // Remove this to remove the "edit this page" links.
-                //     editUrl:
-                //         'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
-                // },
+                docs: {
+                    sidebarPath: require.resolve('./sidebars.js'),
+
+                },
                 // blog: {
                 //     showReadingTime: true,
                 //     // Please change this to your repo.
@@ -78,28 +75,24 @@ const config = {
                     src: 'img/icon.svg',
                 },
                 items: [
+                    {to: '/docs/zK8s/intro', label: 'Platform & APIs', position: 'left'},
+                    {to: '/docs/lb/intro', label: 'RPC Load Balancer', position: 'left'},
                     {
-                        label: 'Sign Up',
+                        label: 'LinkTree',
                         position: 'right',
-                        href: 'https://marketplace.quicknode.com/add-on/zeusfyi-4',
-                    },
-                    {
-                        label: 'Medium',
-                        href: 'https://medium.zeus.fyi/',
-                        position: 'right',
-                    },
-                    {
-                        label: 'GitHub',
-                        position: 'right',
-                        href: 'https://github.com/zeus-fyi/zeus',
-                    },
-                    {
-                        label: 'Discord',
-                        href: 'https://discord.gg/g3jtumw7B7',
-                        position: 'right',
+                        href: 'https://linktr.ee/zeusfyi',
                     },
                 ],
             },
+            /*
+            algolia: {
+                apiKey: 'YOUR_API_KEY',
+                indexName: 'YOUR_INDEX_NAME',
+                appId: 'sd'
+                // Optional: Algolia search parameters
+                // contextualSearch: true, // Uncomment this if you want to have versioning
+            },
+             */
             footer: {
                 style: 'dark',
                 links: [
