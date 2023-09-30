@@ -22,10 +22,10 @@ func (z *PodsClient) GetPods(ctx context.Context, par zeus_pods_reqs.PodActionRe
 		Post(zeus_endpoints.PodsActionV1Path)
 
 	if err != nil || resp.StatusCode() != http.StatusOK {
-		log.Ctx(ctx).Err(err).Msg("ZeusClient: GetPods")
 		if err == nil {
 			err = fmt.Errorf("non-OK status code: %d", resp.StatusCode())
 		}
+		log.Err(err).Msg("ZeusClient: GetPods")
 		return nil, err
 	}
 	z.PrintRespJson(resp.Body())
@@ -42,10 +42,10 @@ func (z *PodsClient) GetPodsAudit(ctx context.Context, par zeus_pods_reqs.PodAct
 		Post(zeus_endpoints.PodsActionV1Path)
 
 	if err != nil || resp.StatusCode() != http.StatusOK {
-		log.Ctx(ctx).Err(err).Msg("ZeusClient: GetPodsAudit")
 		if err == nil {
 			err = fmt.Errorf("non-OK status code: %d", resp.StatusCode())
 		}
+		log.Err(err).Msg("ZeusClient: GetPodsAudit")
 		return pl, err
 	}
 	z.PrintRespJson(resp.Body())
