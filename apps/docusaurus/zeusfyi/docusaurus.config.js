@@ -84,6 +84,15 @@ const config = {
                     },
                 ],
             },
+            /*
+            algolia: {
+                apiKey: 'YOUR_API_KEY',
+                indexName: 'YOUR_INDEX_NAME',
+                appId: 'sd'
+                // Optional: Algolia search parameters
+                // contextualSearch: true, // Uncomment this if you want to have versioning
+            },
+             */
             footer: {
                 style: 'dark',
                 links: [

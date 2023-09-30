@@ -4,6 +4,7 @@ import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 
+import '@docsearch/css';
 import styles from './index.module.css';
 import HomepageFeatures from "../components/HomepageFeatures";
 
@@ -34,11 +35,10 @@ function HomepageHeader() {
 export default function Home() {
     const {siteConfig} = useDocusaurusContext();
     return (
-
         <Layout
             wrapperClassName={styles.backgroundHome}
             title={`${siteConfig.title} documentation`}
-            description="Description will go into a meta tag in <head />">
+            description="zeusfyi documentation">
             <HomepageHeader/>
             <main>
                 <HomepageFeatures/>
