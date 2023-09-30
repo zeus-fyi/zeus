@@ -1,3 +1,8 @@
+---
+sidebar_position: 2
+displayed_sidebar: zK8s
+---
+
 # Clusters
 
 This package, `zeus_cluster_config_drivers`, provides definitions and functionalities related to the configuration of
