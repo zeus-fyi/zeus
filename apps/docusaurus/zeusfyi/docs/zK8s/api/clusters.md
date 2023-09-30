@@ -21,25 +21,25 @@ clusters in Zeus.
 
 ```go
 type ClusterDefinition struct {
-ClusterClassName          string
-CloudCtxNs                zeus_common_types.CloudCtxNs
-ComponentBases            map[string]ComponentBaseDefinition
-FilterSkeletonBaseUploads *strings_filter.FilterOpts
-DisablePrint              bool
-UseEmbeddedWorkload       bool
+   ClusterClassName          string
+   CloudCtxNs                zeus_common_types.CloudCtxNs
+   ComponentBases            map[string]ComponentBaseDefinition
+   FilterSkeletonBaseUploads *strings_filter.FilterOpts
+   DisablePrint              bool
+   UseEmbeddedWorkload       bool
 }
 
 type ComponentBaseDefinition struct {
-SkeletonBases map[string]ClusterSkeletonBaseDefinition
+   SkeletonBases map[string]ClusterSkeletonBaseDefinition
 }
 
 type ClusterSkeletonBaseDefinition struct {
-SkeletonBaseChart         zeus_req_types.TopologyCreateRequest
-SkeletonBaseNameChartPath filepaths.Path
+   SkeletonBaseChart         zeus_req_types.TopologyCreateRequest
+   SkeletonBaseNameChartPath filepaths.Path
 
-TopologyID           int
-Workload             topology_workloads.TopologyBaseInfraWorkload
-TopologyConfigDriver *zeus_topology_config_drivers.TopologyConfigDriver
+   TopologyID           int
+   Workload             topology_workloads.TopologyBaseInfraWorkload
+   TopologyConfigDriver *zeus_topology_config_drivers.TopologyConfigDriver
 }
 
 type ClusterSkeletonBaseDefinitions []ClusterSkeletonBaseDefinition
