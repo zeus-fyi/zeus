@@ -29,6 +29,74 @@ You can override the values in the test files we have and set to your own follow
 
 ---
 
+## Imports
+
+```go
+package zeus_client
+
+import resty_base "github.com/zeus-fyi/zeus/zeus/z_client/base"
+
+type ZeusClient struct {
+   resty_base.Resty
+}
+
+func NewZeusClient(baseURL, bearer string) ZeusClient {
+   z := ZeusClient{}
+   z.Resty = resty_base.GetBaseRestyClient(baseURL, bearer)
+
+   return z
+}
+
+const ZeusEndpoint = "https://api.zeus.fyi"
+
+func NewDefaultZeusClient(bearer string) ZeusClient {
+   return NewZeusClient(ZeusEndpoint, bearer)
+}
+```
+
+---
+
+## Data Structures
+
+### `ZeusClient`
+
+Provides a client for interacting with Zeus, wrapping the base resty client.
+
+**Fields:**
+
+- `Resty`: The underlying REST client.
+
+---
+
+## Functions
+
+### `NewZeusClient(baseURL, bearer string) ZeusClient`
+
+Creates a new Zeus client.
+
+**Parameters:**
+
+- `baseURL`: The base URL for the Zeus service.
+- `bearer`: The bearer token for authentication.
+
+**Returns:**
+
+- A new `ZeusClient` instance.
+
+### `NewDefaultZeusClient(bearer string) ZeusClient`
+
+Creates a new default Zeus client with the predefined Zeus endpoint.
+
+**Parameters:**
+
+- `bearer`: The bearer token for authentication.
+
+**Returns:**
+
+- A new `ZeusClient` instance.
+
+---
+
 # zK8s API Requests
 
 This package, `zeus_req_types`, provides various request structures used to interact with Zeus services.
@@ -224,55 +292,5 @@ Request structure to create or add skeleton bases to classes.
 - `ClusterClassName`: Name of the cluster class.
 - `ComponentBaseName`: (Optional) Base name for the component.
 - `SkeletonBaseNames`: (Optional) List of names for the skeleton bases.
-
----
-
-
-## Imports
-
-```go
-import resty_base "github.com/zeus-fyi/zeus/zeus/z_client/base"
-```
-
----
-
-## Data Structures
-
-### `ZeusClient`
-
-Provides a client for interacting with Zeus, wrapping the base resty client.
-
-**Fields:**
-
-- `Resty`: The underlying REST client.
-
----
-
-## Functions
-
-### `NewZeusClient(baseURL, bearer string) ZeusClient`
-
-Creates a new Zeus client.
-
-**Parameters:**
-
-- `baseURL`: The base URL for the Zeus service.
-- `bearer`: The bearer token for authentication.
-
-**Returns:**
-
-- A new `ZeusClient` instance.
-
-### `NewDefaultZeusClient(bearer string) ZeusClient`
-
-Creates a new default Zeus client with the predefined Zeus endpoint.
-
-**Parameters:**
-
-- `bearer`: The bearer token for authentication.
-
-**Returns:**
-
-- A new `ZeusClient` instance.
 
 ---
