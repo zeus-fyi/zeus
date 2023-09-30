@@ -47,10 +47,7 @@ const config = {
             ({
                 docs: {
                     sidebarPath: require.resolve('./sidebars.js'),
-                    // Please change this to your repo.
-                    // Remove this to remove the "edit this page" links.
-                    editUrl:
-                        'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+
                 },
                 // blog: {
                 //     showReadingTime: true,
@@ -78,25 +75,12 @@ const config = {
                     src: 'img/icon.svg',
                 },
                 items: [
+                    {to: '/docs/zK8s/intro', label: 'Platform & APIs', position: 'left'},
+                    {to: '/docs/lb/intro', label: 'RPC Load Balancer', position: 'left'},
                     {
-                        label: 'Sign Up',
+                        label: 'LinkTree',
                         position: 'right',
-                        href: 'https://marketplace.quicknode.com/add-on/zeusfyi-4',
-                    },
-                    {
-                        label: 'Medium',
-                        href: 'https://medium.zeus.fyi/',
-                        position: 'right',
-                    },
-                    {
-                        label: 'GitHub',
-                        position: 'right',
-                        href: 'https://github.com/zeus-fyi/zeus',
-                    },
-                    {
-                        label: 'Discord',
-                        href: 'https://discord.gg/g3jtumw7B7',
-                        position: 'right',
+                        href: 'https://linktr.ee/zeusfyi',
                     },
                 ],
             },

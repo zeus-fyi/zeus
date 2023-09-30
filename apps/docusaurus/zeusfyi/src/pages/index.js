@@ -17,12 +17,12 @@ function HomepageHeader() {
                 <div className={styles.buttons}>
                     <Link
                         className="button button--secondary button--lg"
-                        to="/docs/zk8s">
-                        zK8s Platform & APIs
+                        to="/docs/zk8s/intro">
+                        Platform & APIs
                     </Link>
                     <Link
                         className="button button--secondary button--lg"
-                        to="/docs/lb">
+                        to="/docs/lb/intro">
                         RPC Load Balancer
                     </Link>
                 </div>
