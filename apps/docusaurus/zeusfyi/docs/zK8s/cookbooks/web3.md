@@ -4,13 +4,13 @@
 
 #### ```avax/node``` ####
 
-Contains Avalanche node setups for use on AWS, DigitalOcean, GCP on Kubernetes
+Contains Avalanche node setups for use on AWS, DigitalOcean, GCP, and OvhCloud on Kubernetes
 
 ## Cosmos ##
 
 #### ```cosmos/node``` ####
 
-Contains Cosmos node setups for use on AWS, DigitalOcean, GCP on Kubernetes. We also have a detailed Medium post
+Contains Cosmos node setups for use on AWS, DigitalOcean, GCP, and OvhCloud on Kubernetes. We also have a detailed Medium post
 guide [How To Build with zK8s](https://medium.com/zeusfyi/how-to-build-on-zeus-f1e40e529377)
 
 ## Sui ##
@@ -18,8 +18,7 @@ guide [How To Build with zK8s](https://medium.com/zeusfyi/how-to-build-on-zeus-f
 #### ```sui/infra``` ####
 
 Contains multiple Sui node setups for use on AWS, DigitalOcean, GCP, on local NVMe disks as well as Block Storage.
-Additionally, contains NVMe setup instructions
-for your own kubernetes environments.
+Additionally, contains NVMe setup instructions for self-managed kubernetes environments.
 
 #### ```sui/actions``` ####
 
