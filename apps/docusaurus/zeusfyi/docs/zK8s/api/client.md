@@ -3,7 +3,7 @@ sidebar_position: 1
 displayed_sidebar: zK8s
 ---
 
-# zK8s Client #
+# Client #
 
 The zK8s client is used for interacting with our cloud platform's core infrastructure apis and services.
 
