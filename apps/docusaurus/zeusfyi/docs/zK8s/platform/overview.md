@@ -5,7 +5,7 @@ displayed_sidebar: zK8s
 
 # Overview
 
-## Infra configuration via code + orchestration
+## Infra Configuration via Code + Orchestration
 
 We've merged Kubernetes & Temporal orchestration and added state management using a relational database to manage
 distributed infra setups. We exposed control of this system orchestrator to an SDK and UI that allows you to glue
