@@ -28,7 +28,7 @@ Includes a client that's setup to interact with the Sui node inside the cluster 
 
 #### ```ethereum/foundry```
 
-Contains anvil server setup for use on AWS, DigitalOcean, GCP on Kubernetes
+Contains anvil server setup for use on AWS, DigitalOcean, GCP, and OvhCloud on Kubernetes
 
 ## Ethereum ##
 
