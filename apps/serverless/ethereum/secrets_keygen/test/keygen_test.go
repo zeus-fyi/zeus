@@ -6,14 +6,15 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/go-resty/resty/v2"
 	"github.com/stretchr/testify/suite"
 	serverless_aws_automation "github.com/zeus-fyi/zeus/builds/serverless/aws_automation"
 	aegis_aws_auth "github.com/zeus-fyi/zeus/pkg/aegis/aws/auth"
 	aegis_aws_secretmanager "github.com/zeus-fyi/zeus/pkg/aegis/aws/secretmanager"
 	bls_serverless_signing "github.com/zeus-fyi/zeus/pkg/aegis/aws/serverless_signing"
 	aws_lambda "github.com/zeus-fyi/zeus/pkg/cloud/aws/lambda"
-	"github.com/zeus-fyi/zeus/test/configs"
 
+	"github.com/zeus-fyi/zeus/test/configs"
 	"github.com/zeus-fyi/zeus/test/test_suites"
 )
 
