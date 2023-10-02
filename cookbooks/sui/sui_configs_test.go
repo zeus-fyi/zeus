@@ -60,5 +60,15 @@ func (t *SuiCookbookTestSuite) TestSuiTestnetCfg() {
 			seen++
 		}
 	}
+	for _, ct := range inf.StatefulSet.Spec.Template.Spec.InitContainers {
+		if ct.Name == "init-snapshots" {
+			t.Require().Len(ct.Args, 2)
+			t.Equal(NoDownload+".sh", ct.Args[1])
+		}
+	}
+	// init-snapshots
 	t.Require().Equal(seen, 1)
+	for k, v := range inf.ConfigMap.Data {
+		fmt.Println(k, v)
+	}
 }

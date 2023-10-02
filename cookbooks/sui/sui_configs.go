@@ -105,6 +105,13 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 							Resources: zeus_topology_config_drivers.CreateComputeResourceRequirementsLimit(cpuSize, memSize),
 						},
 					},
+					"init-snapshots": {
+						Container: v1Core.Container{
+							Name: "init-snapshots",
+							Args: []string{"-c", downloadStartup + ".sh"},
+						},
+						IsInitContainer: true,
+					},
 				},
 				PVCDriver: &zeus_topology_config_drivers.PersistentVolumeClaimsConfigDriver{
 					PersistentVolumeClaimDrivers: map[string]v1Core.PersistentVolumeClaim{
