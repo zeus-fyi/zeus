@@ -7,7 +7,6 @@ import (
 	zeus_topology_config_drivers "github.com/zeus-fyi/zeus/zeus/workload_config_drivers"
 	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_req_types"
 	v1Core "k8s.io/api/core/v1"
-	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -78,16 +77,6 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 	if !cfg.DownloadSnapshot {
 		downloadStartup = NoDownload
 	}
-	rr := v1Core.ResourceRequirements{
-		Requests: v1Core.ResourceList{
-			"cpu":    resource.MustParse(cpuSize),
-			"memory": resource.MustParse(memSize),
-		},
-		Limits: v1Core.ResourceList{
-			"cpu":    resource.MustParse(cpuSize),
-			"memory": resource.MustParse(memSize),
-		},
-	}
 	sd := &zeus_topology_config_drivers.ServiceDriver{}
 	if cfg.WithIngress {
 		sd.AddNginxTargetPort("nginx", SuiRpcPortName)
@@ -113,7 +102,7 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 						Container: v1Core.Container{
 							Name:      Sui,
 							Image:     dockerImage,
-							Resources: rr,
+							Resources: zeus_topology_config_drivers.CreateComputeResourceRequirementsLimit(cpuSize, memSize),
 						},
 					},
 				},
@@ -122,9 +111,7 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 						suiDiskName: {
 							ObjectMeta: metav1.ObjectMeta{Name: suiDiskName},
 							Spec: v1Core.PersistentVolumeClaimSpec{
-								Resources: v1Core.ResourceRequirements{
-									Requests: v1Core.ResourceList{"storage": resource.MustParse(diskSize)},
-								},
+								Resources:        zeus_topology_config_drivers.CreateDiskResourceRequirementsLimit(diskSize),
 								StorageClassName: aws.String(zeus_nvme.ConfigureCloudProviderStorageClass(cfg.CloudProvider)),
 							},
 						},
