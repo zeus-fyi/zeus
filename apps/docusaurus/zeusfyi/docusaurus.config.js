@@ -6,7 +6,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-    title: 'zeusfyi',
+    title: 'Zeusfyi',
     tagline: 'Show Me How To Use...',
     favicon: 'img/icon.svg',
 
@@ -18,8 +18,8 @@ const config = {
 
     // GitHub pages deployment config.
     // If you aren't using GitHub pages, you don't need these.
-    organizationName: 'zeusfyi', // Usually your GitHub org/user name.
-    projectName: 'zeus', // Usually your repo name.
+    organizationName: 'Zeusfyi', // Usually your GitHub org/user name.
+    projectName: 'Zeus', // Usually your repo name.
 
     onBrokenLinks: 'warn',
     onBrokenMarkdownLinks: 'warn',
@@ -69,7 +69,7 @@ const config = {
             // Replace with your project's social card
             image: 'img/icon.png',
             navbar: {
-                title: 'zeusfyi',
+                title: 'Zeusfyi',
                 logo: {
                     alt: 'zeusfyi logo',
                     src: 'img/icon.svg',
@@ -132,7 +132,7 @@ const config = {
                         ],
                     },
                 ],
-                copyright: `zeusfyi © ${new Date().getFullYear()}`,
+                copyright: `Zeusfyi © ${new Date().getFullYear()}`,
             },
             prism: {
                 theme: lightCodeTheme,
