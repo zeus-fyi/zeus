@@ -5,6 +5,8 @@ import (
 	zeus_cluster_config_drivers "github.com/zeus-fyi/zeus/zeus/cluster_config_drivers"
 	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_common_types"
 	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_req_types"
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 )
 
 const (
@@ -63,6 +65,13 @@ var (
 		Env:         "",
 	}
 )
+
+func GetSuiClientClusterDef(cfg SuiConfigOpts) zeus_cluster_config_drivers.ClusterDefinition {
+	return zeus_cluster_config_drivers.ClusterDefinition{
+		ClusterClassName: Sui + cases.Title(language.English).String(cfg.Network),
+		ComponentBases:   GetSuiConfig(cfg),
+	}
+}
 
 func GetSuiConfig(cfg SuiConfigOpts) map[string]zeus_cluster_config_drivers.ComponentBaseDefinition {
 	suiComponentBases = map[string]zeus_cluster_config_drivers.ComponentBaseDefinition{

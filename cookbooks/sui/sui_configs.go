@@ -3,6 +3,7 @@ package sui_cookbooks
 import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	zeus_cluster_config_drivers "github.com/zeus-fyi/zeus/zeus/cluster_config_drivers"
+	zeus_nvme "github.com/zeus-fyi/zeus/zeus/cluster_resources/nvme"
 	zeus_topology_config_drivers "github.com/zeus-fyi/zeus/zeus/workload_config_drivers"
 	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_req_types"
 	v1Core "k8s.io/api/core/v1"
@@ -47,10 +48,11 @@ const (
 )
 
 type SuiConfigOpts struct {
-	DownloadSnapshot bool
-	WithIngress      bool
-	CloudProvider    string
-	Network          string
+	DownloadSnapshot bool   `json:"downloadSnapshot"`
+	WithIngress      bool   `json:"withIngress"`
+	Network          string `json:"network"`
+
+	CloudProvider string `json:"cloudProvider"`
 }
 
 func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_drivers.ComponentBaseDefinition {
@@ -123,7 +125,7 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 								Resources: v1Core.ResourceRequirements{
 									Requests: v1Core.ResourceList{"storage": resource.MustParse(diskSize)},
 								},
-								StorageClassName: aws.String(ConfigureCloudProviderStorageClass(cfg.CloudProvider)),
+								StorageClassName: aws.String(zeus_nvme.ConfigureCloudProviderStorageClass(cfg.CloudProvider)),
 							},
 						},
 					}},

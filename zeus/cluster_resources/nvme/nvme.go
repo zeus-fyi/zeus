@@ -1,4 +1,4 @@
-package sui_cookbooks
+package zeus_nvme
 
 import (
 	aws_nvme "github.com/zeus-fyi/zeus/zeus/cluster_resources/nvme/aws"
@@ -22,4 +22,10 @@ func ConfigureCloudProviderStorageClass(cp string) string {
 	default:
 		return ""
 	}
+}
+
+type DiskConfigDriverOpts struct {
+	PvcName       string `json:"pvcName"`
+	CloudProvider string `json:"cloudProvider"`
+	Size          string `json:"diskSize"`
 }
