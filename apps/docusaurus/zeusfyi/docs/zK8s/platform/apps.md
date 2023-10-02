@@ -33,8 +33,6 @@ then it will automatically configure Nginx, your web certificate for SSL, and yo
 
 Additionally, your API is optionally configurable to come with authentication using your existing API key.
 
-![Screenshot 2023-10-01 at 5.04.24 PM.png](..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2Fvar%2Ffolders%2Fcl%2Fypxrt_zd5dl62x74lxt969xh0000gn%2FT%2FTemporaryItems%2FNSIRD_screencaptureui_fYVEa8%2FScreenshot%202023-10-01%20at%205.04.24%20PM.png)
-
 Once you've configured your app, you'll need to generate a preview. This will show you the full kubernetes yaml
 configuration for your app, and you can copy it, or save it to your account.
 
