@@ -56,10 +56,8 @@ type SuiConfigOpts struct {
 }
 
 func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_drivers.ComponentBaseDefinition {
-	cmConfig := ""
 	downloadStartup := ""
 	diskSize := mainnetDiskSize
-	herculesStartup := hercules + ".sh"
 	cpuSize := cpuCores
 	memSize := memorySize
 	switch cfg.Network {
@@ -86,16 +84,6 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 		SkeletonBaseChart:         zeus_req_types.TopologyCreateRequest{},
 		SkeletonBaseNameChartPath: suiMasterChartPath,
 		TopologyConfigDriver: &zeus_topology_config_drivers.TopologyConfigDriver{
-			ConfigMapDriver: &zeus_topology_config_drivers.ConfigMapDriver{
-				ConfigMap: v1Core.ConfigMap{
-					ObjectMeta: metav1.ObjectMeta{Name: suiConfigMap},
-				},
-				SwapKeys: map[string]string{
-					"start.sh":              cmConfig + ".sh",
-					hercules + ".sh":        herculesStartup,
-					downloadStartup + ".sh": downloadStartup,
-				},
-			},
 			ServiceDriver: sd,
 			StatefulSetDriver: &zeus_topology_config_drivers.StatefulSetDriver{
 				ContainerDrivers: map[string]zeus_topology_config_drivers.ContainerDriver{
