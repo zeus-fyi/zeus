@@ -29,8 +29,7 @@ need to. You can also add a ConfigMap, and an Ingress, and then you'll preview y
 ![Screenshot 2023-10-01 at 5 02 20 PM](https://github.com/zeus-fyi/zeus/assets/17446735/f9f3f2da-326b-4409-ac99-033d77d6d287)
 
 When you select an Ingress, you'll select which port to expose as an API from the container ports you've specified and
-then it
-will automatically configure Nginx, your web certificate for SSL, and your DNS record.
+then it will automatically configure Nginx, your web certificate for SSL, and your DNS record.
 
 Additionally, your API is optionally configurable to come with authentication using your existing API key.
 
