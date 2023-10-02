@@ -5,7 +5,7 @@ WORKDIR /app
 
 ARG DIR
 # Copy the package.json and package-lock.json files into the container
-COPY apps/docusaurus/${DIR}/package.json apps/docusaurus/${DIR}/package-lock.json ./
+COPY apps/docusaurus/${DIR}/package.json apps/docusaurus/${DIR}/yarn.lock ./
 
 # Install any needed packages
 RUN yarn install --frozen-lockfile
