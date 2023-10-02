@@ -48,10 +48,11 @@ const (
 
 type SuiConfigOpts struct {
 	DownloadSnapshot bool   `json:"downloadSnapshot"`
-	WithIngress      bool   `json:"withIngress"`
 	Network          string `json:"network"`
 
-	CloudProvider string `json:"cloudProvider"`
+	WithIngress        bool   `json:"withIngress"`
+	WithServiceMonitor bool   `json:"withServiceMonitor"`
+	CloudProvider      string `json:"cloudProvider"`
 }
 
 func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_drivers.ComponentBaseDefinition {

@@ -64,6 +64,23 @@ var (
 		FnOut:       "",
 		Env:         "",
 	}
+	suiServiceMonitorComponentBase = zeus_cluster_config_drivers.ComponentBaseDefinition{
+		SkeletonBases: map[string]zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
+			"suiServiceMonitor": suiServiceMonitorSkeletonBaseConfig,
+		},
+	}
+	suiServiceMonitorSkeletonBaseConfig = zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
+		SkeletonBaseChart:         zeus_req_types.TopologyCreateRequest{},
+		SkeletonBaseNameChartPath: suiServiceMonitorChartPath,
+	}
+	suiServiceMonitorChartPath = filepaths.Path{
+		PackageName: "",
+		DirIn:       "./sui/node/servicemonitor",
+		DirOut:      "./sui/node/processed_sui_servicemonitor",
+		FnIn:        "suiIngress", // filename for your gzip workload
+		FnOut:       "",
+		Env:         "",
+	}
 )
 
 func GetSuiClientClusterDef(cfg SuiConfigOpts) zeus_cluster_config_drivers.ClusterDefinition {
@@ -79,6 +96,9 @@ func GetSuiConfig(cfg SuiConfigOpts) map[string]zeus_cluster_config_drivers.Comp
 	}
 	if cfg.WithIngress {
 		suiComponentBases["ingress"] = suiIngressComponentBase
+	}
+	if cfg.WithServiceMonitor {
+		suiComponentBases["servicemonitor"] = suiServiceMonitorComponentBase
 	}
 	return suiComponentBases
 }
