@@ -6,6 +6,8 @@ import (
 	gcp_nvme "github.com/zeus-fyi/zeus/zeus/cluster_resources/nvme/gcp"
 )
 
+// TODO: add local nvme vs block storage
+
 func ConfigureCloudProviderStorageClass(cp string) string {
 	switch cp {
 	case "aws":
