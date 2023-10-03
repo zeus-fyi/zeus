@@ -12,7 +12,7 @@ func (t *SuiActionsCookbookTestSuite) TestGetMetrics() {
 		CloudProvider: "aws",
 		Region:        "us-west-1",
 		Context:       "zeus-us-west-1",
-		Namespace:     "sui-03e7d0b6",
+		Namespace:     "sui-3f454d91",
 	}
 	t.su.PrintResp = false
 	resp, err := t.su.GetMetrics(ctx, cloudCtxNs)
