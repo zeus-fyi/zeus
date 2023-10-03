@@ -14,15 +14,16 @@ import (
 )
 
 const (
-	DefaultSuiRpcPortNumber = 9000
+	DefaultSuiRpcPortNumber     = 9000
+	DefaultSuiMetricsPortNumber = 9184
 )
 
 type SuiActionsClient struct {
 	pods_client.PodsClient
 
-	RpcPortNumber int
-
-	PrintPath filepaths.Path
+	RpcPortNumber     int
+	MetricsPortNumber int
+	PrintPath         filepaths.Path
 }
 
 type JsonRpcReq struct {
@@ -39,8 +40,9 @@ type JsonRpcResult struct {
 
 func InitSuiClient(p pods_client.PodsClient) SuiActionsClient {
 	return SuiActionsClient{
-		PodsClient:    p,
-		RpcPortNumber: DefaultSuiRpcPortNumber,
+		PodsClient:        p,
+		RpcPortNumber:     DefaultSuiRpcPortNumber,
+		MetricsPortNumber: DefaultSuiMetricsPortNumber,
 	}
 }
 
@@ -50,6 +52,24 @@ func (s *SuiActionsClient) SendRpcPayload(ctx context.Context, cloudCtxNs zeus_c
 		Endpoint:   "/",
 		Ports:      []string{fmt.Sprintf("%d", s.RpcPortNumber)},
 		Payload:    payload,
+	}
+	filter := strings_filter.FilterOpts{Contains: "sui"}
+	par := zeus_pods_reqs.PodActionRequest{
+		TopologyDeployRequest: zeus_req_types.TopologyDeployRequest{
+			CloudCtxNs: cloudCtxNs,
+		},
+		Action:     zeus_pods_reqs.PortForwardToAllMatchingPods,
+		FilterOpts: &filter,
+		ClientReq:  &cliReq,
+	}
+	return s.PortForwardReqToPods(ctx, par)
+}
+
+func (s *SuiActionsClient) GetMetrics(ctx context.Context, cloudCtxNs zeus_common_types.CloudCtxNs) (zeus_pods_resp.ClientResp, error) {
+	cliReq := zeus_pods_reqs.ClientRequest{
+		MethodHTTP: "GET",
+		Endpoint:   "/metrics",
+		Ports:      []string{fmt.Sprintf("%d", s.MetricsPortNumber)},
 	}
 	filter := strings_filter.FilterOpts{Contains: "sui"}
 	par := zeus_pods_reqs.PodActionRequest{
