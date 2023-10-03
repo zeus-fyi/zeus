@@ -15,7 +15,7 @@ spec:
       name: p2p
     - port: 8084
       targetPort: p2p-udp
-      protocol: UDP
+      protocol: TCP
       name: p2p-udp
   selector:
     app.kubernetes.io/name: sui

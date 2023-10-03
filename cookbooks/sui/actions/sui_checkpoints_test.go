@@ -46,7 +46,7 @@ func (t *SuiActionsCookbookTestSuite) TestGetLatestCheckpointSeqNum() {
 		CloudProvider: "aws",
 		Region:        "us-west-1",
 		Context:       "zeus-us-west-1",
-		Namespace:     "sui-03e7d0b6",
+		Namespace:     "sui-3f454d91",
 	}
 	resp, err := t.su.GetLatestCheckpointSeqNumber(ctx, cloudCtxNs)
 	t.NoError(err)
