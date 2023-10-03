@@ -6,12 +6,6 @@ data:
   hercules.sh: |-
     #!/bin/sh
     exec hercules
-  noDownloadMainnet.sh: |-
-    #!/bin/sh
-    exec snapshots --downloadURL="" --protocol="sui" --network="mainnet" --workload-type="min"
-  noDownloadTestnet.sh: |-
-    #!/bin/sh
-    exec snapshots --downloadURL="" --protocol="sui" --network="testnet" --workload-type="min"
   downloadMainnetNode.sh: |-
     #!/bin/sh
     exec snapshots --downloadURL="" --protocol="sui" --network="mainnet" --workload-type="full"
@@ -22,7 +16,7 @@ data:
     # Update this value to the location you want Sui to store its database
     db-path: "/data"
 
-    network-address: "/dns/localhost/tcp/8080/http"
+    network-address: "/dns/0.0.0.0/tcp/8080/http"
     metrics-address: "0.0.0.0:9184"
     # this address is also used for web socket connections
     json-rpc-address: "0.0.0.0:9000"
