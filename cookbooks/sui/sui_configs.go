@@ -1,9 +1,14 @@
 package sui_cookbooks
 
 import (
+	"encoding/json"
+
 	"github.com/aws/aws-sdk-go-v2/aws"
+	yaml_fileio "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/yaml"
 	zeus_cluster_config_drivers "github.com/zeus-fyi/zeus/zeus/cluster_config_drivers"
 	zeus_nvme "github.com/zeus-fyi/zeus/zeus/cluster_resources/nvme"
+	aws_nvme "github.com/zeus-fyi/zeus/zeus/cluster_resources/nvme/aws"
+	do_nvme "github.com/zeus-fyi/zeus/zeus/cluster_resources/nvme/do"
 	zeus_topology_config_drivers "github.com/zeus-fyi/zeus/zeus/workload_config_drivers"
 	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_req_types"
 	v1Core "k8s.io/api/core/v1"
@@ -81,11 +86,28 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 		sd.AddNginxTargetPort("nginx", SuiRpcPortName)
 	}
 
-	// TODO: update config map key to change datadir when applicable
+	dataDir := "/data"
+	switch cfg.CloudProvider {
+	case "aws":
+		dataDir = aws_nvme.AwsNvmePath
+	case "gcp":
+		// todo, add gcp nvme path
+	case "do":
+		dataDir = do_nvme.DoNvmePath
+	}
+
 	sbCfg := zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
 		SkeletonBaseChart:         zeus_req_types.TopologyCreateRequest{},
 		SkeletonBaseNameChartPath: suiMasterChartPath,
 		TopologyConfigDriver: &zeus_topology_config_drivers.TopologyConfigDriver{
+			ConfigMapDriver: &zeus_topology_config_drivers.ConfigMapDriver{
+				ConfigMap: v1Core.ConfigMap{
+					ObjectMeta: metav1.ObjectMeta{Name: suiConfigMap},
+					Data: map[string]string{
+						"fullnode.yaml": OverrideNodeConfigDataDir(dataDir),
+					},
+				},
+			},
 			ServiceDriver: sd,
 			StatefulSetDriver: &zeus_topology_config_drivers.StatefulSetDriver{
 				ContainerDrivers: map[string]zeus_topology_config_drivers.ContainerDriver{
@@ -122,4 +144,35 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 		},
 	}
 	return suiCompBase
+}
+
+func OverrideNodeConfigDataDir(dataDir string) string {
+	p := suiMasterChartPath
+	p.FnIn = "fullnode.yaml"
+	p.DirIn = "./sui/node/sui_config"
+	fip := p.FileInPath()
+	nodeCfg, err := yaml_fileio.ReadYamlConfig(fip)
+	if err != nil {
+		panic(err)
+	}
+	m := make(map[string]interface{})
+	err = json.Unmarshal(nodeCfg, &m)
+	if err != nil {
+		panic(err)
+	}
+	for k, _ := range m {
+		if k == "db-path" {
+			m[k] = dataDir
+		}
+		if k == "genesis" {
+			m[k] = map[string]interface{}{
+				"genesis-file-location": dataDir + "/genesis.blob",
+			}
+		}
+	}
+	b, err := json.Marshal(m)
+	if err != nil {
+		panic(err)
+	}
+	return string(b)
 }
