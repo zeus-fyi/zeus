@@ -28,11 +28,11 @@ func SuiStartup(ctx context.Context, w WorkloadInfo) {
 	}
 	switch w.Network {
 	case "devnet":
-		//urlPath = "https://github.com/MystenLabs/sui-genesis/raw/main/devnet/genesis.blob"
-	case "mainnet":
-		urlPath = "https://github.com/MystenLabs/sui-genesis/raw/main/mainnet/genesis.blob"
+		urlPath = "https://github.com/MystenLabs/sui-genesis/raw/main/devnet/genesis.blob"
 	case "testnet":
 		urlPath = "https://github.com/MystenLabs/sui-genesis/raw/main/testnet/genesis.blob"
+	case "mainnet":
+		urlPath = "https://github.com/MystenLabs/sui-genesis/raw/main/mainnet/genesis.blob"
 	}
 
 	err := DownloadGenesisBlob(w, urlPath)
