@@ -47,7 +47,7 @@ func (t *SuiCookbookTestSuite) TestUploadTestnet() {
 	cfg := SuiConfigOpts{
 		DownloadSnapshot: false,
 		WithIngress:      false,
-		CloudProvider:    "aws",
+		CloudProvider:    "do",
 		Network:          testnet,
 	}
 	suiNodeDefinition.ComponentBases = GetSuiConfig(cfg)
