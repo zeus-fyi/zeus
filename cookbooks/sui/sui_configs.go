@@ -222,7 +222,7 @@ func OverrideNodeConfigDataDir(dataDir, network string) string {
 		}
 		if k == "genesis" {
 			m[k] = map[string]interface{}{
-				"genesis-file-location": "genesis.blob",
+				"genesis-file-location": dataDir + "/genesis.blob",
 			}
 		}
 	}
