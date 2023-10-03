@@ -53,8 +53,10 @@ const (
 	DownloadMainnetNodeDo  = "downloadMainnetNodeDo"
 	DownloadMainnetNodeAws = "downloadMainnetNodeAws"
 
-	DownloadTestnet        = "downloadTestnetNode"
-	DownloadTestnetNodeDo  = "downloadTestnetNodeDo"
+	DownloadTestnet       = "downloadTestnetNode"
+	DownloadTestnetNodeDo = "downloadTestnetNodeDo"
+	DownloadDevnetNodeDo  = "downloadDevnetNodeDo"
+
 	DownloadTestnetNodeAws = "downloadTestnetNodeAws"
 )
 
@@ -111,6 +113,9 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 			downloadStartup = DownloadMainnetNodeDo
 		case testnet:
 			downloadStartup = DownloadTestnetNodeDo
+		case devnet:
+			downloadStartup = DownloadDevnetNodeDo
+
 		}
 	}
 	if !cfg.WithLocalNvme {

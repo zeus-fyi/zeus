@@ -1,4 +1,5 @@
 p2p-config:
+  external-address: /dns/0.0.0.0/udp/8084
   seed-peers:
     - address: /dns/icn-00.mainnet.sui.io/udp/8084
       peer-id: 303f1f35afc9a6f82f8d21724f44e1245f4d8eca0806713a07c525dadda95a66

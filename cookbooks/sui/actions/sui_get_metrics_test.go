@@ -9,10 +9,10 @@ import (
 
 func (t *SuiActionsCookbookTestSuite) TestGetMetrics() {
 	cloudCtxNs := zeus_common_types.CloudCtxNs{
-		CloudProvider: "aws",
-		Region:        "us-west-1",
-		Context:       "zeus-us-west-1",
-		Namespace:     "sui-3f454d91",
+		CloudProvider: "do",
+		Region:        "nyc1",
+		Context:       "do-nyc1-do-nyc1-zeus-demo",
+		Namespace:     "sui-testnet-do-5ab4e8aa",
 	}
 	t.su.PrintResp = false
 	resp, err := t.su.GetMetrics(ctx, cloudCtxNs)

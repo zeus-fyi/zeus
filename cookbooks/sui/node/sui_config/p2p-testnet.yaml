@@ -1,4 +1,5 @@
 p2p-config:
+  external-address: /dns/0.0.0.0/udp/8084
   seed-peers:
     - address: /dns/ewr-tnt-ssfn-00.testnet.sui.io/udp/8084
       peer-id: df8a8d128051c249e224f95fcc463f518a0ebed8986bbdcc11ed751181fecd38
