@@ -5,6 +5,7 @@ import (
 	"context"
 	"fmt"
 	"os/exec"
+	"path"
 	"time"
 
 	"github.com/cavaliergopher/grab/v3"
@@ -41,10 +42,12 @@ func SuiStartup(ctx context.Context, w WorkloadInfo) {
 }
 
 func SuiDownloadSnapshotS3(w WorkloadInfo) error {
+	dbPathExt := w.DataDir.DirIn
 	switch w.WorkloadType {
 	case "full":
+		dbPathExt = path.Join(w.DataDir.DirIn, "full_node_db/live")
 	case "validator":
-		// TODO adjust path for validator
+		dbPathExt = path.Join(w.DataDir.DirIn, "live")
 	default:
 		log.Warn().Msg("SuiDownloadSnapshotS3: workload type not supported and/or provided")
 		return nil
@@ -74,7 +77,7 @@ func SuiDownloadSnapshotS3(w WorkloadInfo) error {
 		"s3",
 		"cp",
 		s3,
-		w.DataDir.DirIn,
+		dbPathExt,
 		"--recursive",
 		"--no-sign-request",
 	)
