@@ -80,6 +80,8 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 	if cfg.WithIngress {
 		sd.AddNginxTargetPort("nginx", SuiRpcPortName)
 	}
+
+	// TODO: update config map key to change datadir when applicable
 	sbCfg := zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
 		SkeletonBaseChart:         zeus_req_types.TopologyCreateRequest{},
 		SkeletonBaseNameChartPath: suiMasterChartPath,
