@@ -104,7 +104,7 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 				ConfigMap: v1Core.ConfigMap{
 					ObjectMeta: metav1.ObjectMeta{Name: suiConfigMap},
 					Data: map[string]string{
-						"fullnode.yaml": OverrideNodeConfigDataDir(dataDir),
+						"fullnode.yaml": OverrideNodeConfigDataDir(dataDir, cfg.Network),
 					},
 				},
 			},
@@ -146,7 +146,7 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 	return suiCompBase
 }
 
-func OverrideNodeConfigDataDir(dataDir string) string {
+func OverrideNodeConfigDataDir(dataDir, network string) string {
 	p := suiMasterChartPath
 	p.FnIn = "fullnode.yaml"
 	p.DirIn = "./sui/node/sui_config"
@@ -170,9 +170,37 @@ func OverrideNodeConfigDataDir(dataDir string) string {
 			}
 		}
 	}
+	p2pCfg := GetP2PTable(network)
+	if p2pCfg != nil {
+		m["p2p-config"] = p2pCfg
+	}
 	b, err := json.Marshal(m)
 	if err != nil {
 		panic(err)
 	}
 	return string(b)
+}
+
+func GetP2PTable(network string) interface{} {
+	p := suiMasterChartPath
+	switch network {
+	case mainnet:
+		p.FnIn = "p2p-mainnet.yaml"
+	case testnet:
+		p.FnIn = "p2p-testnet.yaml"
+	default:
+		return nil
+	}
+	p.DirIn = "./sui/node/sui_config"
+	fip := p.FileInPath()
+	p2pCfg, err := yaml_fileio.ReadYamlConfig(fip)
+	if err != nil {
+		panic(err)
+	}
+	m := make(map[string]interface{})
+	err = json.Unmarshal(p2pCfg, &m)
+	if err != nil {
+		panic(err)
+	}
+	return m["p2p-config"]
 }
