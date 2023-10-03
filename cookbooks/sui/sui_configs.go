@@ -121,9 +121,6 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 	if !cfg.WithLocalNvme {
 		dataDir = "/data"
 	}
-	if cfg.Network == devnet {
-		cfg.DownloadSnapshot = false
-	}
 	var storageClassName *string
 	if cfg.WithLocalNvme {
 		storageClassName = aws.String(zeus_nvme.ConfigureCloudProviderStorageClass(cfg.CloudProvider))
