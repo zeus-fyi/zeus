@@ -3,6 +3,7 @@ package sui_cookbooks
 import (
 	"fmt"
 
+	zeus_cluster_config_drivers "github.com/zeus-fyi/zeus/zeus/cluster_config_drivers"
 	aws_nvme "github.com/zeus-fyi/zeus/zeus/cluster_resources/nvme/aws"
 	do_nvme "github.com/zeus-fyi/zeus/zeus/cluster_resources/nvme/do"
 	gcp_nvme "github.com/zeus-fyi/zeus/zeus/cluster_resources/nvme/gcp"
@@ -10,8 +11,9 @@ import (
 	"k8s.io/apimachinery/pkg/api/resource"
 )
 
-func (t *SuiCookbookTestSuite) generateFromConfigDriverBuilder(cfg SuiConfigOpts) {
+func (t *SuiCookbookTestSuite) generateFromConfigDriverBuilder(cfg SuiConfigOpts) []zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition {
 	cd := GetSuiClientClusterDef(cfg)
+	cd.DisablePrint = false
 	gcd := cd.BuildClusterDefinitions()
 	t.Assert().NotEmpty(gcd)
 	fmt.Println(gcd)
@@ -23,6 +25,8 @@ func (t *SuiCookbookTestSuite) generateFromConfigDriverBuilder(cfg SuiConfigOpts
 	sbDefs, err := cd.GenerateSkeletonBaseCharts()
 	t.Require().Nil(err)
 	t.Assert().NotEmpty(sbDefs)
+
+	return sbDefs
 }
 
 func (t *SuiCookbookTestSuite) TestSuiTestnetCfg() {
@@ -133,8 +137,26 @@ func (t *SuiCookbookTestSuite) TestSuiAllOptsEnabled() {
 		CloudProvider:      "gcp",
 		Network:            mainnet,
 	}
-	t.generateFromConfigDriverBuilder(cfg)
+	sbDefs := t.generateFromConfigDriverBuilder(cfg)
 
+	seenIngressCount := 0
+	seenServiceMonitorCount := 0
+	for _, sb := range sbDefs {
+		if sb.Workload.Ingress != nil {
+			seenIngressCount += 1
+		}
+		if sb.Workload.ServiceMonitor != nil {
+			seenServiceMonitorCount += 1
+		}
+	}
+
+	if cfg.WithIngress {
+		t.Require().Equal(seenIngressCount, 1)
+	}
+	if cfg.WithServiceMonitor {
+		t.Require().Equal(seenServiceMonitorCount, 1)
+	}
+	t.Require().Len(sbDefs, 3)
 	p := suiMasterChartPath
 	p.DirIn = "./sui/node/custom_sui"
 	inf := topology_workloads.NewTopologyBaseInfraWorkload()

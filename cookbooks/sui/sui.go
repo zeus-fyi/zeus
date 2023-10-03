@@ -13,6 +13,9 @@ const (
 	Sui       = "sui"
 	Full      = "full"
 	Validator = "validator"
+
+	SuiIngress        = "suiIngress"
+	SuiServiceMonitor = "suiServiceMonitor"
 )
 
 var (
@@ -49,7 +52,7 @@ var (
 	}
 	suiIngressComponentBase = zeus_cluster_config_drivers.ComponentBaseDefinition{
 		SkeletonBases: map[string]zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
-			"suiIngress": suiIngressSkeletonBaseConfig,
+			SuiIngress: suiIngressSkeletonBaseConfig,
 		},
 	}
 	suiIngressSkeletonBaseConfig = zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
@@ -59,14 +62,14 @@ var (
 	suiIngressChartPath = filepaths.Path{
 		PackageName: "",
 		DirIn:       "./sui/node/ingress",
-		DirOut:      "./sui/node/processed_sui_ingress",
-		FnIn:        "suiIngress", // filename for your gzip workload
+		DirOut:      "./sui/output",
+		FnIn:        SuiIngress, // filename for your gzip workload
 		FnOut:       "",
 		Env:         "",
 	}
 	suiServiceMonitorComponentBase = zeus_cluster_config_drivers.ComponentBaseDefinition{
 		SkeletonBases: map[string]zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
-			"suiServiceMonitor": suiServiceMonitorSkeletonBaseConfig,
+			SuiServiceMonitor: suiServiceMonitorSkeletonBaseConfig,
 		},
 	}
 	suiServiceMonitorSkeletonBaseConfig = zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
@@ -76,9 +79,8 @@ var (
 	suiServiceMonitorChartPath = filepaths.Path{
 		PackageName: "",
 		DirIn:       "./sui/node/servicemonitor",
-		DirOut:      "./sui/node/processed_sui_servicemonitor",
-		FnIn:        "suiIngress", // filename for your gzip workload
-		FnOut:       "",
+		DirOut:      "./sui/output",
+		FnIn:        SuiServiceMonitor, // filename for your gzip workload
 		Env:         "",
 	}
 )
@@ -95,10 +97,10 @@ func GetSuiConfig(cfg SuiConfigOpts) map[string]zeus_cluster_config_drivers.Comp
 		Sui: GetSuiClientNetworkConfigBase(cfg),
 	}
 	if cfg.WithIngress {
-		suiComponentBases["ingress"] = suiIngressComponentBase
+		suiComponentBases[SuiIngress] = suiIngressComponentBase
 	}
 	if cfg.WithServiceMonitor {
-		suiComponentBases["servicemonitor"] = suiServiceMonitorComponentBase
+		suiComponentBases[SuiServiceMonitor] = suiServiceMonitorComponentBase
 	}
 	return suiComponentBases
 }
