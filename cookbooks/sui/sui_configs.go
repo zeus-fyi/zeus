@@ -21,6 +21,7 @@ const (
 	// networks
 	mainnet = "mainnet"
 	testnet = "testnet"
+	devnet  = "devnet"
 
 	// docker image references
 	dockerImage = "mysten/sui-node:stable"
@@ -79,7 +80,7 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 		memSize = memorySize
 		diskSize = mainnetDiskSize
 		downloadStartup = DownloadMainnet
-	case testnet:
+	case testnet, devnet:
 		diskSize = testnetDiskSize
 		cpuSize = cpuCoresTestnet
 		memSize = memorySizeTestnet
@@ -114,6 +115,9 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 	}
 	if !cfg.WithLocalNvme {
 		dataDir = "/data"
+	}
+	if cfg.Network == devnet {
+		cfg.DownloadSnapshot = false
 	}
 	var storageClassName *string
 	if cfg.WithLocalNvme {
