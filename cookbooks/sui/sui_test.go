@@ -55,8 +55,25 @@ func (t *SuiCookbookTestSuite) TestUploadTestnet() {
 	}
 	suiNodeDefinition = GetSuiClientClusterDef(cfg)
 	t.Require().NotNil(suiNodeDefinition.ComponentBases[Sui])
-	t.TestCreateClusterClass()
+	//t.TestCreateClusterClass()
 	t.Require().Equal("sui-testnet-do", suiNodeDefinition.ClusterClassName)
+	_, rerr := suiNodeDefinition.UploadChartsFromClusterDefinition(ctx, t.ZeusTestClient, true)
+	t.Require().Nil(rerr)
+}
+
+func (t *SuiCookbookTestSuite) TestUploadDevnet() {
+	cfg := SuiConfigOpts{
+		WithLocalNvme:      true,
+		DownloadSnapshot:   false,
+		WithIngress:        false,
+		WithServiceMonitor: false,
+		CloudProvider:      "do",
+		Network:            devnet,
+	}
+	suiNodeDefinition = GetSuiClientClusterDef(cfg)
+	t.Require().NotNil(suiNodeDefinition.ComponentBases[Sui])
+	//t.TestCreateClusterClass()
+	t.Require().Equal("sui-devnet-do", suiNodeDefinition.ClusterClassName)
 	_, rerr := suiNodeDefinition.UploadChartsFromClusterDefinition(ctx, t.ZeusTestClient, true)
 	t.Require().Nil(rerr)
 }
