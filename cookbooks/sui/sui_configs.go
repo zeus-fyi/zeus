@@ -47,10 +47,8 @@ const (
 
 	SuiRpcPortName = "http-rpc"
 
-	DownloadMainnet   = "downloadMainnetNode"
-	DownloadTestnet   = "downloadTestnetNode"
-	NoDownloadMainnet = "noDownloadMainnet"
-	NoDownloadTestnet = "noDownloadTestnet"
+	DownloadMainnet = "downloadMainnetNode"
+	DownloadTestnet = "downloadTestnetNode"
 )
 
 type SuiConfigOpts struct {
@@ -60,6 +58,7 @@ type SuiConfigOpts struct {
 	WithIngress        bool   `json:"withIngress"`
 	WithServiceMonitor bool   `json:"withServiceMonitor"`
 	CloudProvider      string `json:"cloudProvider"`
+	WithLocalNvme      bool   `json:"withLocalNvme"`
 }
 
 func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_drivers.ComponentBaseDefinition {
@@ -95,7 +94,13 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 	case "do":
 		dataDir = do_nvme.DoNvmePath
 	}
-
+	if !cfg.WithLocalNvme {
+		dataDir = "/data"
+	}
+	var storageClassName *string
+	if cfg.WithLocalNvme {
+		storageClassName = aws.String(zeus_nvme.ConfigureCloudProviderStorageClass(cfg.CloudProvider))
+	}
 	sbCfg := zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
 		SkeletonBaseChart:         zeus_req_types.TopologyCreateRequest{},
 		SkeletonBaseNameChartPath: suiMasterChartPath,
@@ -161,7 +166,7 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 							ObjectMeta: metav1.ObjectMeta{Name: suiDiskName},
 							Spec: v1Core.PersistentVolumeClaimSpec{
 								Resources:        zeus_topology_config_drivers.CreateDiskResourceRequirementsLimit(diskSize),
-								StorageClassName: aws.String(zeus_nvme.ConfigureCloudProviderStorageClass(cfg.CloudProvider)),
+								StorageClassName: storageClassName,
 							},
 						},
 					}},

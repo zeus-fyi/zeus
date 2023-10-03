@@ -59,6 +59,7 @@ func (t *SuiCookbookTestSuite) TestReadFullNodeConfig() {
 
 func (t *SuiCookbookTestSuite) TestSuiTestnetCfg() {
 	cfg := SuiConfigOpts{
+		WithLocalNvme:    true,
 		DownloadSnapshot: false,
 		WithIngress:      false,
 		CloudProvider:    "do",
@@ -96,8 +97,7 @@ func (t *SuiCookbookTestSuite) TestSuiTestnetCfg() {
 	}
 	for _, ct := range inf.StatefulSet.Spec.Template.Spec.InitContainers {
 		if ct.Name == "init-snapshots" {
-			t.Require().Len(ct.Args, 2)
-			t.Equal(NoDownloadTestnet+".sh", ct.Args[1])
+			t.Fail("init-snapshots should not be present")
 		}
 	}
 	// init-snapshots
@@ -109,6 +109,7 @@ func (t *SuiCookbookTestSuite) TestSuiTestnetCfg() {
 
 func (t *SuiCookbookTestSuite) TestSuiMainnetCfg() {
 	cfg := SuiConfigOpts{
+		WithLocalNvme:    true,
 		DownloadSnapshot: true,
 		WithIngress:      false,
 		CloudProvider:    "aws",
@@ -162,6 +163,7 @@ func (t *SuiCookbookTestSuite) TestSuiAllOptsEnabled() {
 	p.DirIn = "./sui/node/custom_sui"
 	p.DirOut = "./sui/node/custom_sui"
 	cfg := SuiConfigOpts{
+		WithLocalNvme:      true,
 		DownloadSnapshot:   true,
 		WithIngress:        true,
 		WithServiceMonitor: true,

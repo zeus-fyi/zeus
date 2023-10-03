@@ -31,8 +31,8 @@ func (t *SuiCookbookTestSuite) TestDestroy() {
 }
 
 func (t *SuiCookbookTestSuite) TestUpload() {
-
 	cfg := SuiConfigOpts{
+		WithLocalNvme:    true,
 		DownloadSnapshot: false,
 		WithIngress:      false,
 		CloudProvider:    "aws",
