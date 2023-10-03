@@ -46,8 +46,9 @@ func (t *SuiCookbookTestSuite) TestUpload() {
 
 func (t *SuiCookbookTestSuite) TestUploadTestnet() {
 	cfg := SuiConfigOpts{
-		DownloadSnapshot:   false,
-		WithIngress:        true,
+		WithLocalNvme:      true,
+		DownloadSnapshot:   true,
+		WithIngress:        false,
 		WithServiceMonitor: false,
 		CloudProvider:      "do",
 		Network:            testnet,

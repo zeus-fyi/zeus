@@ -2,6 +2,7 @@ package sui_cookbooks
 
 import (
 	"encoding/json"
+	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/ghodss/yaml"
@@ -47,8 +48,13 @@ const (
 
 	SuiRpcPortName = "http-rpc"
 
-	DownloadMainnet = "downloadMainnetNode"
-	DownloadTestnet = "downloadTestnetNode"
+	DownloadMainnet        = "downloadMainnetNode"
+	DownloadMainnetNodeDo  = "downloadMainnetNodeDo"
+	DownloadMainnetNodeAws = "downloadMainnetNodeAws"
+
+	DownloadTestnet        = "downloadTestnetNode"
+	DownloadTestnetNodeDo  = "downloadTestnetNodeDo"
+	DownloadTestnetNodeAws = "downloadTestnetNodeAws"
 )
 
 type SuiConfigOpts struct {
@@ -89,10 +95,22 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 	switch cfg.CloudProvider {
 	case "aws":
 		dataDir = aws_nvme.AwsNvmePath
+		switch cfg.Network {
+		case mainnet:
+			downloadStartup = DownloadMainnetNodeAws
+		case testnet:
+			downloadStartup = DownloadTestnetNodeAws
+		}
 	case "gcp":
 		// todo, add gcp nvme path
 	case "do":
 		dataDir = do_nvme.DoNvmePath
+		switch cfg.Network {
+		case mainnet:
+			downloadStartup = DownloadMainnetNodeDo
+		case testnet:
+			downloadStartup = DownloadTestnetNodeDo
+		}
 	}
 	if !cfg.WithLocalNvme {
 		dataDir = "/data"
@@ -139,7 +157,7 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 					"init-snapshots": {
 						Container: v1Core.Container{
 							Name: "init-snapshots",
-							Args: []string{"-c", downloadStartup + ".sh"},
+							Args: []string{"-c", fmt.Sprintf("/scripts/%s.sh", downloadStartup)},
 							VolumeMounts: []v1Core.VolumeMount{{
 								Name:      suiDiskName,
 								MountPath: dataDir,
@@ -200,7 +218,7 @@ func OverrideNodeConfigDataDir(dataDir, network string) string {
 		}
 		if k == "genesis" {
 			m[k] = map[string]interface{}{
-				"genesis-file-location": dataDir + "/genesis.blob",
+				"genesis-file-location": "genesis.blob",
 			}
 		}
 	}
