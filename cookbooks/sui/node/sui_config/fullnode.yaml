@@ -1,7 +1,7 @@
 # Update this value to the location you want Sui to store its database
 db-path: "/data"
 
-network-address: "/dns/localhost/tcp/8080/http"
+network-address: "/dns/0.0.0.0/tcp/8080/http"
 metrics-address: "0.0.0.0:9184"
 # this address is also used for web socket connections
 json-rpc-address: "0.0.0.0:9000"
@@ -9,7 +9,7 @@ enable-event-processing: true
 
 genesis:
   # Update this to the location of where the genesis file is stored
-  genesis-file-location: "/data/genesis.blob"
+  genesis-file-location: "genesis.blob"
 authority-store-pruning-config:
   # Number of epoch dbs to keep
   # Not relevant for object pruning
