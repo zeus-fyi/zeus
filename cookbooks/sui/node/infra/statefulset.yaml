@@ -85,6 +85,12 @@ spec:
             - name: http-rpc
               containerPort: 9000
               protocol: TCP
+            - name: p2p
+              containerPort: 8080
+              protocol: TCP
+            - name: p2p-udp
+              containerPort: 8084
+              protocol: UDP
             - name: metrics
               containerPort: 9184
               protocol: TCP
