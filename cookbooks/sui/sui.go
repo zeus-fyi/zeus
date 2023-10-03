@@ -87,7 +87,7 @@ var (
 
 func GetSuiClientClusterDef(cfg SuiConfigOpts) zeus_cluster_config_drivers.ClusterDefinition {
 	return zeus_cluster_config_drivers.ClusterDefinition{
-		ClusterClassName: Sui + cases.Title(language.English).String(cfg.Network),
+		ClusterClassName: Sui + cases.Title(language.English).String(cfg.Network) + cases.Title(language.English).String(cfg.CloudProvider),
 		ComponentBases:   GetSuiConfig(cfg),
 	}
 }
