@@ -12,6 +12,7 @@ func Download(ctx context.Context, w WorkloadInfo) {
 	if serr != nil {
 		log.Panic().Err(serr).Msg("GetDiskUsageStats")
 	}
+	log.Info().Msgf("disk usage stats: %+v", stats)
 	if onlyIfEmptyDir && stats.UsedPercent <= float64(1) {
 		switch w.Protocol {
 		case "eth", "ethereum":
