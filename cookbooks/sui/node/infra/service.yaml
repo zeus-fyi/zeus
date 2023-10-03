@@ -13,6 +13,10 @@ spec:
       targetPort: hercules
       protocol: TCP
       name: hercules
+    - port: 8080
+      targetPort: p2p
+      protocol: TCP
+      name: p2p
     - port: 8084
       targetPort: p2p-udp
       protocol: UDP
