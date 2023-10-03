@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/ghodss/yaml"
 	yaml_fileio "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/yaml"
 	zeus_cluster_config_drivers "github.com/zeus-fyi/zeus/zeus/cluster_config_drivers"
 	zeus_nvme "github.com/zeus-fyi/zeus/zeus/cluster_resources/nvme"
@@ -46,9 +47,10 @@ const (
 
 	SuiRpcPortName = "http-rpc"
 
-	DownloadMainnet = "downloadMainnetNode"
-	DownloadTestnet = "downloadTestnetNode"
-	NoDownload      = "noDownload"
+	DownloadMainnet   = "downloadMainnetNode"
+	DownloadTestnet   = "downloadTestnetNode"
+	NoDownloadMainnet = "noDownloadMainnet"
+	NoDownloadTestnet = "noDownloadTestnet"
 )
 
 type SuiConfigOpts struct {
@@ -72,15 +74,19 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 		memSize = memorySize
 		diskSize = mainnetDiskSize
 		downloadStartup = DownloadMainnet
+		if !cfg.DownloadSnapshot {
+			downloadStartup = NoDownloadMainnet
+		}
 	case testnet:
 		diskSize = testnetDiskSize
 		cpuSize = cpuCoresTestnet
 		memSize = memorySizeTestnet
 		downloadStartup = DownloadTestnet
+		if !cfg.DownloadSnapshot {
+			downloadStartup = NoDownloadTestnet
+		}
 	}
-	if !cfg.DownloadSnapshot {
-		downloadStartup = NoDownload
-	}
+
 	sd := &zeus_topology_config_drivers.ServiceDriver{}
 	if cfg.WithIngress {
 		sd.AddNginxTargetPort("nginx", SuiRpcPortName)
@@ -116,12 +122,41 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 							Name:      Sui,
 							Image:     dockerImage,
 							Resources: zeus_topology_config_drivers.CreateComputeResourceRequirementsLimit(cpuSize, memSize),
+							VolumeMounts: []v1Core.VolumeMount{{
+								Name:      suiDiskName,
+								MountPath: dataDir,
+							}},
+						},
+					},
+					"hercules": {
+						Container: v1Core.Container{
+							Name: "hercules",
+							VolumeMounts: []v1Core.VolumeMount{{
+								Name:      suiDiskName,
+								MountPath: dataDir,
+							}},
 						},
 					},
 					"init-snapshots": {
 						Container: v1Core.Container{
 							Name: "init-snapshots",
 							Args: []string{"-c", downloadStartup + ".sh"},
+							VolumeMounts: []v1Core.VolumeMount{{
+								Name:      suiDiskName,
+								MountPath: dataDir,
+							}},
+						},
+						IsInitContainer:   true,
+						IsDeleteContainer: !cfg.DownloadSnapshot,
+					},
+					"init-chown-data": {
+						Container: v1Core.Container{
+							Name:    "init-chown-data",
+							Command: []string{"chown", "-R", "10001:10001", dataDir},
+							VolumeMounts: []v1Core.VolumeMount{{
+								Name:      suiDiskName,
+								MountPath: dataDir,
+							}},
 						},
 						IsInitContainer: true,
 					},
@@ -174,7 +209,7 @@ func OverrideNodeConfigDataDir(dataDir, network string) string {
 	if p2pCfg != nil {
 		m["p2p-config"] = p2pCfg
 	}
-	b, err := json.Marshal(m)
+	b, err := yaml.Marshal(m)
 	if err != nil {
 		panic(err)
 	}
@@ -198,7 +233,7 @@ func GetP2PTable(network string) interface{} {
 		panic(err)
 	}
 	m := make(map[string]interface{})
-	err = json.Unmarshal(p2pCfg, &m)
+	err = yaml.Unmarshal(p2pCfg, &m)
 	if err != nil {
 		panic(err)
 	}

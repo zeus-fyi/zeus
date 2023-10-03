@@ -97,7 +97,7 @@ func (t *SuiCookbookTestSuite) TestSuiTestnetCfg() {
 	for _, ct := range inf.StatefulSet.Spec.Template.Spec.InitContainers {
 		if ct.Name == "init-snapshots" {
 			t.Require().Len(ct.Args, 2)
-			t.Equal(NoDownload+".sh", ct.Args[1])
+			t.Equal(NoDownloadTestnet+".sh", ct.Args[1])
 		}
 	}
 	// init-snapshots
