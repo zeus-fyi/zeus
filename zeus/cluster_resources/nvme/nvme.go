@@ -1,10 +1,12 @@
-package sui_cookbooks
+package zeus_nvme
 
 import (
 	aws_nvme "github.com/zeus-fyi/zeus/zeus/cluster_resources/nvme/aws"
 	do_nvme "github.com/zeus-fyi/zeus/zeus/cluster_resources/nvme/do"
 	gcp_nvme "github.com/zeus-fyi/zeus/zeus/cluster_resources/nvme/gcp"
 )
+
+// TODO: add local nvme vs block storage
 
 func ConfigureCloudProviderStorageClass(cp string) string {
 	switch cp {
@@ -20,4 +22,10 @@ func ConfigureCloudProviderStorageClass(cp string) string {
 	default:
 		return ""
 	}
+}
+
+type DiskConfigDriverOpts struct {
+	PvcName       string `json:"pvcName"`
+	CloudProvider string `json:"cloudProvider"`
+	Size          string `json:"diskSize"`
 }

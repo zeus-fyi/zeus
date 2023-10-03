@@ -5,12 +5,17 @@ import (
 	zeus_cluster_config_drivers "github.com/zeus-fyi/zeus/zeus/cluster_config_drivers"
 	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_common_types"
 	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_req_types"
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 )
 
 const (
 	Sui       = "sui"
 	Full      = "full"
 	Validator = "validator"
+
+	SuiIngress        = "suiIngress"
+	SuiServiceMonitor = "suiServiceMonitor"
 )
 
 var (
@@ -47,7 +52,7 @@ var (
 	}
 	suiIngressComponentBase = zeus_cluster_config_drivers.ComponentBaseDefinition{
 		SkeletonBases: map[string]zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
-			"suiIngress": suiIngressSkeletonBaseConfig,
+			SuiIngress: suiIngressSkeletonBaseConfig,
 		},
 	}
 	suiIngressSkeletonBaseConfig = zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
@@ -57,19 +62,45 @@ var (
 	suiIngressChartPath = filepaths.Path{
 		PackageName: "",
 		DirIn:       "./sui/node/ingress",
-		DirOut:      "./sui/node/processed_sui_ingress",
-		FnIn:        "suiIngress", // filename for your gzip workload
+		DirOut:      "./sui/output",
+		FnIn:        SuiIngress, // filename for your gzip workload
 		FnOut:       "",
 		Env:         "",
 	}
+	suiServiceMonitorComponentBase = zeus_cluster_config_drivers.ComponentBaseDefinition{
+		SkeletonBases: map[string]zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
+			SuiServiceMonitor: suiServiceMonitorSkeletonBaseConfig,
+		},
+	}
+	suiServiceMonitorSkeletonBaseConfig = zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
+		SkeletonBaseChart:         zeus_req_types.TopologyCreateRequest{},
+		SkeletonBaseNameChartPath: suiServiceMonitorChartPath,
+	}
+	suiServiceMonitorChartPath = filepaths.Path{
+		PackageName: "",
+		DirIn:       "./sui/node/servicemonitor",
+		DirOut:      "./sui/output",
+		FnIn:        SuiServiceMonitor, // filename for your gzip workload
+		Env:         "",
+	}
 )
+
+func GetSuiClientClusterDef(cfg SuiConfigOpts) zeus_cluster_config_drivers.ClusterDefinition {
+	return zeus_cluster_config_drivers.ClusterDefinition{
+		ClusterClassName: Sui + cases.Title(language.English).String(cfg.Network) + cases.Title(language.English).String(cfg.CloudProvider),
+		ComponentBases:   GetSuiConfig(cfg),
+	}
+}
 
 func GetSuiConfig(cfg SuiConfigOpts) map[string]zeus_cluster_config_drivers.ComponentBaseDefinition {
 	suiComponentBases = map[string]zeus_cluster_config_drivers.ComponentBaseDefinition{
 		Sui: GetSuiClientNetworkConfigBase(cfg),
 	}
 	if cfg.WithIngress {
-		suiComponentBases["ingress"] = suiIngressComponentBase
+		suiComponentBases[SuiIngress] = suiIngressComponentBase
+	}
+	if cfg.WithServiceMonitor {
+		suiComponentBases[SuiServiceMonitor] = suiServiceMonitorComponentBase
 	}
 	return suiComponentBases
 }
