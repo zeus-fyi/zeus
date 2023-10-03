@@ -1,8 +1,10 @@
 package sui_cookbooks
 
 import (
+	"encoding/json"
 	"fmt"
 
+	yaml_fileio "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/yaml"
 	zeus_cluster_config_drivers "github.com/zeus-fyi/zeus/zeus/cluster_config_drivers"
 	aws_nvme "github.com/zeus-fyi/zeus/zeus/cluster_resources/nvme/aws"
 	do_nvme "github.com/zeus-fyi/zeus/zeus/cluster_resources/nvme/do"
@@ -27,6 +29,32 @@ func (t *SuiCookbookTestSuite) generateFromConfigDriverBuilder(cfg SuiConfigOpts
 	t.Assert().NotEmpty(sbDefs)
 
 	return sbDefs
+}
+
+func (t *SuiCookbookTestSuite) TestReadFullNodeConfig() {
+	p := suiMasterChartPath
+	p.FnIn = "fullnode.yaml"
+	p.DirIn = "./sui/node/sui_config"
+	fip := p.FileInPath()
+	nodeCfg, err := yaml_fileio.ReadYamlConfig(fip)
+	t.Require().Nil(err)
+	t.Require().NotNil(nodeCfg)
+	m := make(map[string]interface{})
+	err = json.Unmarshal(nodeCfg, &m)
+	t.Require().Nil(err)
+	dataDir := "/mnt/fast-disks"
+	for k, _ := range m {
+		if k == "db-path" {
+			m[k] = dataDir
+			fmt.Println(m[k])
+		}
+		if k == "genesis" {
+			m[k] = map[string]interface{}{
+				"genesis-file-location": dataDir + "/genesis.blob",
+			}
+			fmt.Println(m[k])
+		}
+	}
 }
 
 func (t *SuiCookbookTestSuite) TestSuiTestnetCfg() {
