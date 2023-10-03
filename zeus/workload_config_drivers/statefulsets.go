@@ -38,19 +38,30 @@ func (s *StatefulSetDriver) SetStatefulSetConfigs(sts *v1.StatefulSet) {
 		}
 	}
 	// init containers
-	for i, c := range sts.Spec.Template.Spec.InitContainers {
+	var ifc []v1core.Container
+	for _, c := range sts.Spec.Template.Spec.InitContainers {
 		if v, ok := s.ContainerDrivers[c.Name]; ok && v.IsInitContainer {
+			if v.IsDeleteContainer {
+				continue
+			}
 			v.SetContainerConfigs(&c)
-			sts.Spec.Template.Spec.InitContainers[i] = c
+			ifc = append(ifc, c)
 		}
 	}
+	sts.Spec.Template.Spec.InitContainers = ifc
 	// containers
-	for i, c := range sts.Spec.Template.Spec.Containers {
+	var fc []v1core.Container
+	for _, c := range sts.Spec.Template.Spec.Containers {
 		if v, ok := s.ContainerDrivers[c.Name]; ok {
+			if v.IsDeleteContainer {
+				continue
+			}
 			v.SetContainerConfigs(&c)
-			sts.Spec.Template.Spec.Containers[i] = c
+			fc = append(fc, c)
 		}
 	}
+	sts.Spec.Template.Spec.Containers = fc
+
 	// pvcs
 	if sts.Spec.VolumeClaimTemplates == nil {
 		sts.Spec.VolumeClaimTemplates = []v1core.PersistentVolumeClaim{}

@@ -32,28 +32,32 @@ func (t *SuiCookbookTestSuite) TestDestroy() {
 
 func (t *SuiCookbookTestSuite) TestUpload() {
 	cfg := SuiConfigOpts{
+		WithLocalNvme:    true,
 		DownloadSnapshot: false,
 		WithIngress:      false,
-		CloudProvider:    "do",
+		CloudProvider:    "aws",
 		Network:          mainnet,
 	}
-	suiNodeDefinition.ComponentBases = GetSuiConfig(cfg)
-	t.Require().NotNil(suiNodeDefinition.ComponentBases[Sui])
-	_, rerr := suiNodeDefinition.UploadChartsFromClusterDefinition(ctx, t.ZeusTestClient, true)
-	t.Require().Nil(rerr)
+	cd := GetSuiClientClusterDef(cfg)
+	cd.ClusterClassName = "sui"
+	_, err := cd.UploadChartsFromClusterDefinition(ctx, t.ZeusTestClient, true)
+	t.Require().Nil(err)
 }
 
 func (t *SuiCookbookTestSuite) TestUploadTestnet() {
 	cfg := SuiConfigOpts{
-		DownloadSnapshot: false,
-		WithIngress:      false,
-		CloudProvider:    "aws",
-		Network:          testnet,
+		DownloadSnapshot:   false,
+		WithIngress:        true,
+		WithServiceMonitor: false,
+		CloudProvider:      "do",
+		Network:            testnet,
 	}
-	suiNodeDefinition.ComponentBases = GetSuiConfig(cfg)
+	suiNodeDefinition = GetSuiClientClusterDef(cfg)
 	t.Require().NotNil(suiNodeDefinition.ComponentBases[Sui])
-	//_, rerr := suiNodeDefinition.UploadChartsFromClusterDefinition(ctx, t.ZeusTestClient, true)
-	//t.Require().Nil(rerr)
+	t.TestCreateClusterClass()
+	t.Require().Equal("sui-testnet-do", suiNodeDefinition.ClusterClassName)
+	_, rerr := suiNodeDefinition.UploadChartsFromClusterDefinition(ctx, t.ZeusTestClient, true)
+	t.Require().Nil(rerr)
 }
 
 func (t *SuiCookbookTestSuite) TestCreateClusterClass() {

@@ -1,12 +1,12 @@
 package sui_cookbooks
 
 import (
+	"strings"
+
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 	zeus_cluster_config_drivers "github.com/zeus-fyi/zeus/zeus/cluster_config_drivers"
 	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_common_types"
 	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_req_types"
-	"golang.org/x/text/cases"
-	"golang.org/x/text/language"
 )
 
 const (
@@ -87,7 +87,7 @@ var (
 
 func GetSuiClientClusterDef(cfg SuiConfigOpts) zeus_cluster_config_drivers.ClusterDefinition {
 	return zeus_cluster_config_drivers.ClusterDefinition{
-		ClusterClassName: Sui + cases.Title(language.English).String(cfg.Network) + cases.Title(language.English).String(cfg.CloudProvider),
+		ClusterClassName: strings.ToLower(Sui) + "-" + strings.ToLower(cfg.Network) + "-" + strings.ToLower(cfg.CloudProvider),
 		ComponentBases:   GetSuiConfig(cfg),
 	}
 }

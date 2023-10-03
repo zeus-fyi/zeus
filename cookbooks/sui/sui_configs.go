@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/ghodss/yaml"
 	yaml_fileio "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/yaml"
 	zeus_cluster_config_drivers "github.com/zeus-fyi/zeus/zeus/cluster_config_drivers"
 	zeus_nvme "github.com/zeus-fyi/zeus/zeus/cluster_resources/nvme"
@@ -48,7 +49,6 @@ const (
 
 	DownloadMainnet = "downloadMainnetNode"
 	DownloadTestnet = "downloadTestnetNode"
-	NoDownload      = "noDownload"
 )
 
 type SuiConfigOpts struct {
@@ -58,6 +58,7 @@ type SuiConfigOpts struct {
 	WithIngress        bool   `json:"withIngress"`
 	WithServiceMonitor bool   `json:"withServiceMonitor"`
 	CloudProvider      string `json:"cloudProvider"`
+	WithLocalNvme      bool   `json:"withLocalNvme"`
 }
 
 func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_drivers.ComponentBaseDefinition {
@@ -78,9 +79,7 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 		memSize = memorySizeTestnet
 		downloadStartup = DownloadTestnet
 	}
-	if !cfg.DownloadSnapshot {
-		downloadStartup = NoDownload
-	}
+
 	sd := &zeus_topology_config_drivers.ServiceDriver{}
 	if cfg.WithIngress {
 		sd.AddNginxTargetPort("nginx", SuiRpcPortName)
@@ -95,7 +94,13 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 	case "do":
 		dataDir = do_nvme.DoNvmePath
 	}
-
+	if !cfg.WithLocalNvme {
+		dataDir = "/data"
+	}
+	var storageClassName *string
+	if cfg.WithLocalNvme {
+		storageClassName = aws.String(zeus_nvme.ConfigureCloudProviderStorageClass(cfg.CloudProvider))
+	}
 	sbCfg := zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
 		SkeletonBaseChart:         zeus_req_types.TopologyCreateRequest{},
 		SkeletonBaseNameChartPath: suiMasterChartPath,
@@ -116,12 +121,41 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 							Name:      Sui,
 							Image:     dockerImage,
 							Resources: zeus_topology_config_drivers.CreateComputeResourceRequirementsLimit(cpuSize, memSize),
+							VolumeMounts: []v1Core.VolumeMount{{
+								Name:      suiDiskName,
+								MountPath: dataDir,
+							}},
+						},
+					},
+					"hercules": {
+						Container: v1Core.Container{
+							Name: "hercules",
+							VolumeMounts: []v1Core.VolumeMount{{
+								Name:      suiDiskName,
+								MountPath: dataDir,
+							}},
 						},
 					},
 					"init-snapshots": {
 						Container: v1Core.Container{
 							Name: "init-snapshots",
 							Args: []string{"-c", downloadStartup + ".sh"},
+							VolumeMounts: []v1Core.VolumeMount{{
+								Name:      suiDiskName,
+								MountPath: dataDir,
+							}},
+						},
+						IsInitContainer:   true,
+						IsDeleteContainer: !cfg.DownloadSnapshot,
+					},
+					"init-chown-data": {
+						Container: v1Core.Container{
+							Name:    "init-chown-data",
+							Command: []string{"chown", "-R", "10001:10001", dataDir},
+							VolumeMounts: []v1Core.VolumeMount{{
+								Name:      suiDiskName,
+								MountPath: dataDir,
+							}},
 						},
 						IsInitContainer: true,
 					},
@@ -132,7 +166,7 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 							ObjectMeta: metav1.ObjectMeta{Name: suiDiskName},
 							Spec: v1Core.PersistentVolumeClaimSpec{
 								Resources:        zeus_topology_config_drivers.CreateDiskResourceRequirementsLimit(diskSize),
-								StorageClassName: aws.String(zeus_nvme.ConfigureCloudProviderStorageClass(cfg.CloudProvider)),
+								StorageClassName: storageClassName,
 							},
 						},
 					}},
@@ -174,7 +208,7 @@ func OverrideNodeConfigDataDir(dataDir, network string) string {
 	if p2pCfg != nil {
 		m["p2p-config"] = p2pCfg
 	}
-	b, err := json.Marshal(m)
+	b, err := yaml.Marshal(m)
 	if err != nil {
 		panic(err)
 	}
@@ -198,7 +232,7 @@ func GetP2PTable(network string) interface{} {
 		panic(err)
 	}
 	m := make(map[string]interface{})
-	err = json.Unmarshal(p2pCfg, &m)
+	err = yaml.Unmarshal(p2pCfg, &m)
 	if err != nil {
 		panic(err)
 	}

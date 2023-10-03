@@ -5,6 +5,7 @@ import (
 )
 
 type ContainerDriver struct {
+	IsDeleteContainer bool
 	IsAppendContainer bool
 	IsInitContainer   bool
 	v1Core.Container
@@ -38,6 +39,24 @@ func (cd *ContainerDriver) SetContainerConfigs(cont *v1Core.Container) {
 	}
 	if cd.ImagePullPolicy != "" {
 		cont.ImagePullPolicy = cd.ImagePullPolicy
+	}
+
+	if cd.VolumeMounts != nil {
+		// if the driver has a matching name, then it will override the container's volume mount
+		// otherwise, it will append to the container's volume mount
+		m := make(map[string]v1Core.VolumeMount)
+		for _, v := range cd.VolumeMounts {
+			m[v.Name] = v
+		}
+		for i, v := range cont.VolumeMounts {
+			if vm, ok := m[v.Name]; ok {
+				cont.VolumeMounts[i] = vm
+				delete(m, v.Name)
+			}
+		}
+		for _, v := range m {
+			cont.VolumeMounts = append(cont.VolumeMounts, v)
+		}
 	}
 }
 

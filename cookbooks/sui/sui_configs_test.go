@@ -59,6 +59,7 @@ func (t *SuiCookbookTestSuite) TestReadFullNodeConfig() {
 
 func (t *SuiCookbookTestSuite) TestSuiTestnetCfg() {
 	cfg := SuiConfigOpts{
+		WithLocalNvme:    true,
 		DownloadSnapshot: false,
 		WithIngress:      false,
 		CloudProvider:    "do",
@@ -96,8 +97,7 @@ func (t *SuiCookbookTestSuite) TestSuiTestnetCfg() {
 	}
 	for _, ct := range inf.StatefulSet.Spec.Template.Spec.InitContainers {
 		if ct.Name == "init-snapshots" {
-			t.Require().Len(ct.Args, 2)
-			t.Equal(NoDownload+".sh", ct.Args[1])
+			t.Fail("init-snapshots should not be present")
 		}
 	}
 	// init-snapshots
@@ -109,6 +109,7 @@ func (t *SuiCookbookTestSuite) TestSuiTestnetCfg() {
 
 func (t *SuiCookbookTestSuite) TestSuiMainnetCfg() {
 	cfg := SuiConfigOpts{
+		WithLocalNvme:    true,
 		DownloadSnapshot: true,
 		WithIngress:      false,
 		CloudProvider:    "aws",
@@ -158,7 +159,11 @@ func (t *SuiCookbookTestSuite) TestSuiMainnetCfg() {
 }
 
 func (t *SuiCookbookTestSuite) TestSuiAllOptsEnabled() {
+	p := suiMasterChartPath
+	p.DirIn = "./sui/node/custom_sui"
+	p.DirOut = "./sui/node/custom_sui"
 	cfg := SuiConfigOpts{
+		WithLocalNvme:      true,
 		DownloadSnapshot:   true,
 		WithIngress:        true,
 		WithServiceMonitor: true,
@@ -171,10 +176,20 @@ func (t *SuiCookbookTestSuite) TestSuiAllOptsEnabled() {
 	seenServiceMonitorCount := 0
 	for _, sb := range sbDefs {
 		if sb.Workload.Ingress != nil {
+			p.FnOut = "ing-sui.yaml"
 			seenIngressCount += 1
+			b, err := json.Marshal(sb.Workload.Ingress)
+			t.Require().Nil(err)
+			err = p.WriteToFileOutPath(b)
+			t.Require().Nil(err)
 		}
 		if sb.Workload.ServiceMonitor != nil {
+			p.FnOut = "sm-sui.yaml"
 			seenServiceMonitorCount += 1
+			b, err := json.Marshal(sb.Workload.ServiceMonitor)
+			t.Require().Nil(err)
+			err = p.WriteToFileOutPath(b)
+			t.Require().Nil(err)
 		}
 	}
 
@@ -185,13 +200,11 @@ func (t *SuiCookbookTestSuite) TestSuiAllOptsEnabled() {
 		t.Require().Equal(seenServiceMonitorCount, 1)
 	}
 	t.Require().Len(sbDefs, 3)
-	p := suiMasterChartPath
-	p.DirIn = "./sui/node/custom_sui"
 	inf := topology_workloads.NewTopologyBaseInfraWorkload()
 	err := p.WalkAndApplyFuncToFileType(".yaml", inf.DecodeK8sWorkload)
 	t.Require().Nil(err)
-	//t.NotNil(inf.Ingress)
-	//t.NotNil(inf.ServiceMonitor)
+	t.NotNil(inf.Ingress)
+	t.NotNil(inf.ServiceMonitor)
 	t.Nil(inf.Deployment)
 	t.NotNil(inf.StatefulSet)
 	t.NotNil(inf.Service)
