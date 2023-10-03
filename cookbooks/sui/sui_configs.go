@@ -226,9 +226,11 @@ func OverrideNodeConfigDataDir(dataDir, network string) string {
 			}
 		}
 	}
-	p2pCfg := GetP2PTable(network)
-	if p2pCfg != nil {
-		m["p2p-config"] = p2pCfg
+	if network == mainnet || network == testnet {
+		p2pCfg := GetP2PTable(network)
+		if p2pCfg != nil {
+			m["p2p-config"] = p2pCfg
+		}
 	}
 	b, err := yaml.Marshal(m)
 	if err != nil {
