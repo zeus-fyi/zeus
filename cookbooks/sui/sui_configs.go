@@ -74,17 +74,11 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 		memSize = memorySize
 		diskSize = mainnetDiskSize
 		downloadStartup = DownloadMainnet
-		if !cfg.DownloadSnapshot {
-			downloadStartup = NoDownloadMainnet
-		}
 	case testnet:
 		diskSize = testnetDiskSize
 		cpuSize = cpuCoresTestnet
 		memSize = memorySizeTestnet
 		downloadStartup = DownloadTestnet
-		if !cfg.DownloadSnapshot {
-			downloadStartup = NoDownloadTestnet
-		}
 	}
 
 	sd := &zeus_topology_config_drivers.ServiceDriver{}
