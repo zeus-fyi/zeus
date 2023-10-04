@@ -24,8 +24,11 @@ const (
 	devnet  = "devnet"
 
 	// docker image references
-	dockerImage = "mysten/sui-node:stable"
-	hercules    = "hercules"
+	dockerImage        = "mysten/sui-node:stable"
+	dockerImageTestnet = "mysten/sui-node:testnet"
+	dockerImageDevnet  = "mysten/sui-node:devnet"
+
+	hercules = "hercules"
 
 	// mainnet workload compute resources
 	cpuCores   = "16"
@@ -75,6 +78,7 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 	diskSize := mainnetDiskSize
 	cpuSize := cpuCores
 	memSize := memorySize
+	dockerImageSui := dockerImage
 	switch cfg.Network {
 	case mainnet:
 		// todo, add workload type conditional here
@@ -82,11 +86,19 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 		memSize = memorySize
 		diskSize = mainnetDiskSize
 		downloadStartup = DownloadMainnet
-	case testnet, devnet:
+		dockerImageSui = dockerImage
+	case testnet:
 		diskSize = testnetDiskSize
 		cpuSize = cpuCoresTestnet
 		memSize = memorySizeTestnet
 		downloadStartup = DownloadTestnet
+		dockerImageSui = dockerImageTestnet
+	case devnet:
+		diskSize = testnetDiskSize
+		cpuSize = cpuCoresTestnet
+		memSize = memorySizeTestnet
+		downloadStartup = DownloadTestnet
+		dockerImageSui = dockerImageDevnet
 	}
 
 	sd := &zeus_topology_config_drivers.ServiceDriver{}
@@ -143,7 +155,7 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 					Sui: {
 						Container: v1Core.Container{
 							Name:      Sui,
-							Image:     dockerImage,
+							Image:     dockerImageSui,
 							Resources: zeus_topology_config_drivers.CreateComputeResourceRequirementsLimit(cpuSize, memSize),
 							VolumeMounts: []v1Core.VolumeMount{{
 								Name:      suiDiskName,
