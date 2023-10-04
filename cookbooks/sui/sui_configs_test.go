@@ -147,7 +147,7 @@ func (t *SuiCookbookTestSuite) TestSuiMainnetCfg() {
 	for _, ct := range inf.StatefulSet.Spec.Template.Spec.InitContainers {
 		if ct.Name == "init-snapshots" {
 			t.Require().Len(ct.Args, 2)
-			t.Equal(DownloadMainnet+".sh", ct.Args[1])
+			t.Equal("/scripts/download.sh", ct.Args[1])
 		}
 	}
 	// init-snapshots
@@ -229,7 +229,7 @@ func (t *SuiCookbookTestSuite) TestSuiAllOptsEnabled() {
 	for _, ct := range inf.StatefulSet.Spec.Template.Spec.InitContainers {
 		if ct.Name == "init-snapshots" {
 			t.Require().Len(ct.Args, 2)
-			t.Equal(DownloadMainnet+".sh", ct.Args[1])
+			t.Equal("/scripts/download.sh", ct.Args[1])
 		}
 	}
 	// init-snapshots
