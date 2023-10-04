@@ -52,7 +52,6 @@ func (t *SuiCookbookTestSuite) TestReadFullNodeConfig() {
 			m[k] = map[string]interface{}{
 				"genesis-file-location": dataDir + "/genesis.blob",
 			}
-			fmt.Println(m[k])
 		}
 	}
 }

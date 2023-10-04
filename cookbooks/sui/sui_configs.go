@@ -146,9 +146,6 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 		entryPointScript = "noFallBackEntrypoint.sh"
 	}
 	var envAddOns []v1Core.EnvVar
-	envAddOns = []v1Core.EnvVar{
-		zeus_topology_config_drivers.MakeKeyValueEnvVar("DATA_DIR", dataDir),
-	}
 	if cfg.WithArchivalFallback {
 		s3AccessKey := zeus_topology_config_drivers.MakeSecretEnvVar("AWS_ACCESS_KEY_ID", "AWS_ACCESS_KEY_ID", "aws-credentials")
 		s3SecretKey := zeus_topology_config_drivers.MakeSecretEnvVar("AWS_SECRET_ACCESS_KEY", "AWS_SECRET_ACCESS_KEY", "aws-credentials")
