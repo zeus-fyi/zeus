@@ -33,6 +33,10 @@ data:
     sed -i "s/<AWS_ACCESS_KEY_ID>/$AWS_ACCESS_KEY_ID/g" /secrets/fullnode.yaml
     sed -i "s/<AWS_SECRET_ACCESS_KEY>/$AWS_SECRET_ACCESS_KEY/g" /secrets/fullnode.yaml
     exec sui-node --config-path /secrets/fullnode.yaml
+  noFallBackEntrypoint.sh: |-
+    #!/bin/sh
+    cp /scripts/fullnode.yaml /secrets/fullnode.yaml
+    exec sui-node --config-path /secrets/fullnode.yaml
   fullnode.yaml: |-
     # Update this value to the location you want Sui to store its database
     db-path: "/data"

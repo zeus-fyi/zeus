@@ -41,6 +41,7 @@ const (
 	memorySizeTestnet = "63Gi"
 	// testnet workload disk sizes
 	testnetDiskSize = "3Ti"
+	devnetDiskSize  = "2Ti"
 
 	// workload label, name, or k8s references
 	suiDiskName  = "sui-client-storage"
@@ -82,6 +83,7 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 	cpuSize := cpuCores
 	memSize := memorySize
 	dockerImageSui := dockerImage
+	entryPointScript := "entrypoint.sh"
 	switch cfg.Network {
 	case mainnet:
 		// todo, add workload type conditional here
@@ -97,11 +99,12 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 		downloadStartup = DownloadTestnet
 		dockerImageSui = dockerImageTestnet
 	case devnet:
-		diskSize = testnetDiskSize
+		diskSize = devnetDiskSize
 		cpuSize = cpuCoresTestnet
 		memSize = memorySizeTestnet
 		downloadStartup = DownloadTestnet
 		dockerImageSui = dockerImageDevnet
+		entryPointScript = "noFallBackEntrypoint.sh"
 	}
 
 	sd := &zeus_topology_config_drivers.ServiceDriver{}
@@ -139,8 +142,13 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 	if cfg.WithLocalNvme {
 		storageClassName = aws.String(zeus_nvme.ConfigureCloudProviderStorageClass(cfg.CloudProvider))
 	}
-
+	if !cfg.WithArchivalFallback {
+		entryPointScript = "noFallBackEntrypoint.sh"
+	}
 	var envAddOns []v1Core.EnvVar
+	envAddOns = []v1Core.EnvVar{
+		zeus_topology_config_drivers.MakeKeyValueEnvVar("DATA_DIR", dataDir),
+	}
 	if cfg.WithArchivalFallback {
 		s3AccessKey := zeus_topology_config_drivers.MakeSecretEnvVar("AWS_ACCESS_KEY_ID", "AWS_ACCESS_KEY_ID", "aws-credentials")
 		s3SecretKey := zeus_topology_config_drivers.MakeSecretEnvVar("AWS_SECRET_ACCESS_KEY", "AWS_SECRET_ACCESS_KEY", "aws-credentials")
@@ -171,6 +179,7 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 								Name:      suiDiskName,
 								MountPath: dataDir,
 							}},
+							Command: []string{fmt.Sprintf("/scripts/%s", entryPointScript)},
 						},
 						AppendEnvVars: envAddOns,
 					},
