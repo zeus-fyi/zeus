@@ -55,15 +55,7 @@ const (
 
 	SuiRpcPortName = "http-rpc"
 
-	DownloadMainnet        = "downloadMainnetNode"
-	DownloadMainnetNodeDo  = "downloadMainnetNodeDo"
-	DownloadMainnetNodeAws = "downloadMainnetNodeAws"
-
-	DownloadTestnet       = "downloadTestnetNode"
-	DownloadTestnetNodeDo = "downloadTestnetNodeDo"
-	DownloadDevnetNodeDo  = "downloadDevnetNodeDo"
-
-	DownloadTestnetNodeAws = "downloadTestnetNodeAws"
+	DownloadMainnet = "downloadMainnetNode"
 )
 
 type SuiConfigOpts struct {
@@ -323,6 +315,5 @@ func GetArchiveFallback(network string) interface{} {
 			}
 		}
 	}
-
 	return m["state-archive-read-config"]
 }
