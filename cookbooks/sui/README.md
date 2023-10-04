@@ -10,6 +10,10 @@ Kubernetes Local Persistent Volume Setup Notes:
 
 [https://kubernetes.io/docs/concepts/storage/volumes/#local](https://kubernetes.io/docs/concepts/storage/volumes/#local)
 
+## Cloud Provider Specific Setup Notes:
+
+Recommend machines are for mainnet. Testnet machines can be smaller.
+
 ### AWS
 
 storageClass: fast-disks
@@ -24,6 +28,24 @@ Recommended machine types:
 ### GCP
 
 storageClass: nvme-ssd-block
+
+Recommended machine types:
+
+We're currently increasing our n2d availability. Currently limited supply & may be out of stock via our Platform for a
+short while
+
+n2d-highmem-16
+n2d-highmem-32
+
+We have a good supply of n1d machines
+
+n1-highmem-16
+n1-highmem-32
+
+We config 16 nvme disks (~6Ti) in a Raid-0 config for these machines when a sui-prefixed cluster is deployed with these
+machine types.
+
+For 16 cpu machines, you'll need to adjust your cpu size on your k8s config to ~15-15.5 to prevent scheduling issues.
 
 ### DigitalOcean
 
