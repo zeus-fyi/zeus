@@ -75,12 +75,14 @@ spec:
         - name: sui
           image: "mysten/sui-node:stable"
           imagePullPolicy: IfNotPresent
-          command: [ "sui-node", "--config-path", "/scripts/fullnode.yaml" ]
+          command: [ "/scripts/entrypoint.sh" ]
           volumeMounts:
             - name: cm-sui
               mountPath: "/scripts"
             - name: sui-client-storage
               mountPath: "/data"
+            - name: secrets
+              mountPath: "/secrets"
           ports:
             - name: http-rpc
               containerPort: 9000
@@ -119,6 +121,9 @@ spec:
       tolerations:
         [ ]
       volumes:
+        - name: secrets
+          emptyDir:
+            medium: Memory
         - name: cm-sui
           configMap:
             name: cm-sui
