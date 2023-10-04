@@ -40,7 +40,7 @@ const (
 	cpuCoresTestnet   = "7500m"
 	memorySizeTestnet = "63Gi"
 	// testnet workload disk sizes
-	testnetDiskSize = "2Ti"
+	testnetDiskSize = "3Ti"
 
 	// workload label, name, or k8s references
 	suiDiskName  = "sui-client-storage"
@@ -67,10 +67,13 @@ type SuiConfigOpts struct {
 	DownloadSnapshot bool   `json:"downloadSnapshot"`
 	Network          string `json:"network"`
 
-	WithIngress        bool   `json:"withIngress"`
-	WithServiceMonitor bool   `json:"withServiceMonitor"`
-	CloudProvider      string `json:"cloudProvider"`
-	WithLocalNvme      bool   `json:"withLocalNvme"`
+	CloudProvider string `json:"cloudProvider"`
+	WithLocalNvme bool   `json:"withLocalNvme"`
+
+	WithIngress          bool `json:"withIngress"`
+	WithServiceMonitor   bool `json:"withServiceMonitor"`
+	WithArchivalFallback bool `json:"withArchivalFallback"`
+	WithHercules         bool `json:"withHercules"`
 }
 
 func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_drivers.ComponentBaseDefinition {
@@ -136,6 +139,14 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 	if cfg.WithLocalNvme {
 		storageClassName = aws.String(zeus_nvme.ConfigureCloudProviderStorageClass(cfg.CloudProvider))
 	}
+
+	var envAddOns []v1Core.EnvVar
+	if cfg.WithArchivalFallback {
+		s3AccessKey := zeus_topology_config_drivers.MakeSecretEnvVar("AWS_ACCESS_KEY_ID", "AWS_ACCESS_KEY_ID", "aws-credentials")
+		s3SecretKey := zeus_topology_config_drivers.MakeSecretEnvVar("AWS_SECRET_ACCESS_KEY", "AWS_SECRET_ACCESS_KEY", "aws-credentials")
+		envAddOns = []v1Core.EnvVar{s3AccessKey, s3SecretKey}
+	}
+
 	sbCfg := zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
 		SkeletonBaseChart:         zeus_req_types.TopologyCreateRequest{},
 		SkeletonBaseNameChartPath: suiMasterChartPath,
@@ -144,7 +155,7 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 				ConfigMap: v1Core.ConfigMap{
 					ObjectMeta: metav1.ObjectMeta{Name: suiConfigMap},
 					Data: map[string]string{
-						"fullnode.yaml": OverrideNodeConfigDataDir(dataDir, cfg.Network),
+						"fullnode.yaml": OverrideNodeConfigDataDir(dataDir, cfg),
 					},
 				},
 			},
@@ -161,6 +172,7 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 								MountPath: dataDir,
 							}},
 						},
+						AppendEnvVars: envAddOns,
 					},
 					"hercules": {
 						Container: v1Core.Container{
@@ -170,6 +182,7 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 								MountPath: dataDir,
 							}},
 						},
+						IsDeleteContainer: !cfg.WithHercules,
 					},
 					"init-snapshots": {
 						Container: v1Core.Container{
@@ -215,7 +228,7 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 	return suiCompBase
 }
 
-func OverrideNodeConfigDataDir(dataDir, network string) string {
+func OverrideNodeConfigDataDir(dataDir string, cfg SuiConfigOpts) string {
 	p := suiMasterChartPath
 	p.FnIn = "fullnode.yaml"
 	p.DirIn = "./sui/node/sui_config"
@@ -239,14 +252,17 @@ func OverrideNodeConfigDataDir(dataDir, network string) string {
 			}
 		}
 	}
+	network := cfg.Network
 	if network == mainnet || network == testnet {
 		p2pCfg := GetP2PTable(network)
 		if p2pCfg != nil {
 			m["p2p-config"] = p2pCfg
 		}
-		fallbackCfg := GetArchiveFallback(network)
-		if fallbackCfg != nil {
-			m["state-archive-read-config"] = fallbackCfg
+		if cfg.WithArchivalFallback {
+			fallbackCfg := GetArchiveFallback(network)
+			if fallbackCfg != nil {
+				m["state-archive-read-config"] = fallbackCfg
+			}
 		}
 	}
 	b, err := yaml.Marshal(m)
@@ -304,9 +320,8 @@ func GetArchiveFallback(network string) interface{} {
 		for _, cfg := range stateCfgList {
 			if cfgMap, ok2 := cfg.(map[string]interface{}); ok2 {
 				if objStoreCfg, ok3 := cfgMap["object-store-config"].(map[string]interface{}); ok3 {
-					// Clearing out the AWS access key and secret
-					objStoreCfg["aws-access-key-id"] = ""
-					objStoreCfg["aws-secret-access-key"] = ""
+					objStoreCfg["aws-access-key-id"] = "<AWS_ACCESS_KEY_ID>"
+					objStoreCfg["aws-secret-access-key"] = "<AWS_SECRET_ACCESS_KEY>"
 					// Setting the bucket name based on the network
 					bn := fmt.Sprintf("mysten-%s-archives", network)
 					objStoreCfg["bucket"] = bn

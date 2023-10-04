@@ -66,18 +66,3 @@ func (cd *ContainerDriver) CreateEnvVarKeyValue(k, v string) v1Core.EnvVar {
 		Value: v,
 	}
 }
-
-func MakeEnvVar(name, key, localObjRef string) v1Core.EnvVar {
-	return v1Core.EnvVar{
-		Name: name,
-		ValueFrom: &v1Core.EnvVarSource{
-			FieldRef:         nil,
-			ResourceFieldRef: nil,
-			ConfigMapKeyRef:  nil,
-			SecretKeyRef: &v1Core.SecretKeySelector{
-				LocalObjectReference: v1Core.LocalObjectReference{Name: localObjRef},
-				Key:                  key,
-			},
-		},
-	}
-}

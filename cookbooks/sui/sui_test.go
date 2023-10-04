@@ -46,12 +46,13 @@ func (t *SuiCookbookTestSuite) TestUpload() {
 
 func (t *SuiCookbookTestSuite) TestUploadTestnet() {
 	cfg := SuiConfigOpts{
-		WithLocalNvme:      true,
-		DownloadSnapshot:   true,
-		WithIngress:        true,
-		WithServiceMonitor: true,
-		CloudProvider:      "do",
-		Network:            testnet,
+		WithLocalNvme:        true,
+		DownloadSnapshot:     true,
+		WithIngress:          true,
+		WithServiceMonitor:   true,
+		WithArchivalFallback: true,
+		CloudProvider:        "do",
+		Network:              testnet,
 	}
 	suiNodeDefinition = GetSuiClientClusterDef(cfg)
 	t.Require().NotNil(suiNodeDefinition.ComponentBases[Sui])
