@@ -1,4 +1,6 @@
-### NVMe Setup Instructions:
+### NVMe Setup Instructions for Kubernetes:
+
+Our platform already handles this for you, but if you want to install it in your own cluster, here are the instructions:
 
 See cloud provider specific setup instructions for NVMe setup:<br>
 
