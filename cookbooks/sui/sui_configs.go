@@ -127,7 +127,6 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 			downloadStartup = DownloadTestnetNodeDo
 		case devnet:
 			downloadStartup = DownloadDevnetNodeDo
-
 		}
 	}
 	if !cfg.WithLocalNvme {
@@ -245,6 +244,10 @@ func OverrideNodeConfigDataDir(dataDir, network string) string {
 		if p2pCfg != nil {
 			m["p2p-config"] = p2pCfg
 		}
+		fallbackCfg := GetArchiveFallback(network)
+		if fallbackCfg != nil {
+			m["state-archive-read-config"] = fallbackCfg
+		}
 	}
 	b, err := yaml.Marshal(m)
 	if err != nil {
@@ -275,4 +278,42 @@ func GetP2PTable(network string) interface{} {
 		panic(err)
 	}
 	return m["p2p-config"]
+}
+
+func GetArchiveFallback(network string) interface{} {
+	p := suiMasterChartPath
+	switch network {
+	case "mainnet", "testnet":
+		p.FnIn = "archival-fallback.yaml"
+	default:
+		return nil
+	}
+	p.DirIn = "./sui/node/sui_config"
+	fip := p.FileInPath()
+	fallbackCfg, err := yaml_fileio.ReadYamlConfig(fip)
+	if err != nil {
+		panic(err)
+	}
+	m := make(map[string]interface{})
+	err = yaml.Unmarshal(fallbackCfg, &m)
+	if err != nil {
+		panic(err)
+	}
+
+	if stateCfgList, ok := m["state-archive-read-config"].([]interface{}); ok {
+		for _, cfg := range stateCfgList {
+			if cfgMap, ok2 := cfg.(map[string]interface{}); ok2 {
+				if objStoreCfg, ok3 := cfgMap["object-store-config"].(map[string]interface{}); ok3 {
+					// Clearing out the AWS access key and secret
+					objStoreCfg["aws-access-key-id"] = ""
+					objStoreCfg["aws-secret-access-key"] = ""
+					// Setting the bucket name based on the network
+					bn := fmt.Sprintf("mysten-%s-archives", network)
+					objStoreCfg["bucket"] = bn
+				}
+			}
+		}
+	}
+
+	return m["state-archive-read-config"]
 }
