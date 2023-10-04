@@ -47,6 +47,8 @@ machine types.
 
 For 16 cpu machines, you'll need to adjust your cpu size on your k8s config to ~15-15.5 to prevent scheduling issues.
 
+More info: https://cloud.google.com/compute/docs/disks/local-ssd
+
 ### DigitalOcean
 
 storageClass: nvme-ssd-block
