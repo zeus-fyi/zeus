@@ -7,16 +7,24 @@ metadata:
     app.kubernetes.io/instance: sui
     app.kubernetes.io/managed-by: zeus
 spec:
-  type: LoadBalancer
+  type: NodePort
   ports:
     - port: 8080
-      targetPort: p2p
+      targetPort: p2p-tcp
       protocol: TCP
-      name: p2p
-    - port: 8084
+      name: p2p-tcp
+    - port: 8081
       targetPort: p2p-udp
-      protocol: TCP
+      protocol: UDP
       name: p2p-udp
+    - port: 8082
+      targetPort: p2p-udp-2
+      protocol: UDP
+      name: p2p-udp-2
+    - port: 8084
+      targetPort: p2p-udp-4
+      protocol: UDP
+      name: p2p-udp-4
   selector:
     app.kubernetes.io/name: sui
     app.kubernetes.io/instance: sui
