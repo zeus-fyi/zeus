@@ -39,7 +39,7 @@ data:
 
     genesis:
       # Update this to the location of where the genesis file is stored
-      genesis-file-location: "genesis.blob"
+      genesis-file-location: "/data/genesis.blob"
     authority-store-pruning-config:
       # Number of epoch dbs to keep 
       # Not relevant for object pruning
