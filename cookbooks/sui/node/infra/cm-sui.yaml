@@ -6,27 +6,9 @@ data:
   hercules.sh: |-
     #!/bin/sh
     exec hercules
-  downloadMainnetNode.sh: |-
+  download.sh: |-
     #!/bin/sh
     exec snapshots --downloadURL="" --protocol="sui" --network="mainnet" --workload-type="full" --dataDir="/data"
-  downloadMainnetNodeDo.sh: |-
-    #!/bin/sh
-    exec snapshots --downloadURL="" --protocol="sui" --network="mainnet" --workload-type="full" --dataDir="/dev/vda1"
-  downloadMainnetNodeAws.sh: |-
-    #!/bin/sh
-    exec snapshots --downloadURL="" --protocol="sui" --network="mainnet" --workload-type="full" --dataDir="/mnt/fast-disks"
-  downloadTestnetNode.sh: |-
-    #!/bin/sh
-    exec snapshots --downloadURL="" --protocol="sui" --network="testnet" --workload-type="full" --dataDir="/data"
-  downloadTestnetNodeDo.sh: |-
-    #!/bin/sh
-    exec snapshots --downloadURL="" --protocol="sui" --network="testnet" --workload-type="full" --dataDir="/dev/vda1"
-  downloadDevnetNodeDo.sh: |-
-    #!/bin/sh
-    exec snapshots --downloadURL="" --protocol="sui" --network="devnet" --workload-type="full" --dataDir="/dev/vda1"
-  downloadTestnetNodeAws.sh: |-
-    #!/bin/sh
-    exec snapshots --downloadURL="" --protocol="sui" --network="testnet" --workload-type="full" --dataDir="/mnt/fast-disks"
   entrypoint.sh: |-
     #!/bin/sh
     cp /scripts/fullnode.yaml /secrets/fullnode.yaml
