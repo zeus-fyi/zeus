@@ -11,6 +11,7 @@ import (
 	zeus_nvme "github.com/zeus-fyi/zeus/zeus/cluster_resources/nvme"
 	aws_nvme "github.com/zeus-fyi/zeus/zeus/cluster_resources/nvme/aws"
 	do_nvme "github.com/zeus-fyi/zeus/zeus/cluster_resources/nvme/do"
+	gcp_nvme "github.com/zeus-fyi/zeus/zeus/cluster_resources/nvme/gcp"
 	zeus_topology_config_drivers "github.com/zeus-fyi/zeus/zeus/workload_config_drivers"
 	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_req_types"
 	v1Core "k8s.io/api/core/v1"
@@ -41,14 +42,16 @@ const (
 	memorySizeTestnet = "63Gi"
 	// testnet workload disk sizes
 	testnetDiskSize = "3Ti"
+	devnetDiskSize  = "2Ti"
 
 	// workload label, name, or k8s references
 	suiDiskName  = "sui-client-storage"
 	suiConfigMap = "cm-sui"
 
-	// workload type
+	// workload type, impacts where/if for snapshot downloads
 	suiNodeConfig      = "full"
 	suiValidatorConfig = "validator"
+	suiNoSnapshot      = "min"
 
 	SuiRpcPortName = "http-rpc"
 
@@ -77,31 +80,28 @@ type SuiConfigOpts struct {
 }
 
 func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_drivers.ComponentBaseDefinition {
-	downloadStartup := ""
 	diskSize := mainnetDiskSize
 	cpuSize := cpuCores
 	memSize := memorySize
 	dockerImageSui := dockerImage
+	entryPointScript := "entrypoint.sh"
 	switch cfg.Network {
 	case mainnet:
-		// todo, add workload type conditional here
 		cpuSize = cpuCores
 		memSize = memorySize
 		diskSize = mainnetDiskSize
-		downloadStartup = DownloadMainnet
 		dockerImageSui = dockerImage
 	case testnet:
 		diskSize = testnetDiskSize
 		cpuSize = cpuCoresTestnet
 		memSize = memorySizeTestnet
-		downloadStartup = DownloadTestnet
 		dockerImageSui = dockerImageTestnet
 	case devnet:
-		diskSize = testnetDiskSize
+		diskSize = devnetDiskSize
 		cpuSize = cpuCoresTestnet
 		memSize = memorySizeTestnet
-		downloadStartup = DownloadTestnet
 		dockerImageSui = dockerImageDevnet
+		entryPointScript = "noFallBackEntrypoint.sh"
 	}
 
 	sd := &zeus_topology_config_drivers.ServiceDriver{}
@@ -113,24 +113,10 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 	switch cfg.CloudProvider {
 	case "aws":
 		dataDir = aws_nvme.AwsNvmePath
-		switch cfg.Network {
-		case mainnet:
-			downloadStartup = DownloadMainnetNodeAws
-		case testnet:
-			downloadStartup = DownloadTestnetNodeAws
-		}
 	case "gcp":
-		// todo, add gcp nvme path
+		dataDir = gcp_nvme.GcpNvmePath
 	case "do":
 		dataDir = do_nvme.DoNvmePath
-		switch cfg.Network {
-		case mainnet:
-			downloadStartup = DownloadMainnetNodeDo
-		case testnet:
-			downloadStartup = DownloadTestnetNodeDo
-		case devnet:
-			downloadStartup = DownloadDevnetNodeDo
-		}
 	}
 	if !cfg.WithLocalNvme {
 		dataDir = "/data"
@@ -139,7 +125,9 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 	if cfg.WithLocalNvme {
 		storageClassName = aws.String(zeus_nvme.ConfigureCloudProviderStorageClass(cfg.CloudProvider))
 	}
-
+	if !cfg.WithArchivalFallback {
+		entryPointScript = "noFallBackEntrypoint.sh"
+	}
 	var envAddOns []v1Core.EnvVar
 	if cfg.WithArchivalFallback {
 		s3AccessKey := zeus_topology_config_drivers.MakeSecretEnvVar("AWS_ACCESS_KEY_ID", "AWS_ACCESS_KEY_ID", "aws-credentials")
@@ -147,6 +135,11 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 		envAddOns = []v1Core.EnvVar{s3AccessKey, s3SecretKey}
 	}
 
+	wkType := "full"
+	if !cfg.DownloadSnapshot {
+		wkType = "min"
+	}
+	downloadCmd := fmt.Sprintf("#!/bin/sh\nexec snapshots --downloadURL=\"\" --protocol=\"sui\" --network=\"%s\" --workload-type=\"%s\" --dataDir=\"%s\"", cfg.Network, wkType, dataDir)
 	sbCfg := zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
 		SkeletonBaseChart:         zeus_req_types.TopologyCreateRequest{},
 		SkeletonBaseNameChartPath: suiMasterChartPath,
@@ -156,6 +149,7 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 					ObjectMeta: metav1.ObjectMeta{Name: suiConfigMap},
 					Data: map[string]string{
 						"fullnode.yaml": OverrideNodeConfigDataDir(dataDir, cfg),
+						"download.sh":   downloadCmd,
 					},
 				},
 			},
@@ -171,6 +165,7 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 								Name:      suiDiskName,
 								MountPath: dataDir,
 							}},
+							Command: []string{fmt.Sprintf("/scripts/%s", entryPointScript)},
 						},
 						AppendEnvVars: envAddOns,
 					},
@@ -187,7 +182,6 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 					"init-snapshots": {
 						Container: v1Core.Container{
 							Name: "init-snapshots",
-							Args: []string{"-c", fmt.Sprintf("/scripts/%s.sh", downloadStartup)},
 							VolumeMounts: []v1Core.VolumeMount{{
 								Name:      suiDiskName,
 								MountPath: dataDir,

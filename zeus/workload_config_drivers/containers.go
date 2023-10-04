@@ -61,8 +61,5 @@ func (cd *ContainerDriver) SetContainerConfigs(cont *v1Core.Container) {
 }
 
 func (cd *ContainerDriver) CreateEnvVarKeyValue(k, v string) v1Core.EnvVar {
-	return v1Core.EnvVar{
-		Name:  k,
-		Value: v,
-	}
+	return MakeKeyValueEnvVar(k, v)
 }

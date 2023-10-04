@@ -13,3 +13,10 @@ func MakeSecretEnvVar(name, key, localObjRef string) v1Core.EnvVar {
 		},
 	}
 }
+
+func MakeKeyValueEnvVar(k, v string) v1Core.EnvVar {
+	return v1Core.EnvVar{
+		Name:  k,
+		Value: v,
+	}
+}
