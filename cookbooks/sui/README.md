@@ -14,7 +14,8 @@ Kubernetes Local Persistent Volume Setup Notes:
 
 ## Cloud Provider Specific Setup Notes:
 
-Recommend machines are for mainnet. Testnet machines can be smaller.
+Recommend machines are for mainnet, testnet machines can be smaller, but should remain the same machine type class
+at minimum, to ensure NVMe disk compatibility.
 
 ### AWS
 
