@@ -84,15 +84,14 @@ const config = {
                     },
                 ],
             },
-            /*
+
             algolia: {
-                apiKey: 'YOUR_API_KEY',
-                indexName: 'YOUR_INDEX_NAME',
-                appId: 'sd'
+                apiKey: 'e5f9c7ca012a3615aee103edca64c3a5',
+                indexName: 'zeus',
+                appId: 'B479Q2S8TS'
                 // Optional: Algolia search parameters
                 // contextualSearch: true, // Uncomment this if you want to have versioning
             },
-             */
             footer: {
                 style: 'dark',
                 links: [
