@@ -2,5 +2,5 @@ package gcp_nvme
 
 const (
 	GcpStorageClass = "nvme-ssd-block"
-	GcpNvmePath     = "/data"
+	GcpNvmePath     = "/mnt/disks/raid"
 )
