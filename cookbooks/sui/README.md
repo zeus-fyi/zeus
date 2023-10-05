@@ -40,7 +40,7 @@ short while
 n2d-highmem-16
 n2d-highmem-32
 
-We have a good supply of n1d machines
+We have a good supply of n1 machines
 
 n1-highmem-16
 n1-highmem-32
