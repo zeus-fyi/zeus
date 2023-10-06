@@ -134,7 +134,7 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 	downloadCmd := fmt.Sprintf("#!/bin/sh\nexec snapshots --downloadURL=\"\" --protocol=\"sui\" --network=\"%s\" --workload-type=\"%s\" --dataDir=\"%s\"", cfg.Network, wkType, dataDir)
 	sbCfg := zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
 		SkeletonBaseChart:         zeus_req_types.TopologyCreateRequest{},
-		SkeletonBaseNameChartPath: suiMasterChartPath,
+		SkeletonBaseNameChartPath: SuiMasterChartPath,
 		TopologyConfigDriver: &zeus_topology_config_drivers.TopologyConfigDriver{
 			ConfigMapDriver: &zeus_topology_config_drivers.ConfigMapDriver{
 				ConfigMap: v1Core.ConfigMap{
@@ -215,7 +215,7 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 }
 
 func OverrideNodeConfigDataDir(dataDir string, cfg SuiConfigOpts) string {
-	p := suiMasterChartPath
+	p := SuiMasterChartPath
 	p.FnIn = "fullnode.yaml"
 	p.DirIn = "./sui/node/sui_config"
 	fip := p.FileInPath()
@@ -259,7 +259,7 @@ func OverrideNodeConfigDataDir(dataDir string, cfg SuiConfigOpts) string {
 }
 
 func GetP2PTable(network string) interface{} {
-	p := suiMasterChartPath
+	p := SuiMasterChartPath
 	switch network {
 	case mainnet:
 		p.FnIn = "p2p-mainnet.yaml"
@@ -283,7 +283,7 @@ func GetP2PTable(network string) interface{} {
 }
 
 func GetArchiveFallback(network string) interface{} {
-	p := suiMasterChartPath
+	p := SuiMasterChartPath
 	switch network {
 	case "mainnet", "testnet":
 		p.FnIn = "archival-fallback.yaml"

@@ -33,7 +33,7 @@ var (
 		},
 	}
 	suiSkeletonBaseConfig = zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
-		SkeletonBaseNameChartPath: suiMasterChartPath,
+		SkeletonBaseNameChartPath: SuiMasterChartPath,
 	}
 	suiCloudCtxNs = zeus_common_types.CloudCtxNs{
 		CloudProvider: "do",
@@ -42,7 +42,7 @@ var (
 		Namespace:     Sui, // set with your own namespace
 		Env:           "production",
 	}
-	suiMasterChartPath = filepaths.Path{
+	SuiMasterChartPath = filepaths.Path{
 		PackageName: "",
 		DirIn:       "./sui/node/infra",
 		DirOut:      "./sui/output",
@@ -57,9 +57,9 @@ var (
 	}
 	suiIngressSkeletonBaseConfig = zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
 		SkeletonBaseChart:         zeus_req_types.TopologyCreateRequest{},
-		SkeletonBaseNameChartPath: suiIngressChartPath,
+		SkeletonBaseNameChartPath: SuiIngressChartPath,
 	}
-	suiIngressChartPath = filepaths.Path{
+	SuiIngressChartPath = filepaths.Path{
 		PackageName: "",
 		DirIn:       "./sui/node/ingress",
 		DirOut:      "./sui/output",
@@ -74,9 +74,9 @@ var (
 	}
 	suiServiceMonitorSkeletonBaseConfig = zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
 		SkeletonBaseChart:         zeus_req_types.TopologyCreateRequest{},
-		SkeletonBaseNameChartPath: suiServiceMonitorChartPath,
+		SkeletonBaseNameChartPath: SuiServiceMonitorChartPath,
 	}
-	suiServiceMonitorChartPath = filepaths.Path{
+	SuiServiceMonitorChartPath = filepaths.Path{
 		PackageName: "",
 		DirIn:       "./sui/node/servicemonitor",
 		DirOut:      "./sui/output",

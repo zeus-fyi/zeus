@@ -32,7 +32,7 @@ func (t *SuiCookbookTestSuite) generateFromConfigDriverBuilder(cfg SuiConfigOpts
 }
 
 func (t *SuiCookbookTestSuite) TestReadFullNodeConfig() {
-	p := suiMasterChartPath
+	p := SuiMasterChartPath
 	p.FnIn = "fullnode.yaml"
 	p.DirIn = "./sui/node/sui_config"
 	fip := p.FileInPath()
@@ -66,7 +66,7 @@ func (t *SuiCookbookTestSuite) TestSuiTestnetCfg() {
 	}
 	t.generateFromConfigDriverBuilder(cfg)
 
-	p := suiMasterChartPath
+	p := SuiMasterChartPath
 	p.DirIn = "./sui/node/custom_sui"
 	inf := topology_workloads.NewTopologyBaseInfraWorkload()
 	err := p.WalkAndApplyFuncToFileType(".yaml", inf.DecodeK8sWorkload)
@@ -116,7 +116,7 @@ func (t *SuiCookbookTestSuite) TestSuiMainnetCfg() {
 	}
 	t.generateFromConfigDriverBuilder(cfg)
 
-	p := suiMasterChartPath
+	p := SuiMasterChartPath
 	p.DirIn = "./sui/node/custom_sui"
 	inf := topology_workloads.NewTopologyBaseInfraWorkload()
 	err := p.WalkAndApplyFuncToFileType(".yaml", inf.DecodeK8sWorkload)
@@ -158,7 +158,7 @@ func (t *SuiCookbookTestSuite) TestSuiMainnetCfg() {
 }
 
 func (t *SuiCookbookTestSuite) TestSuiAllOptsEnabled() {
-	p := suiMasterChartPath
+	p := SuiMasterChartPath
 	p.DirIn = "./sui/node/custom_sui"
 	p.DirOut = "./sui/node/custom_sui"
 	cfg := SuiConfigOpts{
