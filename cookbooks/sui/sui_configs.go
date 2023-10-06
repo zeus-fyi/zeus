@@ -3,6 +3,7 @@ package sui_cookbooks
 import (
 	"encoding/json"
 	"fmt"
+	"path"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/ghodss/yaml"
@@ -217,7 +218,8 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 func OverrideNodeConfigDataDir(dataDir string, cfg SuiConfigOpts) string {
 	p := SuiMasterChartPath
 	p.FnIn = "fullnode.yaml"
-	p.DirIn = "./sui/node/sui_config"
+	p.DirIn = path.Join(RootPath, "/sui/node/sui_config")
+
 	fip := p.FileInPath()
 	nodeCfg, err := yaml_fileio.ReadYamlConfig(fip)
 	if err != nil {
@@ -268,7 +270,7 @@ func GetP2PTable(network string) interface{} {
 	default:
 		return nil
 	}
-	p.DirIn = "./sui/node/sui_config"
+	p.DirIn = path.Join(RootPath, "/sui/node/sui_config")
 	fip := p.FileInPath()
 	p2pCfg, err := yaml_fileio.ReadYamlConfig(fip)
 	if err != nil {
@@ -290,7 +292,7 @@ func GetArchiveFallback(network string) interface{} {
 	default:
 		return nil
 	}
-	p.DirIn = "./sui/node/sui_config"
+	p.DirIn = path.Join(RootPath, "/sui/node/sui_config")
 	fip := p.FileInPath()
 	fallbackCfg, err := yaml_fileio.ReadYamlConfig(fip)
 	if err != nil {
