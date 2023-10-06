@@ -83,6 +83,7 @@ var (
 		FnIn:        SuiServiceMonitor, // filename for your gzip workload
 		Env:         "",
 	}
+	RootPath = "."
 )
 
 func GetSuiClientClusterDef(cfg SuiConfigOpts) zeus_cluster_config_drivers.ClusterDefinition {
