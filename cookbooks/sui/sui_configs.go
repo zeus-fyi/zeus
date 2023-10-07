@@ -26,7 +26,7 @@ const (
 	devnet  = "devnet"
 
 	// docker image references
-	dockerImage        = "mysten/sui-node:stable"
+	dockerImage        = "mysten/sui-node:mainnet"
 	dockerImageTestnet = "mysten/sui-node:testnet"
 	dockerImageDevnet  = "mysten/sui-node:devnet"
 
