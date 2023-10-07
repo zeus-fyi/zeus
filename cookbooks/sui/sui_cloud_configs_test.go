@@ -7,15 +7,15 @@ func (t *SuiCookbookTestSuite) TestNvmeConfigs() {
 	networks := []string{"mainnet", "testnet", "devnet"}
 	for _, cp := range cps {
 		for _, network := range networks {
-			t.TestBuildAndUpload(cp, network)
+			t.testBuildAndUpload(cp, network)
 		}
 	}
 }
 
-func (t *SuiCookbookTestSuite) TestBuildAndUpload(cloudProvider, network string) {
+func (t *SuiCookbookTestSuite) testBuildAndUpload(cloudProvider, network string) {
 	cfg := SuiConfigOpts{
 		WithLocalNvme:        true,
-		DownloadSnapshot:     true,
+		DownloadSnapshot:     false,
 		WithIngress:          true,
 		WithServiceMonitor:   true,
 		WithArchivalFallback: true,
