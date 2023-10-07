@@ -180,8 +180,7 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 								MountPath: dataDir,
 							}},
 						},
-						IsInitContainer:   true,
-						IsDeleteContainer: !cfg.DownloadSnapshot,
+						IsInitContainer: true,
 					},
 					"init-chown-data": {
 						Container: v1Core.Container{
