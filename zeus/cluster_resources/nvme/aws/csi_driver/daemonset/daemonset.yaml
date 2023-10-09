@@ -57,6 +57,9 @@ spec:
           hostPath:
             path: /mnt/fast-disks
       # Only run CSI Driver on the `fast-disk` tagged nodegroup
+      tolerations:
+        - key: ""
+          operator: "Exists"
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
