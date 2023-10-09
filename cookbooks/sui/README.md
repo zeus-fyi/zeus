@@ -30,6 +30,9 @@ Recommended machine types:
 
 ### GCP
 
+UPDATE: we're currently out of quota for NVMe disks, so please use the AWS or DigitalOcean setup for now, or contact
+us at support@zeus.fyi. We can work with you to get you to set up on GCP. We're working on getting more quota.
+
 storageClass: nvme-ssd-block
 
 Recommended machine types:
