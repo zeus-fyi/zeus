@@ -103,9 +103,13 @@ const config = {
                                 href: 'https://discord.gg/g3jtumw7B7',
                             },
                             {
+                                label: 'Status',
+                                href: 'https://status.zeus.fyi/'
+                            },
+                            {
                                 label: 'Solutions Engineering',
                                 href: 'https://calendly.com/alex-zeus-fyi/solutions-engineering'
-                            }
+                            },
                         ],
                     },
                     {
