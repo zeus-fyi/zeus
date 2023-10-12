@@ -8,7 +8,6 @@ import (
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/rs/zerolog/log"
 	web3_actions "github.com/zeus-fyi/gochain/web3/client"
-	signing_automation_ethereum_smart_contracts "github.com/zeus-fyi/zeus/pkg/artemis/signing_automation/ethereum/smart_contracts"
 )
 
 const (
