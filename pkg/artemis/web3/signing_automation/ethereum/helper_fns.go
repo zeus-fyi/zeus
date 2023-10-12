@@ -7,7 +7,6 @@ import (
 	"strings"
 
 	spec "github.com/attestantio/go-eth2-client/spec/phase0"
-	"github.com/go-resty/resty/v2"
 	"github.com/pkg/errors"
 	"github.com/rs/zerolog/log"
 	e2types "github.com/wealdtech/go-eth2-types/v2"

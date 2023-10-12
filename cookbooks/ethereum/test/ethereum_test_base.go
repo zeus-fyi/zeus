@@ -7,7 +7,7 @@ import (
 	"github.com/zeus-fyi/zeus/cookbooks"
 	zeus_ecdsa "github.com/zeus-fyi/zeus/pkg/aegis/crypto/ecdsa"
 	artemis_client "github.com/zeus-fyi/zeus/pkg/artemis/client"
-	signing_automation_ethereum "github.com/zeus-fyi/zeus/pkg/artemis/signing_automation/ethereum"
+	signing_automation_ethereum "github.com/zeus-fyi/zeus/pkg/artemis/web3/signing_automation/ethereum"
 	"github.com/zeus-fyi/zeus/test/configs"
 	"github.com/zeus-fyi/zeus/test/test_suites"
 	zeus_client "github.com/zeus-fyi/zeus/zeus/z_client"

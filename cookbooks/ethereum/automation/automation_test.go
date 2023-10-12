@@ -2,12 +2,13 @@ package ethereum_automation_cookbook
 
 import (
 	"fmt"
-	signing_automation_ethereum "github.com/zeus-fyi/zeus/pkg/artemis/signing_automation/ethereum"
-	age_encryption "github.com/zeus-fyi/zeus/pkg/crypto/age"
 	"testing"
 
-	"github.com/stretchr/testify/suite"
 	ethereum_cookbook_test_suite "github.com/zeus-fyi/zeus/cookbooks/ethereum/test"
+	age_encryption "github.com/zeus-fyi/zeus/pkg/aegis/crypto/age"
+	signing_automation_ethereum "github.com/zeus-fyi/zeus/pkg/artemis/web3/signing_automation/ethereum"
+
+	"github.com/stretchr/testify/suite"
 )
 
 type EthereumAutomationCookbookTestSuite struct {

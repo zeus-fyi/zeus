@@ -9,7 +9,7 @@ import (
 	"github.com/tidwall/pretty"
 	"github.com/wealdtech/go-ed25519hd"
 	util "github.com/wealdtech/go-eth2-util"
-	signing_automation_ethereum "github.com/zeus-fyi/zeus/pkg/artemis/signing_automation/ethereum"
+	signing_automation_ethereum "github.com/zeus-fyi/zeus/pkg/artemis/web3/signing_automation/ethereum"
 	bls_signer "github.com/zeus-fyi/zeus/pkg/crypto/bls"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 )

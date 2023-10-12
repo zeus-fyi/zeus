@@ -3,7 +3,7 @@ package ethereum_web3signer_actions
 import (
 	"context"
 
-	signing_automation_ethereum "github.com/zeus-fyi/zeus/pkg/artemis/signing_automation/ethereum"
+	signing_automation_ethereum "github.com/zeus-fyi/zeus/pkg/artemis/web3/signing_automation/ethereum"
 	strings_filter "github.com/zeus-fyi/zeus/pkg/utils/strings"
 )
 
