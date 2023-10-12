@@ -3,7 +3,7 @@ package artemis_client
 import (
 	artemis_endpoints "github.com/zeus-fyi/zeus/pkg/artemis/client/endpoints"
 	artemis_req_types "github.com/zeus-fyi/zeus/pkg/artemis/client/req_types"
-	"github.com/zeus-fyi/zeus/pkg/artemis/signing_automation/ethereum"
+	signing_automation_ethereum "github.com/zeus-fyi/zeus/pkg/artemis/web3/signing_automation/ethereum"
 )
 
 func (t *ArtemisClientTestSuite) TestSendEthEndpoints() {
