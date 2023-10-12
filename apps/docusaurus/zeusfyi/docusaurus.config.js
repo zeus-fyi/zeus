@@ -73,6 +73,7 @@ const config = {
                 logo: {
                     alt: 'zeusfyi logo',
                     src: 'img/icon.svg',
+                    href: 'https://zeus.fyi',
                 },
                 items: [
                     {to: '/docs/zK8s/intro', label: 'Platform & APIs', position: 'left'},
