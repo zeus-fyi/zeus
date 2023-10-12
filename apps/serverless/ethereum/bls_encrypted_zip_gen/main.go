@@ -10,10 +10,11 @@ import (
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
+	"github.com/go-resty/resty/v2"
 	"github.com/rs/zerolog/log"
 	bls_serverless_signing "github.com/zeus-fyi/zeus/pkg/aegis/aws/serverless_signing"
 	age_encryption "github.com/zeus-fyi/zeus/pkg/aegis/crypto/age"
-	signing_automation_ethereum "github.com/zeus-fyi/zeus/pkg/artemis/signing_automation/ethereum"
+	signing_automation_ethereum "github.com/zeus-fyi/zeus/pkg/artemis/web3/signing_automation/ethereum"
 	"github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/memfs"
 )
 

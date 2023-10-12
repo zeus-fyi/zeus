@@ -12,7 +12,7 @@ import (
 	"github.com/rs/zerolog/log"
 	age_encryption "github.com/zeus-fyi/zeus/pkg/aegis/crypto/age"
 	bls_signer "github.com/zeus-fyi/zeus/pkg/aegis/crypto/bls"
-	signing_automation_ethereum "github.com/zeus-fyi/zeus/pkg/artemis/signing_automation/ethereum"
+	signing_automation_ethereum2 "github.com/zeus-fyi/zeus/pkg/artemis/web3 /signing_automation/ethereum"
 	"github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/compression"
 	"github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/memfs"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
@@ -21,7 +21,7 @@ import (
 
 var InMemFs = memfs.NewMemFs()
 
-func GenerateValidatorDepositsAndCreateAgeEncryptedKeystores(ctx context.Context, w3Client signing_automation_ethereum.Web3SignerClient, vdg signing_automation_ethereum.ValidatorDepositGenerationParams, age age_encryption.Age, HDPassword string) error {
+func GenerateValidatorDepositsAndCreateAgeEncryptedKeystores(ctx context.Context, w3Client signing_automation_ethereum2.Web3SignerClient, vdg signing_automation_ethereum2.ValidatorDepositGenerationParams, age age_encryption.Age, HDPassword string) error {
 	err := vdg.GenerateAndEncryptValidatorKeysFromSeedAndPath(ctx)
 	if err != nil {
 		return err
@@ -30,7 +30,7 @@ func GenerateValidatorDepositsAndCreateAgeEncryptedKeystores(ctx context.Context
 	if err != nil {
 		return err
 	}
-	signing_automation_ethereum.PrintJSONSlice(vdg.Fp, dpSlice, vdg.Network)
+	signing_automation_ethereum2.PrintJSONSlice(vdg.Fp, dpSlice, vdg.Network)
 	err = decryptToInMemFS(vdg.Fp.DirOut, HDPassword)
 	if err != nil {
 		return err
@@ -88,7 +88,7 @@ func decryptToInMemFS(directoryPath, hdPassword string) error {
 			log.Err(err)
 			panic(err)
 		}
-		acc, err := signing_automation_ethereum.DecryptKeystoreCipherIntoEthSignerBLS(context.Background(), input, hdPassword)
+		acc, err := signing_automation_ethereum2.DecryptKeystoreCipherIntoEthSignerBLS(context.Background(), input, hdPassword)
 		if err != nil {
 			log.Err(err)
 			panic(err)

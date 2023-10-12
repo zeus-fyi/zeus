@@ -2,7 +2,6 @@ package artemis_client
 
 import (
 	artemis_req_types "github.com/zeus-fyi/zeus/pkg/artemis/client/req_types"
-	signing_automation_ethereum "github.com/zeus-fyi/zeus/pkg/artemis/signing_automation/ethereum"
 )
 
 // TestSendSignedValidatorDepositTxPayload uses ephemery network for this test

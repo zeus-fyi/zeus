@@ -7,7 +7,6 @@ import (
 	"github.com/stretchr/testify/suite"
 	bls_signer "github.com/zeus-fyi/zeus/pkg/aegis/crypto/bls"
 	zeus_ecdsa "github.com/zeus-fyi/zeus/pkg/aegis/crypto/ecdsa"
-	signing_automation_ethereum "github.com/zeus-fyi/zeus/pkg/artemis/signing_automation/ethereum"
 	"github.com/zeus-fyi/zeus/test/configs"
 	"github.com/zeus-fyi/zeus/test/test_suites"
 )

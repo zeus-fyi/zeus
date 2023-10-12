@@ -6,7 +6,6 @@ import (
 	"time"
 
 	validator_cookbooks "github.com/zeus-fyi/zeus/cookbooks/ethereum/validators"
-	signing_automation_ethereum "github.com/zeus-fyi/zeus/pkg/artemis/signing_automation/ethereum"
 	strings_filter "github.com/zeus-fyi/zeus/pkg/utils/strings"
 )
 

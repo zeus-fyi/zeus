@@ -20,7 +20,7 @@ import (
 	age_encryption "github.com/zeus-fyi/zeus/pkg/aegis/crypto/age"
 	bls_signer "github.com/zeus-fyi/zeus/pkg/aegis/crypto/bls"
 	aegis_random "github.com/zeus-fyi/zeus/pkg/aegis/crypto/random"
-	signing_automation_ethereum "github.com/zeus-fyi/zeus/pkg/artemis/signing_automation/ethereum"
+	signing_automation_ethereum2 "github.com/zeus-fyi/zeus/pkg/artemis/web3 /signing_automation/ethereum"
 	hestia_req_types "github.com/zeus-fyi/zeus/pkg/hestia/client/req_types"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 	strings_filter "github.com/zeus-fyi/zeus/pkg/utils/strings"
@@ -206,7 +206,7 @@ var Cmd = &cobra.Command{
 				panic("ERROR: aws credentials and/or account number missing")
 			}
 		}
-		w3Client := signing_automation_ethereum.Web3SignerClient{
+		w3Client := signing_automation_ethereum2.Web3SignerClient{
 			Web3Actions: web3_actions.Web3Actions{
 				NodeURL: nodeURL,
 				Network: network,
@@ -304,7 +304,7 @@ var Cmd = &cobra.Command{
 					agePubKey = pubkey
 					agePrivKey = privkey
 				}
-				vdg := signing_automation_ethereum.ValidatorDepositGenerationParams{
+				vdg := signing_automation_ethereum2.ValidatorDepositGenerationParams{
 					Fp:                   keystoresPath,
 					Mnemonic:             mnemonic,
 					Pw:                   hdWalletPassword,
@@ -471,7 +471,7 @@ var Cmd = &cobra.Command{
 				w3Client.Account = acc
 				filter := &strings_filter.FilterOpts{StartsWith: "deposit_data", DoesNotInclude: []string{"keystores.tar.gz.age", ".DS_Store"}}
 				keystoresPath.FilterFiles = filter
-				dpSlice, err := signing_automation_ethereum.ParseValidatorDepositSliceJSON(ctx, keystoresPath)
+				dpSlice, err := signing_automation_ethereum2.ParseValidatorDepositSliceJSON(ctx, keystoresPath)
 				if err != nil {
 					panic(err)
 				}

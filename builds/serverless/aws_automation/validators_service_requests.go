@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"time"
 
-	signing_automation_ethereum "github.com/zeus-fyi/zeus/pkg/artemis/signing_automation/ethereum"
 	hestia_client "github.com/zeus-fyi/zeus/pkg/hestia/client"
 	hestia_req_types "github.com/zeus-fyi/zeus/pkg/hestia/client/req_types"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"

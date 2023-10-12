@@ -9,7 +9,7 @@ import (
 	"github.com/tidwall/pretty"
 	"github.com/wealdtech/go-ed25519hd"
 	util "github.com/wealdtech/go-eth2-util"
-	signing_automation_ethereum "github.com/zeus-fyi/zeus/pkg/artemis/signing_automation/ethereum"
+	signing_automation_ethereum2 "github.com/zeus-fyi/zeus/pkg/artemis/web3 /signing_automation/ethereum"
 	bls_signer "github.com/zeus-fyi/zeus/pkg/crypto/bls"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 )
@@ -40,11 +40,11 @@ func (t *EthereumAutomationCookbookTestSuite) TestFullDepositAutomation() {
 	}
 }
 
-func (t *EthereumAutomationCookbookTestSuite) TestDepositGenerationAutomation() []*signing_automation_ethereum.DepositDataParams {
+func (t *EthereumAutomationCookbookTestSuite) TestDepositGenerationAutomation() []*signing_automation_ethereum2.DepositDataParams {
 	offset := 0
 	numKeys := 10
 
-	vdg := signing_automation_ethereum.ValidatorDepositGenerationParams{
+	vdg := signing_automation_ethereum2.ValidatorDepositGenerationParams{
 		Fp:                   depositDataPath,
 		Mnemonic:             t.Tc.LocalMnemonic24Words,
 		Pw:                   t.Tc.HDWalletPassword,
@@ -58,7 +58,7 @@ func (t *EthereumAutomationCookbookTestSuite) TestDepositGenerationAutomation() 
 	dpSlice, err := t.Web3SignerClientTestClient.GenerateEphemeryDepositDataWithDefaultWd(ctx, vdg)
 	t.Require().Nil(err)
 
-	jsonSlice := signing_automation_ethereum.DepositDataParamsJSON(dpSlice)
+	jsonSlice := signing_automation_ethereum2.DepositDataParamsJSON(dpSlice)
 	b, err := json.MarshalIndent(jsonSlice, "", "\t")
 	t.Require().Nil(err)
 
@@ -70,7 +70,7 @@ func (t *EthereumAutomationCookbookTestSuite) TestDepositGenerationAutomation() 
 	respJSON := pretty.Pretty(b)
 	respJSON = pretty.Color(respJSON, pretty.TerminalStyle)
 	fmt.Println(string(respJSON))
-	signing_automation_ethereum.PrintJSONSlice(depositDataPath, dpSlice, vdg.Network)
+	signing_automation_ethereum2.PrintJSONSlice(depositDataPath, dpSlice, vdg.Network)
 	return dpSlice
 }
 
@@ -95,13 +95,13 @@ func (t *EthereumAutomationCookbookTestSuite) TestDepositGenVsEthStakingCliDepos
 	derivedWdKeyStr := bls_signer.ConvertBytesToString(derivedWdKeyBytes)
 	t.Assert().Equal(expWdPubKey, derivedWdKeyStr)
 
-	wd, err := signing_automation_ethereum.ValidateAndReturnBLSPubkeyBytes(derivedWdKeyStr)
+	wd, err := signing_automation_ethereum2.ValidateAndReturnBLSPubkeyBytes(derivedWdKeyStr)
 	t.Require().Nil(err)
 
 	expPaddedBlsWd := "00a3f653b8d4e23c82652a29c4c235effe4a46e2dc4893d0704e6776b991480d"
 	t.Assert().Equal(expPaddedBlsWd, bls_signer.ConvertBytesToString(wd))
 
-	vdg := signing_automation_ethereum.ValidatorDepositGenerationParams{
+	vdg := signing_automation_ethereum2.ValidatorDepositGenerationParams{
 		Fp:                   depositDataPath,
 		Mnemonic:             t.Tc.LocalMnemonic24Words,
 		Pw:                   t.Tc.HDWalletPassword,
@@ -123,15 +123,15 @@ func (t *EthereumAutomationCookbookTestSuite) TestDepositGenVsEthStakingCliDepos
 	t.Assert().Equal(expDepositRoot, sv.DepositDataRoot)
 }
 
-func (t *EthereumAutomationCookbookTestSuite) getFirstDepositValue() signing_automation_ethereum.ExtendedDepositParams {
+func (t *EthereumAutomationCookbookTestSuite) getFirstDepositValue() signing_automation_ethereum2.ExtendedDepositParams {
 	exp := depositDataPath
 	exp.DirIn = "./ethereum/automation/validator_keys"
-	ks, err := signing_automation_ethereum.ParseValidatorDepositSliceJSON(ctx, exp)
+	ks, err := signing_automation_ethereum2.ParseValidatorDepositSliceJSON(ctx, exp)
 	t.Require().Nil(err)
 	for _, k := range ks {
 		return k
 	}
-	return signing_automation_ethereum.ExtendedDepositParams{}
+	return signing_automation_ethereum2.ExtendedDepositParams{}
 }
 
 /*
