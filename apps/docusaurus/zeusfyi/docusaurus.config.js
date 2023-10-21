@@ -47,7 +47,6 @@ const config = {
             ({
                 docs: {
                     sidebarPath: require.resolve('./sidebars.js'),
-
                 },
                 // blog: {
                 //     showReadingTime: true,
@@ -63,6 +62,9 @@ const config = {
         ],
     ],
 
+    // algolia if not using preset-classic
+    // themes: ['@docusaurus/theme-search-algolia'],
+
     themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
         ({
@@ -75,6 +77,11 @@ const config = {
                     src: 'img/icon.svg',
                 },
                 items: [
+                    {
+                        label: 'Login',
+                        position: 'right',
+                        href: 'https://cloud.zeus.fyi/login',
+                    },
                     {to: '/docs/zK8s/intro', label: 'Platform & APIs', position: 'left'},
                     {to: '/docs/lb/intro', label: 'Adaptive RPC Load Balancer', position: 'left'},
                     {

@@ -1243,7 +1243,7 @@
     "@docsearch/react" "3.5.2"
     preact "^10.0.0"
 
-"@docsearch/react@3.5.2", "@docsearch/react@^3.1.1", "@docsearch/react@^3.5.2":
+"@docsearch/react@3", "@docsearch/react@3.5.2", "@docsearch/react@^3.1.1":
   version "3.5.2"
   resolved "https://registry.yarnpkg.com/@docsearch/react/-/react-3.5.2.tgz#2e6bbee00eb67333b64906352734da6aef1232b9"
   integrity sha512-9Ahcrs5z2jq/DcAvYtvlqEBHImbm4YJI8M9y0x6Tqg598P40HTEkX7hsMcIuThI+hTFxRGZ9hll0Wygm2yEjng==
