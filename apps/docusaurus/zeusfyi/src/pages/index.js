@@ -4,7 +4,6 @@ import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 
-import '@docsearch/css';
 import styles from './index.module.css';
 import HomepageFeatures from "../components/HomepageFeatures";
 import Head from '@docusaurus/Head';
@@ -44,8 +43,8 @@ export default function Home() {
     return (
         <Layout
             wrapperClassName={styles.backgroundHome}
-            title={`${siteConfig.title} documentation`}
-            description="zeusfyi documentation">
+            title={`${siteConfig.title} Documentation`}
+            description="Zeusfyi Documentation">
             <HomepageHeader/>
             <Algolia/>
             <main>
