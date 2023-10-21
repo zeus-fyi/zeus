@@ -18,8 +18,8 @@ const config = {
 
     // GitHub pages deployment config.
     // If you aren't using GitHub pages, you don't need these.
-    organizationName: 'Zeusfyi', // Usually your GitHub org/user name.
-    projectName: 'Zeus', // Usually your repo name.
+    organizationName: 'zeus-fyi', // Usually your GitHub org/user name.
+    projectName: 'zeus', // Usually your repo name.
 
     onBrokenLinks: 'warn',
     onBrokenMarkdownLinks: 'warn',
@@ -139,7 +139,7 @@ const config = {
                         ],
                     },
                 ],
-                copyright: `Zeusfyi © ${new Date().getFullYear()}`,
+                copyright: `Zeusfyi, Inc © ${new Date().getFullYear()}`,
             },
             prism: {
                 theme: lightCodeTheme,
