@@ -5,8 +5,6 @@ displayed_sidebar: lb
 
 # Setup
 
-#### Exclusively running Iris services through the QuickNode Marketplace until our v1 release later this year.
-
 ## Overview
 
 We use ZU to denote Zeus compute units.
