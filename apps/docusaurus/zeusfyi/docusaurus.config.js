@@ -93,6 +93,7 @@ const config = {
                 indexName: 'zeus',
                 // Optional: Algolia search parameters
                 contextualSearch: true, // Uncomment this if you want to have versioning
+                schedule: 'every 1 day at 3:00 pm',
             },
             footer: {
                 style: 'dark',
