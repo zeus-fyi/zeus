@@ -85,6 +85,14 @@ const config = {
                 ],
             },
 
+            announcementBar: {
+                id: 'support_us',
+                content:
+                    'If you like Zeusfyi, give it a <a href="https://github.com/zeus-fyi/zeus" target="_blank" rel="noopener noreferrer">star on GitHub</a> and follow us on <a href="https://twitter.com/zeus_fyi" target="_blank" rel="noopener noreferrer">Twitter</a>',
+                backgroundColor: '#fafbfc',
+                textColor: '#091E42',
+                isCloseable: false,
+            },
             algolia: {
                 apiKey: 'e5f9c7ca012a3615aee103edca64c3a5',
                 indexName: 'zeus',
