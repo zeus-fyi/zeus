@@ -76,7 +76,7 @@ const config = {
                 },
                 items: [
                     {to: '/docs/zK8s/intro', label: 'Platform & APIs', position: 'left'},
-                    {to: '/docs/lb/intro', label: 'RPC Load Balancer', position: 'left'},
+                    {to: '/docs/lb/intro', label: 'Adaptive RPC Load Balancer', position: 'left'},
                     {
                         label: 'LinkTree',
                         position: 'right',
