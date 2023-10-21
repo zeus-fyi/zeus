@@ -23,10 +23,10 @@ func (z *PodsClient) PortForwardReqToPods(ctx context.Context, par zeus_pods_req
 		Post(zeus_endpoints.PodsActionV1Path)
 
 	if err != nil || resp.StatusCode() != http.StatusOK {
-		log.Ctx(ctx).Err(err).Msg("ZeusClient: PortForwardReqToPods")
 		if err == nil {
 			err = fmt.Errorf("non-OK status code: %d", resp.StatusCode())
 		}
+		log.Err(err).Msg("ZeusClient: PortForwardReqToPods")
 		return clientResponses, err
 	}
 	z.PrintRespJson(resp.Body())

@@ -1,0 +1,17 @@
+state-archive-read-config:
+  - object-store-config:
+      object-store: "S3"
+      # Use mysten-testnet-archives for testnet
+      # Use mysten-mainnet-archives for mainnet
+      bucket: "mysten-<testnet|mainnet>-archives"
+      # Use your AWS account access key id
+      aws-access-key-id: "<AWS_ACCESS_KEY_ID>"
+      # Use your AWS account secret access key
+      aws-secret-access-key: "<AWS_SECRET_ACCESS_KEY>"
+      aws-region: "us-west-2"
+      object-store-connection-limit: 20
+    # How many objects to read ahead when catching up
+    concurrency: 5
+    # Whether to prune local state based on latest checkpoint in archive.
+    # This should stay false for most use cases
+    use-for-pruning-watermark: false

@@ -64,3 +64,4 @@ Thumbs.db
 /builds/serverless/keystores/keystores.zip
 /builds/serverless/bls_signatures/keystores.zip
 /builds/serverless/tmp/
+/zeus/cluster_resources/nvme/do/nvme/debug/

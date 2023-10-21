@@ -61,7 +61,7 @@ var (
 			"beaconIngress": BeaconIngressSkeletonBaseConfig,
 		},
 	}
-	BearerTokenSecretFromChoreography = zeus_topology_config_drivers.MakeEnvVar("BEARER", "bearer", "choreography")
+	BearerTokenSecretFromChoreography = zeus_topology_config_drivers.MakeSecretEnvVar("BEARER", "bearer", "choreography")
 )
 
 func GetClientClusterDef(consensusClient, execClient, network string, withIngress bool) zeus_cluster_config_drivers.ClusterDefinition {

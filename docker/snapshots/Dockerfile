@@ -48,8 +48,14 @@ RUN wget https://raw.githubusercontent.com/cosmos/mainnet/master/genesis/genesis
 RUN gzip -d genesis.cosmoshub-4.json.gz
 RUN mv genesis.cosmoshub-4.json genesis.json
 
-FROM golang:1.20.3-buster
-RUN apt-get update && apt-get install -y ca-certificates
+FROM ubuntu:22.04 AS aws-cli
+RUN apt-get update && apt-get install -y curl unzip
+WORKDIR /app
+
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+
+FROM ubuntu:22.04
+RUN apt-get update && apt-get install -y ca-certificates unzip less
 
 COPY --from=snapshot_builder /app/snapshots /usr/bin/snapshots
 COPY --from=rclone_builder /usr/bin/rclone /usr/bin/rclone
@@ -57,5 +63,12 @@ COPY --from=rclone_builder /usr/bin/rclone /usr/bin/rclone
 COPY --from=gaiad-builder /app/gaiad /usr/local/go/bin/
 COPY --from=cosmos-testnet-genesis /app/genesis.json /etc/cosmos/testnet/genesis.json
 COPY --from=cosmos-mainnet-genesis /app/genesis.json /etc/cosmos/mainnet/genesis.json
+COPY --from=aws-cli /app/awscliv2.zip /
+
+RUN unzip awscliv2.zip
+RUN rm awscliv2.zip
+RUN chmod +x ./aws/install
+
+RUN ./aws/install
 
 RUN mkdir -p ~/.config/rclone

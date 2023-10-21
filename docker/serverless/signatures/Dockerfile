@@ -12,7 +12,7 @@ COPY go.mod go.sum ./
 RUN --mount=type=cache,target=${GOMODCACHE} go mod download
 COPY .. .
 
-RUN --mount=type=cache,target=${GOCACHE} CGO_ENABLED=1 GOOS=${GOOS} GOARCH=${GOARCH} go build -ldflags="-s -w" -o ethereumsignbls apps/cookbooks/serverless/ethereum/bls_signatures/main.go
+RUN --mount=type=cache,target=${GOCACHE} CGO_ENABLED=1 GOOS=${GOOS} GOARCH=${GOARCH} go build -ldflags="-s -w" -o ethereumsignbls apps/serverless/ethereum/bls_signatures/main.go
 
 FROM ubuntu:22.04
 RUN apt-get update

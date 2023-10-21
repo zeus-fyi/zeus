@@ -9,6 +9,7 @@ import (
 	ethereum_cookbook_test_suite "github.com/zeus-fyi/zeus/cookbooks/ethereum/test"
 	validator_cookbooks "github.com/zeus-fyi/zeus/cookbooks/ethereum/validators"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
+	pods_client "github.com/zeus-fyi/zeus/zeus/z_client/workloads/pods"
 )
 
 var KeystorePath = filepaths.Path{
@@ -24,7 +25,7 @@ var ctx = context.Background()
 
 func (t *EthereumWeb3SignerCookbookTestSuite) TestImportWeb3SignerKeysViaKeystoreAPI() {
 	kns := validator_cookbooks.ValidatorCloudCtxNs
-	w3 := Web3SignerActionsClient{t.ZeusTestClient}
+	w3 := Web3SignerActionsClient{pods_client.NewPodsClientFromZeusClient(t.ZeusTestClient)}
 	resp, err := w3.ImportKeystores(ctx, kns, KeystorePath, t.Tc.HDWalletPassword)
 	t.Require().Nil(err)
 	t.Assert().NotEmpty(resp)
@@ -39,7 +40,7 @@ func (t *EthereumWeb3SignerCookbookTestSuite) TestReadKeystoreFile() {
 
 func (t *EthereumWeb3SignerCookbookTestSuite) TestGetWeb3SignerKeysViaKeystoreAPI() {
 	kns := validator_cookbooks.ValidatorCloudCtxNs
-	w3 := Web3SignerActionsClient{t.ZeusTestClient}
+	w3 := Web3SignerActionsClient{pods_client.NewPodsClientFromZeusClient(t.ZeusTestClient)}
 	resp, err := w3.GetKeystores(ctx, kns)
 	t.Require().Nil(err)
 	t.Assert().NotEmpty(resp)

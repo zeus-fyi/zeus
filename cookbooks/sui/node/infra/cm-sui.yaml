@@ -1,0 +1,61 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cm-sui
+data:
+  hercules.sh: |-
+    #!/bin/sh
+    exec hercules
+  download.sh: |-
+    #!/bin/sh
+    exec snapshots --downloadURL="" --protocol="sui" --network="mainnet" --workload-type="full" --dataDir="/data"
+  entrypoint.sh: |-
+    #!/bin/sh
+    cp /scripts/fullnode.yaml /secrets/fullnode.yaml
+    sed -i "s/<AWS_ACCESS_KEY_ID>/$AWS_ACCESS_KEY_ID/g" /secrets/fullnode.yaml
+    sed -i "s/<AWS_SECRET_ACCESS_KEY>/$AWS_SECRET_ACCESS_KEY/g" /secrets/fullnode.yaml
+    exec sui-node --config-path /secrets/fullnode.yaml
+  noFallBackEntrypoint.sh: |-
+    #!/bin/sh
+    cp /scripts/fullnode.yaml /secrets/fullnode.yaml
+    exec sui-node --config-path /secrets/fullnode.yaml
+  fullnode.yaml: |-
+    # Update this value to the location you want Sui to store its database
+    db-path: "/data"
+
+    network-address: "/dns/0.0.0.0/tcp/8080/http"
+    metrics-address: "0.0.0.0:9184"
+    # this address is also used for web socket connections
+    json-rpc-address: "0.0.0.0:9000"
+    enable-event-processing: true
+
+    genesis:
+      # Update this to the location of where the genesis file is stored
+      genesis-file-location: "/data/genesis.blob"
+    authority-store-pruning-config:
+      # Number of epoch dbs to keep 
+      # Not relevant for object pruning
+      num-latest-epoch-dbs-to-retain: 3
+      # The amount of time, in seconds, between running the object pruning task.
+      # Not relevant for object pruning
+      epoch-db-pruning-period-secs: 3600
+      # Number of epochs to wait before performing object pruning.
+      num-epochs-to-retain: 0
+      # Advanced setting: Maximum number of checkpoints to prune in a batch. The default
+      # settings are appropriate for most use cases.
+      max-checkpoints-in-batch: 10
+      # Advanced setting: Maximum number of transactions in one batch of pruning run. The default
+      # settings are appropriate for most use cases.
+      max-transactions-in-batch: 1000
+      # Not documented anywhere but necessary for pruning to work
+      use-range-deletion: true
+      # Used for tx pruning
+      # Number of epochs to wait before performing transaction pruning.
+      # When this is N (where N >= 2), Sui prunes transactions and effects from 
+      # checkpoints up to the `current - N` epoch. Sui never prunes transactions and effects from the current and
+      # immediately prior epoch. N = 2 is a recommended setting for Sui Validator nodes and Sui Full nodes that don't 
+      # serve RPC requests.
+      #num-epochs-to-retain-for-checkpoints: 2
+      # Ensures that individual database files periodically go through the compaction process.
+      # This helps reclaim disk space and avoid fragmentation issues
+      #periodic-compaction-threshold-days: 1
