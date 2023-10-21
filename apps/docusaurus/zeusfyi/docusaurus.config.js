@@ -46,7 +46,6 @@ const config = {
                 sitemap: {
                     changefreq: 'hourly',
                     priority: 0.5,
-                    ignorePatterns: ['/tags/**'],
                     filename: 'sitemap.xml',
                 },
                 docs: {
