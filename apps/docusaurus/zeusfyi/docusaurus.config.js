@@ -92,7 +92,6 @@ const config = {
                 backgroundColor: '#B2E5E4', // Light turquoise/teal background
                 textColor: '#1C6865',      // Darker teal text
                 isCloseable: false,
-                className: 'stripe-announcement', // Add this line
             },
             algolia: {
                 apiKey: 'e5f9c7ca012a3615aee103edca64c3a5',
