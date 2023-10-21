@@ -23,7 +23,6 @@ const config = {
 
     onBrokenLinks: 'throw',
     onBrokenMarkdownLinks: 'throw',
-
     plugins: [
         [
             '@docusaurus/plugin-google-gtag',
@@ -44,12 +43,19 @@ const config = {
         [
             '@docusaurus/preset-classic',
             ({
+                sitemap: {
+                    changefreq: 'weekly',
+                    priority: 0.5,
+                    ignorePatterns: ['/tags/**'],
+                    filename: 'sitemap.xml',
+                },
                 docs: {
                     sidebarPath: require.resolve('./sidebars.js'),
                 },
                 theme: {
                     customCss: require.resolve('./src/css/custom.css'),
                 },
+
             }),
         ],
     ],
@@ -93,9 +99,9 @@ const config = {
             },
 
             algolia: {
+                appId: 'B479Q2S8TS',
                 apiKey: 'e5f9c7ca012a3615aee103edca64c3a5',
                 indexName: 'zeus',
-                appId: 'B479Q2S8TS',
                 // Optional: Algolia search parameters
                 // contextualSearch: true, // Uncomment this if you want to have versioning
             },

@@ -7,12 +7,18 @@ import Layout from '@theme/Layout';
 import '@docsearch/css';
 import styles from './index.module.css';
 import HomepageFeatures from "../components/HomepageFeatures";
+import Head from '@docusaurus/Head';
+
+const Algolia = () => (
+    <Head>
+        <link rel="preconnect" href="https://B479Q2S8TS-dsn.algolia.net" crossOrigin/>
+    </Head>
+);
 
 function HomepageHeader() {
     const {siteConfig} = useDocusaurusContext();
     return (
         <header className={clsx('hero hero--primary', styles.heroBanner)}>
-            <link rel="preconnect" href="https://B479Q2S8TS-dsn.algolia.net" crossOrigin/>
             <div className="container">
                 <h1 className="hero__title">{siteConfig.title}</h1>
                 <p className="hero__subtitle">{siteConfig.tagline}</p>
@@ -41,6 +47,7 @@ export default function Home() {
             title={`${siteConfig.title} documentation`}
             description="zeusfyi documentation">
             <HomepageHeader/>
+            <Algolia/>
             <main>
                 <HomepageFeatures/>
             </main>
