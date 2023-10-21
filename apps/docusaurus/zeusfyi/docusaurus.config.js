@@ -11,7 +11,7 @@ const config = {
     favicon: 'img/icon.svg',
 
     // Set the production url of your site here
-    url: 'https://cloud.zeus.fyi',
+    url: 'https://docs.zeus.fyi',
     // Set the /<baseUrl>/ pathname under which your site is served
     // For GitHub pages deployment, it is often '/<projectName>/'
     baseUrl: '/',
@@ -42,19 +42,11 @@ const config = {
 
     presets: [
         [
-            'classic',
-            /** @type {import('@docusaurus/preset-classic').Options} */
+            '@docusaurus/preset-classic',
             ({
                 docs: {
                     sidebarPath: require.resolve('./sidebars.js'),
                 },
-                // blog: {
-                //     showReadingTime: true,
-                //     // Please change this to your repo.
-                //     // Remove this to remove the "edit this page" links.
-                //     editUrl:
-                //         'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
-                // },
                 theme: {
                     customCss: require.resolve('./src/css/custom.css'),
                 },
@@ -91,21 +83,21 @@ const config = {
                     },
                 ],
             },
-
             announcementBar: {
                 id: 'support_us',
                 content:
                     '<strong>⭐️ If you like Zeusfyi, give it a <a href="https://github.com/zeus-fyi/zeus" target="_blank" rel="noopener noreferrer">star on GitHub</a> and follow us on <a href="https://twitter.com/zeus_fyi" target="_blank" rel="noopener noreferrer">Twitter</a></strong>',
                 backgroundColor: '#B2E5E4', // Light turquoise/teal background
                 textColor: '#1C6865',      // Darker teal text
-                isCloseable: false,
+                isCloseable: true,
             },
+
             algolia: {
                 apiKey: 'e5f9c7ca012a3615aee103edca64c3a5',
                 indexName: 'zeus',
                 appId: 'B479Q2S8TS',
                 // Optional: Algolia search parameters
-                contextualSearch: true, // Uncomment this if you want to have versioning
+                // contextualSearch: true, // Uncomment this if you want to have versioning
             },
             footer: {
                 style: 'dark',
