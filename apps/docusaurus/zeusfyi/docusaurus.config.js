@@ -12,15 +12,7 @@ const config = {
 
     // Set the production url of your site here
     url: 'https://docs.zeus.fyi',
-    // Set the /<baseUrl>/ pathname under which your site is served
-    // For GitHub pages deployment, it is often '/<projectName>/'
     baseUrl: '/',
-
-    // GitHub pages deployment config.
-    // If you aren't using GitHub pages, you don't need these.
-    // organizationName: 'zeus-fyi', // Usually your GitHub org/user name.
-    // projectName: 'zeus', // Usually your repo name.
-
     onBrokenLinks: 'throw',
     onBrokenMarkdownLinks: 'throw',
     plugins: [
@@ -38,7 +30,6 @@ const config = {
         defaultLocale: 'en',
         locales: ['en'],
     },
-
     presets: [
         [
             '@docusaurus/preset-classic',
@@ -61,7 +52,6 @@ const config = {
 
     // algolia if not using preset-classic
     // themes: ['@docusaurus/theme-search-algolia'],
-
     themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
         ({
