@@ -6,13 +6,6 @@ import Layout from '@theme/Layout';
 
 import styles from './index.module.css';
 import HomepageFeatures from "../components/HomepageFeatures";
-import Head from '@docusaurus/Head';
-
-const Algolia = () => (
-    <Head>
-        <link rel="preconnect" href="https://B479Q2S8TS-dsn.algolia.net" crossOrigin/>
-    </Head>
-);
 
 function HomepageHeader() {
     const {siteConfig} = useDocusaurusContext();
@@ -46,7 +39,6 @@ export default function Home() {
             title={`${siteConfig.title} Documentation`}
             description="Zeusfyi Documentation">
             <HomepageHeader/>
-            <Algolia/>
             <main>
                 <HomepageFeatures/>
             </main>
