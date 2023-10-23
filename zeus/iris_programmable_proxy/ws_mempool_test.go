@@ -14,9 +14,6 @@ import (
 )
 
 func (t *IrisConfigTestSuite) TestLiveMempoolWebsocket() {
-	interrupt := make(chan os.Signal, 1)
-	signal.Notify(interrupt, os.Interrupt)
-
 	addr := flag.String("addr", "iris.zeus.fyi", "ws service address")
 	u := url.URL{Scheme: "wss", Host: *addr, Path: "/v1/mempool"}
 
@@ -25,7 +22,6 @@ func (t *IrisConfigTestSuite) TestLiveMempoolWebsocket() {
 	ws, _, werr := websocket.DefaultDialer.Dial(u.String(), requestHeader)
 	t.Require().Nil(werr)
 	defer ws.Close()
-
 	done := make(chan struct{})
 
 	go func() {
@@ -46,6 +42,8 @@ func (t *IrisConfigTestSuite) TestLiveMempoolWebsocket() {
 		}
 	}()
 
+	interrupt := make(chan os.Signal, 1)
+	signal.Notify(interrupt, os.Interrupt)
 	ticker := time.NewTicker(time.Second * 1)
 	defer ticker.Stop()
 	// Adding a 5-second timer
