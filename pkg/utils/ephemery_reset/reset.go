@@ -105,6 +105,7 @@ func GetLatestReleaseConfigDownloadURL() string {
 	if err != nil {
 		panic(err)
 	}
+	log.Info().Str("rlNum", rlNum).Msg("GetLatestReleaseConfigDownloadURL")
 	return fmt.Sprintf("https://github.com/%s/releases/download/%s/%s", newRepoBase, rlNum, ephemeralTestnetFile)
 }
 
@@ -116,7 +117,8 @@ func getLatestTestnetDataReleaseNumber() (string, error) {
 	var temp map[string]interface{}
 	err = json.Unmarshal(resp.Body(), &temp)
 	for k, v := range temp {
-		if k == "tag_name" {
+		if k == "tag_name" || k == "name" {
+			log.Info().Interface("v", v).Msg("getLatestTestnetDataReleaseNumber")
 			return v.(string), err
 		}
 	}
