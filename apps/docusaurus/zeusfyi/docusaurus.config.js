@@ -87,14 +87,11 @@ const config = {
                 isCloseable: true,
             },
             //
-            // algolia: {
-            //     appId: 'B479Q2S8TS',
-            //     apiKey: 'e5f9c7ca012a3615aee103edca64c3a5',
-            //     indexName: 'zeus',
-            //     // Optional: Algolia search parameters
-            //     contextualSearch: true, // Uncomment this if you want to have versioning
-            //     schedule: 'every 1 day at 3:00 pm',
-            // },
+            algolia: {
+                appId: 'B479Q2S8TS',
+                apiKey: 'a4cb394096549d2cef4c16cb32a6435b',
+                indexName: 'zeusfyi_docs',
+            },
             footer: {
                 style: 'dark',
                 links: [
