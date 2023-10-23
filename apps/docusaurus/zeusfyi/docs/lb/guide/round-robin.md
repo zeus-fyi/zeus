@@ -9,7 +9,6 @@ delivering a more consistent performance and resilience against traffic spikes, 
 mix in your desired mix of clients for your nodes and RPC providers.
 
 Curl example:
-
 ```sh
 curl --location 'https://iris.zeus.fyi/v1/router' \
 --header 'Content-Type: application/json' \
