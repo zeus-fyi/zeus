@@ -14,9 +14,9 @@ During beta testing we're offering unlimited free access to our mempool service 
 
 Don't wait. We'll be out of beta testing within the next couple of weeks, and free access will be gone forever.
 
-# Signup
+# Sign Up
 
-Signup here:
+Sign up here:
 https://marketplace.quicknode.com/add-on/zeusfyi-4
 
 ## Overview
