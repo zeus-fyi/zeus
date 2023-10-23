@@ -10,7 +10,7 @@ mix in your desired mix of clients for your nodes and RPC providers.
 
 Curl example:
 
-```
+```sh
 curl --location 'https://iris.zeus.fyi/v1/router' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Bearer YOUR-BEARER-TOKEN' \
