@@ -75,26 +75,26 @@ func ExtractAndDecEphemeralTestnetConfig(dataDir filepaths.Path, clientName stri
 	dataDir.FnIn = ephemeralTestnetFile
 	err := poseidon.DownloadFile(ctx, dataDir.DirIn, url)
 	if err != nil {
-		log.Ctx(ctx).Panic().Err(err).Msg("DownloadFile")
-		panic(err)
+		log.Err(err).Msg("DownloadFile issue")
+		err = nil
 	}
 	dec := compression.NewCompression()
 	err = dec.UnGzip(&dataDir)
 	if err != nil {
-		log.Ctx(ctx).Panic().Err(err).Msg("UnGzip")
+		log.Panic().Err(err).Msg("UnGzip")
 		panic(err)
 	}
 	// cleans up, by deleting the compressed file
 	err = dataDir.RemoveFileInPath()
 	if err != nil {
-		log.Ctx(ctx).Err(err).Msg("RemoveFileInPath")
+		log.Err(err).Msg("RemoveFileInPath")
 	}
 
 	if clientName == beacon_cookbooks.GethEphemeral {
 		cmd := exec.Command("geth", "--datadir", dataDir.DirIn, "init", path.Join(dataDir.DirIn, "genesis.json"))
 		err = cmd.Run()
 		if err != nil {
-			log.Ctx(ctx).Panic().Err(err).Msg("setting geth genesis")
+			log.Panic().Err(err).Msg("setting geth genesis")
 			panic(err)
 		}
 	}
@@ -103,7 +103,11 @@ func ExtractAndDecEphemeralTestnetConfig(dataDir filepaths.Path, clientName stri
 func GetLatestReleaseConfigDownloadURL() string {
 	rlNum, err := getLatestTestnetDataReleaseNumber()
 	if err != nil {
-		panic(err)
+		log.Err(err).Msg("GetLatestReleaseConfigDownloadURL")
+		err = nil
+	}
+	if len(rlNum) <= 0 {
+		panic(errors.New("rlNum is empty"))
 	}
 	log.Info().Str("rlNum", rlNum).Msg("GetLatestReleaseConfigDownloadURL")
 	return fmt.Sprintf("https://github.com/%s/releases/download/%s/%s", newRepoBase, rlNum, ephemeralTestnetFile)

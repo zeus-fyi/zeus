@@ -28,6 +28,9 @@ func (t *ResetTestSuite) TestResetExtract() {
 	rl, err := getLatestTestnetDataReleaseNumber()
 	t.Assert().NoError(err)
 	t.Assert().NotEmpty(rl)
+
+	urlPath := GetLatestReleaseConfigDownloadURL()
+	fmt.Println(urlPath)
 }
 
 func TestResetTestSuite(t *testing.T) {
