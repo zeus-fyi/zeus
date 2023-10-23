@@ -15,7 +15,7 @@ func DownloadFile(ctx context.Context, dataDir, url string) error {
 	// Downloads to your datadir
 	req, err := grab.NewRequest(dataDir, url)
 	if err != nil {
-		log.Ctx(ctx).Err(err).Msgf("DownloadFile: NewRequest, %s", url)
+		log.Err(err).Msgf("DownloadFile: NewRequest, %s", url)
 		return err
 	}
 	// start download
@@ -38,8 +38,8 @@ func DownloadFile(ctx context.Context, dataDir, url string) error {
 			// download is complete
 			err = resp.Err()
 			if err != nil {
-				log.Ctx(ctx).Err(err).Msg("DownloadFile")
-				return err
+				log.Err(err).Msg("DownloadFile")
+				return nil
 			}
 			fmt.Printf("Downloading Complete")
 			return nil
