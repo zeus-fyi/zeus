@@ -24,7 +24,9 @@ import (
 )
 
 const (
-	repoBase             = "pk910/test-testnet-repo"
+	repoBase    = "pk910/test-testnet-repo"
+	newRepoBase = "ephemery-testnet/ephemery-genesis"
+	// https://github.com/ephemery-testnet/ephemery-genesis/releases/tag/ephemery-98
 	ephemeralTestnetFile = "testnet-all.tar.gz"
 )
 
@@ -105,11 +107,11 @@ func GetLatestReleaseConfigDownloadURL() string {
 	if err != nil {
 		panic(err)
 	}
-	return fmt.Sprintf("https://github.com/%s/releases/download/%s/%s", repoBase, rlNum, ephemeralTestnetFile)
+	return fmt.Sprintf("https://github.com/%s/releases/download/%s/%s", newRepoBase, rlNum, ephemeralTestnetFile)
 }
 
 func getLatestTestnetDataReleaseNumber() (string, error) {
-	url := fmt.Sprintf("https://api.github.com/repos/%s/releases/latest", repoBase)
+	url := fmt.Sprintf("https://api.github.com/repos/%s/releases/latest", newRepoBase)
 	r := resty.New()
 	resp, err := r.R().
 		Get(url)
