@@ -17,7 +17,7 @@ to you in real time. Don't forget to add your bearer token to the request header
 Go code example:
 
 ```go
-    addr := flag.String("addr", "iris.zeus.fyi", "ws service address")
+addr := flag.String("addr", "iris.zeus.fyi", "ws service address")
 u := url.URL{Scheme: "wss", Host: *addr, Path: "/v1/mempool"}
 
 requestHeader := http.Header{}
