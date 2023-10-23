@@ -4,7 +4,7 @@ GOMODCACHE := $(shell go env GOMODCACHE)
 GOCACHE := $(shell go env GOCACHE)
 GOOS 	:= linux
 GOARCH  := amd64
-VERSION := 0.5.0-quicknode-rc.2
+VERSION := 0.6.0-quicknode
 
 # hercules build info
 REPO	:= zeusfyi
