@@ -31,7 +31,6 @@ const (
 )
 
 func ExtractAndDecEphemeralTestnetConfig(dataDir filepaths.Path, clientName string) {
-	wipeDirPath := dataDir.DirIn
 	switch clientName {
 	case beacon_cookbooks.LighthouseEphemeral, validator_cookbooks.EphemeryValidatorClusterClassName, "lodestarEphemeral":
 		log.Info().Interface("dataDir", dataDir).Msg("ExtractAndDecEphemeralTestnetConfig: LighthouseEphemeral")
@@ -55,12 +54,11 @@ func ExtractAndDecEphemeralTestnetConfig(dataDir filepaths.Path, clientName stri
 		kt := ExtractResetTime(path.Join(dataDir.DirIn, "/retention.vars"))
 		log.Info().Int64("seconds until next genesis iteration", kt).Msg("ExtractAndDecEphemeralTestnetConfig: retention.vars")
 		if kt <= 0 {
-			log.Info().Interface("wipingDirPath", wipeDirPath).Msg("wiping datadir in path")
-			err := RemoveContents(wipeDirPath)
-			log.Info().Interface("wipingDirPath", wipeDirPath).Msg("wiping datadir in path done")
+			log.Info().Interface("wipingDirPath", dataDir.DirIn).Msg("wiping datadir in path")
+			err := RemoveContents(dataDir.DirIn)
+			log.Info().Interface("wipingDirPath", dataDir.DirIn).Msg("wiping datadir in path done")
 			if err != nil {
 				log.Err(err).Msg("ExtractAndDecEphemeralTestnetConfig: RemoveContents")
-				panic(err)
 			}
 		}
 	}
