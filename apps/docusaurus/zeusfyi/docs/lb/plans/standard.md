@@ -4,6 +4,8 @@ sidebar_position: 2
 
 # Standard
 
+Sufficient for small to medium production applications.
+
 ```text
 1B ZU per $299
 Up to 50k ZU/s, ~5k req/s

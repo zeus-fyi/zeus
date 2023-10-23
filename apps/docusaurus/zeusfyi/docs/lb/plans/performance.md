@@ -4,6 +4,8 @@ sidebar_position: 1
 
 # Performance
 
+Sufficient for many large production applications.
+
 ```text
 3B ZU per $999, 
 Up to 100k ZU/s, ~10k req/s
