@@ -4,7 +4,8 @@ sidebar_position: 6
 
 # Mempool Streaming
 
-During beta testing we're offering unlimited free access to our mempool service at a level which is comparable to:
+During beta testing we're offering unlimited free access to our Ethereum mainnet mempool service at a level which is
+comparable to:
 
 - Blox - Enterprise/Enterprise-Elite ($1250-5000/mo)
 - Blocknative - Growth1-Growth2 ($1250-5000/mo)
