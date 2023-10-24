@@ -5,12 +5,12 @@ sidebar_position: 4
 # Adaptive
 
 Once you have ~20 or so request samples for the same method, the load balancer will start to use the adaptive strategy
-automatically and
-manage the routing group table for you based on the best predicted performing endpoint for that method that's available.
+automatically and manage the routing group table for you based on the best predicted performing endpoint for that method
+that's available.
 
 Stats will only persist for one hour since the last API call for that method, so you'll need to keep making requests to
-keep the stats.
-It doesn't take long, only ~20 samples per metric to trend towards a near optimal routing group table from scratch, so
+keep the stats. It doesn't take long, only ~20 samples per metric to trend towards a near optimal routing group table
+from scratch, so
 it's really not a big deal to reset the stats.
 
 ```text
