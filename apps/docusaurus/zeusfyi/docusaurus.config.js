@@ -9,6 +9,7 @@ const config = {
     title: 'Zeusfyi',
     tagline: 'Show Me How To Use...',
     favicon: 'img/icon.svg',
+    metadata: [{name: 'keywords', content: 'cooking, blog'}],
 
     // Set the production url of your site here
     url: 'https://docs.zeus.fyi',
@@ -99,6 +100,11 @@ const config = {
             //     contextualSearch: true, // Uncomment this if you want to have versioning
             //     schedule: 'every 1 day at 3:00 pm',
             // },
+
+            metadata: [{
+                name: 'keywords',
+                content: 'quicknode, quicknode marketplace, adaptive load balancer, adaptive rpc load balancer, web3, alchemy, infura, geth, reth, prysm, ethereum, ethdev, blockchain devs, enterprise blockchain'
+            }],
             footer: {
                 style: 'dark',
                 links: [
