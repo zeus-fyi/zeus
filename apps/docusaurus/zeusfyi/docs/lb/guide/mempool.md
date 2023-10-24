@@ -70,4 +70,14 @@ the network.
 We have worker nodes that deduplicate our Redis mempool stream and filter out txs that have been included in a recent
 block or previously broadcast.
 
+## Is it actually as good as it sounds?
+
+Yes. Take a look at these real production trading dashboard graphs built using this mempool stream. On 10/24 ~3pm PST.
+
+![Screenshot 2023-10-24 at 2 54 43 PM](https://github.com/zeus-fyi/zeus/assets/17446735/1ee4af33-2315-4b0c-855c-4119d0a07180)
+Top K Projected Sandwich Revenue per Trading Pair & Tx Count by Method
+
+![Screenshot 2023-10-24 at 2 56 34 PM](https://github.com/zeus-fyi/zeus/assets/17446735/b872105c-c8de-46cb-b69b-f74adbcde348)
+Top K Projected Sandwich Cost/Revenue per Trading Pair & Tx Count by Method
+
 # Don't wait. We'll be out of beta testing within the next couple of weeks, and free access will be gone forever.
