@@ -19,7 +19,7 @@ We offer async support here for any Platform, Load Balancer questions along topi
 
 #### Setup
 
-- i.e. how to get started, how to deploy an app, how to use the load balancer, how to deploy/destroy a cluster
+- i.e. How to get started, how to deploy an app, how to use the load balancer, how to deploy/destroy a cluster ...
 
 #### Product Questions
 
@@ -42,6 +42,7 @@ In addition, we offer live support for any technical questions, or help with any
 - Cloud Infra Planning, Selection, Budgeting
   - Like how much storage for Prometheus, how much memory for Redis, etc
   - Like how fast of a disk do I need for my database
+  - Like when to use serverless
 - DevOps
     - CI/CD
     - Observability
