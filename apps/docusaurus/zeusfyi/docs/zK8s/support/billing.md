@@ -1,59 +1,41 @@
 ---
-sidebar_position: 1
+sidebar_position: 2
 displayed_sidebar: zK8s
 ---
 
-# Platforms
+# Billing
 
 ### Status
 
 You can see the historical & live status updates of the platform uptime and it's services, and subscribe to updates
 at [https://status.zeus.fyi](https://status.zeus.fyi)
 
-### Discord
-
 We maintain a public discord server for the community. Please join us
 at [https://discord.gg/fumRXyWV](https://discord.gg/fumRXyWV)
-
-We offer async support here for any Platform, Load Balancer questions along topics such as
 
 #### Setup
 
 - i.e. how to get started, how to deploy an app, how to use the load balancer, how to deploy/destroy a cluster
 
-#### Product Questions
+#### Pricing Questions
 
 Along the lines of things like ...
 
-- Adaptive algorithm tuning guidance
-- How to use the load balancer
-- How to use the platform
-- How to use the APIs
-- Any bugs or issues you're running into
-- Operation
-    - Guidance on how to operate the platform + setup devops
+- How much if I wanted to do ...?
+- Is there a way to get a discount?
+- When would spot machines make sense for my application?
 
-#### General Technical Questions
+#### Billing Questions
 
-In addition, we offer live support for any technical questions, or help with any of the following topics
+Things like ...
 
-- Kubernetes
-- System Design
-- Cloud Infra Planning, Selection, Budgeting
-- Devops
-    - CI/CD
-    - Observability
-    - Monitoring
-    - Prometheus + PromQL
-    - Grafana
-    - Runbooks + Automation
-- Postgres + SQL themed questions.
-- Redis + Caching themed questions.
-- Workflow automation (Temporal, Zeusfyi, etc)
-- Anything on our GitHub repos
+- Any billing issues you're running into
+- Resource quotas and limits
+- Payment plans
+
+### Discord
 
 We usually will get back within a few hours during 9-5 PST m-f hours.
-Schedule a solutions engineering meeting if you need help with something more pressing or need a deep dive
 
 ### Slack
 
