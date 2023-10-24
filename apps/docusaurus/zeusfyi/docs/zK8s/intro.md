@@ -10,6 +10,11 @@ displayed_sidebar: zK8s
 You can use the Zeus API to programmatically interact with our cloud platform's core infrastructure apis and services,
 or you can use our web interface to interact with the platform.
 
+## 1-on-1 Onboarding
+
+Want one-on-one help getting started? Schedule a Google meet with an expert
+at [https://calendly.com/alex-zeus-fyi/solutions-engineering](https://calendly.com/alex-zeus-fyi/solutions-engineering)
+
 ## Sign Up
 
 You can sign up for a free account at [https://cloud.zeus.fyi/login](https://cloud.zeus.fyi/login)

@@ -32,18 +32,21 @@ costs for development & maintenance.
 Each user can store up to 1000 endpoints for free, you can then use these endpoints to create routing group tables via
 API or UI Dashboard
 
+## 1-on-1 Onboarding
+
+Want one-on-one help getting started? Schedule a Google meet with an expert
+at [https://calendly.com/alex-zeus-fyi/solutions-engineering](https://calendly.com/alex-zeus-fyi/solutions-engineering)
+
 ## QuickNode Marketplace Users
 
 QuickNode marketplace customers will use an SSO link from QuickNode and be directed to their load balancing stored
-endpoints
-table, you'll then be able to generate an API key from the access panel.
+endpoints table, you'll then be able to generate an API key from the access panel.
 
 ### Additional Benefits:
 
 QuickNode users will have their endpoints automatically registered with the load balancer, and will have automatically
 generated routing group tables based on the network-chain type for that endpoint. E.g. ethereum mainnet endpoints will
-be
-automatically registered to the ethereum-mainnet routing group table. These won't count against your
+be automatically registered to the ethereum-mainnet routing group table. These won't count against your
 routing table limits unless you make any manual changes to them.
 
 Need more? Send us a message at support@zeus.fyi

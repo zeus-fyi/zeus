@@ -6,8 +6,7 @@ displayed_sidebar: zK8s
 # Billing
 
 We currently use stripe and send out an invoice every month to your primary email address. You'll be able to see time
-usage, start, end times
-and costs per services in aggregates for servers, disks, etc provisioned cloud resource.
+usage, start, end times and costs per services in aggregates for servers, disks, etc provisioned cloud resource.
 
 #### Setup
 
