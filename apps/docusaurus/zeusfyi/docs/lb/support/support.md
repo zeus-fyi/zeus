@@ -44,7 +44,7 @@ In addition, we offer live support for any technical questions, or help with any
     - Planning
     - Vendor Selection
     - General Advice & Recommendations
-- Devops
+- DevOps
     - CI/CD
     - Observability
     - Monitoring

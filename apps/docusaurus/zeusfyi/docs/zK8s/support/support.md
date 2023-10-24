@@ -40,7 +40,7 @@ In addition, we offer live support for any technical questions, or help with any
 - Kubernetes
 - System Design
 - Cloud Infra Planning, Selection, Budgeting
-- Devops
+- DevOps
     - CI/CD
     - Observability
     - Monitoring
