@@ -7,7 +7,7 @@ displayed_sidebar: zK8s
 
 Please send us an email at support@zeus.fyi if you have any questions, concerns, or feedback.
 
-## Service Types
+## External Service Types
 
 There's currently two supported ways to expose services for Zeus orchestration.
 
