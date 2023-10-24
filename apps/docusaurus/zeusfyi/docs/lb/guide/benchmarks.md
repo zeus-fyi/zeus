@@ -10,14 +10,12 @@ make on performance.
 
 ## Methodology
 
+Study was conducted using a real production workload
 We used 6 Enterprise level QuickNode Ethereum Mainnet endpoints for this test.
 We took 190k samples ran over several weeks using our Adaptive algorithm, using t-digest to calculate the median.
 We used a 20 sample round-robin sampling using t-digest.
 We used our max-block procedure to ensure that we were always using the most up-to-tip-of-chain endpoints for our
 samples.
-
-Study was conducted using a real production workload, and we saw a significant reduction in our overall api requests
-needed for the same workload.
 
 ### Assumptions
 
@@ -34,8 +32,7 @@ needed for the same workload.
 - Decay Rate: 0.95
 
 We lowered the priority score to 0.52 from 0.6, since the adaptive tuning starts to create a dominant median, so
-lowering the
-growth rate slightly keeps the Adaptive scores within a cyclical range instead of growing too fast.
+lowering the growth rate slightly keeps the Adaptive scores within a cyclical range instead of growing too fast.
 
 ### Round Robin
 
@@ -54,11 +51,13 @@ growth rate slightly keeps the Adaptive scores within a cyclical range instead o
 
 Matching our initial prediction closely of ~15%
 
-We also saw a significant reduction in our overall api requests needed for the same workload.
+We also saw a significant reduction in our overall api requests needed for the same workload,
+and thus consumed significantly less QuickNode compute units needed for the same workload.
 
 Still think you don't need a load balancer?
 
 ## Next steps
 
 - Using a better control group, and more endpoints to test with.
+- Better understanding of how error rate impacts the adaptive algorithm.
 - Testing more request types, and more workloads over archive, near tip, and tip of chain data.
