@@ -5,13 +5,9 @@ displayed_sidebar: zK8s
 
 # Billing
 
-### Status
-
-You can see the historical & live status updates of the platform uptime and it's services, and subscribe to updates
-at [https://status.zeus.fyi](https://status.zeus.fyi)
-
-We maintain a public discord server for the community. Please join us
-at [https://discord.gg/fumRXyWV](https://discord.gg/fumRXyWV)
+We currently use stripe and send out an invoice every month to your primary email address. You'll be able to see time
+usage, start, end times
+and costs per services in aggregates for servers, disks, etc provisioned cloud resource.
 
 #### Setup
 
@@ -34,6 +30,9 @@ Things like ...
 - Payment plans
 
 ### Discord
+
+We maintain a public discord server for the community. Please join us
+at [https://discord.gg/fumRXyWV](https://discord.gg/fumRXyWV)
 
 We usually will get back within a few hours during 9-5 PST m-f hours.
 
