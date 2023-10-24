@@ -9,7 +9,6 @@ const config = {
     title: 'Zeusfyi',
     tagline: 'Show Me How To Use...',
     favicon: 'img/icon.svg',
-    metadata: [{name: 'keywords', content: 'cooking, blog'}],
 
     // Set the production url of your site here
     url: 'https://docs.zeus.fyi',
