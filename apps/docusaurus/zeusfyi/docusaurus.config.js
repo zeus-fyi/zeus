@@ -111,7 +111,7 @@ const config = {
                             },
                             {
                                 label: 'Solutions Engineering',
-                                href: 'https://calendly.com/alex-zeus-fyi/solutions-engineering'
+                                href: 'https://calendly.com/zeusfyi/solutions-engineering'
                             },
                         ],
                     },

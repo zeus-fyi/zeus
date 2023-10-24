@@ -13,7 +13,7 @@ or you can use our web interface to interact with the platform.
 ## 1-on-1 Onboarding
 
 Want one-on-one help getting started? Schedule a Google meet with an expert
-at [https://calendly.com/alex-zeus-fyi/solutions-engineering](https://calendly.com/alex-zeus-fyi/solutions-engineering)
+at [https://calendly.com/zeusfyi/solutions-engineering](https://calendly.com/zeusfyi/solutions-engineering)
 
 ## Sign Up
 

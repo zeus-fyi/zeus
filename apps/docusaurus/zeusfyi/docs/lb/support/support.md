@@ -72,4 +72,4 @@ within 1-2 business days at the latest.
 ### Schedule an Expert
 
 Want one-on-one help? Schedule a call with an expert
-at [https://calendly.com/alex-zeus-fyi/solutions-engineering](https://calendly.com/alex-zeus-fyi/solutions-engineering)
+at [https://calendly.com/zeusfyi/solutions-engineering](https://calendly.com/zeusfyi/solutions-engineering)
