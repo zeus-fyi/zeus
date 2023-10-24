@@ -11,11 +11,14 @@ make on performance.
 ## Methodology
 
 Study was conducted using a real production workload
-We used 6 Enterprise level QuickNode Ethereum Mainnet endpoints for this test.
-We took 190k samples ran over several weeks using our Adaptive algorithm, using t-digest to calculate the median.
-We used a 20 sample round-robin sampling using t-digest.
-We used our max-block procedure to ensure that we were always using the most up-to-tip-of-chain endpoints for our
+
+- We used 6 Enterprise level QuickNode Ethereum Mainnet endpoints for this test.
+- We took 190k samples ran over several weeks using our Adaptive algorithm, using T-digest to calculate the median.
+- We used a 20 sample round-robin sampling using T-digest.
+- We used our max-block procedure to ensure that we were always using the most up-to-tip-of-chain endpoints for our
 samples.
+
+Read more about how T-Digest works: https://www.softwareimpacts.com/article/S2665-9638(20)30040-3/fulltext
 
 ### Assumptions
 
