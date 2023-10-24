@@ -35,5 +35,4 @@ curl --location ‘https://iris.zeus.fyi/v1/router’ \
 ```
 
 You can also check out our round-robin load_balancing_test.go for an example of how to use the programmable proxy to
-query
-the block number from a routing group of ethereum node urls endpoints.
+query the block number from a routing group of ethereum node urls endpoints.

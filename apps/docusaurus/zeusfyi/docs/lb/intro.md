@@ -42,6 +42,25 @@ at [https://calendly.com/zeusfyi/solutions-engineering](https://calendly.com/zeu
 QuickNode marketplace customers will use an SSO link from QuickNode and be directed to their load balancing stored
 endpoints table, you'll then be able to generate an API key from the access panel.
 
+```mermaid
+graph TD
+
+  subgraph QuickNode Users
+    A[User Endpoints]
+  end
+  
+  subgraph Automatic Registration
+    B[Load Balancer]
+    C[Automatically Generated Routing Group Tables]
+    D[Ethereum Mainnet Endpoints]
+    E[Ethereum-Mainnet Routing Group Table]
+  end
+
+  A --> B
+  A --> C
+  D --> E
+```
+
 ### Additional Benefits:
 
 QuickNode users will have their endpoints automatically registered with the load balancer, and will have automatically
