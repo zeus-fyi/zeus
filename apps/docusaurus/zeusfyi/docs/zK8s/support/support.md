@@ -40,6 +40,8 @@ In addition, we offer live support for any technical questions, or help with any
 - Kubernetes
 - System Design
 - Cloud Infra Planning, Selection, Budgeting
+  - Like how much storage for Prometheus, how much memory for Redis, etc
+  - Like how fast of a disk do I need for my database
 - DevOps
     - CI/CD
     - Observability
