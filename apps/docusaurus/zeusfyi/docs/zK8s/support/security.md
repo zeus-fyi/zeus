@@ -5,7 +5,7 @@ displayed_sidebar: zK8s
 
 # Security
 
-Please send us an email at support@zeus.fyi if you have any questions, concerns, or feedback.
+Please email us at support@zeus.fyi if you have any questions, concerns, or feedback.
 
 ## External Service Types
 
@@ -23,4 +23,4 @@ an expert and we'll help you get setup for free.
 
 # Security Disclosures
 
-Please send us an email at alex@zeus.fyi and we'll get back to you shortly.
+Please email us at alex@zeus.fyi and we'll get back to you shortly.
