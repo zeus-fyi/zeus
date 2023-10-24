@@ -10,7 +10,7 @@ make on performance.
 
 ## Methodology
 
-Study was conducted using a real production workload
+Study was conducted using a real production workload used for monitoring Uniswap prices
 
 - We used 6 Enterprise level QuickNode Ethereum Mainnet endpoints for this test.
 - We took 190k samples ran over several weeks using our Adaptive algorithm, using T-digest to calculate the median.
