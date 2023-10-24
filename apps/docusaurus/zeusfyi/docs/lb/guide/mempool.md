@@ -49,4 +49,25 @@ var TxSources = map[string]bool{
 }
 ```
 
+## How it works
+
+```mermaid
+graph TD
+    Mempool[Promo] --> Power[Equivalent in power to a few hundred nodes]
+    Power --> Peers[Connected to the best peers worldwide]
+    P2P-Networking --> Reindex[We regularly reindex the network]
+
+    Worker[Worker nodes] --> Deduplicate[Deduplicate our Redis mempool stream]
+    Worker --> FilterTxs[Filter out txs]
+    
+    FilterTxs --> RecentBlock[That have been included in a recent block]
+    FilterTxs --> PreviouslyBroadcast[Or previously broadcast]
+    FilterTxs --> WebSocket[WebSocket Connection]
+```
+
+This version is equivalent in power to a few hundred nodes connected to the best peers worldwide. We regularly reindex
+the network.
+We have worker nodes that deduplicate our Redis mempool stream and filter out txs that have been included in a recent
+block or previously broadcast.
+
 # Don't wait. We'll be out of beta testing within the next couple of weeks, and free access will be gone forever.
