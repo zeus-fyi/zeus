@@ -208,6 +208,17 @@ However, unlike other platforms, we don't make up terminology to hide the underl
 so that you can use well understood terminology if you ever transition to needing more powerful Kubernetes features,
 without having to re-haul your entire system.
 
+I'd recommend this technical reference book, which contains just the right amount of detail to get you up to speed while
+leaving room for you to learn more if you want to.
+
+#### Kubernetes in Action Second Edition 2nd ed. Edition
+##### by Marko Lukša
+
+
+https://www.amazon.com/Kubernetes-Action-Second-Marko-Luk-C5-A1a-dp-1617297615/dp/1617297615/ref=dp_ob_title_bk
+
+
+
 ## Closing Remarks
 
 You're ready to get started with Zeusfyi, though we'd love for you to recommend us to your friends and colleagues,
