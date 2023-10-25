@@ -176,7 +176,7 @@ Yes, and only your org's authorized users will be able to see, access, or modify
 
 Yes, but only for Enterprise & Private Clusters.
 
-### How do I get prometheus metrics for my app?
+### How do I get Prometheus metrics for my app?
 
 Send us an email. There's some on-boarding steps required to get access to Prometheus metrics via PromQL that we'll need
 to
