@@ -138,8 +138,8 @@ Like in this test case
 
 ```go
 func (t *RedisCookbookTestSuite) TestUploadRedis() {
-_, rerr := redisClusterDefinition.UploadChartsFromClusterDefinition(ctx, t.ZeusTestClient, true)
-t.Require().Nil(rerr)
+    _, rerr := redisClusterDefinition.UploadChartsFromClusterDefinition(ctx, t.ZeusTestClient, true)
+    t.Require().Nil(rerr)
 }
 ```
 
@@ -149,11 +149,11 @@ And then this case
 
 ```go
 func (t *RedisCookbookTestSuite) TestDeployRedis() {
-t.TestUploadRedis()
-cdep := redisClusterDefinition.GenerateDeploymentRequest()
+    t.TestUploadRedis()
+    cdep := redisClusterDefinition.GenerateDeploymentRequest()
 
-_, err := t.ZeusTestClient.DeployCluster(ctx, cdep)
-t.Require().Nil(err)
+    _, err := t.ZeusTestClient.DeployCluster(ctx, cdep)
+	t.Require().Nil(err)
 }
 ```
 
