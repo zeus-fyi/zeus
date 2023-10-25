@@ -109,7 +109,7 @@ But in the context of the platform dashboard
 And in the context of Kubernetes
 
     Cluster == meaning it is is a set of nodes that run containerized applications.
-    Node == A node may be a VM or physical machine that Kubernetes runs containers on.
+    Node == VM or physical machine that Kubernetes runs containers on.
 
 ### What is the difference between a cluster and a topology?
 
