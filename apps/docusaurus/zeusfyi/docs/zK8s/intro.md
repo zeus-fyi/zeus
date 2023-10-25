@@ -123,8 +123,7 @@ short term workload spikes, development purposes, or low traffic apps.
 
 Spot pricing offers significant discounts up to 70% on compute resources, but they are not guaranteed. If you're running
 a workload that isn't mission critical, and can be interrupted, then spot pricing is a great way to save money. We can
-help you
-figure out when it makes sense to use spot instances, and when it doesn't.
+help you figure out when it makes sense to use spot instances, and when it doesn't.
 
 If you can reasonably forecast spending for at least 1-month reach out to us, and we can get you a better deal on
 reserved compute through a variety of options
