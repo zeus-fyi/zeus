@@ -83,7 +83,7 @@ https://calendly.com/zeusfyi/solutions-engineering
 
 ## Deploy a Free Trial Cluster
 
-You can deploy any* one app that costs $500/mo or less without a credit card. It will delete itself after one hour,
+You can deploy any* one app for evaluation purposes without a credit card. It will delete itself after one hour,
 unless you add billing before then.
 
 \* that costs $500/mo or less without a credit card
