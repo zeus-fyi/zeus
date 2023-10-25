@@ -46,7 +46,7 @@ Miro: https://miro.com/app/board/uXjVPMNYAhc=/?share_link_id=723624775048
 
 ## Topology Class Hierarchy Definitions
 
-### Network Orchestration Topology ###
+### Network-Orchestration Topology ###
 
 One or many network matrix system topologies that are combined with orchestration workflows from Artemis, and Zeus, to
 build complex control flows and/or sequenced network states. This could be an enterprise fleet of infrastructure, a
