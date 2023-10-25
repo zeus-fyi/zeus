@@ -91,4 +91,160 @@ An abstract atomic configuration base that needs an Infrastructure Base and Skel
 An abstract atomic component base that needs additional pieces to create deployable infrastructure like config map,
 docker image links, etc. Needs an Infrastructure and Configuration Base to create a Base Topology
 
+## How This Looks in Code
+
+### Uniform Building Blocks
+
+Clusters are built from uniform building blocks and are referenced by the TopologyBaseInfraWorkload struct below. The
+only limitation is that you cannot add a StatefulSet and a Deployment in one workload block.
+Just add another workload block if you need the additional type.
+
+```go
+type TopologyBaseInfraWorkload struct {
+*v1core.Service       `json:"service"`
+*v1core.ConfigMap     `json:"configMap"`
+*v1.Deployment        `json:"deployment"`
+*v1.StatefulSet       `json:"statefulSet"`
+*v1networking.Ingress `json:"ingress"`
+*v1sm.ServiceMonitor  `json:"serviceMonitor"`
+}
+```
+
+### Infra Routing
+
+You will use this struct below to indicate where the infra should be deployed. CloudProvider and Region are specific to
+the cloud provider host, eg. Digital Ocean, GCP, etc. Context, Namespace are specific to Kubernetes. The Env tag is only
+for your reference.
+
+```go
+type CloudCtxNs struct {
+CloudProvider string `json:"cloudProvider"`
+Region        string `json:"region"`
+Context       string `json:"context"`
+Namespace     string `json:"namespace"`
+Env           string `json:"env"`
+}
+```
+
+### Cluster Definitions
+
+### Cluster Topology
+
+```go
+type ClusterDefinition struct {
+ClusterClassName string
+CloudCtxNs       zeus_common_types.CloudCtxNs
+ComponentBases   map[string]ComponentBaseDefinition
+}
+// Methods
+GenerateDeploymentRequest() -> zeus_req_types.ClusterTopologyDeployRequest
+GenerateSkeletonBaseCharts() -> ([]ClusterSkeletonBaseDefinition, error)
+BuildClusterDefinitions() -> GeneratedClusterCreationRequests
+UploadChartsFromClusterDefinition(ctx context.Context, z zeus_client.ZeusClient, print bool)
+->([]zeus_resp_types.TopologyCreateResponse, error)
+
+pkg/zeus/cluster_config_drivers
+```
+
+A fully working single component cluster topology that accomplishes one system component on its own and combined with a
+Zeus injection deploys this topology onto the network.
+
+```go
+type GeneratedClusterCreationRequests struct {
+ClusterClassRequest    zeus_req_types.TopologyCreateClusterClassRequest
+ComponentBasesRequests zeus_req_types.TopologyCreateOrAddComponentBasesToClassesRequest
+SkeletonBasesRequests  []zeus_req_types.TopologyCreateOrAddSkeletonBasesToClassesRequest
+}
+// Methods
+CreateClusterClassDefinitions(ctx context.Context, z zeus_client.ZeusClient)
+```
+
+These helpers methods allow you to quickly create new cluster classes, and evaluate the configs of iterative designs.
+
+### Base Topology
+
+```go
+type ComponentBaseDefinition struct {
+SkeletonBases map[string]ClusterSkeletonBaseDefinition
+}
+```
+
+A fully working single cluster topology that needs at least one other Base Topology to create a higher level component.
+An example would be deploying an execution client by itself post-merge on ethereum. It would be able to download chain
+data, but it wouldn't be able to fulfill a useful purpose without another piece e.g. a consensus client component.
+
+### Skeleton Base
+
+```go
+type ClusterSkeletonBaseDefinition struct {
+SkeletonBaseChart         zeus_req_types.TopologyCreateRequest
+SkeletonBaseNameChartPath filepaths.Path
+
+Workload             topology_workloads.TopologyBaseInfraWorkload
+TopologyConfigDriver *zeus_topology_config_drivers.TopologyConfigDriver
+}
+```
+
+An abstract atomic component base that needs additional pieces to create deployable infrastructure like config map,
+docker image links, etc. Needs an Infrastructure and Configuration Base to create a Base Topology
+
+### Infrastructure Base
+
+```go
+type TopologyBaseInfraWorkload struct {
+*v1core.Service       `json:"service"`
+*v1core.ConfigMap     `json:"configMap"`
+*v1.Deployment        `json:"deployment"`
+*v1.StatefulSet       `json:"statefulSet"`
+*v1networking.Ingress `json:"ingress"`
+*v1sm.ServiceMonitor  `json:"serviceMonitor"`
+}
+```
+
+An abstract atomic infrastructure base that needs a Skeleton and Configuration to create a Base Topology
+
+### Configuration Base
+
+```go
+type TopologyConfigDriver struct {
+*IngressDriver
+*StatefulSetDriver
+*ServiceDriver
+*DeploymentDriver
+*ServiceMonitorDriver
+*ConfigMapDriver
+}
+pkg/zeus/workload_config_drivers
+```
+
+An abstract atomic configuration base that needs an Infrastructure Base and Skeleton to create a Base Topology. You use
+these to override and extend the workload types that match the drivers.
+
 ![Screenshot 2022-11-17 at 8 09 48 PM](https://user-images.githubusercontent.com/17446735/202614955-2708063e-1547-4dae-9332-f712102c287e.png)
+
+## Want to see a video?
+
+Checkout our YouTube channel for more videos on how to use Zeus.
+https://www.youtube.com/@Zeusfyi
+
+## Want to follow a tutorial?
+
+### Option 1: Easy - Build an Ethereum Beacon on zK8s
+
+This design process covers how to build an Ethereum Beacon using go code for zK8s, and how to deploy it on Zeus. Even
+a complete beginner can follow along.
+
+https://medium.com/zeusfyi/zeus-k8s-infra-as-code-concepts-47e690c6e3c5
+
+### Option 2: Medium - Learn Best Practises: Rapid Infra Development on zK8s
+
+This design process covers how I packaged a Cosmos node on Zeus
+within one day.
+
+https://medium.com/zeusfyi/zeus-k8s-infra-as-code-concepts-47e690c6e3c5
+
+### Option 3: Easiest - Tailored one on one help by schedule.
+
+Feel free to email us at support@zeus.fyi or schedule an expert and talk to us directly!
+
+https://calendly.com/zeusfyi/solutions-engineering
