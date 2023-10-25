@@ -108,8 +108,8 @@ Kubernetes in general).
     Class Topologies:  Base, Cluster, Matrix, Network-Orchestration 
 
 A topology is a class specified and well defined unit of infrastructure that can be anywhere from a single standalone
-microservice to a fully orchestrated network topology.
-These are all covered in the platform overview in detail with code examples, check them out there!
+microservice to a fully orchestrated network topology. These are all covered in the platform overview in detail with
+code examples, check them out there!
 
 ## Closing Remarks
 
