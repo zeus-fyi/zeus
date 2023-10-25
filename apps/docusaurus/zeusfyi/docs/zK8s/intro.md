@@ -165,16 +165,14 @@ control, it is also unix timestamped.
 ### I currently use ..X cloud or devops platform, how would I migrate to Zeus, I don't have time to learn a new tool?
 
 We'll help you migrate your existing infrastructure to Zeus, and we'll do help migrate it for you as part of an
-enterprise contract. We'll
-also help you otherwise, but we'll prioritize enterprise customers first, then by FIFO. You'll be surprised at how
-easy &
-fast it is.
+enterprise contract. We'll also help you otherwise, but we'll prioritize enterprise customers first, then by FIFO.
+You'll be surprised at how easy & fast it is.
 
-### Do enterprise & private clusters work with the UI?
+### Do Enterprise & Private Clusters work with the UI?
 
 Yes, and only your org's authorized users will be able to see, access, or modify any of your private clusters.
 
-### I don't see many on-demand choices for GPUs, why?
+### I don't see many On-Demand choices for GPUs, why?
 
 You'll need to contact us for full GPU access via our search API and app deployment dashboard. There's some additional steps
 required to get access to GPUs. Don't worry though the process is easy, it requires a short manual review due to high
@@ -186,9 +184,10 @@ You're ready to get started with Zeusfyi, though we'd love for you to recommend 
 since our ads budget has been undergoing budget cuts so that we can focus on building the best product possible for you.
 Ever seen infra be this easy? We haven't either, but we're glad we're here to make it happen for you.
 
+We're glad you made it this far, and hope you enjoy the platform as much as we do.
+
     A for AWS
     |
     Z for Zeus.fyi
 
-We're glad you made it this far, and hope you enjoy the platform as much as we do. Have a suggestion? You know where to
-find us.
+Have a suggestion? You know where to find us!
