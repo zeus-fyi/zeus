@@ -23,16 +23,16 @@ You can sign up for a free account at [https://cloud.zeus.fyi/login](https://clo
 
 You can use your Google account to sign up, or you can sign up with your email address and verify your email.
 
+## Read the Platform Overview
+
+This section covers the system elements for the platform, and how they work together. It also shows you the code
+that applies these concepts to the platform.
+
 ## API Key
 
 Prerequisites: You'll need to generate an API key from the access panel if you don't have an existing one.
 
 ![APIkeypage](https://github.com/zeus-fyi/zeus/assets/17446735/7352892d-49ad-4a72-add1-5b212a90b914)
-
-You're ready to get started with Zeusfyi, though we'd love for you to recommend us to your friends and colleagues,
-since our ads budget has been undergoing budget cuts so that we can focus on building the best product possible for you.
-
-Ever seen infra be this easy? We haven't either, but we're glad we're here to make it happen for you.
 
 ## Want to see a video?
 
@@ -68,3 +68,10 @@ https://medium.com/zeusfyi/zeus-k8s-infra-as-code-concepts-47e690c6e3c5
 Feel free to email us at support@zeus.fyi or schedule an expert and talk to us directly!
 
 https://calendly.com/zeusfyi/solutions-engineering
+
+### Closing Remarks
+
+You're ready to get started with Zeusfyi, though we'd love for you to recommend us to your friends and colleagues,
+since our ads budget has been undergoing budget cuts so that we can focus on building the best product possible for you.
+
+Ever seen infra be this easy? We haven't either, but we're glad we're here to make it happen for you.
