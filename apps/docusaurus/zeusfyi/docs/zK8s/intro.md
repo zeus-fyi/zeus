@@ -88,9 +88,37 @@ unless you add billing before then.
 
 \* that costs $500/mo or less without a credit card
 
+## Top-k questions about the platform
+
+### What is the difference between a cluster and an app?
+
+The app is the naming convention for the underlying codebase, e.g. they're Postgres apps, but we still need disk, ram, a
+place to deploy it and so on.
+Some postgres apps need sharded configs, etc.
+
+    App == Postgres
+
+    Cluster == Postgres + Disk + RAM + CPU + Ingress + DNS + Load Balancer + etc.
+
+And a cluster is complete underlying infrastructure hierarchy that binds at least one fully deployable zK8s app (and
+Kubernetes in general).
+
+### What is the difference between a cluster and a topology?
+
+    Class Topologies:  Base, Cluster, Matrix, Network-Orchestration 
+
+A topology is a class specified and well defined unit of infrastructure that can be anywhere from a single standalone
+microservice to a fully orchestrated network topology.
+These are all covered in the platform overview in detail with code examples, check them out there!
+
 ## Closing Remarks
 
 You're ready to get started with Zeusfyi, though we'd love for you to recommend us to your friends and colleagues,
 since our ads budget has been undergoing budget cuts so that we can focus on building the best product possible for you.
-
 Ever seen infra be this easy? We haven't either, but we're glad we're here to make it happen for you.
+
+    A for AWS
+    |
+    Z for Zeus.fyi
+
+We're glad you made it this far, and hope you enjoy the platform as much as we do. Have a suggestion? Email us!
