@@ -8,9 +8,7 @@ displayed_sidebar: zK8s
 ## Overview
 
 You can use the Zeus API to programmatically interact with our cloud platform's core infrastructure apis and services,
-or you can use our web interface to interact with the platform. You can deploy any app that costs $500/mo or less
-without
-a credit card that deletes itself after an hour, unless you add billing before then.
+or you can use our web interface to interact with the platform.
 
 ## 1-on-1 Tailored Onboarding
 
@@ -83,7 +81,14 @@ Feel free to email us at support@zeus.fyi or schedule an expert and talk to us d
 
 https://calendly.com/zeusfyi/solutions-engineering
 
-### Closing Remarks
+## Deploy a Free Trial Cluster
+
+You can deploy any* one app that costs $500/mo or less without a credit card. It will delete itself after one hour,
+unless you add billing before then.
+
+\* that costs $500/mo or less without a credit card
+
+## Closing Remarks
 
 You're ready to get started with Zeusfyi, though we'd love for you to recommend us to your friends and colleagues,
 since our ads budget has been undergoing budget cuts so that we can focus on building the best product possible for you.
