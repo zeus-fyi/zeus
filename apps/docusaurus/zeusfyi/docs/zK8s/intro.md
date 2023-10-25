@@ -10,10 +10,10 @@ displayed_sidebar: zK8s
 You can use the Zeus API to programmatically interact with our cloud platform's core infrastructure apis and services,
 or you can use our web interface to interact with the platform.
 
-## 1-on-1 Onboarding
+## 1-on-1 Tailored Onboarding
 
-Want one-on-one help getting started? Schedule a Google meet with an expert
-at [https://calendly.com/zeusfyi/solutions-engineering](https://calendly.com/zeusfyi/solutions-engineering)
+Want one-on-one help getting started tailored to your use case? Schedule a Google meet with an expert
+at [https://calendly.com/zeusfyi/solutions-engineering](https://calendly.com/zeusfyi/solutions-engineering).
 
 ## Sign Up
 
