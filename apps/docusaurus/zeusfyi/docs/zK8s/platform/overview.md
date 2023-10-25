@@ -121,7 +121,7 @@ the cloud provider host, eg. Digital Ocean, GCP, etc. Context, Namespace are spe
 for your reference.
 
 ```go
-    type CloudCtxNs struct {
+type CloudCtxNs struct {
     CloudProvider string `json:"cloudProvider"`
     Region        string `json:"region"`
     Context       string `json:"context"`
