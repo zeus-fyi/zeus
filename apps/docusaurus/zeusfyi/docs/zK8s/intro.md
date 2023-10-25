@@ -182,7 +182,7 @@ cost and availability constraints.
 
 You're ready to get started with Zeusfyi, though we'd love for you to recommend us to your friends and colleagues,
 since our ads budget has been undergoing budget cuts so that we can focus on building the best product possible for you.
-Ever seen infra be this easy? We haven't either
+Ever seen infra be this easy? We hadn't either, so we built it to empower you, the builders.
 
 We're glad you made it this far, and hope you enjoy the platform as much as we do.
 
