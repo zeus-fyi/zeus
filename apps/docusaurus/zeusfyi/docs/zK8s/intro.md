@@ -23,18 +23,30 @@ You can sign up for a free account at [https://cloud.zeus.fyi/login](https://clo
 
 You can use your Google account to sign up, or you can sign up with your email address and verify your email.
 
-## Read the Platform Overview
+## Start with Reading the Platform Overview
 
 This section covers the system elements for the platform, and how they work together. It also shows you the code
 that applies these concepts to the platform.
 
-## API Key
+## Then Learn zK8s Client & APIs
+
+Learn how to use the zK8s client and APIs to build your own infrastructure using only Go code and YAML templates.
+
+## Generate an API Key
 
 Prerequisites: You'll need to generate an API key from the access panel if you don't have an existing one.
 
 ![APIkeypage](https://github.com/zeus-fyi/zeus/assets/17446735/7352892d-49ad-4a72-add1-5b212a90b914)
 
 ## Want to see a video?
+
+### Sui Node Deployment using DigitalOcean Local NVMe on Kubernetes
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/G8JBECjC6fc?si=I2ZADqNzS6Fh11WW&amp;start=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+### 1-Click Upgrading a Fleet of zK8s Apps on AWS, GCP, & DigitalOcean
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/H7sMsK_dnj4?si=RJ9PpuJ8AfXf_Wai&amp;start=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 Checkout our YouTube channel for more videos on how to use the power of Zeus to build your own infrastructure.
 https://www.youtube.com/@Zeusfyi
