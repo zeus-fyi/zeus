@@ -93,14 +93,23 @@ unless you add billing before then.
 ### What is the difference between a cluster and an app?
 
 The app is the naming convention for the underlying codebase, e.g. they're Postgres apps, but we still need disk, ram, a
-place to deploy it and so on.
-Some postgres apps need sharded configs, etc.
+place to deploy it and so on. Some postgres apps need sharded configs, etc.
+
+In the context of configuration
 
     App == Postgres Family & Derivative Configs
-
     Cluster == Specific Postgres Version + Disk + RAM + CPU + Ingress + DNS + Load Balancer + etc.
 
-And a cluster is complete underlying infrastructure hierarchy that binds at least one fully deployable zK8s app.
+And a cluster configuration is a complete underlying infrastructure hierarchy that binds at least one fully deployable zK8s app.
+
+But in the context of the platform dashboard
+
+    Clusters == Where you can view your app's live Kubernetes workloads, namespaces, details, locations, and can manage some DevOps tasks.
+
+And in the context of Kubernetes
+
+    Cluster == A Kubernetes cluseter, meaning it is is a set of nodes that run containerized applications.
+    Node == A node may be a VM or physical machine that Kubernetes runs containers on.
 
 ### What is the difference between a cluster and a topology?
 
@@ -116,7 +125,7 @@ None, they're completely equivalent. We just call them zK8s apps since we also b
 We also let you code and unit test them with strongly typed Go code as an alternative to messy templated Helm charts in
 YAML, that everyone is afraid to touch, and for good reason.
 
-### On-Demand Pricing vs. Reserved Pricing vs Spot
+### On-Demand Pricing vs Reserved Pricing vs Spot
 
 On-demand pricing is the price you pay for guaranteed resources you can provision on demand. These are more ideal for
 short term workload spikes, development purposes, or low traffic apps.
