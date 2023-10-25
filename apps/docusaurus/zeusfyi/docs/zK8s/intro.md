@@ -164,7 +164,7 @@ control, it is also unix timestamped.
 
 ### I currently use ..X cloud or devops platform, how would I migrate to Zeus, I don't have time to learn a new tool?
 
-We'll help you migrate your existing infrastructure to Zeus, and we'll do help migrate it for you as part of an
+We'll help you migrate your existing infrastructure to Zeus, and we'll help migrate it for you as part of an
 enterprise contract. We'll also help you otherwise, but we'll prioritize enterprise customers first, then by FIFO.
 You'll be surprised at how easy & fast it is.
 
