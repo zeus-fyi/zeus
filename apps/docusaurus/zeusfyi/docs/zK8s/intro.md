@@ -104,11 +104,11 @@ And a cluster configuration is a complete underlying infrastructure hierarchy th
 
 But in the context of the platform dashboard
 
-    Clusters == Where you can view your app's live Kubernetes workloads, namespaces, details, locations, and can manage some DevOps tasks.
+    Clusters == Where you can view your app's live Kubernetes namespaces, locations, app details, and can manage some DevOps tasks.
 
 And in the context of Kubernetes
 
-    Cluster == A Kubernetes cluseter, meaning it is is a set of nodes that run containerized applications.
+    Cluster == meaning it is is a set of nodes that run containerized applications.
     Node == A node may be a VM or physical machine that Kubernetes runs containers on.
 
 ### What is the difference between a cluster and a topology?
