@@ -145,7 +145,7 @@ func (t *RedisCookbookTestSuite) TestUploadRedis() {
 
     Add the Deployment Call as the following CI/CD Stage
 
-And then this case
+Full example here
 
 ```go
 func (t *RedisCookbookTestSuite) TestDeployRedis() {
