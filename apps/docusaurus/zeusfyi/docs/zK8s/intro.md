@@ -162,7 +162,7 @@ immutable upon creation and each has a unique id, so you can always reference it
 control, it is also unix timestamped. You can also hash the workload definition and use that as a version control
 and for integrity checks.
 
-### I currently use ...X cloud or devops platform, how would I migrate to Zeus, I don't have time to learn a new tool?
+### I currently use ...X Cloud or DevOps platform, how would I migrate to Zeus, I don't have time to learn a new tool?
 
 We'll help you migrate your existing infrastructure to Zeus, and we'll help migrate it for you as part of an
 enterprise contract. We'll also help you otherwise, but we'll prioritize enterprise customers first, then by FIFO.
