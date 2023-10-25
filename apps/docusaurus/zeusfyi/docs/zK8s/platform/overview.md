@@ -42,7 +42,9 @@ If you find a field you need isn't supported please send us an email at support@
 
 ![sys](https://user-images.githubusercontent.com/17446735/236006394-d7782657-c2a8-4ee6-a53c-a55f07dbc2b8.png)
 
-## Cluster Topology Class Hierarchy Definitions: Highest to Lowest Level
+Miro: https://miro.com/app/board/uXjVPMNYAhc=/?share_link_id=723624775048
+
+## Topology Class Hierarchy Definitions
 
 ### Network Orchestration Topology ###
 
@@ -78,15 +80,15 @@ data, but it wouldn’t be able to fulfill a useful purpose without another piec
 
 Not deployable on its own, a mix of these is combined to create a deployable topology
 
-### Infrastructure Base ###
+### Infrastructure ###
 
 An abstract atomic infrastructure base that needs a Skeleton and Configuration to create a Base Topology
 
-### Configuration Base ###
+### Configuration ###
 
 An abstract atomic configuration base that needs an Infrastructure Base and Skeleton to create a Base Topology
 
-### Skeleton Base ###
+### Skeleton ###
 
 An abstract atomic component base that needs additional pieces to create deployable infrastructure like config map,
 docker image links, etc. Needs an Infrastructure and Configuration Base to create a Base Topology
@@ -100,41 +102,41 @@ only limitation is that you cannot add a StatefulSet and a Deployment in one wor
 Just add another workload block if you need the additional type.
 
 ```go
-type TopologyBaseInfraWorkload struct {
-*v1core.Service       `json:"service"`
-*v1core.ConfigMap     `json:"configMap"`
-*v1.Deployment        `json:"deployment"`
-*v1.StatefulSet       `json:"statefulSet"`
-*v1networking.Ingress `json:"ingress"`
-*v1sm.ServiceMonitor  `json:"serviceMonitor"`
-}
+    type TopologyBaseInfraWorkload struct {
+        *v1core.Service       `json:"service"`
+        *v1core.ConfigMap     `json:"configMap"`
+        *v1.Deployment        `json:"deployment"`
+        *v1.StatefulSet       `json:"statefulSet"`
+        *v1networking.Ingress `json:"ingress"`
+        *v1sm.ServiceMonitor  `json:"serviceMonitor"`
+    }
 ```
 
 ### Infra Routing
 
-You will use this struct below to indicate where the infra should be deployed. CloudProvider and Region are specific to
+##### To Infinity and Beyond To The Multiverse Cloud
+
+Use the struct below to indicate where the infra should be deployed. CloudProvider and Region are specific to
 the cloud provider host, eg. Digital Ocean, GCP, etc. Context, Namespace are specific to Kubernetes. The Env tag is only
 for your reference.
 
 ```go
-type CloudCtxNs struct {
-CloudProvider string `json:"cloudProvider"`
-Region        string `json:"region"`
-Context       string `json:"context"`
-Namespace     string `json:"namespace"`
-Env           string `json:"env"`
+    type CloudCtxNs struct {
+    CloudProvider string `json:"cloudProvider"`
+    Region        string `json:"region"`
+    Context       string `json:"context"`
+    Namespace     string `json:"namespace"`
+    Env           string `json:"env"`
 }
 ```
 
 ### Cluster Definitions
 
-### Cluster Topology
-
 ```go
 type ClusterDefinition struct {
-ClusterClassName string
-CloudCtxNs       zeus_common_types.CloudCtxNs
-ComponentBases   map[string]ComponentBaseDefinition
+    ClusterClassName string
+    CloudCtxNs       zeus_common_types.CloudCtxNs
+    ComponentBases   map[string]ComponentBaseDefinition
 }
 // Methods
 GenerateDeploymentRequest() -> zeus_req_types.ClusterTopologyDeployRequest
@@ -151,9 +153,9 @@ Zeus injection deploys this topology onto the network.
 
 ```go
 type GeneratedClusterCreationRequests struct {
-ClusterClassRequest    zeus_req_types.TopologyCreateClusterClassRequest
-ComponentBasesRequests zeus_req_types.TopologyCreateOrAddComponentBasesToClassesRequest
-SkeletonBasesRequests  []zeus_req_types.TopologyCreateOrAddSkeletonBasesToClassesRequest
+    ClusterClassRequest    zeus_req_types.TopologyCreateClusterClassRequest
+    ComponentBasesRequests zeus_req_types.TopologyCreateOrAddComponentBasesToClassesRequest
+    SkeletonBasesRequests  []zeus_req_types.TopologyCreateOrAddSkeletonBasesToClassesRequest
 }
 // Methods
 CreateClusterClassDefinitions(ctx context.Context, z zeus_client.ZeusClient)
@@ -165,7 +167,7 @@ These helpers methods allow you to quickly create new cluster classes, and evalu
 
 ```go
 type ComponentBaseDefinition struct {
-SkeletonBases map[string]ClusterSkeletonBaseDefinition
+    SkeletonBases map[string]ClusterSkeletonBaseDefinition
 }
 ```
 
@@ -177,11 +179,11 @@ data, but it wouldn't be able to fulfill a useful purpose without another piece 
 
 ```go
 type ClusterSkeletonBaseDefinition struct {
-SkeletonBaseChart         zeus_req_types.TopologyCreateRequest
-SkeletonBaseNameChartPath filepaths.Path
-
-Workload             topology_workloads.TopologyBaseInfraWorkload
-TopologyConfigDriver *zeus_topology_config_drivers.TopologyConfigDriver
+    SkeletonBaseChart         zeus_req_types.TopologyCreateRequest
+    SkeletonBaseNameChartPath filepaths.Path
+    
+    Workload             topology_workloads.TopologyBaseInfraWorkload
+    TopologyConfigDriver *zeus_topology_config_drivers.TopologyConfigDriver
 }
 ```
 
@@ -192,12 +194,12 @@ docker image links, etc. Needs an Infrastructure and Configuration Base to creat
 
 ```go
 type TopologyBaseInfraWorkload struct {
-*v1core.Service       `json:"service"`
-*v1core.ConfigMap     `json:"configMap"`
-*v1.Deployment        `json:"deployment"`
-*v1.StatefulSet       `json:"statefulSet"`
-*v1networking.Ingress `json:"ingress"`
-*v1sm.ServiceMonitor  `json:"serviceMonitor"`
+    *v1core.Service       `json:"service"`
+    *v1core.ConfigMap     `json:"configMap"`
+    *v1.Deployment        `json:"deployment"`
+    *v1.StatefulSet       `json:"statefulSet"`
+    *v1networking.Ingress `json:"ingress"`
+    *v1sm.ServiceMonitor  `json:"serviceMonitor"`
 }
 ```
 
@@ -207,12 +209,12 @@ An abstract atomic infrastructure base that needs a Skeleton and Configuration t
 
 ```go
 type TopologyConfigDriver struct {
-*IngressDriver
-*StatefulSetDriver
-*ServiceDriver
-*DeploymentDriver
-*ServiceMonitorDriver
-*ConfigMapDriver
+    *IngressDriver
+    *StatefulSetDriver
+    *ServiceDriver
+    *DeploymentDriver
+    *ServiceMonitorDriver
+    *ConfigMapDriver
 }
 pkg/zeus/workload_config_drivers
 ```
@@ -273,42 +275,39 @@ Change the below 8888 to the port your app runs on, leaving the other fields as 
 `cookbooks/hades`
 
 https://github.com/zeus-fyi/zeus
-
 ```go
-
 var (
 HadesCloudCtxNs = zeus_common_types.CloudCtxNs{
-CloudProvider: "do",
-Region:        "sfo3",
-Context:       "do-nyc1-do-nyc1-zeus-demo",
-Namespace:     "hades",
-Env:           "production",
+    CloudProvider: "do",
+    Region:        "sfo3",
+    Context:       "do-nyc1-do-nyc1-zeus-demo",
+    Namespace:     "hades",
+    Env:           "production",
 }
 HadesClusterDefinition = zeus_cluster_config_drivers.ClusterDefinition{
-ClusterClassName: "hades",
-CloudCtxNs:       HadesCloudCtxNs,
-ComponentBases: map[string]zeus_cluster_config_drivers.ComponentBaseDefinition{
-"hades": HadesComponentBase,
-},
+    ClusterClassName: "hades",
+    CloudCtxNs:       HadesCloudCtxNs,
+    ComponentBases: map[string]zeus_cluster_config_drivers.ComponentBaseDefinition{
+        "hades": HadesComponentBase,
+    },
 }
 HadesComponentBase = zeus_cluster_config_drivers.ComponentBaseDefinition{
-SkeletonBases: map[string]zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
-"hades": HadesSkeletonBaseConfig,
-},
+    SkeletonBases: map[string]zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
+        "hades": HadesSkeletonBaseConfig,
+    },
 }
 HadesSkeletonBaseConfig = zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
-SkeletonBaseChart:         zeus_req_types.TopologyCreateRequest{},
-SkeletonBaseNameChartPath: HadesChartPath,
+    SkeletonBaseChart:         zeus_req_types.TopologyCreateRequest{},
+    SkeletonBaseNameChartPath: HadesChartPath,
 }
 HadesChartPath = filepaths.Path{
-PackageName: "",
-DirIn:       "./hades/infra",
-DirOut:      "./hades/outputs",
-FnIn:        "hades", // filename for your gzip workload
-FnOut:       "",
-Env:         "",
-}
-)
+    PackageName: "",
+    DirIn:       "./hades/infra",
+    DirOut:      "./hades/outputs",
+    FnIn:        "hades", // filename for your gzip workload
+    FnOut:       "",
+    Env:         "",
+})
 ```
 
 This test case shows how to build a cluster definition, and upload it to Zeus. You can use this as a template to build
@@ -316,36 +315,35 @@ your own cluster definitions.
 
 ```go
 type HadesCookbookTestSuite struct {
-test_suites.BaseTestSuite
-ZeusTestClient zeus_client.ZeusClient
+    test_suites.BaseTestSuite
+    ZeusTestClient zeus_client.ZeusClient
 }
 
 func (t *HadesCookbookTestSuite) TestClusterSetup() {
-gcd := HadesClusterDefinition.BuildClusterDefinitions()
-t.Assert().NotEmpty(gcd)
-fmt.Println(gcd)
-
-gdr := HadesClusterDefinition.GenerateDeploymentRequest()
-t.Assert().NotEmpty(gdr)
-fmt.Println(gdr)
-
-sbDefs, err := HadesClusterDefinition.GenerateSkeletonBaseCharts()
-t.Require().Nil(err)
-t.Assert().NotEmpty(sbDefs)
+    gcd := HadesClusterDefinition.BuildClusterDefinitions()
+    t.Assert().NotEmpty(gcd)
+    fmt.Println(gcd)
+    
+    gdr := HadesClusterDefinition.GenerateDeploymentRequest()
+    t.Assert().NotEmpty(gdr)
+    fmt.Println(gdr)
+    
+    sbDefs, err := HadesClusterDefinition.GenerateSkeletonBaseCharts()
+    t.Require().Nil(err)
+    t.Assert().NotEmpty(sbDefs)
 }
 
 func (t *HadesCookbookTestSuite) SetupTest() {
-cookbooks.ChangeToCookbookDir()
+    cookbooks.ChangeToCookbookDir()
 }
 
 func TestHadesCookbookTestSuite(t *testing.T) {
-suite.Run(t, new(HadesCookbookTestSuite))
+    suite.Run(t, new(HadesCookbookTestSuite))
 }
 ```
 
 Ever seen infra be this easy? If you're nodding your head, then you're ready to get started with Zeusfyi, though we'd
-love
-for you to recommend us to your friends and colleagues first, since our ads budget has been undergoing budget cuts so
+love for you to recommend us to your friends and colleagues first, since our ads budget has been undergoing budget cuts so
 that we can focus on building the best product possible for you instead of spending money on ads.
 
 ## Want to see a video?
