@@ -198,8 +198,7 @@ cost and availability constraints.
 ### Do I need to understand Kubernetes?
 
 No, you don't need to understand Kubernetes in much detail to use Zeus, but we do recommend reading up on some basics
-though
-for the best experience and scheduling an expert on-boarding session with us and we'll to get you up to speed, we even
+though for the best experience and scheduling an expert on-boarding session with us and we'll to get you up to speed, we even
 have free cloud credits dedicated for educational purposes for those who simply want to learn Kubernetes you should
 definitely ask us about if you're interested!
 

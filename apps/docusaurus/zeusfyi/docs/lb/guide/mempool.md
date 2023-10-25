@@ -78,6 +78,6 @@ Yes. Take a look at these real production trading dashboard graphs built using t
 Top K Projected Sandwich Revenue per Trading Pair & Tx Count by Method
 
 ![Screenshot 2023-10-24 at 2 56 34 PM](https://github.com/zeus-fyi/zeus/assets/17446735/b872105c-c8de-46cb-b69b-f74adbcde348)
-Top K Projected Sandwich Cost/Revenue per Trading Pair & Tx Count by Method
+Top K Projected Sandwich Cost/Revenue per Trading Pair
 
 # Don't wait. We'll be out of beta testing within the next couple of weeks, and free access will be gone forever.
