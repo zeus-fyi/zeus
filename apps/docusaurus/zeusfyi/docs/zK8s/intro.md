@@ -117,7 +117,7 @@ We also let you code and unit test them with strongly typed Go code as an altern
 YAML, that everyone is afraid
 to touch, and for good reason.
 
-### On-Demand Pricing vs.Reserved Pricing vs. Spot
+### On-Demand Pricing vs. Reserved Pricing vs.Spot
 
 On-demand pricing is the price you pay for guaranteed resources you can provision on demand. These are more ideal for
 short term workload spikes, development purposes, or low traffic apps.
