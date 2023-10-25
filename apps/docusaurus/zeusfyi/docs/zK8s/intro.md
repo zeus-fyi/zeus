@@ -162,7 +162,7 @@ immutable upon creation and each has a unique id, so you can always reference it
 control, it is also unix timestamped. You can also hash the workload definition and use that as a version control
 and for integrity checks.
 
-### I currently use ..X cloud or devops platform, how would I migrate to Zeus, I don't have time to learn a new tool?
+### I currently use ...X cloud or devops platform, how would I migrate to Zeus, I don't have time to learn a new tool?
 
 We'll help you migrate your existing infrastructure to Zeus, and we'll help migrate it for you as part of an
 enterprise contract. We'll also help you otherwise, but we'll prioritize enterprise customers first, then by FIFO.
@@ -175,6 +175,19 @@ Yes, and only your org's authorized users will be able to see, access, or modify
 ### Can I use my startup credits on AWS, GCP, Azure, DigitalOcean, etc.?
 
 Yes, but only for Enterprise & Private Clusters.
+
+### How do I get prometheus metrics for my app?
+
+Send us an email. There's some on-boarding steps required to get access to Prometheus metrics via PromQL that we'll need
+to
+send you. We're working on automating this process, but for now it's semi-manual.
+
+### Can I use this to build a serverless technology?
+
+Yes. Contact us for more details on our ultra low latency serverless Thunderbolts program, and how you can use them to
+build
+your own serverless technology such as GPU accelerated serverless functions, or serverless databases. We'll be releasing
+more details about these publicly when they've been iterated on enough to package a release meant for a wider audience.
 
 ### I don't see many On-Demand choices for GPUs, why?
 
