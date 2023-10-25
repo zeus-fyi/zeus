@@ -8,7 +8,9 @@ displayed_sidebar: zK8s
 ## Overview
 
 You can use the Zeus API to programmatically interact with our cloud platform's core infrastructure apis and services,
-or you can use our web interface to interact with the platform.
+or you can use our web interface to interact with the platform. You can deploy any app that costs $500/mo or less
+without
+a credit card that deletes itself after an hour, unless you add billing before then.
 
 ## 1-on-1 Tailored Onboarding
 
