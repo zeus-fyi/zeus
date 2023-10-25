@@ -15,7 +15,7 @@ by aggregating endpoints together through the load balancer.
 
 During beta testing we're offering unlimited free access to our mempool service at a level which is comparable to:
 
-- Blox - Enterprise/Enterprise-Elite ($1250-5000/mo)
+- BloXroute - Enterprise/Enterprise-Elite ($1250-5000/mo)
 - Blocknative - Growth1-Growth2 ($1250-5000/mo)
 
 Don't wait. We'll be out of beta testing within the next couple of weeks, and free access will be gone forever.
