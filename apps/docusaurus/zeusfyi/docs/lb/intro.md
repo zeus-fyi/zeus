@@ -5,11 +5,15 @@ displayed_sidebar: lb
 
 # Setup
 
-## Why use the Adaptive RPC Load Balancer?
+## Top Reason to Use the Adaptive RPC Load Balancer?
 
-There's many, but the top one? People are sick of hitting 429 rate limiting and 5xx errors.
-Using two endpoints that support 100 req/s, now gives you 200 req/s instead, just
-by aggregating endpoints together through the load balancer.
+There's many, but the top one? People are sick of hitting 429 rate limiting and 5xx errors. What's
+double worse is paying for the request that failed. So we set out to solve this problem.
+
+Now, even by using only two endpoints that support 100 req/s, you can effectively join them into a 200 req/s one
+instead, just by aggregating endpoints together through our load balancer. That's in addition to the other 
+the well studied and significant proven performance gains and error rate reductions you can
+expect from our adaptive load balancing technology, see our benchmarking section for details.
 
 ## Free Mempool Access During Beta
 
