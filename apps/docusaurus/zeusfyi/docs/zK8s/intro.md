@@ -172,11 +172,27 @@ You'll be surprised at how easy & fast it is.
 
 Yes, and only your org's authorized users will be able to see, access, or modify any of your private clusters.
 
+### Can I use my startup credits on AWS, GCP, Azure, DigitalOcean, etc.?
+
+Yes, but only for Enterprise & Private Clusters.
+
 ### I don't see many On-Demand choices for GPUs, why?
 
 You'll need to contact us for full GPU access via our search API and app deployment dashboard. There's some additional steps
 required to get access to GPUs. Don't worry though the process is easy, it requires a short manual review due to high
 cost and availability constraints.
+
+### Do I need to understand Kubernetes?
+
+No, you don't need to understand Kubernetes in much detail to use Zeus, we do recommend reading up on some basics though
+for the best experience and scheduling an expert on-boarding session with us and we'll to get you up to speed, we even
+have free cloud credits dedicated for educational purposes for those who simply want to learn Kubernetes you should
+definitely ask us about if you're interested!
+
+We've abstracted away the complexity of Kubernetes to the point where you really only need to know a few keywords
+and concepts to do nearly everything possible via API and Dashboard on the platform. However, unlike other platforms,
+we don't make up terminology to hide the underlying Kubernetes system, we use the same terminology as Kubernetes,
+so that you can easily transition to Kubernetes if you ever desire to, without having to re-haul your entire system.
 
 ## Closing Remarks
 
