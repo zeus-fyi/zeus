@@ -4,6 +4,13 @@ https://docs.zeus.fyi
 
 # Recent Articles ##
 
+## High Performance Disks: NVMe in the Cloud
+How to use NVMe disks the right way before you spend $$$$
+
+https://medium.zeus.fyi/high-performance-disks-nvme-in-the-cloud-abb2bfc11fd9
+
+![Screenshot 2023-10-25 at 12 20 37 AM](https://github.com/zeus-fyi/zeus/assets/17446735/5fc8399a-9bcf-4cab-a1c3-0bf2cfdb48d1)
+
 ## Show Me the Stats
 Optimal adaptive load balancing in stochastic environments.
 Recommended reading for scientists, engineers, data driven individuals
