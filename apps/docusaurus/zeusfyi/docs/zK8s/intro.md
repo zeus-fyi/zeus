@@ -159,7 +159,8 @@ func (t *RedisCookbookTestSuite) TestDeployRedis() {
 
 It will then replace it with your most recent upload, and deploy it to your cluster. All infrastructure definitions are
 immutable upon creation and each has a unique id, so you can always reference it by that id and use that for version
-control, it is also unix timestamped.
+control, it is also unix timestamped. You can also hash the workload definition and use that as a version control
+and for integrity checks.
 
 ### I currently use ..X cloud or devops platform, how would I migrate to Zeus, I don't have time to learn a new tool?
 
