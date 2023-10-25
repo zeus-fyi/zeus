@@ -222,6 +222,132 @@ these to override and extend the workload types that match the drivers.
 
 ![Screenshot 2022-11-17 at 8 09 48 PM](https://user-images.githubusercontent.com/17446735/202614955-2708063e-1547-4dae-9332-f712102c287e.png)
 
+## Full Code Example - Setting up Hades Microservice
+
+### Hades Microservice
+
+In this subsection we'll show you how to build a cluster definition for a microservice called Hades, which is an
+external service
+api server that can be used to let Zeus orchestrate and manage your infrastructure on demand.
+
+The code references a template folder which contains these files:
+
+- cm-hades.yaml
+- deployment.yaml
+- ingress.yaml
+- service.yaml
+
+Which is a generic microservice template. You only need to change the docker image to swap your app into this and set
+the config map to your start up command.
+You can even do that from the UI on the platform.
+
+If you want to deploy your own API microservice, you can use this template as a starting point.
+
+#### cm-hades.yaml
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cm-hades
+data:
+  start.sh: |-
+    #!/bin/sh
+    exec hades --env="production"
+```
+
+Change "hades" in the above to the name of your binary in your docker container, and update the startup command.
+
+#### deployment.yaml
+
+Change the below 8888 to the port your app runs on, leaving the other fields as is works for most cases.
+
+```yaml
+            - name: "http"
+              containerPort: 8888
+              protocol: "TCP"
+```
+
+#### See the full code at
+
+`cookbooks/hades`
+
+https://github.com/zeus-fyi/zeus
+
+```go
+
+var (
+HadesCloudCtxNs = zeus_common_types.CloudCtxNs{
+CloudProvider: "do",
+Region:        "sfo3",
+Context:       "do-nyc1-do-nyc1-zeus-demo",
+Namespace:     "hades",
+Env:           "production",
+}
+HadesClusterDefinition = zeus_cluster_config_drivers.ClusterDefinition{
+ClusterClassName: "hades",
+CloudCtxNs:       HadesCloudCtxNs,
+ComponentBases: map[string]zeus_cluster_config_drivers.ComponentBaseDefinition{
+"hades": HadesComponentBase,
+},
+}
+HadesComponentBase = zeus_cluster_config_drivers.ComponentBaseDefinition{
+SkeletonBases: map[string]zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
+"hades": HadesSkeletonBaseConfig,
+},
+}
+HadesSkeletonBaseConfig = zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
+SkeletonBaseChart:         zeus_req_types.TopologyCreateRequest{},
+SkeletonBaseNameChartPath: HadesChartPath,
+}
+HadesChartPath = filepaths.Path{
+PackageName: "",
+DirIn:       "./hades/infra",
+DirOut:      "./hades/outputs",
+FnIn:        "hades", // filename for your gzip workload
+FnOut:       "",
+Env:         "",
+}
+)
+```
+
+This test case shows how to build a cluster definition, and upload it to Zeus. You can use this as a template to build
+your own cluster definitions.
+
+```go
+type HadesCookbookTestSuite struct {
+test_suites.BaseTestSuite
+ZeusTestClient zeus_client.ZeusClient
+}
+
+func (t *HadesCookbookTestSuite) TestClusterSetup() {
+gcd := HadesClusterDefinition.BuildClusterDefinitions()
+t.Assert().NotEmpty(gcd)
+fmt.Println(gcd)
+
+gdr := HadesClusterDefinition.GenerateDeploymentRequest()
+t.Assert().NotEmpty(gdr)
+fmt.Println(gdr)
+
+sbDefs, err := HadesClusterDefinition.GenerateSkeletonBaseCharts()
+t.Require().Nil(err)
+t.Assert().NotEmpty(sbDefs)
+}
+
+func (t *HadesCookbookTestSuite) SetupTest() {
+cookbooks.ChangeToCookbookDir()
+}
+
+func TestHadesCookbookTestSuite(t *testing.T) {
+suite.Run(t, new(HadesCookbookTestSuite))
+}
+```
+
+Ever seen infra be this easy? If you're nodding your head, then you're ready to get started with Zeusfyi, though we'd
+love
+for you to recommend us to your friends and colleagues first, since our ads budget has been undergoing budget cuts so
+that we can focus on building the best product possible for you instead of spending money on ads.
+
 ## Want to see a video?
 
 Checkout our YouTube channel for more videos on how to use Zeus.
@@ -243,7 +369,15 @@ within one day.
 
 https://medium.com/zeusfyi/zeus-k8s-infra-as-code-concepts-47e690c6e3c5
 
-### Option 3: Easiest - Tailored one on one help by schedule.
+### Option 3: Easy-Medium - Follow a Cookbook Recipe
+
+...and build infra using only Go code and a YAML template base.
+
+https://github.com/zeus-fyi/zeus/tree/main/cookbooks
+
+https://medium.com/zeusfyi/zeus-k8s-infra-as-code-concepts-47e690c6e3c5
+
+### Option 4: Easiest - Tailored one on one help by schedule.
 
 Feel free to email us at support@zeus.fyi or schedule an expert and talk to us directly!
 
