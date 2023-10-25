@@ -212,7 +212,7 @@ have free cloud credits dedicated for educational purposes for those who simply 
 definitely ask us about if you're interested!
 
 We've abstracted away the complexity of Kubernetes to the point where you really only need to know a few keywords
-and concepts to be competent in nearly everything aspect of managing your DevOps & Infra via API and Dashboard on the platform.
+and concepts to be competent in nearly every aspect of managing your DevOps & Infra via API and Dashboard on the platform.
 However, unlike other platforms, we don't make up terminology to hide the underlying Kubernetes system, we use the same terminology as Kubernetes,
 so that you can use well understood terminology if you ever transition to needing more powerful Kubernetes features,
 without having to re-haul your entire system.
