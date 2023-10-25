@@ -66,8 +66,7 @@ graph TD
 ```
 
 This version is equivalent in power to a few hundred nodes connected to the best peers worldwide. We regularly reindex
-the network.
-We have worker nodes that deduplicate our Redis mempool stream and filter out txs that have been included in a recent
+the network. We have worker nodes that deduplicate our Redis mempool stream and filter out txs that have been included in a recent
 block or previously broadcast.
 
 ## Is it actually as good as it sounds?

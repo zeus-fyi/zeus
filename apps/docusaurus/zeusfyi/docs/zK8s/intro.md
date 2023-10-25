@@ -60,7 +60,7 @@ a complete beginner can follow along.
 
 https://medium.com/zeusfyi/zeus-k8s-infra-as-code-concepts-47e690c6e3c5
 
-### Option 2: Medium - Learn Best Practises: Rapid Infra Development on zK8s
+### Option 2: Medium - Learn Best Practices: Rapid Infra Development on zK8s
 
 This design process covers how I packaged a Cosmos node on Zeus
 within one day.
@@ -216,8 +216,6 @@ leaving room for you to learn more if you want to.
 
 
 https://www.amazon.com/Kubernetes-Action-Second-Marko-Luk-C5-A1a-dp-1617297615/dp/1617297615/ref=dp_ob_title_bk
-
-
 
 ## Closing Remarks
 
