@@ -162,6 +162,25 @@ It will then replace it with your most recent upload, and deploy it to your clus
 immutable upon creation and each has a unique id, so you can always reference it by that id and use that for version
 control, it is also unix timestamped.
 
+### I currently use ..X cloud or devops platform, how would I migrate to Zeus, I don't have time to learn a new tool?
+
+We'll help you migrate your existing infrastructure to Zeus, and we'll do help migrate it for you as part of an
+enterprise contract. We'll
+also help you otherwise, but we'll prioritize enterprise customers first, then by FIFO. You'll be surprised at how
+easy &
+fast it is.
+
+### Do enterprise & private clusters work with the UI?
+
+Yes, and only your org's authorized users will be able to see, access, or modify any of your private clusters.
+
+### I don't see many on-demand choices for GPUs, why?
+
+You'll need to contact us for GPU access via our search API and app deployment dashboard. There's some additional steps
+required to get access to GPUs. Don't worry though the process is easy, it requires a short manual review due to high
+cost and
+availability constraints.
+
 ## Closing Remarks
 
 You're ready to get started with Zeusfyi, though we'd love for you to recommend us to your friends and colleagues,
