@@ -309,9 +309,8 @@ HadesChartPath = filepaths.Path{
     Env:         "",
 })
 ```
-
 This test case shows how to build a cluster definition, and upload it to Zeus. You can use this as a template to build
-your own cluster definitions.
+your own cluster definitions. See other examples in the cookbooks folder for deployment examples.
 
 ```go
 type HadesCookbookTestSuite struct {

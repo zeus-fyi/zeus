@@ -111,6 +111,61 @@ A topology is a class specified and well defined unit of infrastructure that can
 microservice to a fully orchestrated network topology. These are all covered in the platform overview in detail with
 code examples, check them out there!
 
+### What's the difference between zK8s apps and regular Kubernetes workloads?
+
+None, they're completely equivalent. We just call them zK8s apps since we also build hierarchical rules on top of them.
+We also let you code them with Go code as an alternative to messy templated Helm charts in YAML, that everyone is afraid
+to touch,
+and for good reason.
+
+### On-Demand Pricing vs.Reserved Pricing vs. Spot
+
+On-demand pricing is the price you pay for guaranteed resources you can provision on demand. These are more ideal for
+short term workload spikes, development purposes, or low traffic apps.
+
+Spot pricing offers significant discounts up to 70% on compute resources, but they are not guaranteed. If you're running
+a workload
+that isn't mission critical, and can be interrupted, then spot pricing is a great way to save money. We can help you
+figure out when it makes sense to use spot instances, and when it doesn't.
+
+If you can reasonably forecast spending for at least 1-month reach out to us, and we can get you a better deal on
+reserved compute
+through a variety of options
+
+### I currently use GitOps, how do I keep a GitOps flow with Zeus?
+
+#### The Easy Way
+
+    Add the Upload Chart Call as CI/CD Stage
+
+Like in this test case
+
+```go
+func (t *RedisCookbookTestSuite) TestUploadRedis() {
+_, rerr := redisClusterDefinition.UploadChartsFromClusterDefinition(ctx, t.ZeusTestClient, true)
+t.Require().Nil(rerr)
+}
+```
+
+    Add the Deployment Call as the following CI/CD Stage
+
+And then this case
+
+```go
+func (t *RedisCookbookTestSuite) TestDeployRedis() {
+t.TestUploadRedis()
+cdep := redisClusterDefinition.GenerateDeploymentRequest()
+
+_, err := t.ZeusTestClient.DeployCluster(ctx, cdep)
+t.Require().Nil(err)
+}
+```
+
+It will then replace it with your most recent upload, and deploy it to your cluster. All infrastructure definitions are
+immutable upon creation and each has a unique id, so you can always reference it by that id and use that for version
+control,
+it is also unix timestamped.
+
 ## Closing Remarks
 
 You're ready to get started with Zeusfyi, though we'd love for you to recommend us to your friends and colleagues,
