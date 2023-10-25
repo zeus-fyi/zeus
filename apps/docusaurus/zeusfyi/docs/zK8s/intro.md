@@ -176,10 +176,9 @@ Yes, and only your org's authorized users will be able to see, access, or modify
 
 ### I don't see many on-demand choices for GPUs, why?
 
-You'll need to contact us for GPU access via our search API and app deployment dashboard. There's some additional steps
+You'll need to contact us for full GPU access via our search API and app deployment dashboard. There's some additional steps
 required to get access to GPUs. Don't worry though the process is easy, it requires a short manual review due to high
-cost and
-availability constraints.
+cost and availability constraints.
 
 ## Closing Remarks
 
