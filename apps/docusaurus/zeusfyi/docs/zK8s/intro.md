@@ -188,14 +188,12 @@ Yes, but only for Enterprise & Private Clusters.
 ### How do I get Prometheus metrics for my app?
 
 Send us an email. There's some on-boarding steps required to get access to Prometheus metrics via PromQL that we'll need
-to
-send you. We're working on automating this process, but for now it's semi-manual.
+to send you. We're working on automating this process, but for now it's semi-manual.
 
 ### Can I use this to build a serverless technology?
 
 Yes. Contact us for more details on our ultra low latency serverless Thunderbolts program, and how you can use them to
-build
-your own serverless technology such as GPU accelerated serverless functions, or serverless databases. We'll be releasing
+build your own serverless technology such as GPU accelerated serverless functions, or serverless databases. We'll be releasing
 more details about these publicly when they've been iterated on enough to package a release meant for a wider audience.
 
 ### I don't see many On-Demand choices for GPUs, why?
