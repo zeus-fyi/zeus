@@ -55,7 +55,7 @@ https://www.youtube.com/@Zeusfyi
 
 ### Option 1: Easy - Build an Ethereum Beacon on zK8s
 
-This design process covers how to build an Ethereum Beacon using go code for zK8s, and how to deploy it on Zeus. Even
+This design process covers how to build an Ethereum Beacon using Go code for zK8s, and how to deploy it on Zeus. Even
 a complete beginner can follow along.
 
 https://medium.com/zeusfyi/zeus-k8s-infra-as-code-concepts-47e690c6e3c5
