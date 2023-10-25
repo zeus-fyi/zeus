@@ -211,7 +211,7 @@ without having to re-haul your entire system.
 I'd recommend this technical reference book, which contains just the right amount of detail to get you up to speed while
 leaving room for you to learn more if you want to.
 
-#### Kubernetes in Action Second Edition 2nd ed. Edition
+#### Kubernetes in Action Second Edition 1st, or 2nd ed. Edition
 ##### by Marko Lukša
 
 
