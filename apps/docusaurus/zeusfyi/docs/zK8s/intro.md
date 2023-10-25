@@ -104,7 +104,7 @@ And a cluster configuration is a complete underlying infrastructure hierarchy th
 
 But in the context of the platform dashboard
 
-    Clusters == Where you can view your app's live Kubernetes namespaces, locations, app details, and can manage some DevOps tasks.
+    Clusters == Where you can view your live Kubernetes namespaces, locations, app details, and can manage some DevOps tasks.
 
 And in the context of Kubernetes
 
