@@ -113,7 +113,8 @@ code examples, check them out there!
 ### What's the difference between zK8s apps and regular Kubernetes workloads?
 
 None, they're completely equivalent. We just call them zK8s apps since we also build hierarchical rules on top of them.
-We also let you code them with Go code as an alternative to messy templated Helm charts in YAML, that everyone is afraid
+We also let you code and unit test them with strongly typed Go code as an alternative to messy templated Helm charts in
+YAML, that everyone is afraid
 to touch, and for good reason.
 
 ### On-Demand Pricing vs.Reserved Pricing vs. Spot
@@ -171,4 +172,5 @@ Ever seen infra be this easy? We haven't either, but we're glad we're here to ma
     |
     Z for Zeus.fyi
 
-We're glad you made it this far, and hope you enjoy the platform as much as we do. Have a suggestion? Email us!
+We're glad you made it this far, and hope you enjoy the platform as much as we do. Have a suggestion? You know where to
+find us.
