@@ -114,8 +114,7 @@ code examples, check them out there!
 
 None, they're completely equivalent. We just call them zK8s apps since we also build hierarchical rules on top of them.
 We also let you code and unit test them with strongly typed Go code as an alternative to messy templated Helm charts in
-YAML, that everyone is afraid
-to touch, and for good reason.
+YAML, that everyone is afraid to touch, and for good reason.
 
 ### On-Demand Pricing vs. Reserved Pricing vs.Spot
 
