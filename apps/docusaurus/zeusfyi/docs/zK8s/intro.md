@@ -100,7 +100,7 @@ In the context of configuration
     App == Postgres Family & Derivative Configs
     Cluster == Specific Postgres Version + Disk + RAM + CPU + Ingress + DNS + Load Balancer + etc.
 
-And a cluster configuration is a complete underlying infrastructure hierarchy that binds at least one fully deployable zK8s app.
+A Cluster topology is a complete underlying infrastructure hierarchy that binds at least one fully deployable zK8s app.
 
 But in the context of the platform dashboard
 
