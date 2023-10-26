@@ -25,7 +25,7 @@ Read more about how T-Digest works: https://www.softwareimpacts.com/article/S266
 - We assumed that the endpoints are of equal quality
 - We focused on highlighting eth_getBlockByNumber
   - Since it is least likely to be improved by vendor caching and thus more representative of the true performance
-  - We used caching on ethGetBlockByNumber to ensure that we were not calling it more than once per block
+  - We used caching on ethGetBlockByNumber to reduce the impact of vendor caching downstream
 - We use 20 samples for our Round Robin comparison
     - Since that is the minimum recommended for statistically significant accuracy
 - T-Digest has slightly less accurate medians with lower samples
@@ -53,26 +53,26 @@ significantly faster.
 This sample is using a direct connection to a QuickNode endpoint, each subsequent request is faster due to caching,
 so the first request is the most representative of the true latency.
 ```text
-time taken:  396
-time taken:  112
-time taken:  107
-time taken:  101
+time taken:  396ms
+time taken:  112ms
+time taken:  107ms
+time taken:  101ms
 ```
 
 We determined that the load balancer adds about 20ms of latency to the request, for round-robin and adaptive
 
 This sample is using our load balancer with a round-robin connection without server network latency
 ```text
-time taken:  282
+time taken:  282ms
     - 26ms total load balancer latency
     - 256ms for raw request RTT
-time taken:  256
+time taken:  256ms
     - 19ms total load balancer latency
     - 237ms for raw request RTT
-time taken:  282
+time taken:  282ms
     - 21ms total load balancer latency
     - 261ms for raw request RTT
-time taken: 255
+time taken: 255ms
     - 17ms total load balancer latency
     - 238ms for raw request RTT
 ```
