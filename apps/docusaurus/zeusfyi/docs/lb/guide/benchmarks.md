@@ -50,10 +50,8 @@ significantly faster.
 }
 ```
 
-For this method the latency from using our load balancer which proxies the request adds ~100-200ms RTT to the total
-latency.
-This sample is using a direct connection to a QuickNode endpoint
-
+This sample is using a direct connection to a QuickNode endpoint, each subsequent request is faster due to caching,
+so the first request is the most representative of the true latency.
 ```text
 time taken:  396
 time taken:  112
@@ -61,14 +59,37 @@ time taken:  107
 time taken:  101
 ```
 
+We determined that the load balancer adds about 20ms of latency to the request, for round-robin and adaptive
+
 This sample is using our load balancer with a round-robin connection without server network latency
+```text
+time taken:  282
+    - 26ms total load balancer latency
+    - 256ms for raw request RTT
+time taken:  256
+    - 19ms total load balancer latency
+    - 237ms for raw request RTT
+time taken:  282
+    - 21ms total load balancer latency
+    - 261ms for raw request RTT
+time taken: 255
+    - 17ms total load balancer latency
+    - 238ms for raw request RTT
+```
+
+This sample is using our load balancer inclusive of all total latency (raw request RTT + load balancer latency + server
+proxy RTT)
+
+![Adaptive](https://github.com/zeus-fyi/zeus/assets/17446735/d583ca5e-e742-4dfb-aab3-b305ef648798)
 
 ```text
-time taken:  299
-time taken:  284
-time taken:  288
-time taken:  281
+total time taken:  659ms
+    - 24ms load balancer latency
+    - 443ms raw request RTT
+    - 192ms server proxy RTT
 ```
+
+We calculated the networking latency from proxying the request adds ~100-300ms RTT to the total latency.
 
 ## Adaptive Scale Factor Settings Used
 
@@ -96,10 +117,46 @@ lowering the growth rate slightly keeps the Adaptive scores within a cyclical ra
 
 Matching our initial prediction closely of ~15%
 
-We also saw a significant reduction in our overall api requests needed for the same workload,
-and thus consumed significantly less QuickNode compute units needed for the same workload.
+P25 Improvement:
+
+- Initial P25: 478ms
+- New P25 after load balancer: 384ms
+- Saving 478ms−384ms = <b>94ms</b>
+
+P50 (Median) Improvement:
+
+- Initial P50: 505ms
+- New P50 after load balancer: 426ms
+- Improvement: 505ms−426ms = <b>79ms</b>
+
+P75 Improvement:
+
+- Initial P75: 602ms
+- New P75 after load balancer: 486ms
+- Improvement: 602ms−486ms = <b>116ms</b>
+
+P95 Improvement:
+
+- Initial P95: 647ms
+- New P95 after load balancer: 596ms
+- Improvement: 647ms−596ms = <b>51ms</b>
+
+Total time saved:
+
+- 200k requests -> 4.58 hours saved
+- 1M requests -> 24 hours time saved
+
+We also saw a meaningful reduction in our overall api requests needed for the same workload,
+and thus consumed less QuickNode compute units needed for the same workload. We still need to
+do more analysis on this with a clean control group, but we think it is about 10-30% less requests needed.
 
 Still think you don't need a load balancer?
+
+## Note
+
+We return this response header, which has the raw request RTT time, which you can also use for your own analysis.
+
+- X-Response-Latency-Milliseconds
 
 ## Next steps
 
