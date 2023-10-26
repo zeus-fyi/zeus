@@ -25,10 +25,50 @@ Read more about how T-Digest works: https://www.softwareimpacts.com/article/S266
 - We assumed that the endpoints are of equal quality
 - We focused on highlighting eth_getBlockByNumber
   - Since it is least likely to be improved by vendor caching and thus more representative of the true performance
+  - We used caching on ethGetBlockByNumber to ensure that we were not calling it more than once per block
 - We use 20 samples for our Round Robin comparison
     - Since that is the minimum recommended for statistically significant accuracy
 - T-digest has slightly less accurate medians with lower samples
     - We think that the error variance is captured within the 3% difference between our simulated results & actual
+
+### Post-Analysis Findings
+
+We found that if eth_getBlockByNumber was called an the block wasn't cached that it would take 400-600ms in most
+cases, but if it was cached it would take 50-100ms. We also noticed that if a block value was called multiple times
+even if it was a historical one, it appeared to cache the first request, so all subsequent calls were
+significantly faster.
+
+```json
+{
+  "jsonrpc": "2.0",
+  "method": "eth_getBlockByNumber",
+  "params": [
+    "latest",
+    true
+  ],
+  "id": 1
+}
+```
+
+For this method the latency from using our load balancer which proxies the request adds ~100-200ms RTT to the total
+latency.
+This sample is using a direct connection to a QuickNode endpoint
+
+```text
+time taken:  396
+time taken:  112
+time taken:  107
+time taken:  101
+```
+
+This sample is using our load balancer with a round-robin connection without server network latency
+
+```text
+time taken:  299
+time taken:  284
+time taken:  288
+time taken:  281
+```
 
 ## Adaptive Scale Factor Settings Used
 

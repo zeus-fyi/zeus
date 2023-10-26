@@ -14,6 +14,7 @@ type TestContainer struct {
 	GoerliNodeURL      string
 	EphemeralNodeURL   string
 
+	QuickNodeEndpoint  string
 	QuickNodeIrisToken string
 
 	LocalMnemonic24Words string
@@ -52,8 +53,10 @@ func InitLocalTestConfigs() TestContainer {
 
 	// snapshot testing
 	testCont.PresignedBucketURL = viper.GetString("PRESIGNED_BUCKET_URL")
+	testCont.Web3SignerAuthURL = viper.GetString("WEB3SIGNER_AUTH_URL")
 
 	// artemis testing
+	testCont.QuickNodeEndpoint = viper.GetString("QUICKNODE_ENDPOINT")
 	testCont.NodeURL = viper.GetString("NODE_URL")
 	testCont.GoerliNodeURL = viper.GetString("GOERLI_NODE_URL")
 	testCont.EphemeralNodeURL = viper.GetString("EPHEMERAL_NODE_URL")
