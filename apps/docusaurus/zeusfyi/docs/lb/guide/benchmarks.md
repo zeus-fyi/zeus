@@ -89,7 +89,9 @@ total time taken:  659ms
     - 192ms server proxy RTT
 ```
 
-We calculated the networking latency from proxying the request adds ~100-300ms RTT to the total latency.
+We calculated the networking latency from proxying the request adds ~100-300ms RTT to the total latency. Since QuickNode
+is likely using a CDN to accelerate download speeds, we think that if we were to do this as well our total RTT
+would be ~50-100ms instead.
 
 ## Adaptive Scale Factor Settings Used
 
@@ -152,7 +154,7 @@ do more analysis on this with a clean control group, but we think it is about 10
 
 Still think you don't need a load balancer?
 
-## Note
+## Additional Notes
 
 We return this response header, which has the raw request RTT time, which you can also use for your own analysis.
 
