@@ -13,8 +13,8 @@ make on performance.
 Study was conducted using a real production workload used for monitoring Uniswap prices
 
 - We used 6 Enterprise level QuickNode Ethereum Mainnet endpoints for this test.
-- We took 190k samples ran over several weeks using our Adaptive algorithm, using T-digest to calculate the median.
-- We used a 20 sample round-robin sampling using T-digest.
+- We took 190k samples ran over several weeks using our Adaptive algorithm, using T-Digest to calculate the median.
+- We used a 20 sample round-robin sampling using T-Digest.
 - We used our max-block procedure to ensure that we were always using the most up-to-tip-of-chain endpoints for our
 samples.
 
@@ -28,7 +28,7 @@ Read more about how T-Digest works: https://www.softwareimpacts.com/article/S266
   - We used caching on ethGetBlockByNumber to ensure that we were not calling it more than once per block
 - We use 20 samples for our Round Robin comparison
     - Since that is the minimum recommended for statistically significant accuracy
-- T-digest has slightly less accurate medians with lower samples
+- T-Digest has slightly less accurate medians with lower samples
     - We think that the error variance is captured within the 3% difference between our simulated results & actual
 
 ### Post-Analysis Findings
