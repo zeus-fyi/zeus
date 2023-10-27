@@ -172,7 +172,7 @@ when compared to round robin, while gaining significant benefits in reliability 
 to handle Nx more requests than any single endpoints, with N being the number of requests/sec
 any single endpoint can handle.
 
-### When should you use a load balancer?
+### When should you consider using the Adaptive RPC Load Balancer?
 
 - You need to scale your application to handle more requests than a single endpoint can handle
 - You need to reduce the error rate of your application
