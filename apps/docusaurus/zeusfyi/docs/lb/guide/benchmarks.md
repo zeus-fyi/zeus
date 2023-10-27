@@ -25,7 +25,7 @@ Read more about how T-Digest works: https://www.softwareimpacts.com/article/S266
   - Since it is least likely to be improved by vendor caching and thus more representative of the true performance
   - We used caching on ethGetBlockByNumber to reduce the impact of vendor caching downstream
 - We use 20 samples for our Round Robin comparison
-    - Since that is the minimum recommended for statistically significant accuracy
+  - Since that is the recommended amount for statistically significant accuracy
 
 ### Post-Analysis Findings
 
