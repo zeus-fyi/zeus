@@ -162,11 +162,11 @@ We return this response header, which has the raw request RTT time, which you ca
 
 The fastest requests will always be in this order
 
-1. Local Node (No network travel, no https overhead)
+1. Local Node (eg. no network travel, no https overhead)
 2. Direct Connection (eg. single node)
 3. Proxy Connection (eg. load balancer)
 
-However, our load balancer is able to significantly reduce the latency and error rate of the
+However, our adaptive load balancer is able to significantly reduce the latency and error rate of the
 proxy connection over time which minimizes the impact additional impact of the network travel time,
 when compared to round robin, while gaining significant benefits in reliability and scalability
 to handle Nx more requests than any single endpoints, with N being the number of requests/sec
