@@ -92,8 +92,10 @@ Prerequisites: You'll need to generate an API key from the access panel if you d
 
 You'll use the API bearer token that you generate from the Access panel to authenticate with the load balancer.
 You then use the name of your route table group as a query parameter like the below,
-and it will default to round-robin the requests between the endpoints in that group table if you have a lite plan, and
-adaptive for standard+ plans.
+and it will default to adaptive, or you can specify round-robin with the `X-Load-Balancing-Strategy` header set
+to `RoundRobin`.
+
+```shell
 
 ### Curl Example:
 

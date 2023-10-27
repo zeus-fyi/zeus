@@ -148,7 +148,7 @@ Total time saved:
 - 200k requests -> 4.58 hours saved
 - 1M requests -> 24 hours time saved
 
-We also saw a meaningful reduction in our overall api requests needed for the same workload,
+We also saw a meaningful reduction in our overall API requests needed for the same workload,
 and thus consumed less QuickNode compute units needed for the same workload. We still need to
 do more analysis on this with a clean control group, but we think it is about 10-30% less requests needed.
 
