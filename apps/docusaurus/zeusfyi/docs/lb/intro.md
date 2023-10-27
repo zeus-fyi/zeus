@@ -11,8 +11,9 @@ There's many, but the top one? People are sick of hitting 429 rate limiting and 
 double worse is paying for the request that failed. So we set out to solve this problem.
 
 Now there's a solution, backed by extensive studies. Turn many endpoints into one super endpoint that handles the
-scale you need without the errors. It can handle Nx more requests than any single endpoints, with N being the number of
-requests/sec any single endpoint can handle. That's in addition to the other significant proven performance gains and
+scale you need without the errors. It can handle Nx more requests with N being the number of
+requests/sec than any single endpoint can handle. That's in addition to the other significant proven performance gains
+and
 error rate reductions you can expect from our adaptive load balancing technology, see our benchmarking section for
 details.
 
