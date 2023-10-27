@@ -25,6 +25,8 @@ During beta testing we're offering unlimited free access to our mempool service 
 
 Don't wait. We'll be out of beta testing within the next couple of weeks, and free access will be gone forever.
 
+#### Requires Adaptive RPC Load Balancer Sign Up on QuickNode Marketplace.
+
 # Sign Up
 
 Sign up here:

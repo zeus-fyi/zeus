@@ -15,6 +15,8 @@ to you in real time. Don't forget to add your bearer token to the request header
 
 `wss://iris.zeus.fyi/v1/mempool`
 
+#### Requires Adaptive RPC Load Balancer Sign Up on QuickNode Marketplace.
+
 Go code example:
 
 ```go
