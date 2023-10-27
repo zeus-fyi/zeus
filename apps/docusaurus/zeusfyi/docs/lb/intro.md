@@ -10,9 +10,11 @@ displayed_sidebar: lb
 There's many, but the top one? People are sick of hitting 429 rate limiting and 5xx errors. What's
 double worse is paying for the request that failed. So we set out to solve this problem.
 
-Now, even by using only two endpoints that support 100 req/s, you can effectively join them into a 200 req/s one
-instead, just by aggregating endpoints together through our load balancer. That's in addition to the other 
-the well studied and significant proven performance gains and error rate reductions you can
+Now there's a solution, backed by extensive studies. Turn many endpoints into one super endpoint that handles the
+scale you need without the errors. It can handle Nx more requests than any single endpoints, with N being the number of
+requests/sec
+any single endpoint can handle. That's in addition to the other significant proven performance gains and error rate
+reductions you can
 expect from our adaptive load balancing technology, see our benchmarking section for details.
 
 ## Free Mempool Access During Beta
