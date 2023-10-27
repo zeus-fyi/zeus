@@ -33,7 +33,7 @@ Read more about how T-Digest works: https://www.softwareimpacts.com/article/S266
 
 ### Post-Analysis Findings
 
-We found that if eth_getBlockByNumber was called an the block wasn't cached that it would take 250-550ms in most
+We found that if eth_getBlockByNumber was called an the block wasn't cached that it would take 250-600ms in most
 cases, but if it was cached it would take 50-100ms. We also noticed that if a block value was called multiple times
 even if it was a historical one, it appeared to cache the first request, so all subsequent calls were
 significantly faster.
