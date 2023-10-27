@@ -12,10 +12,9 @@ double worse is paying for the request that failed. So we set out to solve this 
 
 Now there's a solution, backed by extensive studies. Turn many endpoints into one super endpoint that handles the
 scale you need without the errors. It can handle Nx more requests than any single endpoints, with N being the number of
-requests/sec
-any single endpoint can handle. That's in addition to the other significant proven performance gains and error rate
-reductions you can
-expect from our adaptive load balancing technology, see our benchmarking section for details.
+requests/sec any single endpoint can handle. That's in addition to the other significant proven performance gains and
+error rate
+reductions you can expect from our adaptive load balancing technology, see our benchmarking section for details.
 
 ## Free Mempool Access During Beta
 
