@@ -152,13 +152,33 @@ We also saw a meaningful reduction in our overall api requests needed for the sa
 and thus consumed less QuickNode compute units needed for the same workload. We still need to
 do more analysis on this with a clean control group, but we think it is about 10-30% less requests needed.
 
-Still think you don't need a load balancer?
-
 ## Additional Notes
 
 We return this response header, which has the raw request RTT time, which you can also use for your own analysis.
 
 - X-Response-Latency-Milliseconds
+
+## Closing Thoughts
+
+The fastest requests will always be in this order
+
+1. Local Node (No network travel, no https overhead)
+2. Direct Connection (eg. single node)
+3. Proxy Connection (eg. load balancer)
+
+However, our load balancer is able to significantly reduce the latency and error rate of the
+proxy connection over time which minimizes the impact additional impact of the network travel time,
+when compared to round robin, while gaining significant benefits in reliability and scalability
+to handle Nx more requests than any single endpoints, with N being the number of requests/sec
+any single endpoint can handle.
+
+### When should you use a load balancer?
+
+- You need to scale your application to handle more requests than a single endpoint can handle
+- You need to reduce the error rate of your application
+  - Especially if you are still paying for the request even if it fails
+- You need to improve the reliability of your application
+- You want to run multi-step procedures in a single request
 
 ## Next steps
 
