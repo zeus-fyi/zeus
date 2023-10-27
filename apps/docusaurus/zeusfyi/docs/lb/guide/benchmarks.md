@@ -20,23 +20,23 @@ samples.
 
 Read more about how T-Digest works: https://www.softwareimpacts.com/article/S2665-9638(20)30040-3/fulltext
 
-### Assumptions
-
 - We assumed that the endpoints are of equal quality
 - We focused on highlighting eth_getBlockByNumber
   - Since it is least likely to be improved by vendor caching and thus more representative of the true performance
   - We used caching on ethGetBlockByNumber to reduce the impact of vendor caching downstream
 - We use 20 samples for our Round Robin comparison
     - Since that is the minimum recommended for statistically significant accuracy
-- T-Digest has slightly less accurate medians with lower samples
-    - We think that the error variance is captured within the 3% difference between our simulated results & actual
 
 ### Post-Analysis Findings
 
 We found that if eth_getBlockByNumber was called an the block wasn't cached that it would take 250-600ms in most
-cases, but if it was cached it would take 50-100ms. We also noticed that if a block value was called multiple times
+cases, but if it was cached it would take 50-120ms. We also noticed that if a block value was called multiple times
 even if it was a historical one, it appeared to cache the first request, so all subsequent calls were
 significantly faster.
+
+T-Digest has slightly less accurate medians with lower samples
+
+- We think that the error variance is captured within the 3% difference between our simulated results & actual
 
 ```json
 {
