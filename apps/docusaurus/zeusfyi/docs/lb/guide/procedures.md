@@ -11,6 +11,20 @@ request to the endpoints returning the highest block number seen and then return
 
 "procedure": "eth_maxBlockAggReduce"
 
+You can alternative also use a header called "X-Routing-Procedure" with the value of the procedure you want to use.
+with the value of the procedure, so for the below example it would be "eth_maxBlockAggReduce".
+
+```json
+  "jsonrpc": "2.0",
+"procedure": "eth_maxBlockAggReduce",
+"method": "eth_getBlockByNumber",
+"params": [
+"latest",
+true
+],
+"id": 1
+}
+```
 ```
 curl --location 'https://iris.zeus.fyi/v1/router' \
 --header 'Content-Type: application/json' \
