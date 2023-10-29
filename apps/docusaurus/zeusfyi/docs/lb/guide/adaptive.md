@@ -18,15 +18,6 @@ You can tune the adaptive scale factors for your application, but the defaults a
 
 ### Example:
 
-```text
-Add HEADER "X-Route-Group" with value "quicknode-mainnet"
-Add HEADER "X-Load-Balancing-Strategy" with value "Adaptive"
-Add HEADER "X-Adaptive-Metrics-Key" with value "JSON-RPC" (or "Other Metric Keys...")
-```
-
-JSON-RPC is a reserved value for json-rpc based POST api metrics, it collects stats by the method value in the json rpc
-POST request
-
 #### JSON-RPC
 
 ```json
