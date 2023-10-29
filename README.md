@@ -4,12 +4,21 @@ https://docs.zeus.fyi
 
 # Recent Articles ##
 
-## High Performance Disks: NVMe in the Cloud
-How to use NVMe disks the right way before you spend $$$$
+## Adaptive RPC Load Balancer Benchmarks
+Over several weeks on a production load monitoring Uniswap prices
 
-https://medium.zeus.fyi/high-performance-disks-nvme-in-the-cloud-abb2bfc11fd9
+When should you consider using the Adaptive RPC Load Balancer?​
 
-![Screenshot 2023-10-25 at 12 20 37 AM](https://github.com/zeus-fyi/zeus/assets/17446735/5fc8399a-9bcf-4cab-a1c3-0bf2cfdb48d1)
+TLDR:
+- You need to scale your application to handle more requests than a single endpoint can handle
+- You need to reduce the error rate of your application
+- Especially if you are still paying for the request even if it fails
+- You need to improve the reliability of your application
+- You want to run multi-step procedures in a single request
+
+![weekly](https://github.com/zeus-fyi/zeus/assets/17446735/46aff89c-8035-438c-a5a8-45f6195e02f6)
+
+https://medium.zeus.fyi/adaptive-rpc-load-balancer-benchmarks-c7aa3aa0d42a
 
 ## Show Me the Stats
 Optimal adaptive load balancing in stochastic environments.
@@ -30,6 +39,13 @@ https://medium.com/zeusfyi/adaptive-rpc-load-balancer-on-quicknode-marketplace-e
 
 Beta Testing Sign Up (free to use): 
 https://marketplace.quicknode.com/add-on/zeusfyi-4
+
+## High Performance Disks: NVMe in the Cloud
+How to use NVMe disks the right way before you spend $$$$
+
+https://medium.zeus.fyi/high-performance-disks-nvme-in-the-cloud-abb2bfc11fd9
+
+![Screenshot 2023-10-25 at 12 20 37 AM](https://github.com/zeus-fyi/zeus/assets/17446735/5fc8399a-9bcf-4cab-a1c3-0bf2cfdb48d1)
 
 ## zK8s == Kubernetes + Zeus
 Here we overview the core concepts needed to understand how you can build, deploy, configure K8s apps using Zeus, with a full walkthrough example of how we created an Ethereum beacon.
