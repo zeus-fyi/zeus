@@ -10,8 +10,11 @@ that's available.
 
 Stats will only persist for one hour since the last API call for that method, so you'll need to keep making requests to
 keep the stats. It doesn't take long, only ~20 samples per metric to trend towards a near optimal routing group table
-from scratch, so
-it's really not a big deal to reset the stats.
+from scratch, so it's really not a big deal to reset the stats.
+
+You can tune the adaptive scale factors for your application, but the defaults are pretty good for most applications.
+
+![Screenshot 2023-10-28 at 8 23 04 PM](https://github.com/zeus-fyi/olympus/assets/17446735/a4a152e6-201a-4863-9702-0aeaa9a10052)
 
 ```text
 Add HEADER "X-Route-Group" with value "quicknode-mainnet"
