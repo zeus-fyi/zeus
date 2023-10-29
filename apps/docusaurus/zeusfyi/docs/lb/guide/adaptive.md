@@ -14,7 +14,9 @@ from scratch, so it's really not a big deal to reset the stats.
 
 You can tune the adaptive scale factors for your application, but the defaults are pretty good for most applications.
 
-![Screenshot 2023-10-28 at 8 23 04 PM](https://github.com/zeus-fyi/olympus/assets/17446735/a4a152e6-201a-4863-9702-0aeaa9a10052)
+![Screenshot 2023-10-28 at 8 53 11 PM](https://github.com/zeus-fyi/zeus/assets/17446735/24d22cfb-c91a-4adf-a062-8e3dda2d8583)
+
+### Example:
 
 ```text
 Add HEADER "X-Route-Group" with value "quicknode-mainnet"
@@ -25,17 +27,24 @@ Add HEADER "X-Adaptive-Metrics-Key" with value "JSON-RPC" (or "Other Metric Keys
 JSON-RPC is a reserved value for json-rpc based POST api metrics, it collects stats by the method value in the json rpc
 POST request
 
-### Curl Example:
+#### JSON-RPC
+
+```json
+{
+  "jsonrpc": "2.0",
+  "method": "eth_getBlockByNumber",
+  "params": [
+    "latest",
+    true
+  ],
+  "id": 1
+}
+```
 
 ```sh
 curl --location ‘https://iris.zeus.fyi/v1/router’ \
 --header ‘Content-Type: application/json’ \
 --header ‘Authorization: Bearer YOUR-BEARER-TOKEN’ \
 --header ‘X-Route-Group: ethereum-mainnet’ \
---header ‘X-Load-Balancing-Strategy: Adaptive’ \
---header ‘X-Adaptive-Metrics-Key: JSON-RPC’ \
 --data ‘{“jsonrpc”:“2.0”,“method”:“eth_getBlockByNumber”,“params”:[“latest”, true],“id”:1}’
 ```
-
-You can also check out our round-robin load_balancing_test.go for an example of how to use the programmable proxy to
-query the block number from a routing group of ethereum node urls endpoints.
