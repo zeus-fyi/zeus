@@ -8,6 +8,9 @@ const (
 	IrisServiceRoute            = "https://iris.zeus.fyi"
 	SelectedRouteResponseHeader = "X-Selected-Route"
 	RouteGroupHeader            = "X-Route-Group"
+
+	// AnvilHeader for serverless anvil tx fork/simulate servers, up to 10 minute runtime per invocation
+	AnvilHeader = "X-Anvil-Session-Lock-ID"
 )
 
 type Iris struct {
