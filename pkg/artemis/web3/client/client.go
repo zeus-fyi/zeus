@@ -16,12 +16,12 @@ import (
 )
 
 const (
-	defaultProxyUrl    = "https://iris.zeus.fyi/v1/router"
-	proxyHeader        = "Proxy-Relay-To"
-	SessionLockHeader  = "Session-Lock-ID"
-	DurableExecutionID = "Durable-Execution-ID"
-	EndSessionLockID   = "End-Session-Lock-ID"
-	RouteGroupHeader   = "X-Route-Group"
+	defaultProxyUrl        = "https://iris.zeus.fyi/v1/router"
+	proxyHeader            = "Proxy-Relay-To"
+	AnvilSessionLockHeader = "Anvil-Session-Lock-ID"
+	DurableExecutionID     = "Durable-Execution-ID"
+	EndSessionLockID       = "End-Session-Lock-ID"
+	RouteGroupHeader       = "X-Route-Group"
 
 	EthereumMainnetTableHeaderKeyValue = "ethereum-mainnet"
 
@@ -84,7 +84,7 @@ func (w *Web3Actions) AddEndSessionLockToHeaderIfExisting() {
 	if w.Headers == nil {
 		w.Headers = make(map[string]string)
 	}
-	if sessionID, ok := w.Headers[SessionLockHeader]; ok {
+	if sessionID, ok := w.Headers[AnvilSessionLockHeader]; ok {
 		w.Headers[EndSessionLockID] = sessionID
 	} else {
 		zlog.Warn().Msg("no session lock header found")
@@ -108,11 +108,11 @@ func (w *Web3Actions) AddDurableExecutionIDHeader(reqID string) {
 	w.Headers[DurableExecutionID] = reqID
 }
 
-func (w *Web3Actions) AddSessionLockHeader(sessionID string) {
+func (w *Web3Actions) AddAnvilSessionLockHeader(sessionID string) {
 	if w.Headers == nil {
 		w.Headers = make(map[string]string)
 	}
-	w.Headers[SessionLockHeader] = sessionID
+	w.Headers[AnvilSessionLockHeader] = sessionID
 }
 
 func (w *Web3Actions) AddDefaultEthereumMainnetTableHeader() {
@@ -120,6 +120,11 @@ func (w *Web3Actions) AddDefaultEthereumMainnetTableHeader() {
 		w.Headers = make(map[string]string)
 	}
 	w.Headers[RouteGroupHeader] = EthereumMainnetTableHeaderKeyValue
+}
+
+func (w *Web3Actions) AddAnvilEthMainnetHeaders(sessionID string) {
+	w.AddDefaultEthereumMainnetTableHeader()
+	w.AddAnvilSessionLockHeader(sessionID)
 }
 
 func (w *Web3Actions) AddMaxBlockHeightProcedureEthJsonRpcHeader() {
@@ -149,7 +154,7 @@ func (w *Web3Actions) GetSessionLockHeader() string {
 	if w.Headers == nil {
 		w.Headers = make(map[string]string)
 	}
-	sessionID := w.Headers[SessionLockHeader]
+	sessionID := w.Headers[AnvilSessionLockHeader]
 	return sessionID
 }
 
