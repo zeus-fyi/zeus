@@ -322,6 +322,16 @@ func (w *Web3Actions) SetBalance(ctx context.Context, address string, balance he
 	return err
 }
 
+func (w *Web3Actions) SetRpcUrl(ctx context.Context, rpcUrl string) (hexutil.Bytes, error) {
+	var result hexutil.Bytes
+	err := w.C.Client().CallContext(ctx, &result, w.swapToAnvil("hardhat_setRpcUrl"), rpcUrl)
+	if err != nil {
+		zlog.Err(err).Msg("HardHatSetBalance error")
+		return result, err
+	}
+	return result, err
+}
+
 func (w *Web3Actions) SendRawTransaction(ctx context.Context, tx *types.Transaction) error {
 	data, err := rlp.EncodeToBytes(tx)
 	if err != nil {
