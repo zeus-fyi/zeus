@@ -20,7 +20,7 @@ const (
 	proxyHeader            = "Proxy-Relay-To"
 	AnvilSessionLockHeader = "X-Anvil-Session-Lock-ID"
 	DurableExecutionID     = "Durable-Execution-ID"
-	EndSessionLockID       = "End-Session-Lock-ID"
+	EndSessionLockID       = "X-End-Session-Lock-ID"
 	RouteGroupHeader       = "X-Route-Group"
 
 	EthereumMainnetTableHeaderKeyValue = "ethereum-mainnet"
