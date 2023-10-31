@@ -1,6 +1,8 @@
 package zeus_pods_reqs
 
 import (
+	"time"
+
 	strings_filter "github.com/zeus-fyi/zeus/pkg/utils/strings"
 	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_req_types"
 
@@ -14,6 +16,7 @@ type PodActionRequest struct {
 	PodName       string `json:"podName,omitempty"`
 	ContainerName string `json:"containerName,omitempty"`
 
+	Delay      time.Duration `json:"delay,omitempty"`
 	FilterOpts *strings_filter.FilterOpts
 	ClientReq  *ClientRequest
 	LogOpts    *v1.PodLogOptions
