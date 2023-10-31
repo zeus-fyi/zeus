@@ -3,7 +3,6 @@ package pods_client
 import (
 	"context"
 	"fmt"
-	"net/http"
 
 	"github.com/rs/zerolog/log"
 	zeus_endpoints "github.com/zeus-fyi/zeus/zeus/z_client/endpoints"
@@ -16,8 +15,8 @@ func (z *PodsClient) DeletePods(ctx context.Context, par zeus_pods_reqs.PodActio
 		SetBody(par).
 		Post(zeus_endpoints.PodsActionV1Path)
 
-	if err != nil || resp.StatusCode() != http.StatusOK {
-		log.Ctx(ctx).Err(err).Msg("ZeusClient: DeletePods")
+	if err != nil || resp.StatusCode() >= 400 {
+		log.Err(err).Msg("ZeusClient: DeletePods")
 		if err == nil {
 			err = fmt.Errorf("non-OK status code: %d", resp.StatusCode())
 		}
