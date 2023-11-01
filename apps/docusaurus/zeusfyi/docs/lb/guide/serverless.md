@@ -23,6 +23,7 @@ RPC Load Balancer on QuickNode Marketplace, truly all in one.
 - Each serverless execution environment lasts for up to 10 minutes max, but you can end early to release
 - Each environment contains an anvil service you can use for simulations/forks + automated smart contract ci/cd
 - Each user during beta can run up to 5 concurrent serverless execution environments for free.
+- It will automatically convert `hardhat_` prefixed rpc methods to the equivalent `anvil_` method
 
 ```mermaid
 flowchart TD
