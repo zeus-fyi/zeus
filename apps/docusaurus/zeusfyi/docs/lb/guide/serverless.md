@@ -65,22 +65,100 @@ You need to add a header with a unique session-id name of your choice, per each 
 
 ## What we show in under 60 seconds...
 
-##### Creating a local hardhat serverless session (no X-Route-Group header)
+### Creating a local hardhat serverless session (no X-Route-Group header)
 
-- Calls chain id to confirm local hardhat session
+- Calls `eth_chainId` to confirm local hardhat session
 
-##### Creating an ethereum serverless session (with X-Route-Group header)
+```curl
+curl --location 'https://iris.zeus.fyi/v1/router' \
+--header 'X-Anvil-Session-Lock-ID: local-hardhat-env' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer BEARER' \
+--data '{
+    "jsonrpc": "2.0",
+    "method": "eth_chainId",
+    "params": [],
+    "id": 1
+}' 
+```
 
-- Using a pinned block number
-- Using latest block number
+### Creating a mainnet serverless session (with X-Route-Group header)
 
-##### How to use the load balancer with your serverless session
+- Adds `X-Route-Group: ethereum-mainnet` header to the request
+- Creates a second serverless session with a different `X-Anvil-Session-Lock-ID` header
+
+```curl
+curl --location 'https://iris.zeus.fyi/v1/router' \
+--header 'X-Anvil-Session-Lock-ID: test-fork-mainnet' \
+--header 'X-Route-Group: ethereum-mainnet' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer BEARER' \
+--data '{
+    "jsonrpc": "2.0",
+    "method": "eth_chainId",
+    "params": [],
+    "id": 1
+}' 
+```
+
+### Creating an ethereum serverless session (with X-Route-Group header)
+
+#### Using a pinned block number
+
+```json
+{
+  "jsonrpc": "2.0",
+  "method": "anvil_reset",
+  "params": [
+    {
+      "forking": {
+        "jsonRpcUrl": "http://localhost:8545",
+        "blockNumber": 14390000
+      }
+    }
+  ],
+  "id": 1
+}
+```
+
+#### Using latest block number
+
+```json
+{
+  "jsonrpc": "2.0",
+  "method": "anvil_reset",
+  "params": [
+    {
+      "forking": {
+        "jsonRpcUrl": "http://localhost:8545"
+      }
+    }
+  ],
+  "id": 1
+}
+```
+
+#### Calls get block number to confirm session
+
+```json
+
+{
+  "jsonrpc": "2.0",
+  "method": "eth_blockNumber",
+  "params": [],
+  "id": 1
+}
+```
+
+#### How to use the load balancer with your serverless session
 
 - Using your pre-existing routing table header (eg. ethereum-mainnet)
 
-##### How to end your serverless session
+#### How to end your serverless session
 
-- By using X-End-Session-Lock-ID header with your session-id
+- By using a `X-End-Session-Lock-ID` header with your `X-Anvil-Session-Lock-ID` value
+
+## YouTube Walkthrough
 
 <iframe width="1000" height="700" src="https://www.youtube.com/embed/KXkFGW4DGPU?si=ESiYQWXlCj0g4Oqe" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
