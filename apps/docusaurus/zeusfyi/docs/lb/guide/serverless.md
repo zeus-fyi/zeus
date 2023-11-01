@@ -61,9 +61,7 @@ You need to add a header with a unique session-id name of your choice, per each 
             KEY: X-Route-Group
             VALUE: Table-Name (eg. ethereum-mainnet)
 
-## Demo
-
-What we show in under 60 seconds:
+## What we show in under 60 seconds...
 
 ##### Creating a local hardhat serverless session (no X-Route-Group header)
 
@@ -84,7 +82,7 @@ What we show in under 60 seconds:
 
 <iframe width="1000" height="700" src="https://www.youtube.com/embed/KXkFGW4DGPU?si=ESiYQWXlCj0g4Oqe" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
-### Top Reason to Use the Adaptive RPC Load Balancer?
+## Top Reason to Use the Adaptive RPC Load Balancer?
 
 There's many, but the top one? People are sick of hitting 429 rate limiting and 5xx errors. What's double worse is
 paying for the request that failed. So we set out to solve this problem.
