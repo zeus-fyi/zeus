@@ -262,10 +262,8 @@ func (w *Web3Actions) GetNodeInfo(ctx context.Context) (NodeInfo, error) {
 	if w.IsAnvilNode {
 		cmdValue = "anvil_nodeInfo"
 	}
-
-	var params []interface{}
 	var result NodeInfo
-	err := w.C.Client().CallContext(ctx, &result, cmdValue, params...)
+	err := w.C.Client().CallContext(ctx, &result, cmdValue)
 	if err != nil {
 		return result, err
 	}
