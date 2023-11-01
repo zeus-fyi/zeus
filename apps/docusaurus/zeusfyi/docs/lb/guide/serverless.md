@@ -16,7 +16,7 @@ your production traffic through our Adaptive RPC Load Balancer on QuickNode Mark
 
 ## Overview
 
-A serverless on-demand server that you can use your QuickNode, other providers, or even your own self-managed endpoints
+Serverless EVM environments that you can use your QuickNode, other providers, or even your own self-managed endpoints
 to run Tx simulations, smart contract CI/CD, while also even load balancing your production traffic through our Adaptive
 RPC Load Balancer on QuickNode Marketplace.
 
@@ -29,7 +29,7 @@ RPC Load Balancer on QuickNode Marketplace.
 
 ```mermaid
 flowchart TD
-    subgraph ServerlessEnvironment ["Serverless On-Demand Server"]
+    subgraph ServerlessEnvironment ["Serverless EVM"]
         User[("User\n(up to 5 concurrent environments)")] -->|Request with Header| Session
         Session[("Serverless Execution Environment\n(up to 10 minutes)")] --> AnvilService
         AnvilService[("Anvil Service\n(Simulations/Forks + CI/CD)")]
