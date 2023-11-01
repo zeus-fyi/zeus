@@ -18,7 +18,7 @@ import (
 const (
 	defaultProxyUrl        = "https://iris.zeus.fyi/v1/router"
 	proxyHeader            = "Proxy-Relay-To"
-	AnvilSessionLockHeader = "Anvil-Session-Lock-ID"
+	AnvilSessionLockHeader = "X-Anvil-Session-Lock-ID"
 	DurableExecutionID     = "Durable-Execution-ID"
 	EndSessionLockID       = "X-End-Session-Lock-ID"
 	RouteGroupHeader       = "X-Route-Group"
@@ -320,6 +320,16 @@ func (w *Web3Actions) SetBalance(ctx context.Context, address string, balance he
 		return err
 	}
 	return err
+}
+
+func (w *Web3Actions) SetRpcUrl(ctx context.Context, rpcUrl string) (any, error) {
+	var result any
+	err := w.C.Client().CallContext(ctx, &result, w.swapToAnvil("hardhat_setRpcUrl"), rpcUrl)
+	if err != nil {
+		zlog.Err(err).Msg("HardHatSetBalance error")
+		return result, err
+	}
+	return result, err
 }
 
 func (w *Web3Actions) SendRawTransaction(ctx context.Context, tx *types.Transaction) error {
