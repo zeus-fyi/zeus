@@ -2,9 +2,9 @@
 sidebar_position: 6
 ---
 
-# Serverless
+# Serverless EVM
 
-### Anvil EVM Sim Environment on Demand
+### Foundry's Anvil as an EVM Sim Environment on Demand
 
 ## Free Beta Access:
 
