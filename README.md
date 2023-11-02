@@ -8,7 +8,7 @@ https://docs.zeus.fyi
 Foundry’s Anvil as an EVM Simulation Environment on Demand.
 
 Democratizing access to simulation technology at scale  by lowering the cost of simulation to near zero.
-For safer smart contracts, less exploits, more robust engineering by using isolated ephemeral envrionments per each test.
+For safer smart contracts, less exploits, more robust engineering by using isolated ephemeral environments per each test.
 ![Screenshot 2023-11-02 at 11 52 38 AM](https://github.com/zeus-fyi/zeus/assets/17446735/5d6576d7-a734-48e7-a2e4-a8a0fd379752)
 
 https://medium.zeus.fyi/introducing-serverless-evms-0035549a5e7f
