@@ -14,9 +14,6 @@ import (
 	signing_automation_ethereum "github.com/zeus-fyi/zeus/pkg/artemis/web3/signing_automation/ethereum"
 )
 
-func EtherMultiple(multiple int) *big.Int {
-	return new(big.Int).Mul(big.NewInt(int64(multiple)), new(big.Int).SetUint64(1e18))
-}
 func CreateLocalUser(ctx context.Context, bearer, sessionID string) web3_actions.Web3Actions {
 	acc, err := accounts.CreateAccount()
 	if err != nil {
@@ -25,7 +22,7 @@ func CreateLocalUser(ctx context.Context, bearer, sessionID string) web3_actions
 	w3a := web3_actions.NewWeb3ActionsClientWithAccount(LoadBalancerAddress, acc)
 	w3a.AddAnvilSessionLockHeader(sessionID)
 	w3a.AddBearerToken(bearer)
-	nvB := (*hexutil.Big)(EtherMultiple(10000))
+	nvB := (*hexutil.Big)(smart_contract_library.EtherMultiple(10000))
 	w3a.Dial()
 	defer w3a.Close()
 	err = w3a.SetBalance(ctx, w3a.Address().String(), *nvB)

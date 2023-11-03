@@ -25,7 +25,6 @@ type AdaptiveRpcLoadBalancerExamplesTestSuite struct {
 func (s *AdaptiveRpcLoadBalancerExamplesTestSuite) SetupTest() {
 	// points dir to test/configs
 	s.Tc = configs.InitLocalTestConfigs()
-
 }
 
 func TestAdaptiveRpcLoadBalancerExamplesTestSuite(t *testing.T) {
