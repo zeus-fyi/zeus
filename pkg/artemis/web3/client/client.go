@@ -13,6 +13,7 @@ import (
 	"github.com/google/uuid"
 	zlog "github.com/rs/zerolog/log"
 	"github.com/zeus-fyi/gochain/web3/accounts"
+	"github.com/zeus-fyi/zeus/zeus/iris_programmable_proxy"
 )
 
 const (
@@ -38,6 +39,7 @@ const (
 type Web3Actions struct {
 	C *ethclient.Client
 	*accounts.Account
+	IrisClient       iris_programmable_proxy.Iris
 	Headers          map[string]string
 	NodeURL          string
 	RelayProxyUrl    string
@@ -163,6 +165,14 @@ func (w *Web3Actions) AddBearerToken(token string) {
 		w.Headers = make(map[string]string)
 	}
 	w.Headers["Authorization"] = "Bearer " + token
+	w.IrisClient = iris_programmable_proxy.NewIrisClient(token)
+}
+
+func (w *Web3Actions) EndAnvilSession() error {
+	if w.GetSessionLockHeader() != "" {
+		return w.IrisClient.EndServerlessEnvironment(w.GetSessionLockHeader())
+	}
+	return nil
 }
 
 func (w *Web3Actions) Close() {
@@ -175,30 +185,11 @@ func NewWeb3ActionsClient(nodeUrl string) Web3Actions {
 	}
 }
 
-func NewWeb3ActionsClientWithDefaultRelayProxy(nodeUrl string, accounts *accounts.Account) Web3Actions {
-	return Web3Actions{
-		NodeURL:       nodeUrl,
-		RelayProxyUrl: defaultProxyUrl,
-		Account:       accounts,
-	}
-}
-
-func NewWeb3ActionsClientWithRelayProxy(relayProxyUrl, nodeUrl string, accounts *accounts.Account) Web3Actions {
-	wa := Web3Actions{
-		NodeURL:       nodeUrl,
-		RelayProxyUrl: relayProxyUrl,
-		Account:       accounts,
-	}
-	wa.AddDefaultEthereumMainnetTableHeader()
-	return wa
-}
-
 func NewWeb3ActionsClientWithAccount(nodeUrl string, account *accounts.Account) Web3Actions {
 	wa := Web3Actions{
 		NodeURL: nodeUrl,
 		Account: account,
 	}
-	wa.AddDefaultEthereumMainnetTableHeader()
 	return wa
 }
 
@@ -347,6 +338,8 @@ func (w *Web3Actions) GetNumber(ctx context.Context, address string, blockNumber
 
 func (w *Web3Actions) GetBalance(ctx context.Context, address string, blockNumber *big.Int) (*big.Int, error) {
 	var result hexutil.Big
+	w.Dial()
+	defer w.C.Close()
 	err := w.C.Client().CallContext(ctx, &result, "eth_getBalance", accounts.HexToAddress(address), toBlockNumArg(blockNumber))
 	return (*big.Int)(&result), err
 }
