@@ -12,7 +12,7 @@ import (
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/rs/zerolog/log"
-	web3_types "github.com/zeus-fyi/gochain/web3/types"
+	web3_types "github.com/zeus-fyi/zeus/pkg/artemis/web3/types"
 )
 
 // DeployContract submits a contract creation transaction.
@@ -24,11 +24,12 @@ func (w *Web3Actions) DeployContract(ctx context.Context, binHex string, payload
 
 	signedTx, err := w.GetSignedDeployTxToCallFunctionWithArgs(ctx, binHex, &payload)
 	if err != nil {
-		log.Ctx(ctx).Err(err).Msg("DeployContract: Decode")
+		log.Err(err).Msg("DeployContract: Decode")
 		return nil, fmt.Errorf("cannot decode contract data: %v", err)
 	}
 	tx, err := w.SubmitSignedTxAndReturnTxData(ctx, signedTx)
 	if err != nil {
+		log.Err(err).Msg("DeployContract: SubmitSignedTxAndReturnTxData")
 		return nil, err
 	}
 	return tx, nil
@@ -89,19 +90,19 @@ func (w *Web3Actions) GetSignedDeployTxToCallFunctionWithArgs(ctx context.Contex
 	defer w.C.Close()
 	binData, err := hexutil.Decode(binHex)
 	if err != nil {
-		log.Ctx(ctx).Err(err).Msg("DeployContract: Decode")
+		log.Err(err).Msg("DeployContract: Decode")
 		return nil, fmt.Errorf("cannot decode contract data: %v", err)
 	}
 	if len(payload.Params) > 0 {
 		goParams, cerr := web3_types.ConvertArguments(payload.ContractABI.Constructor.Inputs, payload.Params)
 		if cerr != nil {
-			log.Ctx(ctx).Err(cerr).Msg("DeployContract: ConvertArguments")
+			log.Err(cerr).Msg("DeployContract: ConvertArguments")
 			return nil, cerr
 		}
 		input, perr := payload.ContractABI.Pack("", goParams...)
 		if perr != nil {
 			perr = fmt.Errorf("cannot pack parameters: %v", perr)
-			log.Ctx(ctx).Err(perr).Msg("DeployContract: ConvertArguments")
+			log.Err(perr).Msg("DeployContract: ConvertArguments")
 			return nil, perr
 		}
 		binData = append(binData, input...)
@@ -124,7 +125,7 @@ func (w *Web3Actions) GetSignedTxToDeploySmartContract(ctx context.Context, payl
 	}
 	err = w.SuggestAndSetGasPriceAndLimitForTx(ctx, payload, common.HexToAddress(payload.ToAddress.Hex()))
 	if err != nil {
-		log.Ctx(ctx).Err(err).Msg("Web3Actions: Transfer: SetGasPriceAndLimit")
+		log.Err(err).Msg("Web3Actions: Transfer: SetGasPriceAndLimit")
 		return nil, err
 	}
 	var chainID *big.Int
@@ -133,6 +134,8 @@ func (w *Web3Actions) GetSignedTxToDeploySmartContract(ctx context.Context, payl
 		chainID = new(big.Int).SetInt64(1)
 	case "goerli":
 		chainID = new(big.Int).SetInt64(5)
+	case "hardhat", "anvil":
+		chainID = new(big.Int).SetInt64(31337)
 	default:
 		chainID, err = w.C.ChainID(ctx)
 		if err != nil {
@@ -144,12 +147,12 @@ func (w *Web3Actions) GetSignedTxToDeploySmartContract(ctx context.Context, payl
 	fromAddress := crypto.PubkeyToAddress(*publicKeyECDSA)
 	nonce, err := w.C.PendingNonceAt(ctx, fromAddress)
 	if err != nil {
-		log.Ctx(ctx).Err(err).Msg("CallFunctionWithData: GetPendingTransactionCount")
+		log.Err(err).Msg("CallFunctionWithData: GetPendingTransactionCount")
 		return nil, fmt.Errorf("cannot get nonce: %v", err)
 	}
 	baseTx := &types.DynamicFeeTx{
 		Nonce:     nonce,
-		GasFeeCap: payload.GasPrice,
+		GasFeeCap: payload.GasFeeCap,
 		GasTipCap: payload.GasTipCap,
 		Gas:       payload.GasLimit,
 		Value:     payload.Amount,
@@ -159,7 +162,7 @@ func (w *Web3Actions) GetSignedTxToDeploySmartContract(ctx context.Context, payl
 	signedTx, err := types.SignTx(tx, types.LatestSignerForChainID(chainID), w.EcdsaPrivateKey())
 	if err != nil {
 		err = fmt.Errorf("cannot sign transaction: %v", err)
-		log.Ctx(ctx).Err(err).Msg("CallFunctionWithData: SignTx")
+		log.Err(err).Msg("CallFunctionWithData: SignTx")
 		return nil, err
 	}
 	return signedTx, err
