@@ -53,7 +53,6 @@ func (s *AdaptiveRpcLoadBalancerExamplesTestSuite) TestHardhatLocalNetwork() {
 	// deploy a contract
 	ether := big.NewInt(1e18)
 	mintAmount := new(big.Int).Mul(big.NewInt(10000000), ether)
-	s.Web3Actions.Network = "hardhat"
 
 	pubkey := s.Web3Actions.Address().String()
 	etherBalance, err := s.Web3Actions.GetBalance(ctx, pubkey, nil)
