@@ -6,6 +6,7 @@ import (
 	"math/big"
 
 	"github.com/google/uuid"
+	"github.com/zeus-fyi/gochain/web3/accounts"
 	"github.com/zeus-fyi/zeus/examples/adaptive_rpc_load_balancer/smart_contract_library"
 	web3_actions "github.com/zeus-fyi/zeus/pkg/artemis/web3/client"
 	signing_automation_ethereum "github.com/zeus-fyi/zeus/pkg/artemis/web3/signing_automation/ethereum"
@@ -42,8 +43,8 @@ func (s *AdaptiveRpcLoadBalancerExamplesTestSuite) setupMintToken(mintAmount *bi
 	return byteCode, tokenPayload
 }
 
-// TestHardhatLocalNetwork deploys an erc20 token contract that mints tokens to the deployer's account
-func (s *AdaptiveRpcLoadBalancerExamplesTestSuite) TestHardhatLocalNetwork() {
+// TestDeployContractToHardhatLocalNetwork deploys an erc20 token contract that mints tokens to the deployer's account
+func (s *AdaptiveRpcLoadBalancerExamplesTestSuite) TestDeployContractToHardhatLocalNetwork() {
 	sessionID := fmt.Sprintf("%s-%s", "local-network-session", uuid.New().String())
 	s.Web3Actions.AddAnvilSessionLockHeader(sessionID)
 
@@ -78,4 +79,45 @@ func (s *AdaptiveRpcLoadBalancerExamplesTestSuite) TestHardhatLocalNetwork() {
 	s.Require().Nil(err)
 	s.Assert().NotZero(tokenBalance)
 	s.Assert().Equal(mintAmount.String(), tokenBalance.String())
+}
+
+func (s *AdaptiveRpcLoadBalancerExamplesTestSuite) TestSendEther() {
+	sessionID := fmt.Sprintf("%s-%s", "local-network-send-ether", uuid.New().String())
+	s.Web3Actions.AddAnvilSessionLockHeader(sessionID)
+
+	defer func(sessionID string) {
+		err := s.Web3Actions.EndAnvilSession()
+		s.Require().Nil(err)
+	}(sessionID)
+	ether := big.NewInt(1e18)
+
+	pubkey := s.Web3Actions.Address().String()
+	etherBalance, err := s.Web3Actions.GetBalance(ctx, pubkey, nil)
+	s.Require().Nil(err)
+	s.Require().NotZero(etherBalance.Int64())
+
+	// send 1 ether to the 's account
+	secondAcct := accounts.StringToAddress("0x70997970C51812dc3A010C7d01b50e0d17dc79C8")
+	etherBalanceSecondAcct, err := s.Web3Actions.GetBalance(ctx, secondAcct.String(), nil)
+	s.Require().Nil(err)
+
+	params := web3_actions.SendEtherPayload{
+		TransferArgs: web3_actions.TransferArgs{
+			Amount:    ether,
+			ToAddress: secondAcct,
+		},
+		GasPriceLimits: web3_actions.GasPriceLimits{
+			GasLimit:  21000,
+			GasTipCap: big.NewInt(100000000),
+			GasFeeCap: big.NewInt(1000000000 * 2),
+		},
+	}
+	tx, err := s.Web3Actions.Send(ctx, params)
+	s.Require().Nil(err)
+	s.Require().NotNil(tx)
+
+	expBal := new(big.Int).Add(etherBalanceSecondAcct, ether)
+	newBalSecondAcct, err := s.Web3Actions.GetBalance(ctx, secondAcct.String(), nil)
+	s.Require().Nil(err)
+	s.Assert().Equal(expBal.String(), newBalSecondAcct.String())
 }
