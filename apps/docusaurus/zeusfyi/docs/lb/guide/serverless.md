@@ -156,8 +156,10 @@ curl --location 'https://iris.zeus.fyi/v1/router' \
 
 #### How to end your serverless session
 
-- By using a `X-End-Session-Lock-ID` header with your `X-Anvil-Session-Lock-ID` value
+Either way works. We prefer the first way.
 
+- By using a `DELETE` request to `https://iris.zeus.fyi/v1/serverless/{session-id}`
+- By using a `X-End-Session-Lock-ID` header with your `X-Anvil-Session-Lock-ID` value
 ## YouTube Walkthrough
 
 <iframe width="1000" height="700" src="https://www.youtube.com/embed/KXkFGW4DGPU?si=ESiYQWXlCj0g4Oqe" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
