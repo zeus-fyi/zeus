@@ -1,16 +1,39 @@
 package adaptive_rpc_load_balancer_examples
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"math/big"
 
+	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/google/uuid"
 	"github.com/zeus-fyi/gochain/web3/accounts"
 	"github.com/zeus-fyi/zeus/examples/adaptive_rpc_load_balancer/smart_contract_library"
 	web3_actions "github.com/zeus-fyi/zeus/pkg/artemis/web3/client"
 	signing_automation_ethereum "github.com/zeus-fyi/zeus/pkg/artemis/web3/signing_automation/ethereum"
 )
+
+func EtherMultiple(multiple int) *big.Int {
+	return new(big.Int).Mul(big.NewInt(int64(multiple)), new(big.Int).SetUint64(1e18))
+}
+func CreateLocalUser(ctx context.Context, bearer, sessionID string) web3_actions.Web3Actions {
+	acc, err := accounts.CreateAccount()
+	if err != nil {
+		panic(err)
+	}
+	w3a := web3_actions.NewWeb3ActionsClientWithAccount(LoadBalancerAddress, acc)
+	w3a.AddAnvilSessionLockHeader(sessionID)
+	w3a.AddBearerToken(bearer)
+	nvB := (*hexutil.Big)(EtherMultiple(10000))
+	w3a.Dial()
+	defer w3a.Close()
+	err = w3a.SetBalance(ctx, w3a.Address().String(), *nvB)
+	if err != nil {
+		panic(err)
+	}
+	return w3a
+}
 
 func (s *AdaptiveRpcLoadBalancerExamplesTestSuite) setupMintToken(mintAmount *big.Int) (string, web3_actions.SendContractTxPayload) {
 	// mintable contract
@@ -45,60 +68,62 @@ func (s *AdaptiveRpcLoadBalancerExamplesTestSuite) setupMintToken(mintAmount *bi
 
 // TestDeployContractToHardhatLocalNetwork deploys an erc20 token contract that mints tokens to the deployer's account
 func (s *AdaptiveRpcLoadBalancerExamplesTestSuite) TestDeployContractToHardhatLocalNetwork() {
+	s.T().Parallel()
 	sessionID := fmt.Sprintf("%s-%s", "local-network-session", uuid.New().String())
-	s.Web3Actions.AddAnvilSessionLockHeader(sessionID)
-
+	w3a := CreateLocalUser(ctx, s.Tc.Bearer, sessionID)
 	defer func(sessionID string) {
-		err := s.Web3Actions.EndAnvilSession()
+		err := w3a.EndAnvilSession()
 		s.Require().Nil(err)
 	}(sessionID)
+
 	// deploy a contract with these params in the constructor, minting 10 million tokens to the deployer's account
 	ether := big.NewInt(1e18)
 	mintAmount := new(big.Int).Mul(big.NewInt(10000000), ether)
 
-	pubkey := s.Web3Actions.Address().String()
-	etherBalance, err := s.Web3Actions.GetBalance(ctx, pubkey, nil)
+	pubkey := w3a.Address().String()
+	etherBalance, err := w3a.GetBalance(ctx, pubkey, nil)
 	s.Require().Nil(err)
 	s.Require().NotZero(etherBalance.Int64())
 
 	byteCode, tokenPayload := s.setupMintToken(mintAmount)
-	tx, err := s.Web3Actions.GetSignedDeployTxToCallFunctionWithArgs(ctx, byteCode, &tokenPayload)
+	tx, err := w3a.GetSignedDeployTxToCallFunctionWithArgs(ctx, byteCode, &tokenPayload)
 	s.Require().Nil(err)
 	s.Require().NotNil(tx)
 
-	err = s.Web3Actions.SendSignedTransaction(ctx, tx)
+	err = w3a.SendSignedTransaction(ctx, tx)
 	s.Require().Nil(err)
 
-	rx, err := s.Web3Actions.GetTxReceipt(ctx, tx.Hash().String())
+	rx, err := w3a.GetTxReceipt(ctx, tx.Hash().String())
 	s.Require().NotNil(rx)
 	s.Require().Nil(err)
 
 	scAddr := rx.ContractAddress.String()
 
-	tokenBalance, err := s.Web3Actions.ReadERC20TokenBalance(ctx, scAddr, s.Web3Actions.Address().String())
+	tokenBalance, err := w3a.ReadERC20TokenBalance(ctx, scAddr, w3a.Address().String())
 	s.Require().Nil(err)
 	s.Assert().NotZero(tokenBalance)
 	s.Assert().Equal(mintAmount.String(), tokenBalance.String())
 }
 
 func (s *AdaptiveRpcLoadBalancerExamplesTestSuite) TestSendEther() {
+	s.T().Parallel()
 	sessionID := fmt.Sprintf("%s-%s", "local-network-send-ether", uuid.New().String())
-	s.Web3Actions.AddAnvilSessionLockHeader(sessionID)
 
+	w3a := CreateLocalUser(ctx, s.Tc.Bearer, sessionID)
 	defer func(sessionID string) {
-		err := s.Web3Actions.EndAnvilSession()
+		err := w3a.EndAnvilSession()
 		s.Require().Nil(err)
 	}(sessionID)
 	ether := big.NewInt(1e18)
 
-	pubkey := s.Web3Actions.Address().String()
-	etherBalance, err := s.Web3Actions.GetBalance(ctx, pubkey, nil)
+	pubkey := w3a.Address().String()
+	etherBalance, err := w3a.GetBalance(ctx, pubkey, nil)
 	s.Require().Nil(err)
 	s.Require().NotZero(etherBalance.Int64())
 
 	// send 1 ether to the 's account
 	secondAcct := accounts.StringToAddress("0x70997970C51812dc3A010C7d01b50e0d17dc79C8")
-	etherBalanceSecondAcct, err := s.Web3Actions.GetBalance(ctx, secondAcct.String(), nil)
+	etherBalanceSecondAcct, err := w3a.GetBalance(ctx, secondAcct.String(), nil)
 	s.Require().Nil(err)
 
 	params := web3_actions.SendEtherPayload{
@@ -112,12 +137,12 @@ func (s *AdaptiveRpcLoadBalancerExamplesTestSuite) TestSendEther() {
 			GasFeeCap: big.NewInt(1000000000 * 2),
 		},
 	}
-	tx, err := s.Web3Actions.Send(ctx, params)
+	tx, err := w3a.Send(ctx, params)
 	s.Require().Nil(err)
 	s.Require().NotNil(tx)
 
 	expBal := new(big.Int).Add(etherBalanceSecondAcct, ether)
-	newBalSecondAcct, err := s.Web3Actions.GetBalance(ctx, secondAcct.String(), nil)
+	newBalSecondAcct, err := w3a.GetBalance(ctx, secondAcct.String(), nil)
 	s.Require().Nil(err)
 	s.Assert().Equal(expBal.String(), newBalSecondAcct.String())
 }
