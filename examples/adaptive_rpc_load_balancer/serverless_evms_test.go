@@ -42,6 +42,7 @@ func (s *AdaptiveRpcLoadBalancerExamplesTestSuite) setupMintToken(mintAmount *bi
 	return byteCode, tokenPayload
 }
 
+// TestHardhatLocalNetwork deploys an erc20 token contract that mints tokens to the deployer's account
 func (s *AdaptiveRpcLoadBalancerExamplesTestSuite) TestHardhatLocalNetwork() {
 	sessionID := fmt.Sprintf("%s-%s", "local-network-session", uuid.New().String())
 	s.Web3Actions.AddAnvilSessionLockHeader(sessionID)
@@ -50,7 +51,7 @@ func (s *AdaptiveRpcLoadBalancerExamplesTestSuite) TestHardhatLocalNetwork() {
 		err := s.Web3Actions.EndAnvilSession()
 		s.Require().Nil(err)
 	}(sessionID)
-	// deploy a contract
+	// deploy a contract with these params in the constructor, minting 10 million tokens to the deployer's account
 	ether := big.NewInt(1e18)
 	mintAmount := new(big.Int).Mul(big.NewInt(10000000), ether)
 
