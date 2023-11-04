@@ -156,11 +156,217 @@ curl --location 'https://iris.zeus.fyi/v1/router' \
 
 #### How to end your serverless session
 
-- By using a `X-End-Session-Lock-ID` header with your `X-Anvil-Session-Lock-ID` value
+Either way works. We prefer the first way.
 
+- By using a `DELETE` request to `https://iris.zeus.fyi/v1/serverless/{session-id}`
+- By using a `X-End-Session-Lock-ID` header with your `X-Anvil-Session-Lock-ID` value
 ## YouTube Walkthrough
 
 <iframe width="1000" height="700" src="https://www.youtube.com/embed/KXkFGW4DGPU?si=ESiYQWXlCj0g4Oqe" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+## Unit Testing Smart Contracts in Golang
+
+Using the serverless sessions allows you to run smart contracts tests fully in parallel.
+
+- Both tests shown below complete in ~1.6s
+
+### How to use serverless sessions in your tests efficiently
+
+Using a test name id + a unique id to prevent accidental session collisions. Then calling defer on releasing the session,
+so you can use it for the next test.
+
+```go
+	sessionID := fmt.Sprintf("%s-%s", "local-network-session", uuid.New().String())
+	w3a := CreateLocalUser(ctx, s.Tc.Bearer, sessionID)
+	defer func(sessionID string) {
+		err := w3a.EndAnvilSession()
+		s.Require().Nil(err)
+	}(sessionID)
+```
+
+### How to end the session on completion
+```go
+func (i *Iris) EndServerlessEnvironment(sessionID string) error {
+	resp, err := i.R().
+		Delete(fmt.Sprintf("/v1/serverless/%s", sessionID))
+	if err != nil {
+		log.Err(err).Msg("EndServerlessSession failed")
+		return err
+	}
+	if resp.StatusCode() >= 400 {
+		err = fmt.Errorf("EndServerlessSession: status code: %d", resp.StatusCode())
+		log.Err(err).Msg("EndServerlessSession failed")
+		return err
+	}
+	return nil
+}
+```
+
+## Test Suite Setup
+
+```go
+const (
+    LoadBalancerAddress = "https://iris.zeus.fyi/v1/router"
+)
+
+var ctx = context.Background()
+
+type AdaptiveRpcLoadBalancerExamplesTestSuite struct {
+    test_suites.BaseTestSuite
+    Tc configs.TestContainer
+}
+
+func (s *AdaptiveRpcLoadBalancerExamplesTestSuite) SetupTest() {
+// points dir to test/configs
+    s.Tc = configs.InitLocalTestConfigs()
+}
+
+func CreateLocalUser(ctx context.Context, bearer, sessionID string) web3_actions.Web3Actions {
+    acc, err := accounts.CreateAccount()
+    if err != nil {
+        panic(err)
+    }
+    w3a := web3_actions.NewWeb3ActionsClientWithAccount(LoadBalancerAddress, acc)
+    w3a.AddAnvilSessionLockHeader(sessionID)
+    w3a.AddBearerToken(bearer)
+    nvB := (*hexutil.Big)(smart_contract_library.EtherMultiple(10000))
+    w3a.Dial()
+    defer w3a.Close()
+    err = w3a.SetBalance(ctx, w3a.Address().String(), *nvB)
+    if err != nil {
+        panic(err)
+    }
+    return w3a
+}
+
+func TestAdaptiveRpcLoadBalancerExamplesTestSuite(t *testing.T) {
+    suite.Run(t, new(AdaptiveRpcLoadBalancerExamplesTestSuite))
+}
+```
+
+## Sets up a mintable contract
+
+```go
+func (s *AdaptiveRpcLoadBalancerExamplesTestSuite) setupMintToken(mintAmount *big.Int) (string, web3_actions.SendContractTxPayload) {
+    // mintable contract
+    abiDefAndByteCode := smart_contract_library.TokenJson
+    m := make(map[string]interface{})
+    err := json.Unmarshal([]byte(abiDefAndByteCode), &m)
+    s.Assert().Nil(err)
+    
+    s.Require().NotNil(m["abi"])
+    s.Require().NotNil(m["bytecode"])
+    abiDef := m["abi"]
+    
+    abiBin, err := json.Marshal(abiDef)
+    s.Assert().Nil(err)
+    
+    byteCode := m["bytecode"].(string)
+    abiFile := signing_automation_ethereum.MustReadAbiString(ctx, string(abiBin))
+    tokenPayload := web3_actions.SendContractTxPayload{
+        SendEtherPayload: web3_actions.SendEtherPayload{
+            GasPriceLimits: web3_actions.GasPriceLimits{
+                GasLimit:  5000000,
+                GasTipCap: big.NewInt(100000000),
+                GasFeeCap: big.NewInt(1000000000 * 2),
+        },
+    },
+        ContractABI: abiFile,
+        Params:      []interface{}{mintAmount},
+    }
+
+    return byteCode, tokenPayload
+}
+```
+
+### Deploys a mintable contract via pre-compiled binary string
+
+```go
+// TestDeployContractToHardhatLocalNetwork deploys an erc20 token contract that mints tokens to the deployer's account
+func (s *AdaptiveRpcLoadBalancerExamplesTestSuite) TestDeployContractToHardhatLocalNetwork() {
+    s.T().Parallel()
+    sessionID := fmt.Sprintf("%s-%s", "local-network-session", uuid.New().String())
+    w3a := CreateLocalUser(ctx, s.Tc.Bearer, sessionID)
+    defer func (sessionID string) {
+        err := w3a.EndAnvilSession()
+        s.Require().Nil(err)
+    }(sessionID)
+    
+    // deploy a contract with these params in the constructor, minting 10 million tokens to the deployer's account
+    ether := big.NewInt(1e18)
+    mintAmount := new(big.Int).Mul(big.NewInt(10000000), ether)
+    
+    pubkey := w3a.Address().String()
+    etherBalance, err := w3a.GetBalance(ctx, pubkey, nil)
+    s.Require().Nil(err)
+    s.Require().NotZero(etherBalance.Int64())
+    
+    byteCode, tokenPayload := s.setupMintToken(mintAmount)
+    tx, err := w3a.GetSignedDeployTxToCallFunctionWithArgs(ctx, byteCode, &tokenPayload)
+    s.Require().Nil(err)
+    s.Require().NotNil(tx)
+    
+    err = w3a.SendSignedTransaction(ctx, tx)
+    s.Require().Nil(err)
+    
+    rx, err := w3a.GetTxReceipt(ctx, tx.Hash().String())
+    s.Require().NotNil(rx)
+    s.Require().Nil(err)
+    
+    scAddr := rx.ContractAddress.String()
+    
+    tokenBalance, err := w3a.ReadERC20TokenBalance(ctx, scAddr, w3a.Address().String())
+    s.Require().Nil(err)
+    s.Assert().NotZero(tokenBalance)
+    s.Assert().Equal(mintAmount.String(), tokenBalance.String())
+}
+```
+
+### Sends Ether to another user
+
+```go
+func (s *AdaptiveRpcLoadBalancerExamplesTestSuite) TestSendEther() {
+    s.T().Parallel()
+    sessionID := fmt.Sprintf("%s-%s", "local-network-send-ether", uuid.New().String())
+    
+    w3a := CreateLocalUser(ctx, s.Tc.Bearer, sessionID)
+    defer func (sessionID string) {
+        err := w3a.EndAnvilSession()
+        s.Require().Nil(err)
+    }(sessionID)
+    ether := big.NewInt(1e18)
+    
+    pubkey := w3a.Address().String()
+    etherBalance, err := w3a.GetBalance(ctx, pubkey, nil)
+    s.Require().Nil(err)
+    s.Require().NotZero(etherBalance.Int64())
+    
+    // send 1 ether to the 's account
+    secondAcct := accounts.StringToAddress("0x70997970C51812dc3A010C7d01b50e0d17dc79C8")
+    etherBalanceSecondAcct, err := w3a.GetBalance(ctx, secondAcct.String(), nil)
+    s.Require().Nil(err)
+    
+    params := web3_actions.SendEtherPayload{
+        TransferArgs: web3_actions.TransferArgs{
+            Amount:    ether,
+            ToAddress: secondAcct,
+		},
+            GasPriceLimits: web3_actions.GasPriceLimits{
+            GasLimit:  21000,
+            GasTipCap: big.NewInt(100000000),
+            GasFeeCap: big.NewInt(1000000000 * 2),
+		},
+    }
+    tx, err := w3a.Send(ctx, params)
+    s.Require().Nil(err)
+    s.Require().NotNil(tx)
+    
+    expBal := new(big.Int).Add(etherBalanceSecondAcct, ether)
+    newBalSecondAcct, err := w3a.GetBalance(ctx, secondAcct.String(), nil)
+    s.Require().Nil(err)
+    s.Assert().Equal(expBal.String(), newBalSecondAcct.String())
+}
+```
 
 ## Top Reason to Use the Adaptive RPC Load Balancer?
 

@@ -25,10 +25,12 @@ func (w *Web3Actions) GetSignedSendTx(ctx context.Context, params SendEtherPaylo
 		chainID = new(big.Int).SetInt64(1)
 	case "goerli":
 		chainID = new(big.Int).SetInt64(5)
+	case "hardhat", "local", "anvil":
+		chainID = new(big.Int).SetInt64(31337)
 	default:
 		chainID, err = w.C.ChainID(ctx)
 		if err != nil {
-			log.Ctx(ctx).Err(err).Msg("CallFunctionWithData: GetChainID")
+			log.Err(err).Msg("CallFunctionWithData: GetChainID")
 			return nil, fmt.Errorf("couldn't get chain ID: %v", err)
 		}
 	}
@@ -40,12 +42,11 @@ func (w *Web3Actions) GetSignedSendTx(ctx context.Context, params SendEtherPaylo
 				ToAddress: params.ToAddress,
 				Amount:    params.Amount,
 			},
-			GasPriceLimits: params.GasPriceLimits,
 		},
 	}
 	err = w.SuggestAndSetGasPriceAndLimitForTx(ctx, payload, common.HexToAddress(params.ToAddress.Hex()))
 	if err != nil {
-		log.Ctx(ctx).Err(err).Msg("Send: SuggestAndSetGasPriceAndLimitForTx")
+		log.Err(err).Msg("Send: SuggestAndSetGasPriceAndLimitForTx")
 		return nil, err
 	}
 	nonceOffset := GetNonceOffset(ctx)
@@ -60,7 +61,7 @@ func (w *Web3Actions) GetSignedSendTx(ctx context.Context, params SendEtherPaylo
 	tx := types.NewTx(baseTx)
 	signedTx, err := types.SignTx(tx, types.LatestSignerForChainID(chainID), w.EcdsaPrivateKey())
 	if err != nil {
-		log.Ctx(ctx).Err(err).Msg("Send: SignTx")
+		log.Err(err).Msg("Send: SignTx")
 		return nil, fmt.Errorf("cannot sign transaction: %v", err)
 	}
 	return signedTx, err
