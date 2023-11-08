@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	"github.com/rs/zerolog/log"
-	cluster_node_resources "github.com/zeus-fyi/zeus/zeus/cluster_resources/nodes"
+	"github.com/zeus-fyi/zeus/zeus/cluster_resources/nodes"
 	zeus_client "github.com/zeus-fyi/zeus/zeus/z_client"
 	zeus_endpoints "github.com/zeus-fyi/zeus/zeus/z_client/endpoints"
 	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_resp_types"
@@ -21,7 +21,7 @@ type SystemDefinition struct {
 	// eg 10 ethereum beacons, 3 databases, 5 validator clusters, etc
 	// at supplied cloud ctx ns locations
 	Matrices []MatrixDefinition
-	Nodes    cluster_node_resources.NodesGroup
+	Nodes    nodes.NodeGroup
 }
 
 func (z *SystemDefinition) RegisterSystemDefinition(ctx context.Context, tar any) (any, error) {

@@ -6,7 +6,7 @@ import (
 
 	"github.com/rs/zerolog/log"
 	zeus_cluster_config_drivers "github.com/zeus-fyi/zeus/zeus/cluster_config_drivers"
-	cluster_node_resources "github.com/zeus-fyi/zeus/zeus/cluster_resources/nodes"
+	"github.com/zeus-fyi/zeus/zeus/cluster_resources/nodes"
 	zeus_client "github.com/zeus-fyi/zeus/zeus/z_client"
 	zeus_endpoints "github.com/zeus-fyi/zeus/zeus/z_client/endpoints"
 	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_resp_types"
@@ -18,7 +18,7 @@ type MatrixDefinition struct {
 
 	// multi cluster setup, eg 10 ethereum beacons, at supplied cloud ctx ns locations
 	Clusters []zeus_cluster_config_drivers.ClusterDefinition
-	Nodes    cluster_node_resources.NodesGroup
+	Nodes    nodes.NodeGroup
 }
 
 // todo, finish this

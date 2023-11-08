@@ -3,7 +3,8 @@ package nodes
 import v1 "k8s.io/api/core/v1"
 
 type NodeGroup struct {
-	Taints []v1.Taint `json:"taints,omitempty"`
+	NodesSlice NodesSlice `json:"nodesSlice"`
+	Taints     []v1.Taint `json:"taints,omitempty"`
 }
 
 type Node struct {
