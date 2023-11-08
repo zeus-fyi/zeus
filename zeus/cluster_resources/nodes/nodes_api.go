@@ -6,7 +6,6 @@ import (
 
 	"github.com/rs/zerolog/log"
 	zeus_client "github.com/zeus-fyi/zeus/zeus/z_client"
-	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_resp_types"
 )
 
 const (
@@ -31,13 +30,19 @@ type ResourceAggregate struct {
 	CpuRequests  string  `json:"cpuRequests"`
 }
 
+type NodeSearchRequest struct {
+	NodeSearchParams `json:"nodeSearchParams"`
+}
+
 func GetNodes(ctx context.Context, z zeus_client.ZeusClient, searchParams NodeSearchParams) (any, error) {
 	z.PrintReqJson(searchParams)
-	var respBody []Node
-	respJson := zeus_resp_types.DeployStatus{}
+	respJson := NodesSlice{}
+	req := NodeSearchRequest{
+		NodeSearchParams: searchParams,
+	}
 	resp, err := z.R().
 		SetResult(&respJson).
-		SetBody(&respBody).
+		SetBody(&req).
 		Post(searchNodesEndpoint)
 
 	if err != nil || resp.StatusCode() >= 400 {
