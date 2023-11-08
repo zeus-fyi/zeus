@@ -3,7 +3,6 @@ package system_config_drivers
 import (
 	"context"
 	"fmt"
-	"net/http"
 
 	"github.com/rs/zerolog/log"
 	"github.com/zeus-fyi/zeus/zeus/cluster_resources/nodes"
@@ -33,11 +32,11 @@ func (z *SystemDefinition) RegisterSystemDefinition(ctx context.Context, tar any
 		SetBody(tar).
 		Post(zeus_endpoints.InfraCreateSystemV1Path)
 
-	if err != nil || (resp.StatusCode() != http.StatusAccepted && resp.StatusCode() != http.StatusOK) {
+	if err != nil || (resp.StatusCode() >= 400) {
 		if err == nil {
 			err = fmt.Errorf("non-OK status code: %d", resp.StatusCode())
 		}
-		log.Ctx(ctx).Err(err).Msg("ZeusClient: RegisterSystemDefinition")
+		log.Err(err).Msg("ZeusClient: RegisterSystemDefinition")
 		return respJson, err
 	}
 	z.PrintRespJson(resp.Body())
