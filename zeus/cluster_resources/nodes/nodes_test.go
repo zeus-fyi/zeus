@@ -1,6 +1,7 @@
 package nodes
 
 import (
+	"context"
 	"testing"
 
 	"github.com/stretchr/testify/suite"
@@ -12,14 +13,18 @@ import (
 
 type NodesConfigTestSuite struct {
 	test_suites.BaseTestSuite
-	ZeusTestClient zeus_client.ZeusClient
+	ZeusTestClient      zeus_client.ZeusClient
+	ZeusLocalTestClient zeus_client.ZeusClient
 }
+
+var ctx = context.Background()
 
 func (t *NodesConfigTestSuite) SetupTest() {
 	// points dir to test/configs
 	tc := configs.InitLocalTestConfigs()
 
 	t.ZeusTestClient = zeus_client.NewDefaultZeusClient(tc.Bearer)
+	t.ZeusLocalTestClient = zeus_client.NewZeusClient("http://localhost:9001", tc.Bearer)
 	// points dir to cookbooks
 	cookbooks.ChangeToCookbookDir()
 }

@@ -15,7 +15,6 @@ import (
 
 type MatrixDefinition struct {
 	zeus_client.ZeusClient
-	Id         int
 	MatrixName string
 
 	// multi cluster setup, eg 10 ethereum beacons, at supplied cloud ctx ns locations
