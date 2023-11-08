@@ -14,10 +14,9 @@ const (
 )
 
 type NodeSearchParams struct {
-	CloudProvider  string         `json:"cloudProvider,omitempty"`
-	CloudRegion    string         `json:"region,omitempty"`
-	DiskType       string         `json:"diskType,omitempty"`
-	ResourceMinMax ResourceMinMax `json:"resourceMinMax,omitempty"`
+	CloudProviderRegions map[string][]string `json:"cloudProviderRegions"`
+	DiskType             string              `json:"diskType,omitempty"`
+	ResourceMinMax       ResourceMinMax      `json:"resourceMinMax,omitempty"`
 }
 
 type ResourceMinMax struct {
@@ -26,9 +25,10 @@ type ResourceMinMax struct {
 }
 
 type ResourceAggregate struct {
-	Price       float64 `json:"price"`
-	MemRequests string  `json:"memRequests"`
-	CpuRequests string  `json:"cpuRequests"`
+	MonthlyPrice float64 `json:"monthlyPrice,omitempty"`
+	HourlyPrice  float64 `json:"hourlyPrice,omitempty"`
+	MemRequests  string  `json:"memRequests"`
+	CpuRequests  string  `json:"cpuRequests"`
 }
 
 func GetNodes(ctx context.Context, z zeus_client.ZeusClient, searchParams NodeSearchParams) (any, error) {

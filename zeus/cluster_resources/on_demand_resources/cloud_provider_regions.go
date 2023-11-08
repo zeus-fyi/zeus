@@ -1,5 +1,16 @@
 package on_demand_resources
 
-var AwsRegions = map[string]string{
-	"us-west-1": "s",
+var CloudProviderRegions = map[string][]string{
+	"aws": {
+		"us-west-1",
+	},
+	"do": {
+		"nyc1",
+	},
+	"gcp": {
+		"us-central1",
+	},
+	"ovh": {
+		"us-west-or-1",
+	},
 }
