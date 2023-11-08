@@ -13,6 +13,13 @@ For safer smart contracts, less exploits, more robust engineering by using isola
 
 https://medium.zeus.fyi/introducing-serverless-evms-0035549a5e7f
 
+## Secret Sauce: Running Ethereum Validators at Scale for Pennies
+Why run them any other way after you’ve read this?
+
+![Screenshot 2023-11-03 at 2 06 34 PM](https://github.com/zeus-fyi/zeus/assets/17446735/b710b0ae-a7ca-468e-ba9d-0dce65d964b9)
+
+https://medium.com/zeusfyi/secret-sauce-running-ethereum-validators-at-scale-for-pennies-24ac8dad4efd
+
 ## Automating Validator Status Management in Ethereum in SQL
 Using SQL Triggers and Relational States Compliant with Enforcing Consensus Spec
 
