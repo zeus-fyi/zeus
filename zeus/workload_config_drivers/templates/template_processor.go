@@ -8,7 +8,9 @@ import (
 	zeus_topology_config_drivers "github.com/zeus-fyi/zeus/zeus/workload_config_drivers"
 	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_req_types"
 	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_resp_types/topology_workloads"
-	v1 "k8s.io/api/core/v1"
+	"k8s.io/api/core/v1"
+
+	v1Apps "k8s.io/api/apps/v1"
 )
 
 type ClusterPreviewWorkloads struct {
@@ -19,6 +21,23 @@ type ClusterPreviewWorkloads struct {
 type ClusterPreviewWorkloadsOlympus struct {
 	ClusterName    string                    `json:"clusterName"`
 	ComponentBases map[string]map[string]any `json:"componentBases"`
+}
+
+type WorkloadDefinition struct {
+	WorkloadName string
+	ReplicaCount int
+	Containers   Containers
+}
+
+func GenerateDeployment(ctx context.Context, wd WorkloadDefinition) (*v1Apps.Deployment, error) {
+	depDriver := Deployment{ReplicaCount: wd.ReplicaCount}
+	dp, err := BuildDeploymentDriver(ctx, wd.Containers, depDriver)
+	if err != nil {
+		return nil, err
+	}
+	dep := GetDeploymentTemplate(ctx, wd.WorkloadName)
+	dp.SetDeploymentConfigs(dep)
+	return dep, err
 }
 
 func GenerateSkeletonBaseChartsPreview(ctx context.Context, cluster Cluster) (ClusterPreviewWorkloads, error) {
