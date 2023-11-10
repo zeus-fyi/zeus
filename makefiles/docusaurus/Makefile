@@ -1,5 +1,5 @@
 REPO	:= zeusfyi
-NAME    := docusaurus
+NAME    := docusaurus-template
 GIT_SHA := $(shell git rev-parse HEAD)
 IMG     := ${REPO}/${NAME}:${GIT_SHA}
 LATEST  := ${REPO}/${NAME}:latest

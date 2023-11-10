@@ -5,13 +5,13 @@ WORKDIR /app
 
 ARG DIR
 # Copy the package.json and package-lock.json files into the container
-COPY apps/docusaurus/zeusfyi/package.json apps/docusaurus/zeusfyi/yarn.lock ./
+COPY apps/docusaurus/template/package.json apps/docusaurus/template/yarn.lock ./
 
 # Install any needed packages
 RUN yarn install --frozen-lockfile
 
 # Copy the rest of the application code into the container
-COPY apps/docusaurus/zeusfyi/ ./
+COPY apps/docusaurus/template/ ./
 
 # Build the React app for production
 RUN yarn run build

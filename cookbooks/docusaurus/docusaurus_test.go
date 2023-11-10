@@ -2,7 +2,6 @@ package docusaurus_cookbooks
 
 import (
 	"context"
-	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/suite"
@@ -31,13 +30,25 @@ func (t *DocusaurusCookbookTestSuite) TestUploadDocusaurus() {
 }
 
 func (t *DocusaurusCookbookTestSuite) TestCreateDocusaurusClass() {
-	cd := DocusaurusClusterDefinition
-	gcd := cd.BuildClusterDefinitions()
-	t.Assert().NotEmpty(gcd)
-	fmt.Println(gcd)
+	//cd := DocusaurusClusterDefinition
+	//gcd := cd.BuildClusterDefinitions()
+	//t.Assert().NotEmpty(gcd)
+	//fmt.Println(gcd)
+	//
+	//err := gcd.CreateClusterClassDefinitions(context.Background(), t.ZeusTestClient)
+	//t.Require().Nil(err)
 
-	err := gcd.CreateClusterClassDefinitions(context.Background(), t.ZeusTestClient)
+	dockerImage := "docker.io/zeusfyi/docusaurus-template:latest"
+	cd := ConfigDocusaurus("docker.io/zeusfyi/docusaurus:latest")
+
+	ch, err := cd.GenerateSkeletonBaseCharts()
 	t.Require().Nil(err)
+	t.Assert().NotEmpty(ch)
+
+	for _, c := range ch {
+		t.Require().Equal(dockerImage, c.Workload.Deployment.Spec.Template.Spec.Containers[0].Image)
+	}
+
 }
 
 func (t *DocusaurusCookbookTestSuite) SetupTest() {
