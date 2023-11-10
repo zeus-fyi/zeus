@@ -15,6 +15,59 @@ type TemplateProcessorTestSuite struct {
 	test_suites.BaseTestSuite
 }
 
+func (t *TemplateProcessorTestSuite) TestGeneratePreview2() {
+
+	workloadName := "test"
+	dockerImage := "avaplatform/avalanchego:v1.9.10"
+	cd, err := GenerateDeploymentCluster(context.Background(), WorkloadDefinition{
+		WorkloadName: workloadName,
+		ReplicaCount: 1,
+		Containers: Containers{
+			workloadName: Container{
+				IsInitContainer: false,
+				DockerImage: DockerImage{
+
+					ImageName: dockerImage,
+					Cmd:       "/bin/sh",
+					Args:      "-c,/scripts/start.sh",
+					ResourceRequirements: ResourceRequirements{
+						CPU:    "6",
+						Memory: "12Gi",
+					},
+					Ports: []Port{
+						{
+
+							Name:               "p2p-tcp",
+							Number:             "9651",
+							Protocol:           "TCP",
+							IngressEnabledPort: false,
+						},
+					},
+				},
+			},
+		},
+	})
+	t.Assert().NoError(err)
+
+	t.Assert().NotEmpty(cd)
+	t.Assert().Equal(workloadName, cd.ClusterName)
+
+	t.Assert().NotEmpty(cd.ComponentBases)
+	t.Assert().NotEmpty(cd.ComponentBases[workloadName])
+	t.Assert().NotEmpty(cd.ComponentBases[workloadName][workloadName])
+	t.Assert().NotEmpty(cd.ComponentBases[workloadName][workloadName].Containers)
+	t.Assert().NotEmpty(cd.ComponentBases[workloadName][workloadName].Containers[workloadName])
+	t.Assert().Equal(dockerImage, cd.ComponentBases[workloadName][workloadName].Containers[workloadName].DockerImage.ImageName)
+	t.Assert().Equal("/bin/sh", cd.ComponentBases[workloadName][workloadName].Containers[workloadName].DockerImage.Cmd)
+
+	t.Assert().NotEmpty(cd.ComponentBases[workloadName][workloadName].Containers[workloadName].DockerImage.Ports)
+
+	t.Assert().Equal("p2p-tcp", cd.ComponentBases[workloadName][workloadName].Containers[workloadName].DockerImage.Ports[0].Name)
+	t.Assert().Equal("9651", cd.ComponentBases[workloadName][workloadName].Containers[workloadName].DockerImage.Ports[0].Number)
+	t.Assert().Equal("TCP", cd.ComponentBases[workloadName][workloadName].Containers[workloadName].DockerImage.Ports[0].Protocol)
+	t.Assert().Equal(false, cd.ComponentBases[workloadName][workloadName].Containers[workloadName].DockerImage.Ports[0].IngressEnabledPort)
+}
+
 func (t *TemplateProcessorTestSuite) TestGeneratePreview() {
 	ctx := context.Background()
 

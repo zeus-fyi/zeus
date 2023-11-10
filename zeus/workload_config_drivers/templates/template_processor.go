@@ -9,8 +9,7 @@ import (
 	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_req_types"
 	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_resp_types/topology_workloads"
 	"k8s.io/api/core/v1"
-
-	v1Apps "k8s.io/api/apps/v1"
+	//v1Apps "k8s.io/api/apps/v1"
 )
 
 type ClusterPreviewWorkloads struct {
@@ -29,15 +28,41 @@ type WorkloadDefinition struct {
 	Containers   Containers
 }
 
-func GenerateDeployment(ctx context.Context, wd WorkloadDefinition) (*v1Apps.Deployment, error) {
-	depDriver := Deployment{ReplicaCount: wd.ReplicaCount}
-	dp, err := BuildDeploymentDriver(ctx, wd.Containers, depDriver)
-	if err != nil {
-		return nil, err
+type Containers map[string]Container
+
+type Container struct {
+	IsInitContainer bool        `json:"isInitContainer"`
+	ImagePullPolicy string      `json:"imagePullPolicy,omitempty"`
+	DockerImage     DockerImage `json:"dockerImage"`
+}
+
+type DockerImage struct {
+	ImageName            string               `json:"imageName"`
+	Cmd                  string               `json:"cmd"`
+	Args                 string               `json:"args"`
+	ResourceRequirements ResourceRequirements `json:"resourceRequirements,omitempty"`
+	Ports                []Port               `json:"ports,omitempty"`
+	VolumeMounts         []VolumeMount        `json:"volumeMounts,omitempty"`
+}
+
+func GenerateDeploymentCluster(ctx context.Context, wd WorkloadDefinition) (*Cluster, error) {
+	componentBases := map[string]SkeletonBases{
+		wd.WorkloadName: {
+			wd.WorkloadName: SkeletonBase{
+				Containers:    wd.Containers,
+				AddDeployment: true,
+				AddIngress:    true,
+				AddService:    true,
+			},
+		},
 	}
-	dep := GetDeploymentTemplate(ctx, wd.WorkloadName)
-	dp.SetDeploymentConfigs(dep)
-	return dep, err
+	ingressPaths := map[string]IngressPath{}
+	c := &Cluster{
+		ClusterName:    wd.WorkloadName,
+		IngressPaths:   ingressPaths,
+		ComponentBases: componentBases,
+	}
+	return c, nil
 }
 
 func GenerateSkeletonBaseChartsPreview(ctx context.Context, cluster Cluster) (ClusterPreviewWorkloads, error) {
@@ -50,7 +75,7 @@ func GenerateSkeletonBaseChartsPreview(ctx context.Context, cluster Cluster) (Cl
 	cd.DisablePrint = true
 	_, err := cd.GenerateSkeletonBaseCharts()
 	if err != nil {
-		log.Ctx(ctx).Err(err)
+		log.Err(err)
 		return pcg, err
 	}
 	for cbName, componentBase := range cd.ComponentBases {
@@ -81,14 +106,14 @@ func PreviewTemplateGeneration(ctx context.Context, cluster Cluster) zeus_cluste
 				sbDef.Workload.StatefulSet = GetStatefulSetTemplate(ctx, cbName)
 				stsDriver, err := BuildStatefulSetDriver(ctx, skeletonBase.Containers, skeletonBase.StatefulSet)
 				if err != nil {
-					log.Ctx(ctx).Err(err).Msg("error building statefulset driver")
+					log.Err(err).Msg("error building statefulset driver")
 				}
 				sbDef.TopologyConfigDriver.StatefulSetDriver = &stsDriver
 			} else if skeletonBase.AddDeployment {
 				sbDef.Workload.Deployment = GetDeploymentTemplate(ctx, cbName)
 				depDriver, err := BuildDeploymentDriver(ctx, skeletonBase.Containers, skeletonBase.Deployment)
 				if err != nil {
-					log.Ctx(ctx).Err(err).Msg("error building deployment driver")
+					log.Err(err).Msg("error building deployment driver")
 				}
 				sbDef.TopologyConfigDriver.DeploymentDriver = &depDriver
 			}
@@ -96,7 +121,7 @@ func PreviewTemplateGeneration(ctx context.Context, cluster Cluster) zeus_cluste
 				sbDef.Workload.Ingress = GetIngressTemplate(ctx, cbName)
 				ingDriver, err := BuildIngressDriver(ctx, cbName, skeletonBase.Containers, cluster.IngressSettings, cluster.IngressPaths)
 				if err != nil {
-					log.Ctx(ctx).Err(err).Msg("error building ingress driver")
+					log.Err(err).Msg("error building ingress driver")
 				}
 				sbDef.TopologyConfigDriver.IngressDriver = &ingDriver
 			}
@@ -104,7 +129,7 @@ func PreviewTemplateGeneration(ctx context.Context, cluster Cluster) zeus_cluste
 				sbDef.Workload.Service = GetServiceTemplate(ctx, cbName)
 				svcDriver, err := BuildServiceDriver(ctx, skeletonBase.Containers)
 				if err != nil {
-					log.Ctx(ctx).Err(err).Msg("error building service driver")
+					log.Err(err).Msg("error building service driver")
 				}
 				sbDef.TopologyConfigDriver.ServiceDriver = &svcDriver
 			}
@@ -112,7 +137,7 @@ func PreviewTemplateGeneration(ctx context.Context, cluster Cluster) zeus_cluste
 				sbDef.Workload.ConfigMap = GetConfigMapTemplate(ctx, cbName)
 				cmDriver, err := BuildConfigMapDriver(ctx, skeletonBase.ConfigMap)
 				if err != nil {
-					log.Ctx(ctx).Err(err).Msg("error building configmap driver")
+					log.Err(err).Msg("error building configmap driver")
 				}
 				sbDef.TopologyConfigDriver.ConfigMapDriver = &cmDriver
 			}

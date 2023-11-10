@@ -61,15 +61,30 @@ func (t *DocusaurusCookbookTestSuite) TestCreateDocusaurusClass() {
 			},
 		},
 	}
-	dp, err := zk8s_templates.GenerateDeployment(ctx, wd)
+	cd, err := zk8s_templates.GenerateDeploymentCluster(ctx, wd)
 	t.Require().Nil(err)
-	t.Assert().Equal(docusaurus, dp.Spec.Template.Spec.Containers[0].Name)
-	t.Assert().Equal(dockerImage, dp.Spec.Template.Spec.Containers[0].Image)
-	t.Assert().Equal("Always", string(dp.Spec.Template.Spec.Containers[0].ImagePullPolicy))
+	t.Assert().NoError(err)
+	t.Assert().NotEmpty(cd)
 
-	t.Assert().Equal("http", dp.Spec.Template.Spec.Containers[0].Ports[0].Name)
-	t.Assert().Equal(int32(3000), dp.Spec.Template.Spec.Containers[0].Ports[0].ContainerPort)
-	t.Assert().Equal("TCP", string(dp.Spec.Template.Spec.Containers[0].Ports[0].Protocol))
+	cd.IngressPaths = map[string]zk8s_templates.IngressPath{
+		docusaurus: {
+			Path:     "/",
+			PathType: "ImplementationSpecific",
+		},
+	}
+	t.Assert().Equal(docusaurus, cd.ClusterName)
+	preview, err := zk8s_templates.GenerateSkeletonBaseChartsPreview(ctx, *cd)
+	t.Require().Nil(err)
+	t.Assert().NoError(err)
+	t.Assert().NotEmpty(preview)
+	prt := zk8s_templates.PreviewTemplateGeneration(ctx, *cd)
+	t.Assert().NotEmpty(prt)
+	//prt.DisablePrint = true
+	prt.UseEmbeddedWorkload = true
+
+	dpr, err := prt.GenerateSkeletonBaseCharts()
+	t.Require().Nil(err)
+	t.Assert().NotEmpty(dpr)
 }
 
 func (t *DocusaurusCookbookTestSuite) SetupTest() {
