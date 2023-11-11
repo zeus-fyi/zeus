@@ -109,7 +109,7 @@ func (w *Web3Actions) GetSignedDeployTxToCallFunctionWithArgs(ctx context.Contex
 	}
 	signedTx, err := w.GetSignedTxToDeploySmartContract(ctx, payload, binData)
 	if err != nil {
-		log.Ctx(ctx).Err(err).Msg("CallFunctionWithData: GetSignedDeployTxToCallFunctionWithArgs")
+		log.Err(err).Msg("CallFunctionWithData: GetSignedDeployTxToCallFunctionWithArgs")
 		return nil, err
 	}
 	return signedTx, err
