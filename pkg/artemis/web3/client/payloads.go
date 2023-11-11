@@ -31,7 +31,7 @@ func (s *SendContractTxPayload) GenerateBinDataFromParamsAbi(ctx context.Context
 	if myabi == nil {
 		abiInternal, aerr := web3_types.GetABI(s.ContractFile)
 		if aerr != nil {
-			log.Ctx(ctx).Err(aerr).Msg("CallContract: GetABI")
+			log.Err(aerr).Msg("CallContract: GetABI")
 			return aerr
 		}
 		myabi = abiInternal

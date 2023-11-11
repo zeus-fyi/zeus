@@ -1,5 +1,5 @@
 ---
-sidebar_position: 6
+sidebar_position: 7
 ---
 
 # Mempool Streaming
@@ -14,6 +14,8 @@ To use the service, just create a websocket subscription like the below, and it'
 to you in real time. Don't forget to add your bearer token to the request header.
 
 `wss://iris.zeus.fyi/v1/mempool`
+
+#### Requires Adaptive RPC Load Balancer Sign Up on QuickNode Marketplace.
 
 Go code example:
 
@@ -48,5 +50,35 @@ var TxSources = map[string]bool{
 "0x9008D19f58AAbD9eD0D60971565AA8510560ab41": true, // CoW settlement https://etherscan.io/address/0x9008d19f58aabd9ed0d60971565aa8510560ab41
 }
 ```
+
+## How it works
+
+```mermaid
+graph TD
+    Mempool[Promo] --> Power[Equivalent in power to a few hundred nodes]
+    Power --> Peers[Connected to the best peers worldwide]
+    P2P-Networking --> Reindex[We regularly reindex the network]
+
+    Worker[Worker nodes] --> Deduplicate[Deduplicate our Redis mempool stream]
+    Worker --> FilterTxs[Filter out txs]
+    
+    FilterTxs --> RecentBlock[That have been included in a recent block]
+    FilterTxs --> PreviouslyBroadcast[Or previously broadcast]
+    FilterTxs --> WebSocket[WebSocket Connection]
+```
+
+This version is equivalent in power to a few hundred nodes connected to the best peers worldwide. We regularly reindex
+the network. We have worker nodes that deduplicate our Redis mempool stream and filter out txs that have been included in a recent
+block or previously broadcast.
+
+## Is it actually as good as it sounds?
+
+Yes. Take a look at these real production trading dashboard graphs built using this mempool stream. On 10/24 ~3pm PST.
+
+![Screenshot 2023-10-24 at 2 54 43 PM](https://github.com/zeus-fyi/zeus/assets/17446735/1ee4af33-2315-4b0c-855c-4119d0a07180)
+Top K Projected Sandwich Revenue per Trading Pair & Tx Count by Method
+
+![Screenshot 2023-10-24 at 2 56 34 PM](https://github.com/zeus-fyi/zeus/assets/17446735/b872105c-c8de-46cb-b69b-f74adbcde348)
+Top K Projected Sandwich Cost/Revenue per Trading Pair
 
 # Don't wait. We'll be out of beta testing within the next couple of weeks, and free access will be gone forever.

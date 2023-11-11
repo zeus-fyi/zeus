@@ -13,15 +13,16 @@ import (
 	"github.com/google/uuid"
 	zlog "github.com/rs/zerolog/log"
 	"github.com/zeus-fyi/gochain/web3/accounts"
+	"github.com/zeus-fyi/zeus/zeus/iris_programmable_proxy"
 )
 
 const (
-	defaultProxyUrl    = "https://iris.zeus.fyi/v1/router"
-	proxyHeader        = "Proxy-Relay-To"
-	SessionLockHeader  = "Session-Lock-ID"
-	DurableExecutionID = "Durable-Execution-ID"
-	EndSessionLockID   = "End-Session-Lock-ID"
-	RouteGroupHeader   = "X-Route-Group"
+	defaultProxyUrl        = "https://iris.zeus.fyi/v1/router"
+	proxyHeader            = "Proxy-Relay-To"
+	AnvilSessionLockHeader = "X-Anvil-Session-Lock-ID"
+	DurableExecutionID     = "Durable-Execution-ID"
+	EndSessionLockID       = "X-End-Session-Lock-ID"
+	RouteGroupHeader       = "X-Route-Group"
 
 	EthereumMainnetTableHeaderKeyValue = "ethereum-mainnet"
 
@@ -38,6 +39,7 @@ const (
 type Web3Actions struct {
 	C *ethclient.Client
 	*accounts.Account
+	IrisClient       iris_programmable_proxy.Iris
 	Headers          map[string]string
 	NodeURL          string
 	RelayProxyUrl    string
@@ -84,7 +86,7 @@ func (w *Web3Actions) AddEndSessionLockToHeaderIfExisting() {
 	if w.Headers == nil {
 		w.Headers = make(map[string]string)
 	}
-	if sessionID, ok := w.Headers[SessionLockHeader]; ok {
+	if sessionID, ok := w.Headers[AnvilSessionLockHeader]; ok {
 		w.Headers[EndSessionLockID] = sessionID
 	} else {
 		zlog.Warn().Msg("no session lock header found")
@@ -108,11 +110,11 @@ func (w *Web3Actions) AddDurableExecutionIDHeader(reqID string) {
 	w.Headers[DurableExecutionID] = reqID
 }
 
-func (w *Web3Actions) AddSessionLockHeader(sessionID string) {
+func (w *Web3Actions) AddAnvilSessionLockHeader(sessionID string) {
 	if w.Headers == nil {
 		w.Headers = make(map[string]string)
 	}
-	w.Headers[SessionLockHeader] = sessionID
+	w.Headers[AnvilSessionLockHeader] = sessionID
 }
 
 func (w *Web3Actions) AddDefaultEthereumMainnetTableHeader() {
@@ -120,6 +122,11 @@ func (w *Web3Actions) AddDefaultEthereumMainnetTableHeader() {
 		w.Headers = make(map[string]string)
 	}
 	w.Headers[RouteGroupHeader] = EthereumMainnetTableHeaderKeyValue
+}
+
+func (w *Web3Actions) AddAnvilEthMainnetHeaders(sessionID string) {
+	w.AddDefaultEthereumMainnetTableHeader()
+	w.AddAnvilSessionLockHeader(sessionID)
 }
 
 func (w *Web3Actions) AddMaxBlockHeightProcedureEthJsonRpcHeader() {
@@ -149,7 +156,7 @@ func (w *Web3Actions) GetSessionLockHeader() string {
 	if w.Headers == nil {
 		w.Headers = make(map[string]string)
 	}
-	sessionID := w.Headers[SessionLockHeader]
+	sessionID := w.Headers[AnvilSessionLockHeader]
 	return sessionID
 }
 
@@ -158,6 +165,14 @@ func (w *Web3Actions) AddBearerToken(token string) {
 		w.Headers = make(map[string]string)
 	}
 	w.Headers["Authorization"] = "Bearer " + token
+	w.IrisClient = iris_programmable_proxy.NewIrisClient(token)
+}
+
+func (w *Web3Actions) EndAnvilSession() error {
+	if w.GetSessionLockHeader() != "" {
+		return w.IrisClient.EndServerlessEnvironment(w.GetSessionLockHeader())
+	}
+	return nil
 }
 
 func (w *Web3Actions) Close() {
@@ -170,30 +185,11 @@ func NewWeb3ActionsClient(nodeUrl string) Web3Actions {
 	}
 }
 
-func NewWeb3ActionsClientWithDefaultRelayProxy(nodeUrl string, accounts *accounts.Account) Web3Actions {
-	return Web3Actions{
-		NodeURL:       nodeUrl,
-		RelayProxyUrl: defaultProxyUrl,
-		Account:       accounts,
-	}
-}
-
-func NewWeb3ActionsClientWithRelayProxy(relayProxyUrl, nodeUrl string, accounts *accounts.Account) Web3Actions {
-	wa := Web3Actions{
-		NodeURL:       nodeUrl,
-		RelayProxyUrl: relayProxyUrl,
-		Account:       accounts,
-	}
-	wa.AddDefaultEthereumMainnetTableHeader()
-	return wa
-}
-
 func NewWeb3ActionsClientWithAccount(nodeUrl string, account *accounts.Account) Web3Actions {
 	wa := Web3Actions{
 		NodeURL: nodeUrl,
 		Account: account,
 	}
-	wa.AddDefaultEthereumMainnetTableHeader()
 	return wa
 }
 
@@ -257,10 +253,8 @@ func (w *Web3Actions) GetNodeInfo(ctx context.Context) (NodeInfo, error) {
 	if w.IsAnvilNode {
 		cmdValue = "anvil_nodeInfo"
 	}
-
-	var params []interface{}
 	var result NodeInfo
-	err := w.C.Client().CallContext(ctx, &result, cmdValue, params...)
+	err := w.C.Client().CallContext(ctx, &result, cmdValue)
 	if err != nil {
 		return result, err
 	}
@@ -317,6 +311,16 @@ func (w *Web3Actions) SetBalance(ctx context.Context, address string, balance he
 	return err
 }
 
+func (w *Web3Actions) SetRpcUrl(ctx context.Context, rpcUrl string) (any, error) {
+	var result any
+	err := w.C.Client().CallContext(ctx, &result, w.swapToAnvil("hardhat_setRpcUrl"), rpcUrl)
+	if err != nil {
+		zlog.Err(err).Msg("HardHatSetBalance error")
+		return result, err
+	}
+	return result, err
+}
+
 func (w *Web3Actions) SendRawTransaction(ctx context.Context, tx *types.Transaction) error {
 	data, err := rlp.EncodeToBytes(tx)
 	if err != nil {
@@ -334,6 +338,8 @@ func (w *Web3Actions) GetNumber(ctx context.Context, address string, blockNumber
 
 func (w *Web3Actions) GetBalance(ctx context.Context, address string, blockNumber *big.Int) (*big.Int, error) {
 	var result hexutil.Big
+	w.Dial()
+	defer w.C.Close()
 	err := w.C.Client().CallContext(ctx, &result, "eth_getBalance", accounts.HexToAddress(address), toBlockNumArg(blockNumber))
 	return (*big.Int)(&result), err
 }

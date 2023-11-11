@@ -2,28 +2,27 @@ package nodes
 
 import v1 "k8s.io/api/core/v1"
 
+type NodeGroup struct {
+	NodesSlice NodesSlice `json:"nodesSlice"`
+	Taints     []v1.Taint `json:"taints,omitempty"`
+}
+
 type Node struct {
-	ResourceID  int          `json:"resourceID"`
-	NodeDetails *NodeDetails `json:"nodeDetails,omitempty"`
-	Taints      []v1.Taint   `json:"taints,omitempty"`
+	Memory        int     `db:"memory" json:"memory"`
+	Vcpus         float64 `db:"vcpus" json:"vcpus"`
+	Disk          int     `db:"disk" json:"disk"`
+	DiskUnits     string  `db:"disk_units" json:"diskUnits"`
+	DiskType      string  `db:"disk_type" json:"diskType"`
+	PriceHourly   float64 `db:"price_hourly" json:"priceHourly"`
+	Region        string  `db:"region" json:"region"`
+	CloudProvider string  `db:"cloud_provider" json:"cloudProvider"`
+	ResourceID    int     `db:"resource_id" json:"resourceID"`
+	Description   string  `db:"description" json:"description"`
+	Slug          string  `db:"slug" json:"slug"`
+	MemoryUnits   string  `db:"memory_units" json:"memoryUnits"`
+	PriceMonthly  float64 `db:"price_monthly" json:"priceMonthly"`
+	Gpus          int     `db:"gpus" json:"gpus"`
+	GpuType       string  `db:"gpu_type" json:"gpuType"`
 }
 
-type NodeDetails struct {
-	Memory        int     `json:"memory"`
-	Vcpus         float64 `json:"vcpus"`
-	Disk          int     `json:"disk"`
-	DiskUnits     string  `json:"diskUnits"`
-	PriceHourly   float64 `json:"priceHourly"`
-	Region        string  `json:"region"`
-	CloudProvider string  `json:"cloudProvider"`
-	Description   string  `json:"description"`
-	Slug          string  `json:"slug"`
-	MemoryUnits   string  `json:"memoryUnits"`
-	PriceMonthly  float64 `json:"priceMonthly"`
-	Gpus          int     `json:"gpus"`
-	GpuType       string  `json:"gpuType"`
-}
-
-type NodesGroup struct {
-	NodeMap map[string]Node
-}
+type NodesSlice []Node

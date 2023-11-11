@@ -7,7 +7,7 @@ import (
 )
 
 type ClientResp struct {
-	ReplyBodies map[string][]byte
+	ReplyBodies map[string][]byte `json:"replyBodies"`
 }
 
 func (c *ClientResp) GetAnyValue() []byte {

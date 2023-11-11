@@ -4,6 +4,52 @@ https://docs.zeus.fyi
 
 # Recent Articles ##
 
+## Introducing Serverless EVMs
+Foundry’s Anvil as an EVM Simulation Environment on Demand.
+
+Democratizing access to simulation technology at scale  by lowering the cost of simulation to near zero.
+For safer smart contracts, less exploits, more robust engineering by using isolated ephemeral environments per each test.
+![Screenshot 2023-11-02 at 11 52 38 AM](https://github.com/zeus-fyi/zeus/assets/17446735/5d6576d7-a734-48e7-a2e4-a8a0fd379752)
+
+https://medium.zeus.fyi/introducing-serverless-evms-0035549a5e7f
+
+## Secret Sauce: Running Ethereum Validators at Scale for Pennies
+Why run them any other way after you’ve read this?
+
+![Screenshot 2023-11-03 at 2 06 34 PM](https://github.com/zeus-fyi/zeus/assets/17446735/b710b0ae-a7ca-468e-ba9d-0dce65d964b9)
+
+https://medium.com/zeusfyi/secret-sauce-running-ethereum-validators-at-scale-for-pennies-24ac8dad4efd
+
+## Automating Validator Status Management in Ethereum in SQL
+Using SQL Triggers and Relational States Compliant with Enforcing Consensus Spec
+
+![Screenshot 2023-11-02 at 11 51 00 AM](https://github.com/zeus-fyi/zeus/assets/17446735/4b152ebb-0ff2-4458-a6a9-66542c144530)
+
+https://medium.zeus.fyi/automating-validator-status-management-in-ethereum-in-sql-part-1-464e40e32b0b
+
+## Adaptive RPC Load Balancer Benchmarks
+Over several weeks on a production load monitoring Uniswap prices
+
+When should you consider using the Adaptive RPC Load Balancer?​
+
+TLDR:
+- You need to scale your application to handle more requests than a single endpoint can handle
+- You need to reduce the error rate of your application
+- Especially if you are still paying for the request even if it fails
+- You need to improve the reliability of your application
+- You want to run multi-step procedures in a single request
+
+![weekly](https://github.com/zeus-fyi/zeus/assets/17446735/46aff89c-8035-438c-a5a8-45f6195e02f6)
+
+https://medium.zeus.fyi/adaptive-rpc-load-balancer-benchmarks-c7aa3aa0d42a
+
+## High Performance Disks: NVMe in the Cloud
+How to use NVMe disks the right way before you spend $$$$
+
+https://medium.zeus.fyi/high-performance-disks-nvme-in-the-cloud-abb2bfc11fd9
+
+![Screenshot 2023-10-25 at 12 20 37 AM](https://github.com/zeus-fyi/zeus/assets/17446735/5fc8399a-9bcf-4cab-a1c3-0bf2cfdb48d1)
+
 ## Show Me the Stats
 Optimal adaptive load balancing in stochastic environments.
 Recommended reading for scientists, engineers, data driven individuals

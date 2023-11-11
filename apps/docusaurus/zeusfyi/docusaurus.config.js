@@ -30,6 +30,10 @@ const config = {
         defaultLocale: 'en',
         locales: ['en'],
     },
+    markdown: {
+        mermaid: true,
+    },
+    themes: ['@docusaurus/theme-mermaid'],
     presets: [
         [
             '@docusaurus/preset-classic',
@@ -86,7 +90,6 @@ const config = {
                 textColor: '#1C6865',      // Darker teal text
                 isCloseable: true,
             },
-            //
             algolia: {
                 appId: 'B479Q2S8TS',
                 apiKey: 'a4cb394096549d2cef4c16cb32a6435b',
@@ -108,7 +111,7 @@ const config = {
                             },
                             {
                                 label: 'Solutions Engineering',
-                                href: 'https://calendly.com/alex-zeus-fyi/solutions-engineering'
+                                href: 'https://calendly.com/zeusfyi/solutions-engineering'
                             },
                         ],
                     },
