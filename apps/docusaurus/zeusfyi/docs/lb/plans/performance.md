@@ -14,4 +14,5 @@ Up to ~300M requests (with responses)
 Embedded Routing Procedures
 Priority Score Weight Tuning
 Adaptive Load Balancing + Round Robin
+Serverless EVMs
 ```
