@@ -7,10 +7,10 @@ import (
 )
 
 type NamespaceWorkload struct {
-	*v1.PodList               `json:"podList"`
-	*v1.ServiceList           `json:"serviceList"`
-	*v1networking.IngressList `json:"ingressList"`
-	*v1apps.StatefulSetList   `json:"statefulSetList"`
-	*v1apps.DeploymentList    `json:"deploymentList"`
-	*v1.ConfigMapList         `json:"configMapList"`
+	*v1.PodList               `json:"podList,omitempty"`
+	*v1.ServiceList           `json:"serviceList,omitempty"`
+	*v1networking.IngressList `json:"ingressList,omitempty"`
+	*v1apps.StatefulSetList   `json:"statefulSetList,omitempty"`
+	*v1apps.DeploymentList    `json:"deploymentList,omitempty"`
+	*v1.ConfigMapList         `json:"configMapList,omitempty"`
 }

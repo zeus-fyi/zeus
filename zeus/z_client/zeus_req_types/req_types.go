@@ -27,7 +27,7 @@ type TopologyRequest struct {
 }
 
 type TopologyCloudCtxNsQueryRequest struct {
-	zeus_common_types.CloudCtxNs
+	zeus_common_types.CloudCtxNs `json:"cloudCtxNs"`
 }
 
 type ClusterTopologyDeployRequest struct {
