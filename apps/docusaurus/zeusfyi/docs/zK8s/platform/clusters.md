@@ -14,15 +14,18 @@ This shows all the clusters you have deployed and have access to, and their curr
 ## App View
 
 You can select the cluster name to show only the clusters for any specific app. Additionally, you can upgrade your fleet
-across every cloud provider and region with a single click to the latest version of your app.
+across every cloud provider and region with a single click to the latest version of your app. You can also destroy your
+cluster
+and namespace from here.
 
-## Fleet Upgrades & Rollout Restarts
+### Fleet Upgrades & Rollout Restarts
 
 You can also upgrade your fleet across every cloud provider and region with a single click to the latest version of your
 app.
 
 ![Screenshot 2023-11-10 at 10 57 34PM](https://github.com/zeus-fyi/zeus/assets/17446735/f9552076-d05b-4713-a2d0-cbc7a0b3c1d5)
-## App Deployment via UI
+
+### App Deployment via UI
 
 Once you've created your app, you can then visit the app page and review the app's details and best cloud provider and
 region option that makes best sense for your app. It uses your workload config to filter out servers that don't meet
@@ -37,7 +40,7 @@ This process will create a namespace for you, and you can see your live workload
 
 ![Screenshot 2023-10-01 at 5 17 30 PM](https://github.com/zeus-fyi/zeus/assets/17446735/107ace70-1a9e-4208-a184-6d2d70d713a4)
 
-## App Edits in UI
+### App Edits in UI
 
 Sometimes it makes sense to want to make quick changes to your app, such as when in development, or when the change is
 simple. So we added this section where you review your current app configuration and update your workloads in-line.
