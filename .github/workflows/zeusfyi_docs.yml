@@ -30,7 +30,7 @@ jobs:
         uses: depot/setup-action@v1
 
       - name: Login to Docker Registry
-        run: docker registry login -t ${{ secrets.DOCKER_ACCESS_TOKEN }}
+        run: docker login -u zeusfyi ${{ secrets.DOCKER_ACCESS_TOKEN }}
 
       - name: Build And Publish Zeusfyi Docs Site
         run: |
