@@ -12,6 +12,13 @@ Many other apps are on our GitHub page under the cookbook section, and will even
 
 ![Screenshot 2023-10-01 at 4 44 50 PM](https://github.com/zeus-fyi/zeus/assets/17446735/df285804-e268-454d-8103-a17ea3ce387c)
 
+## App Edits in UI
+
+Sometimes it makes sense to want to make quick changes to your app, such as when in development, or when the change is
+simple. So we added this section where you review your current app configuration and update your workloads in-line.
+
+![Screenshot 2023-10-01 at 5 21 18 PM](https://github.com/zeus-fyi/zeus/assets/17446735/fd4c1f56-1cde-45b1-b21f-075cf73533f3)
+
 ## How to Build a Workload via the UI
 
 You can build base workloads via the UI. Add at least one cluster base, and at least one workload base, and then you can
