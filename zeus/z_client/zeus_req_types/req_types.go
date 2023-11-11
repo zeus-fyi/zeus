@@ -15,7 +15,8 @@ type TopologyCreateRequest struct {
 }
 
 type TopologyDeployRequest struct {
-	TopologyID                   int `json:"topologyID"`
+	TopologyID                   int    `json:"topologyID"`
+	ClusterClassName             string `json:"clusterClassName,omitempty"`
 	zeus_common_types.CloudCtxNs `json:"cloudCtxNs"`
 
 	SecretRef                       string `json:"secretRef,omitempty"`
