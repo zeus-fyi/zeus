@@ -185,6 +185,15 @@ so you can use it for the next test.
 ```
 
 ### How to end the session on completion
+
+#### Direct DELETE request
+
+```text
+DELETE https://iris.zeus.fyi/v1/serverless/{session-id}
+```
+
+#### Using the Go web3 client
+
 ```go
 func (i *Iris) EndServerlessEnvironment(sessionID string) error {
 	resp, err := i.R().
