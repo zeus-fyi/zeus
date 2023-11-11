@@ -13,5 +13,6 @@ Up to ~5M requests (with responses)
 25 Custom Routing Group Tables
 Priority Score Weight Tuning
 Adaptive Load Balancing + Round Robin
+Mempool Streaming
 Serverless EVMs
 ```
