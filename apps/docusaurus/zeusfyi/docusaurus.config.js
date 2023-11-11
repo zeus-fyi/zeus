@@ -90,20 +90,11 @@ const config = {
                 textColor: '#1C6865',      // Darker teal text
                 isCloseable: true,
             },
-            //
-            // algolia: {
-            //     appId: 'B479Q2S8TS',
-            //     apiKey: 'e5f9c7ca012a3615aee103edca64c3a5',
-            //     indexName: 'zeus',
-            //     // Optional: Algolia search parameters
-            //     contextualSearch: true, // Uncomment this if you want to have versioning
-            //     schedule: 'every 1 day at 3:00 pm',
-            // },
-
-            metadata: [{
-                name: 'keywords',
-                content: 'quicknode, quicknode marketplace, adaptive load balancer, adaptive rpc load balancer, web3, alchemy, infura, geth, reth, prysm, ethereum, ethdev, blockchain devs, enterprise blockchain'
-            }],
+            algolia: {
+                appId: 'B479Q2S8TS',
+                apiKey: 'a4cb394096549d2cef4c16cb32a6435b',
+                indexName: 'zeusfyi_docs',
+            },
             footer: {
                 style: 'dark',
                 links: [
