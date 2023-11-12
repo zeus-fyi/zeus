@@ -8,7 +8,6 @@ import (
 	zeus_topology_config_drivers "github.com/zeus-fyi/zeus/zeus/workload_config_drivers"
 	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_req_types"
 	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_resp_types/topology_workloads"
-	"k8s.io/api/core/v1"
 	//v1Apps "k8s.io/api/apps/v1"
 )
 
@@ -64,6 +63,50 @@ func GenerateDeploymentCluster(ctx context.Context, wd WorkloadDefinition) (*Clu
 	}
 	return c, nil
 }
+
+func CreateGeneratedClusterClassCreationRequest(c *Cluster) zeus_cluster_config_drivers.GeneratedClusterCreationRequests {
+	var cbn []string
+	var sbns []zeus_req_types.TopologyCreateOrAddSkeletonBasesToClassesRequest
+	for componentBaseName, sb := range c.ComponentBases {
+		if componentBaseName == "" {
+			continue
+		}
+		cbn = append(cbn, componentBaseName)
+		sbComp := zeus_req_types.TopologyCreateOrAddSkeletonBasesToClassesRequest{
+			ClusterClassName:  c.ClusterName,
+			ComponentBaseName: componentBaseName,
+			SkeletonBaseNames: []string{},
+		}
+		for sbName, _ := range sb {
+			if sbName == "" {
+				continue
+			}
+			sbComp.SkeletonBaseNames = append(sbComp.SkeletonBaseNames, sbName)
+		}
+		sbns = append(sbns, sbComp)
+	}
+	gcd := zeus_cluster_config_drivers.GeneratedClusterCreationRequests{
+		ClusterClassRequest: zeus_req_types.TopologyCreateClusterClassRequest{
+			ClusterClassName: c.ClusterName,
+		},
+		ComponentBasesRequests: zeus_req_types.TopologyCreateOrAddComponentBasesToClassesRequest{
+			ClusterClassName:   c.ClusterName,
+			ComponentBaseNames: cbn,
+		},
+		SkeletonBasesRequests: sbns,
+	}
+
+	return gcd
+}
+
+/*
+	gcd := DocusaurusClusterDefinition.BuildClusterDefinitions()
+	t.Assert().NotEmpty(gcd)
+	fmt.Println(gcd)
+
+	err := gcd.CreateClusterClassDefinitions(context.Background(), t.ZeusTestClient)
+	t.Require().Nil(err)
+*/
 
 func GenerateSkeletonBaseChartsPreview(ctx context.Context, cluster Cluster) (ClusterPreviewWorkloads, error) {
 	pcg := ClusterPreviewWorkloads{
@@ -146,16 +189,4 @@ func PreviewTemplateGeneration(ctx context.Context, cluster Cluster) zeus_cluste
 		templateClusterDefinition.ComponentBases[cbName] = cbDef
 	}
 	return templateClusterDefinition
-}
-
-func BuildConfigMapDriver(ctx context.Context, configMap ConfigMap) (zeus_topology_config_drivers.ConfigMapDriver, error) {
-	cmDriver := zeus_topology_config_drivers.ConfigMapDriver{
-		ConfigMap: v1.ConfigMap{
-			Data: make(map[string]string),
-		},
-	}
-	for key, value := range configMap {
-		cmDriver.ConfigMap.Data[key] = value
-	}
-	return cmDriver, nil
 }

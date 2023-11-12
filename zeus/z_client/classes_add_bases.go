@@ -43,8 +43,8 @@ func (z *ZeusClient) AddSkeletonBasesToClass(ctx context.Context, tar zeus_req_t
 		SetBody(tar).
 		Post(zeus_endpoints.InfraAddSkeletonBasesToBaseClassV1Path)
 
-	if err != nil || resp.StatusCode() != http.StatusOK {
-		log.Ctx(ctx).Err(err).Msg("ZeusClient: AddSkeletonBasesToClass")
+	if err != nil || resp.StatusCode() >= 400 {
+		log.Err(err).Msg("ZeusClient: AddSkeletonBasesToClass")
 		if resp.StatusCode() == http.StatusBadRequest {
 			err = errors.New("bad request")
 		}

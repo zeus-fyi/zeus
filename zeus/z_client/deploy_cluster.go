@@ -28,7 +28,7 @@ func (z *ZeusClient) DeployCluster(ctx context.Context, tar zeus_req_types.Clust
 		if resp.StatusCode() == http.StatusBadRequest {
 			err = errors.New("bad request")
 		}
-		log.Ctx(ctx).Err(err).Msg("ZeusClient: DeployCluster")
+		log.Err(err).Msg("ZeusClient: DeployCluster")
 		return respJson, err
 	}
 	z.PrintRespJson(resp.Body())

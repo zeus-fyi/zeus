@@ -3,7 +3,6 @@ package zeus_client
 import (
 	"context"
 	"fmt"
-	"net/http"
 
 	"github.com/rs/zerolog/log"
 	zeus_endpoints "github.com/zeus-fyi/zeus/zeus/z_client/endpoints"
@@ -16,11 +15,11 @@ func (z *ZeusClient) ReadTopologies(ctx context.Context) (zeus_resp_types.ReadTo
 		SetResult(&respJson.Slice).
 		Get(zeus_endpoints.InfraReadTopologyV1Path)
 
-	if err != nil || resp.StatusCode() != http.StatusOK {
+	if err != nil || resp.StatusCode() >= 400 {
 		if err == nil {
 			err = fmt.Errorf("non-OK status code: %d", resp.StatusCode())
 		}
-		log.Ctx(ctx).Err(err).Msg("ZeusClient: ReadTopologies")
+		log.Err(err).Msg("ZeusClient: ReadTopologies")
 		return respJson, err
 	}
 	z.PrintRespJson(resp.Body())

@@ -26,7 +26,7 @@ func (z *ZeusClient) Deploy(ctx context.Context, tar zeus_req_types.TopologyDepl
 		if err == nil {
 			err = fmt.Errorf("non-OK status code: %d", resp.StatusCode())
 		}
-		log.Ctx(ctx).Err(err).Msg("ZeusClient: Deploy")
+		log.Err(err).Msg("ZeusClient: Deploy")
 		return respJson, err
 	}
 	z.PrintRespJson(resp.Body())

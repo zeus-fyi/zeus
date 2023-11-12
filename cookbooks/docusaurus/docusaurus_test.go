@@ -2,6 +2,7 @@ package docusaurus_cookbooks
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/suite"
@@ -26,8 +27,17 @@ func (t *DocusaurusCookbookTestSuite) TestDeployDocusaurus() {
 }
 
 const (
-	docusaurus = "docusaurus"
+	docusaurus = "docusaurus-template"
 )
+
+func (t *DocusaurusCookbookTestSuite) TestCreateDocsClass() {
+	gcd := DocusaurusClusterDefinition.BuildClusterDefinitions()
+	t.Assert().NotEmpty(gcd)
+	fmt.Println(gcd)
+
+	err := gcd.CreateClusterClassDefinitions(context.Background(), t.ZeusTestClient)
+	t.Require().Nil(err)
+}
 
 func (t *DocusaurusCookbookTestSuite) TestUploadDocusaurus() {
 	_, rerr := DocusaurusClusterDefinition.UploadChartsFromClusterDefinition(ctx, t.ZeusTestClient, true)
@@ -79,12 +89,24 @@ func (t *DocusaurusCookbookTestSuite) TestCreateDocusaurusClass() {
 	t.Assert().NotEmpty(preview)
 	prt := zk8s_templates.PreviewTemplateGeneration(ctx, *cd)
 	t.Assert().NotEmpty(prt)
-	//prt.DisablePrint = true
+	prt.DisablePrint = true
 	prt.UseEmbeddedWorkload = true
 
 	dpr, err := prt.GenerateSkeletonBaseCharts()
 	t.Require().Nil(err)
 	t.Assert().NotEmpty(dpr)
+
+	gcd := zk8s_templates.CreateGeneratedClusterClassCreationRequest(cd)
+	t.Assert().NotEmpty(gcd)
+	fmt.Println(gcd)
+
+	//gcdExp := DocusaurusClusterDefinition.BuildClusterDefinitions()
+	//t.Assert().NotEmpty(gcdExp)
+	//fmt.Println(gcdExp)
+
+	//t.Assert().Equal(gcdExp, gcd)
+	//err = gcd.CreateClusterClassDefinitions(ctx, t.ZeusTestClient)
+	//t.Require().Nil(err)
 }
 
 func (t *DocusaurusCookbookTestSuite) SetupTest() {

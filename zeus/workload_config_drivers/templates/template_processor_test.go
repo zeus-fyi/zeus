@@ -147,8 +147,8 @@ func (t *TemplateProcessorTestSuite) TestGeneratePreview() {
 	pcg, err := GenerateSkeletonBaseChartsPreview(ctx, req)
 	t.Assert().NoError(err)
 	t.Assert().NotEmpty(pcg)
-}
 
+}
 func forceDirToCallerLocation() string {
 	_, filename, _, _ := runtime.Caller(0)
 	dir := path.Join(path.Dir(filename), "")

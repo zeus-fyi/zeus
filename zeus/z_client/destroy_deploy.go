@@ -24,7 +24,7 @@ func (z *ZeusClient) DestroyDeploy(ctx context.Context, tar zeus_req_types.Topol
 		if err == nil {
 			err = fmt.Errorf("non-OK status code: %d", resp.StatusCode())
 		}
-		log.Ctx(ctx).Err(err).Msg("ZeusClient: DestroyDeploy")
+		log.Err(err).Msg("ZeusClient: DestroyDeploy")
 		return respJson, err
 	}
 	z.PrintRespJson(resp.Body())
