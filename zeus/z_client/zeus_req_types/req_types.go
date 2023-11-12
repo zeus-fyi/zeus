@@ -1,7 +1,6 @@
 package zeus_req_types
 
 import (
-	zk8s_templates "github.com/zeus-fyi/zeus/zeus/workload_config_drivers/templates"
 	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_common_types"
 	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_resp_types/topology_workloads"
 )
@@ -71,6 +70,6 @@ type TopologyCreateOrAddSkeletonBasesToClassesRequest struct {
 	SkeletonBaseNames []string `json:"skeletonBaseNames,omitempty"`
 }
 
-type TopologyCreateCluster struct {
-	zk8s_templates.Cluster `json:"cluster"`
-}
+//type TopologyCreateCluster struct {
+//	zeus_cluster_config_drivers.Cluster `json:"cluster"`
+//}

@@ -9,6 +9,7 @@ import (
 	"github.com/zeus-fyi/zeus/cookbooks"
 	"github.com/zeus-fyi/zeus/test/configs"
 	"github.com/zeus-fyi/zeus/test/test_suites"
+	zeus_cluster_config_drivers "github.com/zeus-fyi/zeus/zeus/cluster_config_drivers"
 	zk8s_templates "github.com/zeus-fyi/zeus/zeus/workload_config_drivers/templates"
 	zeus_client "github.com/zeus-fyi/zeus/zeus/z_client"
 )
@@ -46,7 +47,7 @@ func (t *DocusaurusCookbookTestSuite) TestUploadDocusaurus() {
 
 func (t *DocusaurusCookbookTestSuite) TestCreateDocusaurusClass() {
 	dockerImage := "docker.io/zeusfyi/docusaurus-template:latest"
-	wd := zk8s_templates.WorkloadDefinition{
+	wd := zeus_cluster_config_drivers.WorkloadDefinition{
 		WorkloadName: docusaurus,
 		ReplicaCount: 1,
 		Containers: zk8s_templates.Containers{
@@ -71,7 +72,7 @@ func (t *DocusaurusCookbookTestSuite) TestCreateDocusaurusClass() {
 			},
 		},
 	}
-	cd, err := zk8s_templates.GenerateDeploymentCluster(ctx, wd)
+	cd, err := zeus_cluster_config_drivers.GenerateDeploymentCluster(ctx, wd)
 	t.Require().Nil(err)
 	t.Assert().NoError(err)
 	t.Assert().NotEmpty(cd)
@@ -83,11 +84,11 @@ func (t *DocusaurusCookbookTestSuite) TestCreateDocusaurusClass() {
 		},
 	}
 	t.Assert().Equal(docusaurus, cd.ClusterName)
-	preview, err := zk8s_templates.GenerateSkeletonBaseChartsPreview(ctx, *cd)
+	preview, err := zeus_cluster_config_drivers.GenerateSkeletonBaseChartsPreview(ctx, *cd)
 	t.Require().Nil(err)
 	t.Assert().NoError(err)
 	t.Assert().NotEmpty(preview)
-	prt := zk8s_templates.PreviewTemplateGeneration(ctx, *cd)
+	prt := zeus_cluster_config_drivers.PreviewTemplateGeneration(ctx, *cd)
 	t.Assert().NotEmpty(prt)
 	prt.DisablePrint = true
 	prt.UseEmbeddedWorkload = true
@@ -96,7 +97,7 @@ func (t *DocusaurusCookbookTestSuite) TestCreateDocusaurusClass() {
 	t.Require().Nil(err)
 	t.Assert().NotEmpty(dpr)
 
-	gcd := zk8s_templates.CreateGeneratedClusterClassCreationRequest(cd)
+	gcd := zeus_cluster_config_drivers.CreateGeneratedClusterClassCreationRequest(cd)
 	t.Assert().NotEmpty(gcd)
 	fmt.Println(gcd)
 

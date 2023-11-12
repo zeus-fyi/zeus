@@ -1,32 +1,5 @@
 package zk8s_templates
 
-type Cluster struct {
-	ClusterName     string                 `json:"clusterName"`
-	ComponentBases  ComponentBases         `json:"componentBases"`
-	IngressSettings Ingress                `json:"ingressSettings"`
-	IngressPaths    map[string]IngressPath `json:"ingressPaths"`
-}
-
-type IngressPaths map[string]IngressPath
-
-type ComponentBases map[string]SkeletonBases
-
-type SkeletonBases map[string]SkeletonBase
-
-type SkeletonBase struct {
-	TopologyID        string      `json:"topologyID,omitempty"`
-	AddStatefulSet    bool        `json:"addStatefulSet"`
-	AddDeployment     bool        `json:"addDeployment"`
-	AddConfigMap      bool        `json:"addConfigMap"`
-	AddService        bool        `json:"addService"`
-	AddIngress        bool        `json:"addIngress"`
-	AddServiceMonitor bool        `json:"addServiceMonitor"`
-	ConfigMap         ConfigMap   `json:"configMap,omitempty"`
-	Deployment        Deployment  `json:"deployment,omitempty"`
-	StatefulSet       StatefulSet `json:"statefulSet,omitempty"`
-	Containers        Containers  `json:"containers,"`
-}
-
 type ConfigMap map[string]string
 
 type Ingress struct {
@@ -38,6 +11,8 @@ type IngressPath struct {
 	Path     string `json:"path"`
 	PathType string `json:"pathType"`
 }
+
+type IngressPaths map[string]IngressPath
 
 type Deployment struct {
 	ReplicaCount int `json:"replicaCount"`
