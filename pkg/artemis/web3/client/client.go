@@ -282,27 +282,37 @@ func (w *Web3Actions) ResetNetwork(ctx context.Context, rpcUrl string, blockNumb
 }
 
 func (w *Web3Actions) ImpersonateAccount(ctx context.Context, address string) error {
+	w.Dial()
+	defer w.C.Close()
 	var result any
 	err := w.C.Client().CallContext(ctx, &result, w.swapToAnvil("hardhat_impersonateAccount"), accounts.HexToAddress(address))
 	return err
 }
 
 func (w *Web3Actions) StopImpersonatingAccount(ctx context.Context, address string) error {
+	w.Dial()
+	defer w.C.Close()
 	err := w.C.Client().CallContext(ctx, nil, w.swapToAnvil("hardhat_stopImpersonatingAccount"), accounts.HexToAddress(address))
 	return err
 }
 
 func (w *Web3Actions) SetNonce(ctx context.Context, address string, nonce hexutil.Big) error {
+	w.Dial()
+	defer w.C.Close()
 	err := w.C.Client().CallContext(ctx, nil, w.swapToAnvil("hardhat_setNonce"), accounts.HexToAddress(address), nonce.String())
 	return err
 }
 
 func (w *Web3Actions) SetCode(ctx context.Context, address string, bytes string) error {
+	w.Dial()
+	defer w.C.Close()
 	err := w.C.Client().CallContext(ctx, nil, w.swapToAnvil("hardhat_setCode"), accounts.HexToAddress(address), bytes)
 	return err
 }
 
 func (w *Web3Actions) SetBalance(ctx context.Context, address string, balance hexutil.Big) error {
+	w.Dial()
+	defer w.C.Close()
 	err := w.C.Client().CallContext(ctx, nil, w.swapToAnvil("hardhat_setBalance"), accounts.HexToAddress(address), balance)
 	if err != nil {
 		zlog.Err(err).Msg("HardHatSetBalance error")
