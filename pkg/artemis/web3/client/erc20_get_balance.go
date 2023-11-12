@@ -18,11 +18,10 @@ func (w *Web3Actions) ReadERC20TokenBalance(ctx context.Context, contractAddress
 		MethodName:        Decimals,
 	}
 	payload.MethodName = BalanceOf
-	addrString := common.HexToAddress(addrHash).String()
-	payload.Params = []interface{}{addrString}
+	payload.Params = []interface{}{addrHash}
 	balance, err := w.GetContractConst(ctx, &payload)
 	if err != nil {
-		log.Ctx(ctx).Err(err).Msg("ReadERC20TokenBalance")
+		log.Err(err).Msg("ReadERC20TokenBalance")
 		return new(big.Int), err
 	}
 	return balance[0].(*big.Int), err

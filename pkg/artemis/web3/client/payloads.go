@@ -39,12 +39,12 @@ func (s *SendContractTxPayload) GenerateBinDataFromParamsAbi(ctx context.Context
 	fn := myabi.Methods[s.MethodName]
 	goParams, err := web3_types.ConvertArguments(fn.Inputs, s.Params)
 	if err != nil {
-		log.Ctx(ctx).Err(err).Msg("CallFunctionWithArgs")
+		log.Err(err).Msg("CallFunctionWithArgs")
 		return err
 	}
 	data, err := myabi.Pack(s.MethodName, goParams...)
 	if err != nil {
-		log.Ctx(ctx).Err(err).Msg("CallFunctionWithArgs")
+		log.Err(err).Msg("CallFunctionWithArgs")
 		return fmt.Errorf("failed to pack values: %v", err)
 	}
 	s.Data = data

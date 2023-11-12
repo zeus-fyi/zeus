@@ -14,12 +14,12 @@ func (w *Web3Actions) Send(ctx context.Context, params SendEtherPayload) (*types
 	defer w.C.Close()
 	signedTx, err := w.GetSignedSendTx(ctx, params)
 	if err != nil {
-		log.Ctx(ctx).Err(err).Msg("Send: GetSignedSendTx")
+		log.Err(err).Msg("Send: GetSignedSendTx")
 		return nil, fmt.Errorf("failed to get transaction: %v", err)
 	}
 	err = w.C.SendTransaction(ctx, signedTx)
 	if err != nil {
-		log.Ctx(ctx).Err(err).Msg("Send: SendTransaction")
+		log.Err(err).Msg("Send: SendTransaction")
 		return nil, fmt.Errorf("failed to send transaction: %v", err)
 	}
 	return signedTx, nil
