@@ -15,4 +15,13 @@ Priority Score Weight Tuning
 Adaptive Load Balancing + Round Robin
 Mempool Streaming
 Serverless EVMs
+99% Uptime SLA
+```
+
+## Only QuickNode Plans
+
+```text
+Automated Routing Tables per Network and Chain
+Embedded Web3 Procedures
+    - eth_maxBlockAggReduce
 ```
