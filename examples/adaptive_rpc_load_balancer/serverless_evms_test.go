@@ -12,6 +12,8 @@ import (
 	signing_automation_ethereum "github.com/zeus-fyi/zeus/pkg/artemis/web3/signing_automation/ethereum"
 )
 
+// 	AnvilForkBlockNumberHeader = "X-Anvil-Fork-Block-Number"
+
 func (s *AdaptiveRpcLoadBalancerExamplesTestSuite) setupMintToken(mintAmount *big.Int) (string, web3_actions.SendContractTxPayload) {
 	// mintable contract
 	abiDefAndByteCode := smart_contract_library.TokenJson

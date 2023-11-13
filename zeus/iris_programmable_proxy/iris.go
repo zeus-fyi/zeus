@@ -11,6 +11,8 @@ const (
 	IrisServiceRoute            = "https://iris.zeus.fyi"
 	SelectedRouteResponseHeader = "X-Selected-Route"
 	RouteGroupHeader            = "X-Route-Group"
+
+	AnvilForkBlockNumberHeader = "X-Anvil-Fork-Block-Number"
 )
 
 type Iris struct {
