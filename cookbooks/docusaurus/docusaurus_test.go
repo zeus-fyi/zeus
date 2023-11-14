@@ -60,7 +60,7 @@ func (t *DocusaurusCookbookTestSuite) TestCreateDocusaurusClass() {
 					ImageName: dockerImage,
 					ResourceRequirements: zk8s_templates.ResourceRequirements{
 						CPU:    "100m",
-						Memory: "100Mi",
+						Memory: "500Mi",
 					},
 					Ports: []zk8s_templates.Port{
 						{
