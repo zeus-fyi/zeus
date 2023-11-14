@@ -3,7 +3,6 @@ package pods_client
 import (
 	"context"
 	"fmt"
-	"net/http"
 
 	"github.com/rs/zerolog/log"
 	zeus_endpoints "github.com/zeus-fyi/zeus/zeus/z_client/endpoints"
@@ -17,7 +16,7 @@ func (z *PodsClient) GetPodLogs(ctx context.Context, par zeus_pods_reqs.PodActio
 	resp, err := z.R().
 		SetBody(par).
 		Post(zeus_endpoints.PodsActionV1Path)
-	if err != nil || resp.StatusCode() != http.StatusOK {
+	if err != nil || resp.StatusCode() >= 400 {
 		if err == nil {
 			err = fmt.Errorf("GetPodLogs: non-OK status code: %d", resp.StatusCode())
 		}
