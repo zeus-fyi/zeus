@@ -2,8 +2,10 @@ package zeus_cluster_config_drivers
 
 import (
 	"context"
+	"errors"
 
 	"github.com/rs/zerolog/log"
+	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 	zeus_topology_config_drivers "github.com/zeus-fyi/zeus/zeus/workload_config_drivers"
 	zk8s_templates "github.com/zeus-fyi/zeus/zeus/workload_config_drivers/templates"
 	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_req_types"
@@ -21,9 +23,10 @@ type ClusterPreviewWorkloadsOlympus struct {
 }
 
 type WorkloadDefinition struct {
-	WorkloadName string
-	ReplicaCount int
-	Containers   zk8s_templates.Containers
+	WorkloadName string                    `json:"workloadName"`
+	ReplicaCount int                       `json:"replicaCount"`
+	Containers   zk8s_templates.Containers `json:"containers"`
+	FilePath     filepaths.Path            `json:"-"`
 }
 
 func GenerateDeploymentCluster(ctx context.Context, wd WorkloadDefinition) (*Cluster, error) {
@@ -32,8 +35,11 @@ func GenerateDeploymentCluster(ctx context.Context, wd WorkloadDefinition) (*Clu
 			wd.WorkloadName: SkeletonBase{
 				Containers:    wd.Containers,
 				AddDeployment: true,
-				AddIngress:    true,
-				AddService:    true,
+				Deployment: zk8s_templates.Deployment{
+					ReplicaCount: wd.ReplicaCount,
+				},
+				AddIngress: true,
+				AddService: true,
 			},
 		},
 	}
@@ -42,6 +48,7 @@ func GenerateDeploymentCluster(ctx context.Context, wd WorkloadDefinition) (*Clu
 		ClusterName:    wd.WorkloadName,
 		IngressPaths:   ingressPaths,
 		ComponentBases: componentBases,
+		FilePath:       wd.FilePath,
 	}
 	return c, nil
 }
@@ -51,6 +58,7 @@ type Cluster struct {
 	ComponentBases  ComponentBases                        `json:"componentBases"`
 	IngressSettings zk8s_templates.Ingress                `json:"ingressSettings"`
 	IngressPaths    map[string]zk8s_templates.IngressPath `json:"ingressPaths"`
+	FilePath        filepaths.Path                        `json:"-"`
 }
 
 type ComponentBases map[string]SkeletonBases
@@ -106,24 +114,22 @@ func CreateGeneratedClusterClassCreationRequest(c *Cluster) GeneratedClusterCrea
 	return gcd
 }
 
-/*
-	gcd := DocusaurusClusterDefinition.BuildClusterDefinitions()
-	t.Assert().NotEmpty(gcd)
-	fmt.Println(gcd)
-
-	err := gcd.CreateClusterClassDefinitions(context.Background(), t.ZeusTestClient)
-	t.Require().Nil(err)
-*/
-
-func GenerateSkeletonBaseChartsPreview(ctx context.Context, cluster Cluster) (ClusterPreviewWorkloads, error) {
+func GenerateSkeletonBaseChartsPreview(ctx context.Context, cluster *Cluster) (ClusterPreviewWorkloads, error) {
+	if cluster == nil {
+		return ClusterPreviewWorkloads{}, errors.New("cluster is nil")
+	}
 	pcg := ClusterPreviewWorkloads{
 		ClusterName:    cluster.ClusterName,
 		ComponentBases: make(map[string]map[string]topology_workloads.TopologyBaseInfraWorkload),
 	}
-	cd := PreviewTemplateGeneration(ctx, cluster)
+	cd, err := PreviewTemplateGeneration(ctx, cluster)
+	if err != nil {
+		log.Err(err)
+		return pcg, err
+	}
 	cd.UseEmbeddedWorkload = true
 	cd.DisablePrint = true
-	_, err := cd.GenerateSkeletonBaseCharts()
+	_, err = cd.GenerateSkeletonBaseCharts()
 	if err != nil {
 		log.Err(err)
 		return pcg, err
@@ -137,10 +143,14 @@ func GenerateSkeletonBaseChartsPreview(ctx context.Context, cluster Cluster) (Cl
 	return pcg, nil
 }
 
-func PreviewTemplateGeneration(ctx context.Context, cluster Cluster) ClusterDefinition {
+func PreviewTemplateGeneration(ctx context.Context, cluster *Cluster) (ClusterDefinition, error) {
+	if cluster == nil {
+		return ClusterDefinition{}, errors.New("cluster is nil")
+	}
 	templateClusterDefinition := ClusterDefinition{
-		ClusterClassName: cluster.ClusterName,
-		ComponentBases:   make(map[string]ComponentBaseDefinition),
+		ClusterClassName:    cluster.ClusterName,
+		ComponentBases:      make(map[string]ComponentBaseDefinition),
+		UseEmbeddedWorkload: true,
 	}
 	for cbName, componentBase := range cluster.ComponentBases {
 		cbDef := ComponentBaseDefinition{
@@ -148,15 +158,17 @@ func PreviewTemplateGeneration(ctx context.Context, cluster Cluster) ClusterDefi
 		}
 		for sbName, skeletonBase := range componentBase {
 			sbDef := ClusterSkeletonBaseDefinition{
-				SkeletonBaseChart:    zeus_req_types.TopologyCreateRequest{},
-				Workload:             topology_workloads.TopologyBaseInfraWorkload{},
-				TopologyConfigDriver: &zeus_topology_config_drivers.TopologyConfigDriver{},
+				SkeletonBaseChart:         zeus_req_types.TopologyCreateRequest{},
+				Workload:                  topology_workloads.TopologyBaseInfraWorkload{},
+				SkeletonBaseNameChartPath: cluster.FilePath,
+				TopologyConfigDriver:      &zeus_topology_config_drivers.TopologyConfigDriver{},
 			}
 			if skeletonBase.AddStatefulSet {
 				sbDef.Workload.StatefulSet = zk8s_templates.GetStatefulSetTemplate(ctx, cbName)
 				stsDriver, err := zk8s_templates.BuildStatefulSetDriver(ctx, skeletonBase.Containers, skeletonBase.StatefulSet)
 				if err != nil {
 					log.Err(err).Msg("error building statefulset driver")
+					return templateClusterDefinition, err
 				}
 				sbDef.TopologyConfigDriver.StatefulSetDriver = &stsDriver
 			} else if skeletonBase.AddDeployment {
@@ -164,6 +176,7 @@ func PreviewTemplateGeneration(ctx context.Context, cluster Cluster) ClusterDefi
 				depDriver, err := zk8s_templates.BuildDeploymentDriver(ctx, skeletonBase.Containers, skeletonBase.Deployment)
 				if err != nil {
 					log.Err(err).Msg("error building deployment driver")
+					return templateClusterDefinition, err
 				}
 				sbDef.TopologyConfigDriver.DeploymentDriver = &depDriver
 			}
@@ -172,6 +185,7 @@ func PreviewTemplateGeneration(ctx context.Context, cluster Cluster) ClusterDefi
 				ingDriver, err := zk8s_templates.BuildIngressDriver(ctx, cbName, skeletonBase.Containers, cluster.IngressSettings, cluster.IngressPaths)
 				if err != nil {
 					log.Err(err).Msg("error building ingress driver")
+					return templateClusterDefinition, err
 				}
 				sbDef.TopologyConfigDriver.IngressDriver = &ingDriver
 			}
@@ -180,6 +194,7 @@ func PreviewTemplateGeneration(ctx context.Context, cluster Cluster) ClusterDefi
 				svcDriver, err := zk8s_templates.BuildServiceDriver(ctx, skeletonBase.Containers)
 				if err != nil {
 					log.Err(err).Msg("error building service driver")
+					return templateClusterDefinition, err
 				}
 				sbDef.TopologyConfigDriver.ServiceDriver = &svcDriver
 			}
@@ -188,6 +203,7 @@ func PreviewTemplateGeneration(ctx context.Context, cluster Cluster) ClusterDefi
 				cmDriver, err := zk8s_templates.BuildConfigMapDriver(ctx, skeletonBase.ConfigMap)
 				if err != nil {
 					log.Err(err).Msg("error building configmap driver")
+					return templateClusterDefinition, err
 				}
 				sbDef.TopologyConfigDriver.ConfigMapDriver = &cmDriver
 			}
@@ -195,5 +211,5 @@ func PreviewTemplateGeneration(ctx context.Context, cluster Cluster) ClusterDefi
 		}
 		templateClusterDefinition.ComponentBases[cbName] = cbDef
 	}
-	return templateClusterDefinition
+	return templateClusterDefinition, nil
 }

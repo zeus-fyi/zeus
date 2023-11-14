@@ -46,7 +46,7 @@ type ClusterSkeletonBaseDefinitions []ClusterSkeletonBaseDefinition
 func (c *ClusterDefinition) UploadChartsFromClusterDefinition(ctx context.Context, z zeus_client.ZeusClient, print bool) ([]zeus_resp_types.TopologyCreateResponse, error) {
 	sbs, err := c.GenerateSkeletonBaseCharts()
 	if err != nil {
-		log.Ctx(ctx).Err(err)
+		log.Err(err)
 		return nil, err
 	}
 	responses := make([]zeus_resp_types.TopologyCreateResponse, len(sbs))
@@ -107,7 +107,7 @@ func (c *ClusterDefinition) GenerateSkeletonBaseCharts() ([]ClusterSkeletonBaseD
 			// This will customize your config with the supplied workload override supplied
 			if sb.TopologyConfigDriver != nil {
 				sb.TopologyConfigDriver.SetCustomConfig(&inf)
-				if !c.DisablePrint {
+				if !c.DisablePrint || c.UseEmbeddedWorkload {
 					tmp := sb.SkeletonBaseNameChartPath.DirOut
 					dir, _ := filepath.Split(sb.SkeletonBaseNameChartPath.DirIn)
 					lastDir := strings.Split(dir, "/")[len(strings.Split(dir, "/"))-1]
