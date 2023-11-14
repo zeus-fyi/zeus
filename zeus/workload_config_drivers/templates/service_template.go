@@ -61,14 +61,16 @@ func BuildServiceDriver(ctx context.Context, containers Containers) (zeus_topolo
 				log.Error().Err(err).Msg("failed to parse port number")
 				return svcDriver, err
 			}
-			sps = append(sps, v1.ServicePort{
-				Name:       p.Name,
-				Port:       int32(numberInt64),
-				Protocol:   v1.Protocol(p.Protocol),
-				TargetPort: intstr.IntOrString{Type: intstr.String, StrVal: p.Name},
-			})
+
 			if p.IngressEnabledPort {
 				svcDriver.AddNginxTargetPort("http", p.Name)
+			} else {
+				sps = append(sps, v1.ServicePort{
+					Name:       p.Name,
+					Port:       int32(numberInt64),
+					Protocol:   v1.Protocol(p.Protocol),
+					TargetPort: intstr.IntOrString{Type: intstr.String, StrVal: p.Name},
+				})
 			}
 		}
 	}
