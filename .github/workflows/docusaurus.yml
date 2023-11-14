@@ -39,4 +39,4 @@ jobs:
           --platform=${{ env.GOOS }}/${{ env.GOARCH }} \
           --token ${{ secrets.DEPOT_TOKEN }} \
           --provenance=false \
-          -f docker/docusaurus/Dockerfile . --push
+          -f docker/docusaurus_template/Dockerfile . --push
