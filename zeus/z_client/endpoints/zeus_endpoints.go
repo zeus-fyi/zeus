@@ -5,6 +5,8 @@ const (
 	InfraCreateV1Path = "/v1/infra/create"
 	// InfraCreateClassV1Path creates a class definition
 	InfraCreateClassV1Path = "/v1/infra/class/create"
+	// InfraCreateClusterV1Path creates a cluster definition
+	InfraCreateClusterV1Path = "/v1/infra/cluster/create"
 	// InfraCreateMatrixV1Path creates a matrix definition
 	InfraCreateMatrixV1Path = "/v1/infra/matrix/create"
 	// InfraCreateSystemV1Path creates a system definition

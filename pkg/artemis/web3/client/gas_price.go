@@ -27,7 +27,9 @@ func (w *Web3Actions) GetBaseFee(ctx context.Context) (*big.Int, error) {
 	case "sepolia", "Sepolia":
 		config = params.SepoliaChainConfig
 	case "ephemery", "Ephemery":
-		// todo: add ephemery config
+	// todo: add ephemery config
+	case "hardhat", "local", "anvil":
+		return new(big.Int).SetInt64(1000000000), err
 	default:
 		config = params.MainnetChainConfig
 	}
@@ -36,6 +38,57 @@ func (w *Web3Actions) GetBaseFee(ctx context.Context) (*big.Int, error) {
 }
 
 func (w *Web3Actions) SuggestAndSetGasPriceAndLimitForTx(ctx context.Context, params *SendContractTxPayload, toAddr common.Address) error {
+	w.Dial()
+	defer w.C.Close()
+	/*
+		GasTipCap  *big.Int // a.k.a. maxPriorityFeePerGas
+		GasFeeCap  *big.Int // a.k.a. maxFeePerGas
+		Gas        uint64 // a.k.a. gasLimit
+	*/
+	if params.GasLimit != 0 {
+		// if user sets gas manually, don't override it
+		return nil
+	}
+	if w.Account == nil {
+		log.Warn().Msg("SuggestAndSetGasPriceAndLimitForTx: account is nil")
+		return fmt.Errorf("account is nil")
+	}
+	gasTip, err := w.C.SuggestGasTipCap(ctx)
+	if err != nil {
+		log.Warn().Err(err).Msg("SuggestAndSetGasPriceAndLimitForTx: SuggestGasTipCap")
+		log.Err(err).Msg("SuggestAndSetGasPriceAndLimitForTx: GetGasTip")
+		return fmt.Errorf("cannot get gas tip: %v", err)
+	}
+	params.GasTipCap = gasTip
+	baseFee, err := w.GetBaseFee(ctx)
+	if err != nil {
+		log.Warn().Err(err).Msg("SuggestAndSetGasPriceAndLimitForTx: GetBaseFee")
+		log.Err(err).Msg("SuggestAndSetGasPriceAndLimitForTx: GetBaseFee")
+		return err
+	}
+
+	// Max Fee = (2 * Base Fee) + Max Priority Fee
+	gasBaseWithMargin := new(big.Int).Mul(baseFee, big.NewInt(2))
+	params.GasFeeCap = new(big.Int).Add(gasBaseWithMargin, gasTip)
+	msg := ethereum.CallMsg{
+		From:      common.HexToAddress(w.Address().Hex()),
+		To:        &toAddr,
+		GasFeeCap: params.GasFeeCap,
+		GasTipCap: params.GasTipCap,
+		Data:      params.Data,
+		Value:     params.Amount,
+	}
+	gasLimit, err := w.C.EstimateGas(ctx, msg)
+	if err != nil {
+		log.Warn().Err(err).Msg("SuggestAndSetGasPriceAndLimitForTx: EstimateGas")
+		log.Err(err).Msg("SuggestAndSetGasPriceAndLimitForTx: EstimateGas")
+		return err
+	}
+	params.GasLimit = gasLimit
+	return nil
+}
+
+func (w *Web3Actions) SuggestAndSetGasPriceForContractDeploy(ctx context.Context, params *SendContractTxPayload) error {
 	w.Dial()
 	defer w.C.Close()
 	/*
@@ -70,7 +123,6 @@ func (w *Web3Actions) SuggestAndSetGasPriceAndLimitForTx(ctx context.Context, pa
 	params.GasFeeCap = new(big.Int).Add(gasBaseWithMargin, gasTip)
 	msg := ethereum.CallMsg{
 		From:      common.HexToAddress(w.Address().Hex()),
-		To:        &toAddr,
 		GasFeeCap: params.GasFeeCap,
 		GasTipCap: params.GasTipCap,
 		Data:      params.Data,

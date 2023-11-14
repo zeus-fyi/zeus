@@ -49,14 +49,14 @@ func (w *Web3Actions) CallConstantFunction(ctx context.Context, payload *SendCon
 		Data: input,
 	}, nil)
 	if err != nil {
-		log.Ctx(ctx).Err(err).Msg("CallConstantFunction: client.Call")
+		log.Err(err).Msg("CallConstantFunction: client.Call")
 		return nil, err
 	}
 	// TODO: calling a function on a contract errors on unpacking, it should probably know it's not a contract before hand if it can
 	//fmt.Printf("RESPONSE: %v\n", hexutil.Encode(res))
 	vals, err := fn.Outputs.UnpackValues(res)
 	if err != nil {
-		log.Ctx(ctx).Err(err).Msg("CallConstantFunction: UnpackValues")
+		log.Err(err).Msg("CallConstantFunction: UnpackValues")
 		return nil, fmt.Errorf("failed to unpack values from %s: %v", hexutil.Encode(res), err)
 	}
 	return convertOutputParams(vals), nil

@@ -11,19 +11,10 @@ const config = {
     favicon: 'img/icon.svg',
 
     // Set the production url of your site here
-    url: 'https://cloud.zeus.fyi',
-    // Set the /<baseUrl>/ pathname under which your site is served
-    // For GitHub pages deployment, it is often '/<projectName>/'
+    url: 'https://docs.zeus.fyi',
     baseUrl: '/',
-
-    // GitHub pages deployment config.
-    // If you aren't using GitHub pages, you don't need these.
-    organizationName: 'Zeusfyi', // Usually your GitHub org/user name.
-    projectName: 'Zeus', // Usually your repo name.
-
-    onBrokenLinks: 'warn',
-    onBrokenMarkdownLinks: 'warn',
-
+    onBrokenLinks: 'throw',
+    onBrokenMarkdownLinks: 'throw',
     plugins: [
         [
             '@docusaurus/plugin-google-gtag',
@@ -39,30 +30,32 @@ const config = {
         defaultLocale: 'en',
         locales: ['en'],
     },
-
+    markdown: {
+        mermaid: true,
+    },
+    themes: ['@docusaurus/theme-mermaid'],
     presets: [
         [
-            'classic',
-            /** @type {import('@docusaurus/preset-classic').Options} */
+            '@docusaurus/preset-classic',
             ({
+                sitemap: {
+                    changefreq: 'hourly',
+                    priority: 0.5,
+                    filename: 'sitemap.xml',
+                },
                 docs: {
                     sidebarPath: require.resolve('./sidebars.js'),
-
                 },
-                // blog: {
-                //     showReadingTime: true,
-                //     // Please change this to your repo.
-                //     // Remove this to remove the "edit this page" links.
-                //     editUrl:
-                //         'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
-                // },
                 theme: {
                     customCss: require.resolve('./src/css/custom.css'),
                 },
+
             }),
         ],
     ],
 
+    // algolia if not using preset-classic
+    // themes: ['@docusaurus/theme-search-algolia'],
     themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
         ({
@@ -75,8 +68,13 @@ const config = {
                     src: 'img/icon.svg',
                 },
                 items: [
+                    {
+                        label: 'Login',
+                        position: 'right',
+                        href: 'https://cloud.zeus.fyi/login',
+                    },
                     {to: '/docs/zK8s/intro', label: 'Platform & APIs', position: 'left'},
-                    {to: '/docs/lb/intro', label: 'RPC Load Balancer', position: 'left'},
+                    {to: '/docs/lb/intro', label: 'Adaptive RPC Load Balancer', position: 'left'},
                     {
                         label: 'LinkTree',
                         position: 'right',
@@ -84,13 +82,18 @@ const config = {
                     },
                 ],
             },
-
+            announcementBar: {
+                id: 'support_us',
+                content:
+                    '<strong>⭐️ If you like Zeusfyi, give it a <a href="https://github.com/zeus-fyi/zeus" target="_blank" rel="noopener noreferrer">star on GitHub</a> and follow us on <a href="https://twitter.com/zeus_fyi" target="_blank" rel="noopener noreferrer">Twitter</a></strong>',
+                backgroundColor: '#B2E5E4', // Light turquoise/teal background
+                textColor: '#1C6865',      // Darker teal text
+                isCloseable: true,
+            },
             algolia: {
-                apiKey: 'e5f9c7ca012a3615aee103edca64c3a5',
-                indexName: 'zeus',
-                appId: 'B479Q2S8TS'
-                // Optional: Algolia search parameters
-                // contextualSearch: true, // Uncomment this if you want to have versioning
+                appId: 'B479Q2S8TS',
+                apiKey: 'a4cb394096549d2cef4c16cb32a6435b',
+                indexName: 'zeusfyi_docs',
             },
             footer: {
                 style: 'dark',
@@ -108,7 +111,7 @@ const config = {
                             },
                             {
                                 label: 'Solutions Engineering',
-                                href: 'https://calendly.com/alex-zeus-fyi/solutions-engineering'
+                                href: 'https://calendly.com/zeusfyi/solutions-engineering'
                             },
                         ],
                     },
@@ -139,7 +142,7 @@ const config = {
                         ],
                     },
                 ],
-                copyright: `Zeusfyi © ${new Date().getFullYear()}`,
+                copyright: `Zeusfyi, Inc © ${new Date().getFullYear()}`,
             },
             prism: {
                 theme: lightCodeTheme,

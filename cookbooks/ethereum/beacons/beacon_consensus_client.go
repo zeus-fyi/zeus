@@ -8,10 +8,10 @@ import (
 	client_consts "github.com/zeus-fyi/zeus/cookbooks/ethereum/beacons/constants"
 	hestia_req_types "github.com/zeus-fyi/zeus/pkg/hestia/client/req_types"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
+	"github.com/zeus-fyi/zeus/zeus/workload_config_drivers/config_overrides"
 	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_req_types"
 
 	zeus_cluster_config_drivers "github.com/zeus-fyi/zeus/zeus/cluster_config_drivers"
-	zeus_topology_config_drivers "github.com/zeus-fyi/zeus/zeus/workload_config_drivers"
 	v1Core "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -40,10 +40,10 @@ func GetConsensusClientNetworkConfig(consensusClient, network string, choreograp
 	cpuSize := consensusClientMainnetCPU
 	memSize := consensusClientMainnetCPUMemory
 	var ports []v1Core.ContainerPort
-	var svcDriver *zeus_topology_config_drivers.ServiceDriver
+	var svcDriver *config_overrides.ServiceDriver
 	switch consensusClient {
 	case client_consts.Lodestar:
-		svcDriver = &zeus_topology_config_drivers.ServiceDriver{
+		svcDriver = &config_overrides.ServiceDriver{
 			Service: v1Core.Service{
 				Spec: v1Core.ServiceSpec{
 					Ports: []v1Core.ServicePort{
@@ -134,11 +134,11 @@ func GetConsensusClientNetworkConfig(consensusClient, network string, choreograp
 		Env:         "",
 	}
 
-	initContDriver := zeus_topology_config_drivers.ContainerDriver{
+	initContDriver := config_overrides.ContainerDriver{
 		AppendEnvVars: []v1Core.EnvVar{BearerTokenSecretFromChoreography},
 	}
 	if choreographySecretsExist {
-		initContDriver = zeus_topology_config_drivers.ContainerDriver{
+		initContDriver = config_overrides.ContainerDriver{
 			IsInitContainer: true,
 			AppendEnvVars:   []v1Core.EnvVar{BearerTokenSecretFromChoreography},
 		}
@@ -146,8 +146,8 @@ func GetConsensusClientNetworkConfig(consensusClient, network string, choreograp
 	sbDef := zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
 		SkeletonBaseChart:         zeus_req_types.TopologyCreateRequest{},
 		SkeletonBaseNameChartPath: cp,
-		TopologyConfigDriver: &zeus_topology_config_drivers.TopologyConfigDriver{
-			ConfigMapDriver: &zeus_topology_config_drivers.ConfigMapDriver{
+		TopologyConfigDriver: &config_overrides.TopologyConfigDriver{
+			ConfigMapDriver: &config_overrides.ConfigMapDriver{
 				ConfigMap: v1Core.ConfigMap{
 					ObjectMeta: metav1.ObjectMeta{Name: "cm-consensus-client"},
 				},
@@ -158,8 +158,8 @@ func GetConsensusClientNetworkConfig(consensusClient, network string, choreograp
 				},
 			},
 			ServiceDriver: svcDriver,
-			StatefulSetDriver: &zeus_topology_config_drivers.StatefulSetDriver{
-				ContainerDrivers: map[string]zeus_topology_config_drivers.ContainerDriver{
+			StatefulSetDriver: &config_overrides.StatefulSetDriver{
+				ContainerDrivers: map[string]config_overrides.ContainerDriver{
 					initSnapshots: initContDriver,
 					zeusConsensusClient: {Container: v1Core.Container{
 						Name:      consensusClient,
@@ -168,7 +168,7 @@ func GetConsensusClientNetworkConfig(consensusClient, network string, choreograp
 						Resources: rr,
 					}},
 				},
-				PVCDriver: &zeus_topology_config_drivers.PersistentVolumeClaimsConfigDriver{
+				PVCDriver: &config_overrides.PersistentVolumeClaimsConfigDriver{
 					PersistentVolumeClaimDrivers: map[string]v1Core.PersistentVolumeClaim{
 						consensusStorageDiskName: {
 							ObjectMeta: metav1.ObjectMeta{Name: consensusStorageDiskName},
@@ -192,8 +192,8 @@ func GetConsensusClientNetworkConfig(consensusClient, network string, choreograp
 var ConsensusClientSkeletonBaseConfig = zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
 	SkeletonBaseChart:         zeus_req_types.TopologyCreateRequest{},
 	SkeletonBaseNameChartPath: BeaconConsensusClientChartPath,
-	TopologyConfigDriver: &zeus_topology_config_drivers.TopologyConfigDriver{
-		ConfigMapDriver: &zeus_topology_config_drivers.ConfigMapDriver{
+	TopologyConfigDriver: &config_overrides.TopologyConfigDriver{
+		ConfigMapDriver: &config_overrides.ConfigMapDriver{
 			ConfigMap: v1Core.ConfigMap{
 				ObjectMeta: metav1.ObjectMeta{Name: "cm-consensus-client"},
 			},
@@ -201,14 +201,14 @@ var ConsensusClientSkeletonBaseConfig = zeus_cluster_config_drivers.ClusterSkele
 				"start.sh": LighthouseEphemeral + ".sh",
 			},
 		},
-		StatefulSetDriver: &zeus_topology_config_drivers.StatefulSetDriver{
-			ContainerDrivers: map[string]zeus_topology_config_drivers.ContainerDriver{
+		StatefulSetDriver: &config_overrides.StatefulSetDriver{
+			ContainerDrivers: map[string]config_overrides.ContainerDriver{
 				zeusConsensusClient: {Container: v1Core.Container{
 					Name:  zeusConsensusClient,
 					Image: lighthouseDockerImageCapella,
 				}},
 			},
-			PVCDriver: &zeus_topology_config_drivers.PersistentVolumeClaimsConfigDriver{
+			PVCDriver: &config_overrides.PersistentVolumeClaimsConfigDriver{
 				PersistentVolumeClaimDrivers: map[string]v1Core.PersistentVolumeClaim{
 					consensusStorageDiskName: {
 						ObjectMeta: metav1.ObjectMeta{Name: consensusStorageDiskName},
@@ -223,8 +223,8 @@ var ConsensusClientSkeletonBaseConfig = zeus_cluster_config_drivers.ClusterSkele
 var ConsensusClientSkeletonBaseMonitoringConfig = zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
 	SkeletonBaseChart:         zeus_req_types.TopologyCreateRequest{},
 	SkeletonBaseNameChartPath: ServiceMonitorChartPath,
-	TopologyConfigDriver: &zeus_topology_config_drivers.TopologyConfigDriver{
-		ServiceMonitorDriver: &zeus_topology_config_drivers.ServiceMonitorDriver{
+	TopologyConfigDriver: &config_overrides.TopologyConfigDriver{
+		ServiceMonitorDriver: &config_overrides.ServiceMonitorDriver{
 			ServiceMonitor: v1.ServiceMonitor{
 				ObjectMeta: metav1.ObjectMeta{
 					Name: "zeus-consensus-client-monitor",

@@ -3,7 +3,6 @@ package zeus_client
 import (
 	"context"
 	"fmt"
-	"net/http"
 
 	"github.com/rs/zerolog/log"
 	zeus_endpoints "github.com/zeus-fyi/zeus/zeus/z_client/endpoints"
@@ -20,11 +19,11 @@ func (z *ZeusClient) ReadDeployStatusUpdates(ctx context.Context, tar zeus_req_t
 		SetBody(tar).
 		Post(zeus_endpoints.DeployStatusV1Path)
 
-	if err != nil || resp.StatusCode() != http.StatusOK {
+	if err != nil || resp.StatusCode() >= 400 {
 		if err == nil {
 			err = fmt.Errorf("non-OK status code: %d", resp.StatusCode())
 		}
-		log.Ctx(ctx).Err(err).Msg("ZeusClient: ReadDeployStatusUpdates")
+		log.Err(err).Msg("ZeusClient: ReadDeployStatusUpdates")
 		return respJson, err
 	}
 	z.PrintRespJson(resp.Body())

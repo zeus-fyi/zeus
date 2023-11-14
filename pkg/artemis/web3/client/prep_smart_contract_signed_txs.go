@@ -64,7 +64,7 @@ func (w *Web3Actions) GetSignedTxToCallFunctionWithData(ctx context.Context, pay
 	signedTx, err := types.SignTx(tx, types.LatestSignerForChainID(chainID), w.EcdsaPrivateKey())
 	if err != nil {
 		err = fmt.Errorf("cannot sign transaction: %v", err)
-		log.Ctx(ctx).Err(err).Msg("CallFunctionWithData: SignTx")
+		log.Err(err).Msg("CallFunctionWithData: SignTx")
 		return nil, err
 	}
 	return signedTx, err
@@ -76,12 +76,12 @@ func (w *Web3Actions) GetSignedTxToCallFunctionWithArgs(ctx context.Context, pay
 	defer w.C.Close()
 	err := payload.GenerateBinDataFromParamsAbi(ctx)
 	if err != nil {
-		log.Ctx(ctx).Err(err).Msg("CallFunctionWithArgs: GetDataPayload")
+		log.Err(err).Msg("CallFunctionWithArgs: GetDataPayload")
 		return nil, err
 	}
 	signedTx, err := w.GetSignedTxToCallFunctionWithData(ctx, payload, payload.Data)
 	if err != nil {
-		log.Ctx(ctx).Err(err).Msg("CallFunctionWithData: GetSignedTxToCallFunctionWithData")
+		log.Err(err).Msg("CallFunctionWithData: GetSignedTxToCallFunctionWithData")
 		return nil, err
 	}
 	return signedTx, err

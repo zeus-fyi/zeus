@@ -1,6 +1,9 @@
 package zeus_req_types
 
-import "github.com/zeus-fyi/zeus/zeus/z_client/zeus_common_types"
+import (
+	"github.com/zeus-fyi/zeus/zeus/workload_config_drivers/topology_workloads"
+	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_common_types"
+)
 
 type TopologyCreateRequest struct {
 	TopologyName     string `json:"topologyName"`
@@ -15,11 +18,13 @@ type TopologyCreateRequest struct {
 }
 
 type TopologyDeployRequest struct {
-	TopologyID                   int `json:"topologyID"`
+	TopologyID                   int    `json:"topologyID"`
+	ClusterClassName             string `json:"clusterClassName,omitempty"`
 	zeus_common_types.CloudCtxNs `json:"cloudCtxNs"`
 
-	SecretRef                       string `json:"secretRef,omitempty"`
-	RequestChoreographySecretDeploy bool   `json:"requestChoreographySecretDeploy,omitempty"`
+	SecretRef                       string                                       `json:"secretRef,omitempty"`
+	RequestChoreographySecretDeploy bool                                         `json:"requestChoreographySecretDeploy,omitempty"`
+	TopologyBaseInfraWorkload       topology_workloads.TopologyBaseInfraWorkload `json:"topologyBaseInfraWorkload,omitempty"`
 }
 
 type TopologyRequest struct {
@@ -27,7 +32,7 @@ type TopologyRequest struct {
 }
 
 type TopologyCloudCtxNsQueryRequest struct {
-	zeus_common_types.CloudCtxNs
+	zeus_common_types.CloudCtxNs `json:"cloudCtxNs"`
 }
 
 type ClusterTopologyDeployRequest struct {
@@ -64,3 +69,7 @@ type TopologyCreateOrAddSkeletonBasesToClassesRequest struct {
 	ComponentBaseName string   `json:"componentBaseName,omitempty"`
 	SkeletonBaseNames []string `json:"skeletonBaseNames,omitempty"`
 }
+
+//type TopologyCreateCluster struct {
+//	zeus_cluster_config_drivers.Cluster `json:"cluster"`
+//}

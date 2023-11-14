@@ -6,9 +6,9 @@ import (
 
 	"github.com/stretchr/testify/suite"
 	hades_api_test "github.com/zeus-fyi/hades/test"
+	"github.com/zeus-fyi/zeus/zeus/workload_config_drivers/topology_workloads"
 	zeus_client "github.com/zeus-fyi/zeus/zeus/z_client"
 	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_common_types"
-	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_resp_types/topology_workloads"
 )
 
 type WorkloadsTestSuite struct {

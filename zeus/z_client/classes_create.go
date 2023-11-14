@@ -3,13 +3,11 @@ package zeus_client
 import (
 	"context"
 	"fmt"
-	"net/http"
 
 	"github.com/rs/zerolog/log"
-	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_req_types"
-	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_resp_types/topology_workloads"
-
+	"github.com/zeus-fyi/zeus/zeus/workload_config_drivers/topology_workloads"
 	zeus_endpoints "github.com/zeus-fyi/zeus/zeus/z_client/endpoints"
+	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_req_types"
 )
 
 func (z *ZeusClient) CreateClass(ctx context.Context, tar zeus_req_types.TopologyCreateClusterClassRequest) (topology_workloads.TopologyCreateClassResponse, error) {
@@ -20,11 +18,11 @@ func (z *ZeusClient) CreateClass(ctx context.Context, tar zeus_req_types.Topolog
 		SetBody(&tar).
 		Post(zeus_endpoints.InfraCreateClassV1Path)
 
-	if err != nil || resp.StatusCode() != http.StatusOK {
+	if err != nil || resp.StatusCode() >= 400 {
 		if err == nil {
 			err = fmt.Errorf("non-OK status code: %d", resp.StatusCode())
 		}
-		log.Ctx(ctx).Err(err).Msg("ZeusClient: CreateClass")
+		log.Err(err).Msg("ZeusClient: CreateClass")
 		return respJson, err
 	}
 	z.PrintRespJson(resp.Body())

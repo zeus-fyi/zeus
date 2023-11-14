@@ -24,12 +24,13 @@ import (
 )
 
 const (
-	repoBase             = "pk910/test-testnet-repo"
+	repoBase    = "pk910/test-testnet-repo"
+	newRepoBase = "ephemery-testnet/ephemery-genesis"
+	// https://github.com/ephemery-testnet/ephemery-genesis/releases/tag/ephemery-98
 	ephemeralTestnetFile = "testnet-all.tar.gz"
 )
 
 func ExtractAndDecEphemeralTestnetConfig(dataDir filepaths.Path, clientName string) {
-	wipeDirPath := dataDir.DirIn
 	switch clientName {
 	case beacon_cookbooks.LighthouseEphemeral, validator_cookbooks.EphemeryValidatorClusterClassName, "lodestarEphemeral":
 		log.Info().Interface("dataDir", dataDir).Msg("ExtractAndDecEphemeralTestnetConfig: LighthouseEphemeral")
@@ -53,12 +54,11 @@ func ExtractAndDecEphemeralTestnetConfig(dataDir filepaths.Path, clientName stri
 		kt := ExtractResetTime(path.Join(dataDir.DirIn, "/retention.vars"))
 		log.Info().Int64("seconds until next genesis iteration", kt).Msg("ExtractAndDecEphemeralTestnetConfig: retention.vars")
 		if kt <= 0 {
-			log.Info().Interface("wipingDirPath", wipeDirPath).Msg("wiping datadir in path")
-			err := RemoveContents(wipeDirPath)
-			log.Info().Interface("wipingDirPath", wipeDirPath).Msg("wiping datadir in path done")
+			log.Info().Interface("wipingDirPath", dataDir.DirIn).Msg("wiping datadir in path")
+			err := RemoveContents(dataDir.DirIn)
+			log.Info().Interface("wipingDirPath", dataDir.DirIn).Msg("wiping datadir in path done")
 			if err != nil {
 				log.Err(err).Msg("ExtractAndDecEphemeralTestnetConfig: RemoveContents")
-				panic(err)
 			}
 		}
 	}
@@ -75,26 +75,26 @@ func ExtractAndDecEphemeralTestnetConfig(dataDir filepaths.Path, clientName stri
 	dataDir.FnIn = ephemeralTestnetFile
 	err := poseidon.DownloadFile(ctx, dataDir.DirIn, url)
 	if err != nil {
-		log.Ctx(ctx).Panic().Err(err).Msg("DownloadFile")
-		panic(err)
+		log.Err(err).Msg("DownloadFile issue")
+		err = nil
 	}
 	dec := compression.NewCompression()
 	err = dec.UnGzip(&dataDir)
 	if err != nil {
-		log.Ctx(ctx).Panic().Err(err).Msg("UnGzip")
+		log.Panic().Err(err).Msg("UnGzip")
 		panic(err)
 	}
 	// cleans up, by deleting the compressed file
 	err = dataDir.RemoveFileInPath()
 	if err != nil {
-		log.Ctx(ctx).Err(err).Msg("RemoveFileInPath")
+		log.Err(err).Msg("RemoveFileInPath")
 	}
 
 	if clientName == beacon_cookbooks.GethEphemeral {
 		cmd := exec.Command("geth", "--datadir", dataDir.DirIn, "init", path.Join(dataDir.DirIn, "genesis.json"))
 		err = cmd.Run()
 		if err != nil {
-			log.Ctx(ctx).Panic().Err(err).Msg("setting geth genesis")
+			log.Panic().Err(err).Msg("setting geth genesis")
 			panic(err)
 		}
 	}
@@ -103,20 +103,26 @@ func ExtractAndDecEphemeralTestnetConfig(dataDir filepaths.Path, clientName stri
 func GetLatestReleaseConfigDownloadURL() string {
 	rlNum, err := getLatestTestnetDataReleaseNumber()
 	if err != nil {
-		panic(err)
+		log.Err(err).Msg("GetLatestReleaseConfigDownloadURL")
+		err = nil
 	}
-	return fmt.Sprintf("https://github.com/%s/releases/download/%s/%s", repoBase, rlNum, ephemeralTestnetFile)
+	if len(rlNum) <= 0 {
+		panic(errors.New("rlNum is empty"))
+	}
+	log.Info().Str("rlNum", rlNum).Msg("GetLatestReleaseConfigDownloadURL")
+	return fmt.Sprintf("https://github.com/%s/releases/download/%s/%s", newRepoBase, rlNum, ephemeralTestnetFile)
 }
 
 func getLatestTestnetDataReleaseNumber() (string, error) {
-	url := fmt.Sprintf("https://api.github.com/repos/%s/releases/latest", repoBase)
+	url := fmt.Sprintf("https://api.github.com/repos/%s/releases/latest", newRepoBase)
 	r := resty.New()
 	resp, err := r.R().
 		Get(url)
 	var temp map[string]interface{}
 	err = json.Unmarshal(resp.Body(), &temp)
 	for k, v := range temp {
-		if k == "tag_name" {
+		if k == "tag_name" || k == "name" {
+			log.Info().Interface("v", v).Msg("getLatestTestnetDataReleaseNumber")
 			return v.(string), err
 		}
 	}

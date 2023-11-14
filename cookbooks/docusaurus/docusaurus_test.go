@@ -7,8 +7,11 @@ import (
 
 	"github.com/stretchr/testify/suite"
 	"github.com/zeus-fyi/zeus/cookbooks"
+	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 	"github.com/zeus-fyi/zeus/test/configs"
 	"github.com/zeus-fyi/zeus/test/test_suites"
+	zeus_cluster_config_drivers "github.com/zeus-fyi/zeus/zeus/cluster_config_drivers"
+	"github.com/zeus-fyi/zeus/zeus/workload_config_drivers/zk8s_templates"
 	zeus_client "github.com/zeus-fyi/zeus/zeus/z_client"
 )
 
@@ -25,19 +28,99 @@ func (t *DocusaurusCookbookTestSuite) TestDeployDocusaurus() {
 	t.Assert().NotEmpty(resp)
 }
 
-func (t *DocusaurusCookbookTestSuite) TestUploadDocusaurus() {
-	_, rerr := DocusaurusClusterDefinition.UploadChartsFromClusterDefinition(ctx, t.ZeusTestClient, true)
-	t.Require().Nil(rerr)
-}
-
-func (t *DocusaurusCookbookTestSuite) TestCreateDocusaurusClass() {
-	cd := DocusaurusClusterDefinition
-	gcd := cd.BuildClusterDefinitions()
+func (t *DocusaurusCookbookTestSuite) TestCreateDocsClass() {
+	gcd := DocusaurusClusterDefinition.BuildClusterDefinitions()
 	t.Assert().NotEmpty(gcd)
 	fmt.Println(gcd)
 
 	err := gcd.CreateClusterClassDefinitions(context.Background(), t.ZeusTestClient)
 	t.Require().Nil(err)
+}
+
+func (t *DocusaurusCookbookTestSuite) TestUploadDocusaurus() {
+	_, rerr := DocusaurusClusterDefinition.UploadChartsFromClusterDefinition(ctx, t.ZeusTestClient, true)
+	t.Require().Nil(rerr)
+}
+func (t *DocusaurusCookbookTestSuite) TestCreateDocFunc() {
+	err := CreateDocusaurusDeployment(ctx, t.ZeusTestClient, true)
+	t.Require().Nil(err)
+}
+
+func (t *DocusaurusCookbookTestSuite) TestCreateDocusaurusClusterApp() {
+
+	dockerImage := "docker.io/zeusfyi/docusaurus-template:latest"
+	wd := zeus_cluster_config_drivers.WorkloadDefinition{
+		WorkloadName: docusaurusTemplate,
+		ReplicaCount: 1,
+		Containers: zk8s_templates.Containers{
+			docusaurusTemplate: zk8s_templates.Container{
+				IsInitContainer: false,
+				ImagePullPolicy: "Always",
+				DockerImage: zk8s_templates.DockerImage{
+					ImageName: dockerImage,
+					ResourceRequirements: zk8s_templates.ResourceRequirements{
+						CPU:    "100m",
+						Memory: "500Mi",
+					},
+					Ports: []zk8s_templates.Port{
+						{
+							Name:               "http",
+							Number:             "3000",
+							Protocol:           "TCP",
+							IngressEnabledPort: true,
+							ProbeSettings: zk8s_templates.ProbeSettings{
+								UseForLivenessProbe:  true,
+								UseForReadinessProbe: true,
+								UseTcpSocket:         true,
+							},
+						},
+					},
+				},
+			},
+		},
+		FilePath: filepaths.Path{
+			DirOut: "./docusaurus/outputs",
+			FnIn:   docusaurusTemplate,
+		},
+	}
+	cd, err := zeus_cluster_config_drivers.GenerateDeploymentCluster(ctx, wd)
+	t.Require().Nil(err)
+	t.Assert().NoError(err)
+	t.Assert().NotEmpty(cd)
+
+	// Add ingress
+	cd.IngressPaths = map[string]zk8s_templates.IngressPath{
+		wd.WorkloadName: {
+			Path:     "/",
+			PathType: "ImplementationSpecific",
+		},
+	}
+	t.Assert().Equal(docusaurusTemplate, cd.ClusterName)
+
+	prt, err := zeus_cluster_config_drivers.PreviewTemplateGeneration(ctx, cd)
+	t.Require().Nil(err)
+	t.Assert().NotEmpty(prt)
+
+	t.Require().Equal(docusaurusTemplate, prt.ClusterClassName)
+	_, err = prt.UploadChartsFromClusterDefinition(ctx, t.ZeusTestClient, true)
+	t.Require().Nil(err)
+
+	// generates a class definition & registers it with zeus
+	//dpr, err := prt.GenerateSkeletonBaseCharts()
+	//t.Require().Nil(err)
+	//t.Assert().NotEmpty(dpr)
+	//
+	//gcd := zeus_cluster_config_drivers.CreateGeneratedClusterClassCreationRequest(cd)
+	//t.Assert().NotEmpty(gcd)
+	//fmt.Println(gcd)
+
+	//gcdExp := DocusaurusClusterDefinition.BuildClusterDefinitions()
+	//t.Assert().NotEmpty(gcdExp)
+	//fmt.Println(gcdExp)
+
+	//t.Assert().Equal(gcdExp, gcd)
+	//err = gcd.CreateClusterClassDefinitions(ctx, t.ZeusTestClient)
+	//t.Require().Nil(err)
 }
 
 func (t *DocusaurusCookbookTestSuite) SetupTest() {

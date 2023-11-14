@@ -1,14 +1,21 @@
 package docusaurus_cookbooks
 
 import (
+	"context"
 	"fmt"
-	"time"
 
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
+	"github.com/zeus-fyi/zeus/zeus/workload_config_drivers/zk8s_templates"
+	zeus_client "github.com/zeus-fyi/zeus/zeus/z_client"
 	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_common_types"
 	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_req_types"
 
 	zeus_cluster_config_drivers "github.com/zeus-fyi/zeus/zeus/cluster_config_drivers"
+)
+
+const (
+	docusaurus         = "docusaurus"
+	docusaurusTemplate = "docusaurus-template"
 )
 
 var (
@@ -38,33 +45,72 @@ var (
 	}
 )
 
-// set your own topologyID here after uploading a chart workload
-var docusaurusKnsReq = zeus_req_types.TopologyDeployRequest{
-	TopologyID: 0,
-	CloudCtxNs: docusaurusCloudCtxNs,
-}
+func CreateDocusaurusDeployment(ctx context.Context, zc zeus_client.ZeusClient, createClass bool) error {
+	dockerImage := "docker.io/zeusfyi/docusaurus-template:latest"
+	wd := zeus_cluster_config_drivers.WorkloadDefinition{
+		WorkloadName: docusaurusTemplate,
+		ReplicaCount: 1,
+		Containers: zk8s_templates.Containers{
+			docusaurusTemplate: zk8s_templates.Container{
+				IsInitContainer: false,
+				ImagePullPolicy: "Always",
+				DockerImage: zk8s_templates.DockerImage{
+					ImageName: dockerImage,
+					ResourceRequirements: zk8s_templates.ResourceRequirements{
+						CPU:    "100m",
+						Memory: "500Mi",
+					},
+					Ports: []zk8s_templates.Port{
+						{
+							Name:               "http",
+							Number:             "3000",
+							Protocol:           "TCP",
+							IngressEnabledPort: true,
+							ProbeSettings: zk8s_templates.ProbeSettings{
+								UseForLivenessProbe:  true,
+								UseForReadinessProbe: true,
+								UseTcpSocket:         true,
+							},
+						},
+					},
+				},
+			},
+		},
+		FilePath: filepaths.Path{
+			DirOut: "./docusaurus/outputs",
+			FnIn:   docusaurusTemplate,
+		},
+	}
+	cd, err := zeus_cluster_config_drivers.GenerateDeploymentCluster(ctx, wd)
+	if err != nil {
+		return err
+	}
+	cd.IngressPaths = map[string]zk8s_templates.IngressPath{
+		wd.WorkloadName: {
+			Path:     "/",
+			PathType: "ImplementationSpecific",
+		},
+	}
 
-var docusaurusCloudCtxNs = zeus_common_types.CloudCtxNs{
-	CloudProvider: "do",
-	Region:        "sfo3",
-	Context:       "do-sfo3-dev-do-sfo3-zeus",
-	Namespace:     "docusaurus", // set with your own namespace
-	Env:           "production",
-}
+	prt, err := zeus_cluster_config_drivers.PreviewTemplateGeneration(ctx, cd)
+	if err != nil {
+		return err
+	}
 
-var docusaurusChart = zeus_req_types.TopologyCreateRequest{
-	TopologyName:     "docusaurus",
-	ChartName:        "docusaurus",
-	ChartDescription: "docusaurus",
-	Version:          fmt.Sprintf("v0.0.%d", time.Now().Unix()),
-}
+	if createClass {
+		gcd := zeus_cluster_config_drivers.CreateGeneratedClusterClassCreationRequest(cd)
+		fmt.Println(gcd)
+		gcdExp := DocusaurusClusterDefinition.BuildClusterDefinitions()
+		fmt.Println(gcdExp)
+		err = gcd.CreateClusterClassDefinitions(ctx, zc)
+		if err != nil {
+			return err
+		}
+	}
 
-// DocusaurusChartPath is where it will write a copy of the chart you uploaded, which helps verify the workload is correct
-var DocusaurusChartPath = filepaths.Path{
-	PackageName: "",
-	DirIn:       "./docusaurus/infra",
-	DirOut:      "./docusaurus/outputs",
-	FnIn:        "docusaurus", // filename for your gzip workload
-	FnOut:       "",
-	Env:         "",
+	_, err = prt.UploadChartsFromClusterDefinition(ctx, zc, true)
+	if err != nil {
+		return err
+	}
+	return nil
 }

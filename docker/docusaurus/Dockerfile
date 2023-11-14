@@ -20,5 +20,5 @@ ENV NODE_ENV=production
 
 EXPOSE 3000
 
-CMD ["yarn", "start", "--host", "0.0.0.0"]
+CMD ["yarn", "run", "serve", "--host", "0.0.0.0"]
 

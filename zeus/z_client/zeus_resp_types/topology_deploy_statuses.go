@@ -7,15 +7,15 @@ import (
 )
 
 type TopologyDeployStatuses struct {
-	Slice []TopologyDeployStatus
+	Slice []TopologyDeployStatus `json:"topologies"`
 }
 
 type TopologyDeployStatus struct {
-	TopologyID     int       `json:"topologyID"`
-	TopologyName   string    `json:"topologyName"`
-	TopologyStatus string    `json:"topologyStatus"`
-	UpdatedAt      time.Time `json:"updatedAt"`
-	CloudCtxNs     zeus_common_types.CloudCtxNs
+	TopologyID     int                          `json:"topologyID"`
+	TopologyName   string                       `json:"topologyName"`
+	TopologyStatus string                       `json:"topologyStatus"`
+	UpdatedAt      time.Time                    `json:"updatedAt"`
+	CloudCtxNs     zeus_common_types.CloudCtxNs `json:"cloudCtxNs"`
 }
 
 type ClusterStatus struct {

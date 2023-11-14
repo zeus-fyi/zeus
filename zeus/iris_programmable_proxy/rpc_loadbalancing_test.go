@@ -8,6 +8,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/go-resty/resty/v2"
 	web3_actions "github.com/zeus-fyi/gochain/web3/client"
 	hestia_req_types "github.com/zeus-fyi/zeus/pkg/hestia/client/req_types"
 	iris_programmable_proxy_v1_beta "github.com/zeus-fyi/zeus/zeus/iris_programmable_proxy/v1beta"
@@ -15,9 +16,9 @@ import (
 )
 
 func (t *IrisConfigTestSuite) TestRPCLoadBalancing() {
-	routeGroup := "ethereum-mainnet"
-	path := fmt.Sprintf("https://iris.zeus.fyi/v1/router")
-	//path = fmt.Sprintf("http://localhost:8080/v1/router")
+	routeGroup := "etherum-mainnet-sample"
+	//path := fmt.Sprintf("https://iris.zeus.fyi/v1/router")
+	path := fmt.Sprintf("http://localhost:8080/v1/router")
 
 	web3a := web3_actions.NewWeb3ActionsClient(path)
 	web3a.AddRoutingGroupHeader(routeGroup)
@@ -26,10 +27,80 @@ func (t *IrisConfigTestSuite) TestRPCLoadBalancing() {
 	reqCount := 4
 	defer web3a.Close()
 	for i := 0; i < reqCount; i++ {
-		resp, err := web3a.C.BlockNumber(context.Background())
+		start := time.Now()
+		resp, err := web3a.C.BlockByNumber(context.Background(), nil)
+		end := time.Now()
+		fmt.Println("time taken: ", end.Sub(start).Milliseconds())
 		t.NoError(err)
 		t.NotNil(resp)
-		fmt.Println(resp)
+	}
+}
+
+func (t *IrisConfigTestSuite) TestDirectEndpoint() {
+	t.Require().NotEmpty(t.Tc.QuickNodeEndpoint)
+	web3a := web3_actions.NewWeb3ActionsClient(t.Tc.QuickNodeEndpoint)
+	web3a.Dial()
+	reqCount := 4
+	fmt.Println("RPC Requests")
+
+	defer web3a.Close()
+	for i := 0; i < reqCount; i++ {
+		start := time.Now()
+		resp, err := web3a.C.BlockByNumber(context.Background(), nil)
+		end := time.Now()
+		fmt.Println("time taken: ", end.Sub(start).Milliseconds())
+		t.NoError(err)
+		t.NotNil(resp)
+	}
+
+	fmt.Println("POST Requests")
+	r := resty.New()
+	payload := `{
+		"jsonrpc": "2.0",
+		"method": "eth_getBlockByNumber",
+		"params": ["latest", true],
+		"id": 1
+	}`
+	for i := 0; i < reqCount; i++ {
+		start := time.Now()
+		resp, err := r.R().
+			SetBody(payload).
+			Post(t.Tc.QuickNodeEndpoint)
+		t.Require().NoError(err)
+		t.Require().NotNil(resp)
+		end := time.Now()
+		fmt.Println("time taken: ", end.Sub(start).Milliseconds())
+	}
+
+	fmt.Println("POST Requests + Decode")
+	m := make(map[string]interface{})
+	for i := 0; i < reqCount; i++ {
+		start := time.Now()
+		resp, err := r.R().
+			SetBody(payload).
+			SetResult(&m).
+			Post(t.Tc.QuickNodeEndpoint)
+		t.Require().NoError(err)
+		t.Require().NotNil(resp)
+		end := time.Now()
+		fmt.Println("time taken: ", end.Sub(start).Milliseconds())
+	}
+	fmt.Println("Localhost Requests")
+	routeGroup := "etherum-mainnet-sample"
+	path := fmt.Sprintf("http://localhost:8080/v1/router")
+
+	web3a = web3_actions.NewWeb3ActionsClient(path)
+	web3a.AddRoutingGroupHeader(routeGroup)
+	web3a.AddBearerToken(t.Tc.Bearer)
+	web3a.Dial()
+	defer web3a.Close()
+	for i := 0; i < reqCount; i++ {
+		start := time.Now()
+		resp, err := web3a.C.BlockNumber(context.Background())
+		t.NoError(err)
+		end := time.Now()
+		fmt.Println("time taken: ", end.Sub(start).Milliseconds())
+		t.NotNil(resp)
 	}
 }
 

@@ -45,7 +45,7 @@ var (
 		PackageName: "",
 		DirIn:       "./redis/master",
 		DirOut:      "./redis/outputs",
-		FnIn:        "redisMaster", // filename for your gzip workload
+		FnIn:        "redis-master", // filename for your gzip workload
 		FnOut:       "",
 		Env:         "",
 	}
@@ -53,7 +53,7 @@ var (
 		PackageName: "",
 		DirIn:       "./redis/replicas",
 		DirOut:      "./redis/outputs",
-		FnIn:        "redisReplicas", // filename for your gzip workload
+		FnIn:        "redis-replicas", // filename for your gzip workload
 		FnOut:       "",
 		Env:         "",
 	}

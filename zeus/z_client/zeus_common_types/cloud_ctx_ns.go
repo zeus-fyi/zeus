@@ -8,3 +8,19 @@ type CloudCtxNs struct {
 	Alias         string `json:"alias,omitempty"`
 	Env           string `json:"env,omitempty"`
 }
+
+func (c *CloudCtxNs) CheckIfEmpty() bool {
+	if c.CloudProvider == "" {
+		return true
+	}
+	if c.Region == "" {
+		return true
+	}
+	if c.Context == "" {
+		return true
+	}
+	if c.Namespace == "" {
+		return true
+	}
+	return false
+}

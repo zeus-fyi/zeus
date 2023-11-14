@@ -56,7 +56,7 @@ func (w *Web3Actions) GetContractConst(ctx context.Context, payload *SendContrac
 	if myabi == nil {
 		abiInternal, aerr := web3_types.GetABI(payload.ContractFile)
 		if aerr != nil {
-			log.Ctx(ctx).Err(aerr).Msg("CallContract: GetABI")
+			log.Err(aerr).Msg("CallContract: GetABI")
 			return nil, aerr
 		}
 		myabi = abiInternal
@@ -65,17 +65,17 @@ func (w *Web3Actions) GetContractConst(ctx context.Context, payload *SendContrac
 	fn, ok := myabi.Methods[payload.MethodName]
 	if !ok {
 		err = fmt.Errorf("there is no such function: %v", payload.MethodName)
-		log.Ctx(ctx).Err(err).Msg("GetContractConst: myabi.Methods")
+		log.Err(err).Msg("GetContractConst: myabi.Methods")
 		return nil, err
 	}
 	if !fn.IsConstant() {
-		log.Ctx(ctx).Err(err).Msg("GetContractConst: !IsConstant")
+		log.Err(err).Msg("GetContractConst: !IsConstant")
 		return nil, err
 	}
 	res, err := w.CallConstantFunction(ctx, payload)
 	if err != nil {
 		err = fmt.Errorf("error calling constant function: %v", err)
-		log.Ctx(ctx).Err(err).Msg("GetContractConst: CallConstantFunction")
+		log.Err(err).Msg("GetContractConst: CallConstantFunction")
 		return nil, err
 	}
 	return res, nil

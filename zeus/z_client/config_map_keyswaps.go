@@ -3,7 +3,6 @@ package zeus_client
 import (
 	"context"
 	"fmt"
-	"net/http"
 
 	"github.com/rs/zerolog/log"
 	zeus_endpoints "github.com/zeus-fyi/zeus/zeus/z_client/endpoints"
@@ -16,7 +15,7 @@ func (z *ZeusClient) SwapConfigMapKeys(ctx context.Context, par zeus_config_map_
 		SetBody(par).
 		Post(zeus_endpoints.ConfigMapsActionV1Path)
 
-	if err != nil || resp.StatusCode() != http.StatusOK {
+	if err != nil || resp.StatusCode() >= 400 {
 		log.Ctx(ctx).Err(err).Msg("ZeusClient: SwapConfigMapKeys")
 		if err == nil {
 			err = fmt.Errorf("non-OK status code: %d", resp.StatusCode())
@@ -34,7 +33,7 @@ func (z *ZeusClient) SetOrCreateKeyFromConfigMapKey(ctx context.Context, par zeu
 		SetBody(par).
 		Post(zeus_endpoints.ConfigMapsActionV1Path)
 
-	if err != nil || resp.StatusCode() != http.StatusOK {
+	if err != nil || resp.StatusCode() >= 400 {
 		log.Ctx(ctx).Err(err).Msg("ZeusClient: SetOrCreateKeyFromConfigMapKey")
 		if err == nil {
 			err = fmt.Errorf("non-OK status code: %d", resp.StatusCode())

@@ -3,7 +3,6 @@ package zeus_client
 import (
 	"context"
 	"fmt"
-	"net/http"
 
 	"github.com/rs/zerolog/log"
 	"github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/compression"
@@ -35,11 +34,11 @@ func (z *ZeusClient) UploadChart(ctx context.Context, p filepaths.Path, tar zeus
 		SetFile("chart", p.FileOutPath()).
 		Post(zeus_endpoints.InfraCreateV1Path)
 
-	if err != nil || resp.StatusCode() != http.StatusOK {
+	if err != nil || resp.StatusCode() >= 400 {
 		if err == nil {
 			err = fmt.Errorf("non-OK status code: %d", resp.StatusCode())
 		}
-		log.Ctx(ctx).Err(err).Msg("ZeusClient: UploadChart")
+		log.Err(err).Msg("ZeusClient: UploadChart")
 		return respJson, err
 	}
 	z.PrintRespJson(resp.Body())

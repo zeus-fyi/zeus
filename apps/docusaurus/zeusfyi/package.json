@@ -1,6 +1,6 @@
 {
   "name": "zeusfyi",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",
@@ -16,10 +16,13 @@
   "dependencies": {
     "@docsearch/css": "^3.5.2",
     "@docsearch/js": "^3.5.2",
-    "@docsearch/react": "^3.5.2",
+    "@docsearch/react": "3",
     "@docusaurus/core": "^2.4.3",
     "@docusaurus/plugin-google-gtag": "^2.4.3",
+    "@docusaurus/plugin-sitemap": "^2.4.3",
     "@docusaurus/preset-classic": "^2.4.3",
+    "@docusaurus/theme-classic": "^2.4.3",
+    "@docusaurus/theme-mermaid": "^2.4.3",
     "@docusaurus/theme-search-algolia": "^2.4.3",
     "@mdx-js/react": "^1.6.22",
     "clsx": "^1.2.1",

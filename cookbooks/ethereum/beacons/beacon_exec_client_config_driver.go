@@ -6,11 +6,10 @@ import (
 	client_consts "github.com/zeus-fyi/zeus/cookbooks/ethereum/beacons/constants"
 	hestia_req_types "github.com/zeus-fyi/zeus/pkg/hestia/client/req_types"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
-	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_req_types"
-	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_resp_types/topology_workloads"
-
 	zeus_cluster_config_drivers "github.com/zeus-fyi/zeus/zeus/cluster_config_drivers"
-	zeus_topology_config_drivers "github.com/zeus-fyi/zeus/zeus/workload_config_drivers"
+	"github.com/zeus-fyi/zeus/zeus/workload_config_drivers/config_overrides"
+	"github.com/zeus-fyi/zeus/zeus/workload_config_drivers/topology_workloads"
+	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_req_types"
 
 	v1Core "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
@@ -84,11 +83,11 @@ func GetExecClientNetworkConfig(execClient, network string, choreographySecretsE
 		FnOut:       "",
 		Env:         "",
 	}
-	initContDriver := zeus_topology_config_drivers.ContainerDriver{
+	initContDriver := config_overrides.ContainerDriver{
 		AppendEnvVars: []v1Core.EnvVar{BearerTokenSecretFromChoreography},
 	}
 	if choreographySecretsExist {
-		initContDriver = zeus_topology_config_drivers.ContainerDriver{
+		initContDriver = config_overrides.ContainerDriver{
 			IsInitContainer: true,
 			AppendEnvVars:   []v1Core.EnvVar{BearerTokenSecretFromChoreography},
 		}
@@ -102,8 +101,8 @@ func GetExecClientNetworkConfig(execClient, network string, choreographySecretsE
 	sbCfg := zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
 		SkeletonBaseChart:         zeus_req_types.TopologyCreateRequest{},
 		SkeletonBaseNameChartPath: cp,
-		TopologyConfigDriver: &zeus_topology_config_drivers.TopologyConfigDriver{
-			ConfigMapDriver: &zeus_topology_config_drivers.ConfigMapDriver{
+		TopologyConfigDriver: &config_overrides.TopologyConfigDriver{
+			ConfigMapDriver: &config_overrides.ConfigMapDriver{
 				ConfigMap: v1Core.ConfigMap{
 					ObjectMeta: metav1.ObjectMeta{Name: "cm-exec-client"},
 				},
@@ -113,8 +112,8 @@ func GetExecClientNetworkConfig(execClient, network string, choreographySecretsE
 					download + ".sh": downloadStartup,
 				},
 			},
-			StatefulSetDriver: &zeus_topology_config_drivers.StatefulSetDriver{
-				ContainerDrivers: map[string]zeus_topology_config_drivers.ContainerDriver{
+			StatefulSetDriver: &config_overrides.StatefulSetDriver{
+				ContainerDrivers: map[string]config_overrides.ContainerDriver{
 					initSnapshots: initContDriver,
 					zeusExecClient: {
 						Container: v1Core.Container{
@@ -124,7 +123,7 @@ func GetExecClientNetworkConfig(execClient, network string, choreographySecretsE
 						},
 					},
 				},
-				PVCDriver: &zeus_topology_config_drivers.PersistentVolumeClaimsConfigDriver{
+				PVCDriver: &config_overrides.PersistentVolumeClaimsConfigDriver{
 					PersistentVolumeClaimDrivers: map[string]v1Core.PersistentVolumeClaim{
 						execClientDiskName: {
 							ObjectMeta: metav1.ObjectMeta{Name: execClientDiskName},

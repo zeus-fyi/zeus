@@ -1,7 +1,5 @@
 # Iris Load Balancer Programmable Proxy: QuickNode Marketplace
 
-#### Exclusively running Iris services through the QuickNode Marketplace until our v1 release later this year.
-
 ## Overview
 
 We use ZU to denote Zeus compute units. These units are derived from server bandwidth, cpu, memory usage and average and peak traffic usage, and operational costs for development & maintenance. 
