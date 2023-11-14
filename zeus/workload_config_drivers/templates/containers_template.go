@@ -48,7 +48,7 @@ func BuildContainerDriver(ctx context.Context, name string, container Container)
 					},
 				},
 				InitialDelaySeconds: 60,
-				PeriodSeconds:       20,
+				PeriodSeconds:       10,
 			}
 			c.ReadinessProbe = rp
 		}
@@ -62,7 +62,7 @@ func BuildContainerDriver(ctx context.Context, name string, container Container)
 						},
 					},
 				},
-				InitialDelaySeconds: 30,
+				InitialDelaySeconds: 60,
 				PeriodSeconds:       30,
 			}
 			c.LivenessProbe = rp
