@@ -2,11 +2,11 @@ package web3signer_cookbooks
 
 import (
 	web3signer_cmds_ai_generated "github.com/zeus-fyi/zeus/cookbooks/ethereum/web3signers/web3signer_cmds/ai_generated"
-	zeus_topology_config_drivers "github.com/zeus-fyi/zeus/zeus/workload_config_drivers"
+	"github.com/zeus-fyi/zeus/zeus/workload_config_drivers/config_overrides"
 	v1 "k8s.io/api/core/v1"
 )
 
-func GetWeb3SignerAPIStatefulSetConfig(customImage string) zeus_topology_config_drivers.StatefulSetDriver {
+func GetWeb3SignerAPIStatefulSetConfig(customImage string) config_overrides.StatefulSetDriver {
 	args, _ := web3signer_cmds_ai_generated.Web3SignerAPICmd.CreateFieldsForCLI("eth2")
 	port := v1.ContainerPort{
 		Name:          "http",
@@ -21,17 +21,17 @@ func GetWeb3SignerAPIStatefulSetConfig(customImage string) zeus_topology_config_
 		Env:       []v1.EnvVar{},
 		Resources: v1.ResourceRequirements{},
 	}
-	contDriver := zeus_topology_config_drivers.ContainerDriver{
+	contDriver := config_overrides.ContainerDriver{
 		Container: c,
 	}
-	sc := zeus_topology_config_drivers.StatefulSetDriver{}
-	sc.ContainerDrivers = make(map[string]zeus_topology_config_drivers.ContainerDriver)
+	sc := config_overrides.StatefulSetDriver{}
+	sc.ContainerDrivers = make(map[string]config_overrides.ContainerDriver)
 	sc.ContainerDrivers[c.Name] = contDriver
 	return sc
 }
 
-func GetWeb3SignerAPIServiceConfig() zeus_topology_config_drivers.ServiceDriver {
-	s := zeus_topology_config_drivers.ServiceDriver{ExtendPorts: []v1.ServicePort{}}
+func GetWeb3SignerAPIServiceConfig() config_overrides.ServiceDriver {
+	s := config_overrides.ServiceDriver{ExtendPorts: []v1.ServicePort{}}
 	s.AddNginxTargetPort("nginx", "http")
 	return s
 }

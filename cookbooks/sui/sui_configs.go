@@ -13,7 +13,7 @@ import (
 	aws_nvme "github.com/zeus-fyi/zeus/zeus/cluster_resources/nvme/aws"
 	do_nvme "github.com/zeus-fyi/zeus/zeus/cluster_resources/nvme/do"
 	gcp_nvme "github.com/zeus-fyi/zeus/zeus/cluster_resources/nvme/gcp"
-	zeus_topology_config_drivers "github.com/zeus-fyi/zeus/zeus/workload_config_drivers"
+	"github.com/zeus-fyi/zeus/zeus/workload_config_drivers/config_overrides"
 	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_req_types"
 	v1Core "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -97,7 +97,7 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 		entryPointScript = "noFallBackEntrypoint.sh"
 	}
 
-	sd := &zeus_topology_config_drivers.ServiceDriver{}
+	sd := &config_overrides.ServiceDriver{}
 	if cfg.WithIngress {
 		sd.AddNginxTargetPort("nginx", SuiRpcPortName)
 	}
@@ -123,8 +123,8 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 	}
 	var envAddOns []v1Core.EnvVar
 	if cfg.WithArchivalFallback {
-		s3AccessKey := zeus_topology_config_drivers.MakeSecretEnvVar("AWS_ACCESS_KEY_ID", "AWS_ACCESS_KEY_ID", "aws-credentials")
-		s3SecretKey := zeus_topology_config_drivers.MakeSecretEnvVar("AWS_SECRET_ACCESS_KEY", "AWS_SECRET_ACCESS_KEY", "aws-credentials")
+		s3AccessKey := config_overrides.MakeSecretEnvVar("AWS_ACCESS_KEY_ID", "AWS_ACCESS_KEY_ID", "aws-credentials")
+		s3SecretKey := config_overrides.MakeSecretEnvVar("AWS_SECRET_ACCESS_KEY", "AWS_SECRET_ACCESS_KEY", "aws-credentials")
 		envAddOns = []v1Core.EnvVar{s3AccessKey, s3SecretKey}
 	}
 
@@ -136,8 +136,8 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 	sbCfg := zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
 		SkeletonBaseChart:         zeus_req_types.TopologyCreateRequest{},
 		SkeletonBaseNameChartPath: SuiMasterChartPath,
-		TopologyConfigDriver: &zeus_topology_config_drivers.TopologyConfigDriver{
-			ConfigMapDriver: &zeus_topology_config_drivers.ConfigMapDriver{
+		TopologyConfigDriver: &config_overrides.TopologyConfigDriver{
+			ConfigMapDriver: &config_overrides.ConfigMapDriver{
 				ConfigMap: v1Core.ConfigMap{
 					ObjectMeta: metav1.ObjectMeta{Name: suiConfigMap},
 					Data: map[string]string{
@@ -147,13 +147,13 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 				},
 			},
 			ServiceDriver: sd,
-			StatefulSetDriver: &zeus_topology_config_drivers.StatefulSetDriver{
-				ContainerDrivers: map[string]zeus_topology_config_drivers.ContainerDriver{
+			StatefulSetDriver: &config_overrides.StatefulSetDriver{
+				ContainerDrivers: map[string]config_overrides.ContainerDriver{
 					Sui: {
 						Container: v1Core.Container{
 							Name:      Sui,
 							Image:     dockerImageSui,
-							Resources: zeus_topology_config_drivers.CreateComputeResourceRequirementsLimit(cpuSize, memSize),
+							Resources: config_overrides.CreateComputeResourceRequirementsLimit(cpuSize, memSize),
 							VolumeMounts: []v1Core.VolumeMount{{
 								Name:      suiDiskName,
 								MountPath: dataDir,
@@ -194,12 +194,12 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 						IsInitContainer: true,
 					},
 				},
-				PVCDriver: &zeus_topology_config_drivers.PersistentVolumeClaimsConfigDriver{
+				PVCDriver: &config_overrides.PersistentVolumeClaimsConfigDriver{
 					PersistentVolumeClaimDrivers: map[string]v1Core.PersistentVolumeClaim{
 						suiDiskName: {
 							ObjectMeta: metav1.ObjectMeta{Name: suiDiskName},
 							Spec: v1Core.PersistentVolumeClaimSpec{
-								Resources:        zeus_topology_config_drivers.CreateDiskResourceRequirementsLimit(diskSize),
+								Resources:        config_overrides.CreateDiskResourceRequirementsLimit(diskSize),
 								StorageClassName: storageClassName,
 							},
 						},

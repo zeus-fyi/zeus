@@ -1,4 +1,4 @@
-package zeus_topology_config_drivers
+package config_overrides
 
 import v1 "github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v1"
 

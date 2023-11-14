@@ -10,7 +10,7 @@ import (
 	"github.com/rs/zerolog/log"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 	strings_filter "github.com/zeus-fyi/zeus/pkg/utils/strings"
-	zeus_topology_config_drivers "github.com/zeus-fyi/zeus/zeus/workload_config_drivers"
+	zeus_topology_config_drivers "github.com/zeus-fyi/zeus/zeus/workload_config_drivers/config_overrides"
 	"github.com/zeus-fyi/zeus/zeus/workload_config_drivers/topology_workloads"
 	zeus_client "github.com/zeus-fyi/zeus/zeus/z_client"
 	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_common_types"

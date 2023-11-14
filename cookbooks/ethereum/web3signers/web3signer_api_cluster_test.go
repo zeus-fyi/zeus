@@ -3,7 +3,7 @@ package web3signer_cookbooks
 import (
 	"context"
 
-	zeus_topology_config_drivers "github.com/zeus-fyi/zeus/zeus/workload_config_drivers"
+	"github.com/zeus-fyi/zeus/zeus/workload_config_drivers/config_overrides"
 	"github.com/zeus-fyi/zeus/zeus/workload_config_drivers/topology_workloads"
 	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_req_types"
 )
@@ -65,8 +65,8 @@ func (t *Web3SignerCookbookTestSuite) TestUploadWeb3SignerAPIChart() {
 	t.Require().Nil(err)
 
 	// sets the custom ingress config
-	infCfg := zeus_topology_config_drivers.IngressDriver{NginxAuthURL: t.AuthURL}
-	customIngTc := zeus_topology_config_drivers.TopologyConfigDriver{
+	infCfg := config_overrides.IngressDriver{NginxAuthURL: t.AuthURL}
+	customIngTc := config_overrides.TopologyConfigDriver{
 		IngressDriver: &infCfg,
 	}
 	customIngTc.SetCustomConfig(&ingr)
@@ -106,7 +106,7 @@ func (t *Web3SignerCookbookTestSuite) TestUploadWeb3SignerAPIChart() {
 
 	stsCfg := GetWeb3SignerAPIStatefulSetConfig(web3signerDockerImage)
 	svcCfg := GetWeb3SignerAPIServiceConfig()
-	tc := zeus_topology_config_drivers.TopologyConfigDriver{
+	tc := config_overrides.TopologyConfigDriver{
 		StatefulSetDriver: &stsCfg,
 		ServiceDriver:     &svcCfg,
 	}

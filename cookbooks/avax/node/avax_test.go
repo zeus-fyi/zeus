@@ -9,17 +9,16 @@ import (
 	"github.com/zeus-fyi/zeus/cookbooks"
 	"github.com/zeus-fyi/zeus/test/configs"
 	"github.com/zeus-fyi/zeus/test/test_suites"
+	"github.com/zeus-fyi/zeus/zeus/workload_config_drivers/config_overrides"
 	zeus_client "github.com/zeus-fyi/zeus/zeus/z_client"
 	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_req_types"
-
-	zeus_topology_config_drivers "github.com/zeus-fyi/zeus/zeus/workload_config_drivers"
 )
 
 var ctx = context.Background()
 
 func (t *AvaxCookbookTestSuite) TestClusterDeploy() {
-	infCfg := zeus_topology_config_drivers.IngressDriver{NginxAuthURL: t.Tc.Web3SignerAuthURL}
-	customIngTc := zeus_topology_config_drivers.TopologyConfigDriver{
+	infCfg := config_overrides.IngressDriver{NginxAuthURL: t.Tc.Web3SignerAuthURL}
+	customIngTc := config_overrides.TopologyConfigDriver{
 		IngressDriver: &infCfg,
 	}
 	AvaxIngressSkeletonBaseConfig.TopologyConfigDriver = &customIngTc
@@ -44,8 +43,8 @@ func (t *AvaxCookbookTestSuite) TestClusterDestroy() {
 }
 
 func (t *AvaxCookbookTestSuite) TestClusterSetup() {
-	infCfg := zeus_topology_config_drivers.IngressDriver{NginxAuthURL: t.Tc.Web3SignerAuthURL}
-	customIngTc := zeus_topology_config_drivers.TopologyConfigDriver{
+	infCfg := config_overrides.IngressDriver{NginxAuthURL: t.Tc.Web3SignerAuthURL}
+	customIngTc := config_overrides.TopologyConfigDriver{
 		IngressDriver: &infCfg,
 	}
 	AvaxIngressSkeletonBaseConfig.TopologyConfigDriver = &customIngTc

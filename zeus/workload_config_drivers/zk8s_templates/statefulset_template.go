@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/rs/zerolog/log"
-	zeus_topology_config_drivers "github.com/zeus-fyi/zeus/zeus/workload_config_drivers"
+	"github.com/zeus-fyi/zeus/zeus/workload_config_drivers/config_overrides"
 	v1 "k8s.io/api/apps/v1"
 	v1Core "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
@@ -40,26 +40,26 @@ func GetStatefulSetTemplate(ctx context.Context, name string) *v1.StatefulSet {
 	}
 }
 
-func BuildStatefulSetDriver(ctx context.Context, containers Containers, sts StatefulSet) (zeus_topology_config_drivers.StatefulSetDriver, error) {
+func BuildStatefulSetDriver(ctx context.Context, containers Containers, sts StatefulSet) (config_overrides.StatefulSetDriver, error) {
 	rc := int32(sts.ReplicaCount)
-	stsDriver := zeus_topology_config_drivers.StatefulSetDriver{
+	stsDriver := config_overrides.StatefulSetDriver{
 		ReplicaCount:     &rc,
-		ContainerDrivers: make(map[string]zeus_topology_config_drivers.ContainerDriver),
+		ContainerDrivers: make(map[string]config_overrides.ContainerDriver),
 	}
 	for containerName, container := range containers {
 		contDriver, err := BuildContainerDriver(ctx, containerName, container)
 		if err != nil {
 			log.Error().Err(err).Msg("Failed to build container driver")
-			return zeus_topology_config_drivers.StatefulSetDriver{}, err
+			return config_overrides.StatefulSetDriver{}, err
 		}
-		stsDriver.ContainerDrivers[containerName] = zeus_topology_config_drivers.ContainerDriver{
+		stsDriver.ContainerDrivers[containerName] = config_overrides.ContainerDriver{
 			IsAppendContainer: true,
 			IsInitContainer:   container.IsInitContainer,
 			Container:         contDriver,
 			AppendEnvVars:     nil,
 		}
 	}
-	pvcCfg := zeus_topology_config_drivers.PersistentVolumeClaimsConfigDriver{
+	pvcCfg := config_overrides.PersistentVolumeClaimsConfigDriver{
 		AppendPVC:                    make(map[string]bool),
 		PersistentVolumeClaimDrivers: make(map[string]v1Core.PersistentVolumeClaim),
 	}

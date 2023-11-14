@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/rs/zerolog/log"
-	zeus_topology_config_drivers "github.com/zeus-fyi/zeus/zeus/workload_config_drivers"
+	"github.com/zeus-fyi/zeus/zeus/workload_config_drivers/config_overrides"
 	v1 "k8s.io/api/apps/v1"
 	v1Core "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -33,19 +33,19 @@ func GetDeploymentTemplate(ctx context.Context, name string) *v1.Deployment {
 	}
 }
 
-func BuildDeploymentDriver(ctx context.Context, containers Containers, dep Deployment) (zeus_topology_config_drivers.DeploymentDriver, error) {
+func BuildDeploymentDriver(ctx context.Context, containers Containers, dep Deployment) (config_overrides.DeploymentDriver, error) {
 	rc := int32(dep.ReplicaCount)
-	depDriver := zeus_topology_config_drivers.DeploymentDriver{
+	depDriver := config_overrides.DeploymentDriver{
 		ReplicaCount:     &rc,
-		ContainerDrivers: make(map[string]zeus_topology_config_drivers.ContainerDriver),
+		ContainerDrivers: make(map[string]config_overrides.ContainerDriver),
 	}
 	for containerName, container := range containers {
 		contDriver, err := BuildContainerDriver(ctx, containerName, container)
 		if err != nil {
 			log.Error().Err(err).Msg("Failed to build container driver")
-			return zeus_topology_config_drivers.DeploymentDriver{}, err
+			return config_overrides.DeploymentDriver{}, err
 		}
-		depDriver.ContainerDrivers[containerName] = zeus_topology_config_drivers.ContainerDriver{
+		depDriver.ContainerDrivers[containerName] = config_overrides.ContainerDriver{
 			IsAppendContainer: true,
 			IsInitContainer:   container.IsInitContainer,
 			Container:         contDriver,

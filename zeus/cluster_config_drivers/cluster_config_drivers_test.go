@@ -9,7 +9,7 @@ import (
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 	"github.com/zeus-fyi/zeus/test/configs"
 	"github.com/zeus-fyi/zeus/test/test_suites"
-	zeus_topology_config_drivers "github.com/zeus-fyi/zeus/zeus/workload_config_drivers"
+	"github.com/zeus-fyi/zeus/zeus/workload_config_drivers/config_overrides"
 	zeus_client "github.com/zeus-fyi/zeus/zeus/z_client"
 	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_common_types"
 )
@@ -87,8 +87,8 @@ func (t *ClusterConfigTestSuite) TestClusterCreation() {
 	fmt.Println(gdr)
 
 	fakeURL := "https://test.zeus.fyi"
-	infCfg := zeus_topology_config_drivers.IngressDriver{NginxAuthURL: fakeURL}
-	customIngTc := zeus_topology_config_drivers.TopologyConfigDriver{
+	infCfg := config_overrides.IngressDriver{NginxAuthURL: fakeURL}
+	customIngTc := config_overrides.TopologyConfigDriver{
 		IngressDriver: &infCfg,
 	}
 

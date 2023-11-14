@@ -6,10 +6,10 @@ import (
 
 	v1 "github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v1"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
+	"github.com/zeus-fyi/zeus/zeus/workload_config_drivers/config_overrides"
 	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_req_types"
 
 	zeus_cluster_config_drivers "github.com/zeus-fyi/zeus/zeus/cluster_config_drivers"
-	zeus_topology_config_drivers "github.com/zeus-fyi/zeus/zeus/workload_config_drivers"
 	v1Core "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -24,8 +24,8 @@ var DeployExecClientKnsReq = zeus_req_types.TopologyDeployRequest{
 var ExecClientSkeletonBaseConfig = zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
 	SkeletonBaseChart:         zeus_req_types.TopologyCreateRequest{},
 	SkeletonBaseNameChartPath: BeaconExecClientChartPath,
-	TopologyConfigDriver: &zeus_topology_config_drivers.TopologyConfigDriver{
-		ConfigMapDriver: &zeus_topology_config_drivers.ConfigMapDriver{
+	TopologyConfigDriver: &config_overrides.TopologyConfigDriver{
+		ConfigMapDriver: &config_overrides.ConfigMapDriver{
 			ConfigMap: v1Core.ConfigMap{
 				ObjectMeta: metav1.ObjectMeta{Name: "cm-exec-client"},
 			},
@@ -33,8 +33,8 @@ var ExecClientSkeletonBaseConfig = zeus_cluster_config_drivers.ClusterSkeletonBa
 				"start.sh": GethEphemeral + ".sh",
 			},
 		},
-		StatefulSetDriver: &zeus_topology_config_drivers.StatefulSetDriver{
-			ContainerDrivers: map[string]zeus_topology_config_drivers.ContainerDriver{
+		StatefulSetDriver: &config_overrides.StatefulSetDriver{
+			ContainerDrivers: map[string]config_overrides.ContainerDriver{
 				zeusExecClient: {
 					Container: v1Core.Container{
 						Name:  zeusExecClient,
@@ -42,7 +42,7 @@ var ExecClientSkeletonBaseConfig = zeus_cluster_config_drivers.ClusterSkeletonBa
 					},
 				},
 			},
-			PVCDriver: &zeus_topology_config_drivers.PersistentVolumeClaimsConfigDriver{
+			PVCDriver: &config_overrides.PersistentVolumeClaimsConfigDriver{
 				PersistentVolumeClaimDrivers: map[string]v1Core.PersistentVolumeClaim{
 					execClientDiskName: {
 						ObjectMeta: metav1.ObjectMeta{Name: execClientDiskName},
@@ -57,8 +57,8 @@ var ExecClientSkeletonBaseConfig = zeus_cluster_config_drivers.ClusterSkeletonBa
 var ExecClientSkeletonBaseMonitoringConfig = zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
 	SkeletonBaseChart:         zeus_req_types.TopologyCreateRequest{},
 	SkeletonBaseNameChartPath: ServiceMonitorChartPath,
-	TopologyConfigDriver: &zeus_topology_config_drivers.TopologyConfigDriver{
-		ServiceMonitorDriver: &zeus_topology_config_drivers.ServiceMonitorDriver{
+	TopologyConfigDriver: &config_overrides.TopologyConfigDriver{
+		ServiceMonitorDriver: &config_overrides.ServiceMonitorDriver{
 			ServiceMonitor: v1.ServiceMonitor{
 				ObjectMeta: metav1.ObjectMeta{
 					Name: "zeus-exec-client-monitor",

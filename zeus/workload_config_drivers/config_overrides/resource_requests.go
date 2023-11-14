@@ -1,4 +1,4 @@
-package zeus_topology_config_drivers
+package config_overrides
 
 import (
 	v1Core "k8s.io/api/core/v1"

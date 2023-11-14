@@ -2,7 +2,7 @@ package ethereum_beacon_cookbooks
 
 import (
 	zeus_cluster_config_drivers "github.com/zeus-fyi/zeus/zeus/cluster_config_drivers"
-	zeus_topology_config_drivers "github.com/zeus-fyi/zeus/zeus/workload_config_drivers"
+	"github.com/zeus-fyi/zeus/zeus/workload_config_drivers/config_overrides"
 	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_req_types"
 	v1Core "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
@@ -15,8 +15,8 @@ var lodestarRestPort = 9596
 var ConsensusClientGoerliSkeletonBaseConfig = zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
 	SkeletonBaseChart:         zeus_req_types.TopologyCreateRequest{},
 	SkeletonBaseNameChartPath: BeaconConsensusClientChartPath,
-	TopologyConfigDriver: &zeus_topology_config_drivers.TopologyConfigDriver{
-		ConfigMapDriver: &zeus_topology_config_drivers.ConfigMapDriver{
+	TopologyConfigDriver: &config_overrides.TopologyConfigDriver{
+		ConfigMapDriver: &config_overrides.ConfigMapDriver{
 			ConfigMap: v1Core.ConfigMap{
 				ObjectMeta: metav1.ObjectMeta{Name: "cm-consensus-client"},
 			},
@@ -24,7 +24,7 @@ var ConsensusClientGoerliSkeletonBaseConfig = zeus_cluster_config_drivers.Cluste
 				"start.sh": LodestarGoerli + ".sh",
 			},
 		},
-		ServiceDriver: &zeus_topology_config_drivers.ServiceDriver{
+		ServiceDriver: &config_overrides.ServiceDriver{
 			Service: v1Core.Service{
 				Spec: v1Core.ServiceSpec{
 					Ports: []v1Core.ServicePort{
@@ -56,8 +56,8 @@ var ConsensusClientGoerliSkeletonBaseConfig = zeus_cluster_config_drivers.Cluste
 				},
 			},
 		},
-		StatefulSetDriver: &zeus_topology_config_drivers.StatefulSetDriver{
-			ContainerDrivers: map[string]zeus_topology_config_drivers.ContainerDriver{
+		StatefulSetDriver: &config_overrides.StatefulSetDriver{
+			ContainerDrivers: map[string]config_overrides.ContainerDriver{
 				zeusConsensusClient: {Container: v1Core.Container{
 					Name:  zeusConsensusClient,
 					Image: lodestarDockerImage,
@@ -80,7 +80,7 @@ var ConsensusClientGoerliSkeletonBaseConfig = zeus_cluster_config_drivers.Cluste
 					},
 				}},
 			},
-			PVCDriver: &zeus_topology_config_drivers.PersistentVolumeClaimsConfigDriver{
+			PVCDriver: &config_overrides.PersistentVolumeClaimsConfigDriver{
 				PersistentVolumeClaimDrivers: map[string]v1Core.PersistentVolumeClaim{
 					consensusStorageDiskName: {
 						ObjectMeta: metav1.ObjectMeta{Name: consensusStorageDiskName},

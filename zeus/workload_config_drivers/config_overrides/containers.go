@@ -1,15 +1,15 @@
-package zeus_topology_config_drivers
+package config_overrides
 
 import (
 	v1Core "k8s.io/api/core/v1"
 )
 
 type ContainerDriver struct {
-	IsDeleteContainer bool
-	IsAppendContainer bool
-	IsInitContainer   bool
-	v1Core.Container
-	AppendEnvVars []v1Core.EnvVar
+	IsDeleteContainer bool `json:"isDeleteContainer"`
+	IsAppendContainer bool `json:"isAppendContainer"`
+	IsInitContainer   bool `json:"isInitContainer"`
+	v1Core.Container  `json:"v1Container"`
+	AppendEnvVars     []v1Core.EnvVar `json:"appendEnvVars,omitempty"`
 }
 
 func (cd *ContainerDriver) SetContainerConfigs(cont *v1Core.Container) {
