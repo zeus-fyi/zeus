@@ -126,6 +126,12 @@ func (c *ClusterDefinition) GenerateSkeletonBaseCharts() ([]ClusterSkeletonBaseD
 					}
 				}
 			}
+
+			err := inf.ValidateWorkloads()
+			if err != nil {
+				log.Err(err)
+				return []ClusterSkeletonBaseDefinition{}, err
+			}
 			sbDef := ClusterSkeletonBaseDefinition{
 				SkeletonBaseChart: zeus_req_types.TopologyCreateRequest{
 					TopologyName:      c.ClusterClassName,

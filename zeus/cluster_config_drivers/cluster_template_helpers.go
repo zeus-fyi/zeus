@@ -43,10 +43,9 @@ func GenerateDeploymentCluster(ctx context.Context, wd WorkloadDefinition) (*Clu
 			},
 		},
 	}
-	ingressPaths := map[string]zk8s_templates.IngressPath{}
 	c := &Cluster{
 		ClusterName:    wd.WorkloadName,
-		IngressPaths:   ingressPaths,
+		IngressPaths:   map[string]zk8s_templates.IngressPath{},
 		ComponentBases: componentBases,
 		FilePath:       wd.FilePath,
 	}

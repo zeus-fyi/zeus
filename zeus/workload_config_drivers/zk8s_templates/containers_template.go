@@ -24,12 +24,16 @@ func BuildContainerDriver(ctx context.Context, name string, container Container)
 		Args:            strings.Split(container.DockerImage.Args, ","),
 		Ports:           []v1.ContainerPort{},
 		EnvFrom:         nil,
-		Env:             nil,
+		Env:             []v1.EnvVar{},
 		Resources: v1.ResourceRequirements{
 			Limits:   make(map[v1.ResourceName]resource.Quantity),
 			Requests: make(map[v1.ResourceName]resource.Quantity),
 		},
 		VolumeMounts: []v1.VolumeMount{},
+	}
+
+	for _, ev := range container.DockerImage.EnvVars {
+		c.Env = append(c.Env, v1.EnvVar{Name: ev.Name, Value: ev.Value})
 	}
 
 	for _, p := range container.DockerImage.Ports {
@@ -70,7 +74,7 @@ func BuildContainerDriver(ctx context.Context, name string, container Container)
 		// Use strconv.ParseInt to convert the string to int64
 		numberInt64, err := strconv.ParseInt(p.Number, 10, 32)
 		if err != nil {
-			log.Ctx(ctx).Error().Err(err).Msg("failed to parse port number")
+			log.Error().Err(err).Msg("failed to parse port number")
 			return c, err
 		}
 		c.Ports = append(c.Ports, v1.ContainerPort{

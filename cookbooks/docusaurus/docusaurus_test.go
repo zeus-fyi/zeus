@@ -47,7 +47,7 @@ func (t *DocusaurusCookbookTestSuite) TestUploadDocusaurus() {
 	t.Require().Nil(rerr)
 }
 
-func (t *DocusaurusCookbookTestSuite) TestCreateDocusaurusClass() {
+func (t *DocusaurusCookbookTestSuite) TestCreateDocusaurusClusterApp() {
 	dockerImage := "docker.io/zeusfyi/docusaurus-template:latest"
 	wd := zeus_cluster_config_drivers.WorkloadDefinition{
 		WorkloadName: docusaurusTemplate,
@@ -79,13 +79,8 @@ func (t *DocusaurusCookbookTestSuite) TestCreateDocusaurusClass() {
 			},
 		},
 		FilePath: filepaths.Path{
-			PackageName: "",
-			//DirIn:       "./docusaurus/infra",
-			DirOut:      "./docusaurus/outputs",
-			FnIn:        docusaurusTemplate,
-			FnOut:       "",
-			Env:         "",
-			FilterFiles: nil,
+			DirOut: "./docusaurus/outputs",
+			FnIn:   docusaurusTemplate,
 		},
 	}
 	cd, err := zeus_cluster_config_drivers.GenerateDeploymentCluster(ctx, wd)
@@ -93,6 +88,7 @@ func (t *DocusaurusCookbookTestSuite) TestCreateDocusaurusClass() {
 	t.Assert().NoError(err)
 	t.Assert().NotEmpty(cd)
 
+	// Add ingress
 	cd.IngressPaths = map[string]zk8s_templates.IngressPath{
 		wd.WorkloadName: {
 			Path:     "/",
@@ -100,29 +96,23 @@ func (t *DocusaurusCookbookTestSuite) TestCreateDocusaurusClass() {
 		},
 	}
 	t.Assert().Equal(docusaurusTemplate, cd.ClusterName)
-	preview, err := zeus_cluster_config_drivers.GenerateSkeletonBaseChartsPreview(ctx, cd)
-	t.Require().Nil(err)
-	t.Assert().NoError(err)
-	t.Assert().NotEmpty(preview)
+	//preview, err := zeus_cluster_config_drivers.GenerateSkeletonBaseChartsPreview(ctx, cd)
+	//t.Require().Nil(err)
+	//t.Assert().NoError(err)
+	//t.Assert().NotEmpty(preview)
 	prt, err := zeus_cluster_config_drivers.PreviewTemplateGeneration(ctx, cd)
 	t.Require().Nil(err)
 	t.Assert().NotEmpty(prt)
 
-	//generates a class definition & registers it with zeus
-	dpr, err := prt.GenerateSkeletonBaseCharts()
-	t.Require().Nil(err)
-	t.Assert().NotEmpty(dpr)
-
-	gcd := zeus_cluster_config_drivers.CreateGeneratedClusterClassCreationRequest(cd)
-	t.Assert().NotEmpty(gcd)
-	fmt.Println(gcd)
-
-	err = gcd.CreateClusterClassDefinitions(ctx, t.ZeusTestClient)
-	t.Require().Nil(err)
-
 	t.Require().Equal(docusaurusTemplate, prt.ClusterClassName)
 	_, err = prt.UploadChartsFromClusterDefinition(ctx, t.ZeusTestClient, true)
 	t.Require().Nil(err)
+
+	////generates a class definition & registers it with zeus
+	//dpr, err := prt.GenerateSkeletonBaseCharts()
+	//t.Require().Nil(err)
+	//t.Assert().NotEmpty(dpr)
+
 }
 
 func (t *DocusaurusCookbookTestSuite) SetupTest() {

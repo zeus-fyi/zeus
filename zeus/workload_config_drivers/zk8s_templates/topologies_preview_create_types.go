@@ -42,6 +42,11 @@ type Port struct {
 	ProbeSettings      ProbeSettings `json:"probeSettings,omitempty"`
 }
 
+type EnvVar struct {
+	Name  string `json:"name"`
+	Value string `json:"value"`
+}
+
 type VolumeMount struct {
 	Name      string `json:"name"`
 	MountPath string `json:"mountPath"`

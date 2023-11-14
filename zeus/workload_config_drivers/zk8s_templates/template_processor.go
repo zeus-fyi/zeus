@@ -13,6 +13,7 @@ type DockerImage struct {
 	Cmd                  string               `json:"cmd"`
 	Args                 string               `json:"args"`
 	ResourceRequirements ResourceRequirements `json:"resourceRequirements,omitempty"`
+	EnvVars              []EnvVar             `json:"envVars,omitempty"`
 	Ports                []Port               `json:"ports,omitempty"`
 	VolumeMounts         []VolumeMount        `json:"volumeMounts,omitempty"`
 }
