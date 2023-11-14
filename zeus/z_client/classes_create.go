@@ -5,10 +5,9 @@ import (
 	"fmt"
 
 	"github.com/rs/zerolog/log"
-	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_req_types"
-	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_resp_types/topology_workloads"
-
+	"github.com/zeus-fyi/zeus/zeus/workload_config_drivers/topology_workloads"
 	zeus_endpoints "github.com/zeus-fyi/zeus/zeus/z_client/endpoints"
+	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_req_types"
 )
 
 func (z *ZeusClient) CreateClass(ctx context.Context, tar zeus_req_types.TopologyCreateClusterClassRequest) (topology_workloads.TopologyCreateClassResponse, error) {

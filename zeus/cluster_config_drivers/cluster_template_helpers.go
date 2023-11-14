@@ -8,8 +8,8 @@ import (
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 	zeus_topology_config_drivers "github.com/zeus-fyi/zeus/zeus/workload_config_drivers"
 	zk8s_templates "github.com/zeus-fyi/zeus/zeus/workload_config_drivers/templates"
+	"github.com/zeus-fyi/zeus/zeus/workload_config_drivers/topology_workloads"
 	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_req_types"
-	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_resp_types/topology_workloads"
 )
 
 type ClusterPreviewWorkloads struct {
