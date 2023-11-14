@@ -11,7 +11,7 @@ import (
 	"github.com/zeus-fyi/zeus/test/configs"
 	"github.com/zeus-fyi/zeus/test/test_suites"
 	zeus_cluster_config_drivers "github.com/zeus-fyi/zeus/zeus/cluster_config_drivers"
-	zk8s_templates "github.com/zeus-fyi/zeus/zeus/workload_config_drivers/templates"
+	"github.com/zeus-fyi/zeus/zeus/workload_config_drivers/zk8s_templates"
 	zeus_client "github.com/zeus-fyi/zeus/zeus/z_client"
 )
 

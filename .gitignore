@@ -66,3 +66,4 @@ Thumbs.db
 /builds/serverless/tmp/
 /zeus/cluster_resources/nvme/do/nvme/debug/
 /test/configs/config.yaml
+/cookbooks/custom_docusaurus-template/
