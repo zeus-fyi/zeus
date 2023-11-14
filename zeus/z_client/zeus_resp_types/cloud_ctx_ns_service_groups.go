@@ -7,8 +7,8 @@ import (
 )
 
 type TopologiesOrgCloudCtxNs struct {
-	CloudCtxNsID int `json:"cloudCtxNsID"`
-	zeus_common_types.CloudCtxNs
-	CreatedAt time.Time `json:"createdAt"`
+	CloudCtxNsID                 int `json:"cloudCtxNsID"`
+	zeus_common_types.CloudCtxNs `json:"cloudCtxNs"`
+	CreatedAt                    time.Time `json:"createdAt"`
 }
 type TopologiesOrgCloudCtxNsSlice []TopologiesOrgCloudCtxNs

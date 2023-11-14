@@ -24,5 +24,5 @@ type ReadTopologiesMetadata struct {
 }
 
 type ReadTopologiesMetadataGroup struct {
-	Slice []ReadTopologiesMetadata
+	Slice []ReadTopologiesMetadata `json:"topologies"`
 }
