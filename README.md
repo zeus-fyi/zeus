@@ -9,21 +9,21 @@ Foundry’s Anvil as an EVM Simulation Environment on Demand.
 
 Democratizing access to simulation technology at scale  by lowering the cost of simulation to near zero.
 For safer smart contracts, less exploits, more robust engineering by using isolated ephemeral environments per each test.
-![Screenshot 2023-11-02 at 11 52 38 AM](https://github.com/zeus-fyi/zeus/assets/17446735/5d6576d7-a734-48e7-a2e4-a8a0fd379752)
+![Screenshot 2023-11-02 at 11 52 38AM](https://github.com/zeus-fyi/zeus/assets/17446735/5d6576d7-a734-48e7-a2e4-a8a0fd379752)
 
 https://medium.zeus.fyi/introducing-serverless-evms-0035549a5e7f
 
 ## Secret Sauce: Running Ethereum Validators at Scale for Pennies
 Why run them any other way after you’ve read this?
 
-![Screenshot 2023-11-03 at 2 06 34 PM](https://github.com/zeus-fyi/zeus/assets/17446735/b710b0ae-a7ca-468e-ba9d-0dce65d964b9)
+![Screenshot 2023-11-03 at 2 06 34PM](https://github.com/zeus-fyi/zeus/assets/17446735/b710b0ae-a7ca-468e-ba9d-0dce65d964b9)
 
 https://medium.com/zeusfyi/secret-sauce-running-ethereum-validators-at-scale-for-pennies-24ac8dad4efd
 
 ## Automating Validator Status Management in Ethereum in SQL
 Using SQL Triggers and Relational States Compliant with Enforcing Consensus Spec
 
-![Screenshot 2023-11-02 at 11 51 00 AM](https://github.com/zeus-fyi/zeus/assets/17446735/4b152ebb-0ff2-4458-a6a9-66542c144530)
+![Screenshot 2023-11-02 at 11 51 00AM](https://github.com/zeus-fyi/zeus/assets/17446735/4b152ebb-0ff2-4458-a6a9-66542c144530)
 
 https://medium.zeus.fyi/automating-validator-status-management-in-ethereum-in-sql-part-1-464e40e32b0b
 

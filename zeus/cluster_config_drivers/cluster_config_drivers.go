@@ -57,18 +57,18 @@ func (c *ClusterDefinition) UploadChartsFromClusterDefinition(ctx context.Contex
 		}
 		resp, rerr := z.UploadChart(ctx, sb.SkeletonBaseNameChartPath, sb.SkeletonBaseChart)
 		if rerr != nil {
-			log.Ctx(ctx).Err(err)
+			log.Err(err)
 			return responses, rerr
 		}
 		if print {
 			tar := zeus_req_types.TopologyRequest{TopologyID: resp.TopologyID}
 			chartResp, cerr := z.ReadChart(ctx, tar)
 			if cerr != nil {
-				log.Ctx(ctx).Err(cerr)
+				log.Err(cerr)
 			}
 			cerr = chartResp.PrintWorkload(sb.SkeletonBaseNameChartPath)
 			if cerr != nil {
-				log.Ctx(ctx).Err(cerr)
+				log.Err(cerr)
 			}
 		}
 		responses[i] = resp
