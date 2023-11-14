@@ -5,7 +5,7 @@ displayed_sidebar: zK8s
 
 # Docusaurus #
 
-## Medium Tutorial
+## Hosted Docusaurus in 5 Minutes and Under $10/month
 
 [How to deploy Docusaurus on Kubernetes](https://medium.com/zeusfyi/hosted-docusaurus-in-5-minutes-and-under-10-month-af999d7ef90a)
 
