@@ -8,6 +8,7 @@ import (
 	"github.com/rs/zerolog/log"
 	v1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
+	"k8s.io/apimachinery/pkg/util/intstr"
 )
 
 func BuildContainerDriver(ctx context.Context, name string, container Container) (v1.Container, error) {
@@ -34,6 +35,37 @@ func BuildContainerDriver(ctx context.Context, name string, container Container)
 	for _, p := range container.DockerImage.Ports {
 		if len(p.Name) <= 0 || len(p.Number) <= 0 {
 			continue
+		}
+
+		if p.ProbeSettings.UseForReadinessProbe && p.Name != "" {
+			rp := &v1.Probe{
+				ProbeHandler: v1.ProbeHandler{
+					TCPSocket: &v1.TCPSocketAction{
+						Port: intstr.IntOrString{
+							Type:   intstr.String,
+							StrVal: p.Name,
+						},
+					},
+				},
+				InitialDelaySeconds: 60,
+				PeriodSeconds:       30,
+			}
+			c.ReadinessProbe = rp
+		}
+		if p.ProbeSettings.UseForLivenessProbe && p.Name != "" {
+			rp := &v1.Probe{
+				ProbeHandler: v1.ProbeHandler{
+					TCPSocket: &v1.TCPSocketAction{
+						Port: intstr.IntOrString{
+							Type:   intstr.String,
+							StrVal: p.Name,
+						},
+					},
+				},
+				InitialDelaySeconds: 10,
+				PeriodSeconds:       10,
+			}
+			c.LivenessProbe = rp
 		}
 		// Use strconv.ParseInt to convert the string to int64
 		numberInt64, err := strconv.ParseInt(p.Number, 10, 32)

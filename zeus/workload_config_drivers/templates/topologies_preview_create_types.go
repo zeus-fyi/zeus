@@ -35,13 +35,20 @@ type ResourceRequirements struct {
 }
 
 type Port struct {
-	Name               string `json:"name"`
-	Number             string `json:"number"`
-	Protocol           string `json:"protocol"`
-	IngressEnabledPort bool   `json:"ingressEnabledPort"`
+	Name               string        `json:"name"`
+	Number             string        `json:"number"`
+	Protocol           string        `json:"protocol"`
+	IngressEnabledPort bool          `json:"ingressEnabledPort"`
+	ProbeSettings      ProbeSettings `json:"probeSettings,omitempty"`
 }
 
 type VolumeMount struct {
 	Name      string `json:"name"`
 	MountPath string `json:"mountPath"`
+}
+
+type ProbeSettings struct {
+	UseForLivenessProbe  bool `json:"useForLivenessProbe,omitempty"`
+	UseForReadinessProbe bool `json:"useForReadinessProbe,omitempty"`
+	UseTcpSocket         bool `json:"useTcpSocket,omitempty"`
 }

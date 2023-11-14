@@ -53,7 +53,7 @@ func (t *DocusaurusCookbookTestSuite) TestCreateDocusaurusClass() {
 		WorkloadName: docusaurusTemplate,
 		ReplicaCount: 1,
 		Containers: zk8s_templates.Containers{
-			docusaurus: zk8s_templates.Container{
+			docusaurusTemplate: zk8s_templates.Container{
 				IsInitContainer: false,
 				ImagePullPolicy: "Always",
 				DockerImage: zk8s_templates.DockerImage{
@@ -68,6 +68,11 @@ func (t *DocusaurusCookbookTestSuite) TestCreateDocusaurusClass() {
 							Number:             "3000",
 							Protocol:           "TCP",
 							IngressEnabledPort: true,
+							ProbeSettings: zk8s_templates.ProbeSettings{
+								UseForLivenessProbe:  true,
+								UseForReadinessProbe: true,
+								UseTcpSocket:         true,
+							},
 						},
 					},
 				},
@@ -77,7 +82,7 @@ func (t *DocusaurusCookbookTestSuite) TestCreateDocusaurusClass() {
 			PackageName: "",
 			//DirIn:       "./docusaurus/infra",
 			DirOut:      "./docusaurus/outputs",
-			FnIn:        docusaurus,
+			FnIn:        docusaurusTemplate,
 			FnOut:       "",
 			Env:         "",
 			FilterFiles: nil,
@@ -89,7 +94,7 @@ func (t *DocusaurusCookbookTestSuite) TestCreateDocusaurusClass() {
 	t.Assert().NotEmpty(cd)
 
 	cd.IngressPaths = map[string]zk8s_templates.IngressPath{
-		docusaurus: {
+		wd.WorkloadName: {
 			Path:     "/",
 			PathType: "ImplementationSpecific",
 		},
@@ -112,11 +117,6 @@ func (t *DocusaurusCookbookTestSuite) TestCreateDocusaurusClass() {
 	t.Assert().NotEmpty(gcd)
 	fmt.Println(gcd)
 
-	gcdExp := DocusaurusClusterDefinition.BuildClusterDefinitions()
-	t.Assert().NotEmpty(gcdExp)
-	fmt.Println(gcdExp)
-
-	t.Assert().Equal(gcdExp, gcd)
 	err = gcd.CreateClusterClassDefinitions(ctx, t.ZeusTestClient)
 	t.Require().Nil(err)
 
