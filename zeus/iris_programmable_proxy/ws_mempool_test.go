@@ -13,6 +13,10 @@ import (
 	"github.com/gorilla/websocket"
 )
 
+func (t *IrisConfigTestSuite) TestWsHelper() {
+	EstablishLongRunningWs(t.Tc.Bearer)
+}
+
 func (t *IrisConfigTestSuite) TestLiveMempoolWebsocket() {
 	interrupt := make(chan os.Signal, 1)
 	signal.Notify(interrupt, os.Interrupt)
@@ -33,15 +37,12 @@ func (t *IrisConfigTestSuite) TestLiveMempoolWebsocket() {
 		for {
 			_, message, err := ws.ReadMessage()
 			t.Require().Nil(err)
-			fmt.Println(message)
 			tx := &types.Transaction{}
-
 			err = tx.UnmarshalBinary(message)
 			if err != nil {
 				continue
 			}
-
-			fmt.Println(tx.Size(), "bytes")
+			fmt.Println(tx.Hash().Hex(), "txHash")
 		}
 	}()
 
