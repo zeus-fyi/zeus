@@ -34,6 +34,8 @@ func EstablishLongRunningWs(bearer string) {
 
 func WsLoop(ws *websocket.Conn) error {
 	i := 0
+
+	m := make(map[string]int)
 	for {
 		_, message, err := ws.ReadMessage()
 		if err != nil {
@@ -46,7 +48,9 @@ func WsLoop(ws *websocket.Conn) error {
 			err = nil
 			continue
 		}
-		fmt.Println(i, "count", tx.Hash().Hex(), "txHash")
+		m[tx.Hash().Hex()]++
+		// occasional duplication is expected as a tradeoff for speed
+		fmt.Println(i, m[tx.Hash().Hex()], "count", tx.Hash().Hex(), "txHash")
 		i++
 	}
 }
