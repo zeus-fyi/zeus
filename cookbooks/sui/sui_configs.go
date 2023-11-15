@@ -33,10 +33,10 @@ const (
 	hercules = "hercules"
 
 	// mainnet workload compute resources
-	cpuCores   = "16"
-	memorySize = "128Gi"
+	cpuCores   = "15.5"
+	memorySize = "120Gi"
 	// mainnet workload disk sizes
-	mainnetDiskSize = "4Ti"
+	mainnetDiskSize = "3.7Ti"
 
 	// testnet compute resources
 	cpuCoresTestnet   = "7500m"

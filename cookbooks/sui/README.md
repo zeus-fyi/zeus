@@ -23,8 +23,11 @@ storageClass: fast-disks
 
 Recommended machine types:
 
+3rd gen: i3.4xlarge (16 vCPUs, 122 GB RAM, 2 x 1.9 TB NVMe SSD)<br>
 3rd gen: i3.8xlarge (32 vCPUs, 244 GB RAM, 4 x 1.9 TB NVMe SSD)<br>
-4th gen recommended instance type: i4i.8xlarge (32 vCPUs, 256 GB RAM, 2 x 3750 TB Nitro SSD*)<br>
+4th gen recommended instance types:
+i4i.4xlarge (16 vCPUs, 128 GB RAM, 1 x 3750 TB Nitro SSD*)<br>
+i4i.8xlarge (32 vCPUs, 256 GB RAM, 2 x 3750 TB Nitro SSD*)<br>
 
 *Nitro SSDs are NVMe-based and custom-designed by AWS
 
