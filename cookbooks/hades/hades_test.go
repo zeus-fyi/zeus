@@ -1,6 +1,7 @@
 package cookbooks_hades
 
 import (
+	"context"
 	"fmt"
 	"testing"
 
@@ -15,18 +16,20 @@ type HadesCookbookTestSuite struct {
 	ZeusTestClient zeus_client.ZeusClient
 }
 
+var ctx = context.Background()
+
 func (t *HadesCookbookTestSuite) TestClusterSetup() {
 	gcd := HadesClusterDefinition.BuildClusterDefinitions()
 	t.Assert().NotEmpty(gcd)
 	fmt.Println(gcd)
 
-	gdr := HadesClusterDefinition.GenerateDeploymentRequest()
-	t.Assert().NotEmpty(gdr)
-	fmt.Println(gdr)
-
-	sbDefs, err := HadesClusterDefinition.GenerateSkeletonBaseCharts()
+	// Create cluster class definitions on Zeus
+	err := gcd.CreateClusterClassDefinitions(ctx, t.ZeusTestClient)
 	t.Require().Nil(err)
-	t.Assert().NotEmpty(sbDefs)
+
+	resp, err := HadesClusterDefinition.UploadChartsFromClusterDefinition(ctx, t.ZeusTestClient, true)
+	t.Require().Nil(err)
+	t.Assert().NotEmpty(resp)
 }
 
 func (t *HadesCookbookTestSuite) SetupTest() {
