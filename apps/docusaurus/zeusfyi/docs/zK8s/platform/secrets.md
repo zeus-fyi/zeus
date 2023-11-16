@@ -19,3 +19,6 @@ and follow best practices for security and encryption. See additional details in
 
 We'll store up to 1000 secrets for free, and then charge $0.50 per secret per month after that.
 
+## Image Pull Secrets for Private Registries
+
+Docs and examples coming soon.
