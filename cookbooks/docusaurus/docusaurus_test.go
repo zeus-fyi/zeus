@@ -47,7 +47,6 @@ func (t *DocusaurusCookbookTestSuite) TestCreateDocFunc() {
 }
 
 func (t *DocusaurusCookbookTestSuite) TestCreateDocusaurusClusterApp() {
-
 	dockerImage := "docker.io/zeusfyi/docusaurus-template:latest"
 	wd := zeus_cluster_config_drivers.WorkloadDefinition{
 		WorkloadName: docusaurusTemplate,
