@@ -6,6 +6,7 @@ use (
 	./apps/microservices/choreography
 	./apps/microservices/load_simulator
 	./apps/microservices/server_template
+	./apps/openai/chatgpt/backend
 	./apps/serverless/aws/secrets_fetch
 	./apps/serverless/ethereum/bls_encrypted_zip_gen
 	./apps/serverless/ethereum/bls_signatures
