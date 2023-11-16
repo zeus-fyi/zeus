@@ -3,6 +3,7 @@ package iris_programmable_proxy_v1_beta
 const (
 	LoadBalancingStrategy    = "X-Load-Balancing-Strategy"
 	Adaptive                 = "Adaptive"
+	RoundRobin               = "RoundRobin"
 	AdaptiveLoadBalancingKey = "X-Adaptive-Metrics-Key"
 	JsonRpcAdaptiveMetrics   = "JSON-RPC"
 	QuickNodeAPIs            = "QuickNode"

@@ -10,13 +10,14 @@ import (
 	"github.com/zeus-fyi/zeus/test/configs"
 	"github.com/zeus-fyi/zeus/test/test_suites"
 	zeus_client "github.com/zeus-fyi/zeus/zeus/z_client"
+	zk8s_clusters "github.com/zeus-fyi/zeus/zeus/z_client/clusters"
 	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_req_types"
 )
 
 func (t *SuiCookbookTestSuite) TestDeploy() {
 	cdep := suiNodeDefinition.GenerateDeploymentRequest()
 
-	_, err := t.ZeusTestClient.DeployCluster(ctx, cdep)
+	_, err := zk8s_clusters.DeployCluster(ctx, t.ZeusTestClient, cdep)
 	t.Require().Nil(err)
 }
 

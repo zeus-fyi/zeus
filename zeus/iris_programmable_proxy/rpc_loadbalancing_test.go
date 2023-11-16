@@ -11,6 +11,7 @@ import (
 	"github.com/go-resty/resty/v2"
 	web3_actions "github.com/zeus-fyi/gochain/web3/client"
 	hestia_req_types "github.com/zeus-fyi/zeus/pkg/hestia/client/req_types"
+	iris_programmable_proxy_v1_beta "github.com/zeus-fyi/zeus/zeus/iris_programmable_proxy/v1beta"
 	resty_base "github.com/zeus-fyi/zeus/zeus/z_client/base"
 )
 
@@ -118,6 +119,8 @@ func (t *IrisConfigTestSuite) TestParallelRPCLoadBalancing() {
 
 	web3a := web3_actions.NewWeb3ActionsClient(path)
 	web3a.AddRoutingGroupHeader(routeGroup)
+	web3a.Headers[iris_programmable_proxy_v1_beta.LoadBalancingStrategy] = iris_programmable_proxy_v1_beta.Adaptive
+	web3a.Headers[iris_programmable_proxy_v1_beta.AdaptiveLoadBalancingKey] = iris_programmable_proxy_v1_beta.JsonRpcAdaptiveMetrics
 	web3a.AddBearerToken(t.BearerToken)
 	web3a.Dial()
 	defer web3a.Close()

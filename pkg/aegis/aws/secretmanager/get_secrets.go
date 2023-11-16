@@ -12,12 +12,12 @@ import (
 func (s *SecretsManagerAuthAWS) GetSecret(ctx context.Context, si SecretInfo) (string, error) {
 	m, err := s.GetSecretsJSON(ctx, si)
 	if err != nil {
-		log.Ctx(ctx).Err(err)
+		log.Err(err).Msg("error getting secret")
 		return "", err
 	}
 	secretValue, ok := m[si.Key]
 	if !ok {
-		log.Ctx(ctx).Warn().Interface("key", si.Key).Msg("no value found for secret key")
+		log.Warn().Interface("key", si.Key).Msg("no value found for secret key")
 		return "", err
 	}
 	return secretValue.(string), nil
@@ -35,7 +35,7 @@ func (s *SecretsManagerAuthAWS) GetSecretsJSON(ctx context.Context, si SecretInf
 	if err != nil {
 		// For a list of exceptions thrown, see
 		// https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html
-		log.Ctx(ctx).Err(err)
+		log.Err(err)
 		return m, err
 	}
 
@@ -43,7 +43,7 @@ func (s *SecretsManagerAuthAWS) GetSecretsJSON(ctx context.Context, si SecretInf
 	var secretString = *result.SecretString
 	err = json.Unmarshal([]byte(secretString), &m)
 	if err != nil {
-		log.Ctx(ctx).Err(err)
+		log.Err(err)
 		return m, err
 	}
 
@@ -59,7 +59,7 @@ func (s *SecretsManagerAuthAWS) GetSecretBinary(ctx context.Context, si SecretIn
 	if err != nil {
 		// For a list of exceptions thrown, see
 		// https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html
-		log.Ctx(ctx).Err(err)
+		log.Err(err)
 		return nil, err
 	}
 	return result.SecretBinary, nil
@@ -73,7 +73,7 @@ func (s *SecretsManagerAuthAWS) DoesSecretExist(ctx context.Context, sn string) 
 	if err != nil || result == nil {
 		// For a list of exceptions thrown, see
 		// https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html
-		log.Ctx(ctx).Err(err).Msg("secret not found, or other error")
+		log.Err(err).Msg("secret not found, or other error")
 		return false
 	}
 

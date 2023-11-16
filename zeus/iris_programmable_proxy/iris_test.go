@@ -21,7 +21,7 @@ func (t *IrisConfigTestSuite) SetupTest() {
 	// points dir to test/configs
 	tc := configs.InitLocalTestConfigs()
 	t.Tc = tc
-	t.BearerToken = tc.QuickNodeIrisToken
+	t.BearerToken = tc.Bearer
 	t.IrisClient = Iris{
 		resty_base.GetBaseRestyClient("http://localhost:8080", tc.Bearer),
 	}

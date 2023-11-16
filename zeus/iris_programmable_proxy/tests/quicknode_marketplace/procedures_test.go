@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	iris_operators "github.com/zeus-fyi/zeus/pkg/iris/operators"
-	iris_programmable_proxy_v1_beta "github.com/zeus-fyi/zeus/zeus/iris_programmable_proxy/v1beta"
 )
 
 func (t *IrisConfigTestSuite) TestMaxBlockAggProcedure() {
@@ -31,7 +30,7 @@ func (t *IrisConfigTestSuite) TestMaxBlockAggProcedure() {
 	source := resp.Header().Get("X-Selected-Route")
 	t.Assert().NotEmpty(source)
 
-	extResp := iris_programmable_proxy_v1_beta.IrisRoutingResponseETL{
+	extResp := iris_operators.IrisRoutingResponseETL{
 		Source:        source,
 		ExtractionKey: "result",
 		DataType:      "",
