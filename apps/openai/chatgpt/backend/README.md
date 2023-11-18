@@ -1,0 +1,1 @@
+add your api key to the cmd line startup in server/hera
