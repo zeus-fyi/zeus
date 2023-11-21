@@ -18,7 +18,7 @@ type Pubkeys []string
 
 func (k *Web3SignerKeystores) ReadKeystoreDirAndAppendPw(ctx context.Context, p filepaths.Path, pw string) {
 	f := strings_filter.FilterOpts{
-		StartsWithThese: []string{"keystore"},
+		StartsWithAnyOfThese: []string{"keystore"},
 	}
 	p.FilterFiles = &f
 	err := p.WalkAndApplyFuncToFileType(".json", k.ReadKeystoreAndAppend)
