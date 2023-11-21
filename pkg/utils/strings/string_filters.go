@@ -33,10 +33,14 @@ func FilterStringWithOpts(word string, filter *FilterOpts) bool {
 			}
 		}
 	}
-
-	if len(filter.StartsWithThese) > 0 {
+	//if len(filter.MustHaveSuffixWithAnyOfThese) > 0 {
+	//	if !CheckForSuffixMatch(word, filter.StartsWithAnyOfThese) {
+	//		return false
+	//	}
+	//}
+	if len(filter.StartsWithAnyOfThese) > 0 {
 		matchFound := false
-		for _, wordFilter := range filter.StartsWithThese {
+		for _, wordFilter := range filter.StartsWithAnyOfThese {
 			if strings.HasPrefix(word, wordFilter) {
 				matchFound = true
 			}
@@ -46,9 +50,18 @@ func FilterStringWithOpts(word string, filter *FilterOpts) bool {
 	return true
 }
 
+func CheckForSuffixMatch(word string, wordFilterSlice []string) bool {
+	for _, wordFilter := range wordFilterSlice {
+		if strings.HasSuffix(word, wordFilter) {
+			return true
+		}
+	}
+	return false
+}
+
 type FilterOpts struct {
 	DoesNotStartWithThese []string
-	StartsWithThese       []string
+	StartsWithAnyOfThese  []string
 	StartsWith            string
 	Contains              string
 	DoesNotInclude        []string
