@@ -37,7 +37,7 @@ jobs:
         run: |
           mkdir -p apps/external
           cd apps/external
-          git clone https://github.com/zeus-fyi/gochain/web3.git --branch master --single-branch
+          git clone https://github.com/zeus-fyi/web3.git --branch master --single-branch
 
       - name: Build And Push Snapshots App
         run: |
