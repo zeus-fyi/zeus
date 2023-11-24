@@ -9,7 +9,7 @@ require (
 	github.com/shirou/gopsutil/v3 v3.22.10
 	github.com/spf13/cobra v1.7.0
 	github.com/spf13/viper v1.15.0
-	github.com/zeus-fyi/zeus v1.0.0-beta.rc3
+	github.com/zeus-fyi/zeus v1.0.0-beta.rc4
 )
 
 require (
