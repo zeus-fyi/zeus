@@ -2,8 +2,8 @@ package snapshot_init
 
 import (
 	"context"
-	"fmt"
 
+	"github.com/rs/zerolog/log"
 	init_jwt "github.com/zeus-fyi/zeus/pkg/aegis/jwt"
 	"github.com/zeus-fyi/zeus/pkg/utils/ephemery_reset"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
@@ -38,12 +38,12 @@ func InitWorkloadAction(ctx context.Context, w WorkloadInfo) {
 		rb := resty_base.GetBaseRestyClient(preSignedURL, bearer)
 		resp, err := rb.R().Post(payloadPath)
 		if err != nil {
+			log.Err(err).Interface("resp", resp).Msg("error sending payload")
 			panic(err)
 		}
 		if resp.StatusCode() >= 400 {
 			panic(resp.Status())
 		}
-		fmt.Println(resp.String())
 	case "sui":
 		SuiStartup(ctx, w)
 	}
