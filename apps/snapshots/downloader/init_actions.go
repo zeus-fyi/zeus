@@ -18,18 +18,7 @@ type WorkloadInfo struct {
 }
 
 func InitWorkloadAction(ctx context.Context, w WorkloadInfo) {
-	switch w.Protocol {
-	case "cosmos":
-		CosmosStartup(ctx, w)
-	case "eth", "ethereum":
-		if useDefaultToken {
-			_ = init_jwt.SetTokenToDefault(Workload.DataDir, "jwt.hex", jwtToken)
-		}
-		switch w.Network {
-		case "ephemery", "ephemeral":
-			// do something
-			ephemery_reset.ExtractAndDecEphemeralTestnetConfig(Workload.DataDir, clientName)
-		}
+	switch w.WorkloadType {
 	case "send-payload":
 		log.Info().Interface("payloadBasePath", payloadBasePath).Interface("payloadPostPath", payloadPostPath).Msg("sending payload")
 		payl := w.DataDir.ReadFileInPath()
@@ -44,6 +33,19 @@ func InitWorkloadAction(ctx context.Context, w WorkloadInfo) {
 		}
 		if resp.StatusCode() >= 400 {
 			panic(resp.Status())
+		}
+	}
+	switch w.Protocol {
+	case "cosmos":
+		CosmosStartup(ctx, w)
+	case "eth", "ethereum":
+		if useDefaultToken {
+			_ = init_jwt.SetTokenToDefault(Workload.DataDir, "jwt.hex", jwtToken)
+		}
+		switch w.Network {
+		case "ephemery", "ephemeral":
+			// do something
+			ephemery_reset.ExtractAndDecEphemeralTestnetConfig(Workload.DataDir, clientName)
 		}
 	case "sui":
 		SuiStartup(ctx, w)
