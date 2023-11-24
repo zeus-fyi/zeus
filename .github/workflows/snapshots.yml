@@ -1,0 +1,44 @@
+name: Build Snapshots App
+
+on:
+  push:
+    paths:
+      - .github/workflows/snapshots.yml
+      - apps/snapshots/**
+    branches:
+      - main
+
+permissions:
+  contents: read
+  id-token: write
+
+env:
+  REPO: zeusfyi
+  NAME: snapshots
+  TAG: latest
+  GOOS: linux
+  GOARCH: amd64
+  VERSION: v9.0.3
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Depot CLI
+        uses: depot/setup-action@v1
+
+      - name: Login to Docker Registry
+        run: docker login -u zeusfyi -p ${{ secrets.DOCKER_ACCESS_TOKEN }}
+
+      - name: Build And Publish Zeusfyi Docs Site
+        run: |
+          depot build \
+          -t ${{ env.REPO }}/${{ env.NAME }}:${{ env.TAG}} \
+          --build-arg VERSION=${{ env.VERSION }}\
+          --platform=${{ env.GOOS }}/${{ env.GOARCH }} \
+          --token ${{ secrets.DEPOT_TOKEN }} \
+          --provenance=false \
+          -f docker/snapshots/Dockerfile . --push
