@@ -35,10 +35,6 @@ RUN apt-get update && apt-get install -y ca-certificates unzip less
 
 COPY --from=snapshot_builder /app/snapshots /usr/bin/snapshots
 COPY --from=rclone_builder /usr/bin/rclone /usr/bin/rclone
-
-COPY --from=gaiad-builder /app/gaiad /usr/local/go/bin/
-COPY --from=cosmos-testnet-genesis /app/genesis.json /etc/cosmos/testnet/genesis.json
-COPY --from=cosmos-mainnet-genesis /app/genesis.json /etc/cosmos/mainnet/genesis.json
 COPY --from=aws-cli /app/awscliv2.zip /
 
 RUN unzip awscliv2.zip

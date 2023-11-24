@@ -5,6 +5,7 @@ on:
     paths:
       - .github/workflows/snapshots.yml
       - apps/snapshots/**
+      - docker/snapshots_v2/**
     branches:
       - main
 
@@ -18,7 +19,6 @@ env:
   TAG: latest
   GOOS: linux
   GOARCH: amd64
-  VERSION: v9.0.3
 
 jobs:
   build:
