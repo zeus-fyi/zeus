@@ -16,6 +16,7 @@ var (
 	bearer          string
 	jwtToken        string
 	payloadPostPath string
+	payloadBasePath string
 	useDefaultToken bool
 	Workload        WorkloadInfo
 )
@@ -37,7 +38,7 @@ func init() {
 	Cmd.Flags().StringVar(&Workload.Protocol, "protocol", "", "protocol")              // eg eth, cosmos, etc
 	Cmd.Flags().StringVar(&bearer, "bearer", "", "bearer")
 	Cmd.Flags().StringVar(&payloadPostPath, "payload-post-path", "", "payload post path")
-	Cmd.Flags().StringVar(&payloadPostPath, "payload-base-path", "", "payload base path")
+	Cmd.Flags().StringVar(&payloadBasePath, "payload-base-path", "", "payload base path")
 
 	Cmd.Flags().StringVar(&Workload.DataDir.FnIn, "fi", "", "file input name")
 

@@ -35,8 +35,8 @@ func InitWorkloadAction(ctx context.Context, w WorkloadInfo) {
 		if len(payl) <= 0 {
 			panic("no payload found")
 		}
-		rb := resty_base.GetBaseRestyClient(preSignedURL, bearer)
-		resp, err := rb.R().Post(payloadPath)
+		rb := resty_base.GetBaseRestyClient(payloadPostPath, bearer)
+		resp, err := rb.R().Post(payloadPostPath)
 		if err != nil {
 			log.Err(err).Interface("resp", resp).Msg("error sending payload")
 			panic(err)
