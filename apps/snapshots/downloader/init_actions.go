@@ -26,7 +26,7 @@ func InitWorkloadAction(ctx context.Context, w WorkloadInfo) {
 			panic("no payload found")
 		}
 		rb := resty_base.GetBaseRestyClient(payloadBasePath, bearer)
-		resp, err := rb.R().Post(payloadPostPath)
+		resp, err := rb.R().SetBody(payl).Post(payloadPostPath)
 		if err != nil {
 			log.Err(err).Interface("resp", resp).Msg("error sending payload")
 			panic(err)
