@@ -33,6 +33,12 @@ jobs:
       - name: Login to Docker Registry
         run: docker login -u zeusfyi -p ${{ secrets.DOCKER_ACCESS_TOKEN }}
 
+      - name: Clone external repos into workspace
+        run: |
+          mkdir -p apps/external
+          cd apps/external
+          git clone https://github.com/zeus-fyi/gochain/web3.git --branch master --single-branch
+
       - name: Build And Push Snapshots App
         run: |
           depot build \
