@@ -2,7 +2,9 @@ package snapshot_init
 
 import (
 	"context"
+	"encoding/json"
 
+	"github.com/labstack/echo/v4"
 	"github.com/rs/zerolog/log"
 	init_jwt "github.com/zeus-fyi/zeus/pkg/aegis/jwt"
 	"github.com/zeus-fyi/zeus/pkg/utils/ephemery_reset"
@@ -17,6 +19,10 @@ type WorkloadInfo struct {
 	DataDir      filepaths.Path
 }
 
+type Payload struct {
+	Body echo.Map `json:"body"`
+}
+
 func InitWorkloadAction(ctx context.Context, w WorkloadInfo) {
 	switch w.WorkloadType {
 	case "send-payload":
@@ -25,10 +31,17 @@ func InitWorkloadAction(ctx context.Context, w WorkloadInfo) {
 		if len(payl) <= 0 {
 			panic("no payload found")
 		}
-		rb := resty_base.GetBaseRestyClient(payloadBasePath, bearer)
-		resp, err := rb.R().SetBody(payl).Post(payloadPostPath)
+		pl := &Payload{
+			Body: echo.Map{},
+		}
+		err := json.Unmarshal(payl, &pl.Body)
 		if err != nil {
-			log.Err(err).Interface("resp", resp).Msg("error sending payload")
+			panic(err)
+		}
+		rb := resty_base.GetBaseRestyClient(payloadBasePath, bearer)
+		resp, err := rb.R().SetBody(pl).Post(payloadPostPath)
+		if err != nil {
+			log.Err(err).Interface("pl", pl).Interface("resp", resp).Msg("error sending payload")
 			panic(err)
 		}
 		if resp.StatusCode() >= 400 {
