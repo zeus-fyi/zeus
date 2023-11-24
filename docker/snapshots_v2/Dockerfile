@@ -8,10 +8,8 @@ ARG GOCACHE
 ARG GOOS
 ARG GOARCH
 # manage dependencies
-COPY apps/snapshots/ ./
-RUN go mod download
-COPY apps/snapshots/ apps/snapshots/go.mod apps/snapshots/go.sum ./
-RUN --mount=type=cache,target=${GOCACHE} CGO_ENABLED=1 GOOS=${GOOS} GOARCH=${GOARCH} go build -ldflags="-s -w" -o snapshots apps/snapshots/main.go
+COPY ./apps/snapshots .
+RUN GO_ENABLED=1 GOOS=${GOOS} GOARCH=${GOARCH} go build -ldflags="-s -w" -o snapshots apps/snapshots/main.go
 
 FROM ubuntu:22.04 AS rclone_builder
 RUN apt-get update && apt-get install -y ca-certificates curl unzip
