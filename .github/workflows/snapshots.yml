@@ -47,4 +47,3 @@ jobs:
           --token ${{ secrets.DEPOT_TOKEN }} \
           --provenance=false \
           -f docker/snapshots_v2/Dockerfile . --push
-
