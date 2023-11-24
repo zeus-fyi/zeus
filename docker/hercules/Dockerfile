@@ -14,7 +14,7 @@ COPY . .
 # https://github.com/supranational/blst/blob/master/bindings/go/README.md
 RUN --mount=type=cache,target=${GOCACHE} CGO_ENABLED=1 GOOS=${GOOS} GOARCH=${GOARCH} go build -ldflags="-s -w" -o hercules apps/hercules/main.go
 
-FROM golang:1.21-buster as snapshot_builder
+FROM golang:1.21-bookworm as snapshot_builder
 
 WORKDIR /app
 
