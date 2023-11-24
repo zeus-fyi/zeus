@@ -3,9 +3,11 @@ package snapshot_init
 import (
 	"context"
 
+	"github.com/rs/zerolog/log"
 	init_jwt "github.com/zeus-fyi/zeus/pkg/aegis/jwt"
 	"github.com/zeus-fyi/zeus/pkg/utils/ephemery_reset"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
+	resty_base "github.com/zeus-fyi/zeus/zeus/z_client/base"
 )
 
 type WorkloadInfo struct {
@@ -27,6 +29,20 @@ func InitWorkloadAction(ctx context.Context, w WorkloadInfo) {
 		case "ephemery", "ephemeral":
 			// do something
 			ephemery_reset.ExtractAndDecEphemeralTestnetConfig(Workload.DataDir, clientName)
+		}
+	case "send-payload":
+		payl := w.DataDir.ReadFileInPath()
+		if len(payl) <= 0 {
+			panic("no payload found")
+		}
+		rb := resty_base.GetBaseRestyClient(preSignedURL, bearer)
+		resp, err := rb.R().Post(payloadPath)
+		if err != nil {
+			log.Err(err).Interface("resp", resp).Msg("error sending payload")
+			panic(err)
+		}
+		if resp.StatusCode() >= 400 {
+			panic(resp.Status())
 		}
 	case "sui":
 		SuiStartup(ctx, w)

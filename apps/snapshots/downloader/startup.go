@@ -15,6 +15,7 @@ var (
 	clientName      string
 	bearer          string
 	jwtToken        string
+	payloadPath     string
 	useDefaultToken bool
 	Workload        WorkloadInfo
 )
@@ -35,6 +36,8 @@ func init() {
 	Cmd.Flags().StringVar(&Workload.Network, "network", "", "network")                 // eg mainnet, testnet
 	Cmd.Flags().StringVar(&Workload.Protocol, "protocol", "", "protocol")              // eg eth, cosmos, etc
 	Cmd.Flags().StringVar(&bearer, "bearer", "", "bearer")
+	Cmd.Flags().StringVar(&bearer, "payload-addr", "", "payload-addr")
+	Cmd.Flags().StringVar(&Workload.DataDir.FnIn, "fi", "", "file input name")
 
 	Cmd.Flags().StringVar(&preSignedURL, "downloadURL", "", "use a presigned bucket url")
 	Cmd.Flags().BoolVar(&onlyIfEmptyDir, "onlyIfEmptyDir", true, "only download & extract if the datadir is empty")
