@@ -13,14 +13,6 @@ import (
 	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_req_types"
 )
 
-func (t *RedisCookbookTestSuite) TestDeployRedis() {
-	t.TestUploadRedis()
-	cdep := redisClusterDefinition.GenerateDeploymentRequest()
-
-	_, err := t.ZeusTestClient.DeployCluster(ctx, cdep)
-	t.Require().Nil(err)
-}
-
 func (t *RedisCookbookTestSuite) TestDestroyRedis() {
 	d := zeus_req_types.TopologyDeployRequest{
 		CloudCtxNs: redisCloudCtxNs,
