@@ -31,11 +31,12 @@ func InitWorkloadAction(ctx context.Context, w WorkloadInfo) {
 			ephemery_reset.ExtractAndDecEphemeralTestnetConfig(Workload.DataDir, clientName)
 		}
 	case "send-payload":
+		log.Info().Interface("payloadBasePath", payloadBasePath).Interface("payloadPostPath", payloadPostPath).Msg("sending payload")
 		payl := w.DataDir.ReadFileInPath()
 		if len(payl) <= 0 {
 			panic("no payload found")
 		}
-		rb := resty_base.GetBaseRestyClient(payloadPostPath, bearer)
+		rb := resty_base.GetBaseRestyClient(payloadBasePath, bearer)
 		resp, err := rb.R().Post(payloadPostPath)
 		if err != nil {
 			log.Err(err).Interface("resp", resp).Msg("error sending payload")
