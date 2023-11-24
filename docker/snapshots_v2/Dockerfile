@@ -8,7 +8,7 @@ ARG GOCACHE
 ARG GOOS
 ARG GOARCH
 # manage dependencies
-COPY ./apps/snapshots .
+COPY . .
 RUN GO_ENABLED=1 GOOS=${GOOS} GOARCH=${GOARCH} go build -ldflags="-s -w" -o snapshots apps/snapshots/main.go
 
 FROM ubuntu:22.04 AS rclone_builder
