@@ -20,7 +20,7 @@ func RestartPods(c echo.Context) error {
 	}
 	resp, err := PodsClient.DeletePods(context.Background(), par)
 	if err != nil {
-		log.Err(err)
+		log.Err(err).Msg("Zeus: RestartPods")
 		return c.JSON(http.StatusInternalServerError, err)
 	}
 	return c.String(http.StatusOK, string(resp))
