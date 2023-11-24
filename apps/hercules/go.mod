@@ -3,13 +3,13 @@ module github.com/zeus-fyi/hercules
 go 1.21
 
 require (
-	github.com/go-resty/resty/v2 v2.7.0
+	github.com/go-resty/resty/v2 v2.10.0
 	github.com/labstack/echo/v4 v4.10.2
 	github.com/rs/zerolog v1.29.0
 	github.com/shirou/gopsutil/v3 v3.22.10
 	github.com/spf13/cobra v1.7.0
 	github.com/spf13/viper v1.15.0
-	github.com/zeus-fyi/zeus v1.0.0-beta.rc2
+	github.com/zeus-fyi/zeus v1.0.0-beta.rc3
 )
 
 require (
@@ -78,10 +78,10 @@ require (
 	github.com/wealdtech/go-eth2-wallet-encryptor-keystorev4 v1.3.1 // indirect
 	github.com/yusufpapurcu/wmi v1.2.2 // indirect
 	github.com/zeus-fyi/memoryfs v0.0.0-20221107215020-c71d8bb73852 // indirect
-	golang.org/x/crypto v0.13.0 // indirect
-	golang.org/x/net v0.15.0 // indirect
+	golang.org/x/crypto v0.14.0 // indirect
+	golang.org/x/net v0.17.0 // indirect
 	golang.org/x/sync v0.3.0 // indirect
-	golang.org/x/sys v0.12.0 // indirect
+	golang.org/x/sys v0.13.0 // indirect
 	golang.org/x/text v0.13.0 // indirect
 	golang.org/x/time v0.3.0 // indirect
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect

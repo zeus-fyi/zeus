@@ -1789,6 +1789,7 @@ github.com/zeus-fyi/zeus v0.1.16-rc.0/go.mod h1:0aNy6gncy/bK6KtjG6O17SsKxmCW654k
 github.com/zeus-fyi/zeus v0.1.21-rc.0/go.mod h1:nVk2omxnxQyzURPqrEh6YFQT3LCL8vhY7VjMOlw3D+I=
 github.com/zeus-fyi/zeus v0.1.25-rc.0/go.mod h1:maF0WGjyXPwKrcOE4OkxwgZQQn6uXi6tnJP4jLjL4xw=
 github.com/zeus-fyi/zeus v1.0.0-beta.rc2/go.mod h1:V+yE9AJtOY6KZjOPcmBPSlNpfAzrGb74PvDv7SeH/y4=
+github.com/zeus-fyi/zeus v1.0.0-beta.rc3/go.mod h1:qL/rvQ8zmMPgjcz38sViWt3RPjW40WBnccMZEhv7HX0=
 go.etcd.io/bbolt v1.3.6 h1:/ecaJf0sk1l4l6V4awd65v2C3ILy7MSj+s/x1ADCIMU=
 go.etcd.io/bbolt v1.3.6/go.mod h1:qXsaaIqmgQH0T+OPdb99Bf+PKfBBQVAdyD6TY9G8XM4=
 go.etcd.io/etcd/api/v3 v3.5.6 h1:Cy2qx3npLcYqTKqGJzMypnMv2tiRyifZJ17BlWIWA7A=
