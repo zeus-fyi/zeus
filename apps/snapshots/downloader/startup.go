@@ -52,8 +52,8 @@ func init() {
 
 // Cmd represents the base command when called without any subcommands
 var Cmd = &cobra.Command{
-	Use:   "Downloads and extracts blockchain data and configs to your dataDir",
-	Short: "Blockchain node data download procedure",
+	Use:   "Downloads and extracts data or uploads it, eg configs to your dataDir",
+	Short: "Init container data download/upload procedures",
 	Run: func(cmd *cobra.Command, args []string) {
 		StartUp()
 	},
