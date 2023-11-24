@@ -10,7 +10,7 @@ GOARCH  := amd64
 VERSION := v9.0.3
 
 docker.pubbuildx:
-	@ docker buildx build -t ${IMG} -t ${LATEST} --build-arg VERSION=${VERSION} --build-arg GOMODCACHE=${GOMODCACHE} --build-arg GOCACHE=${GOCACHE} --build-arg GOOS=${GOOS} --build-arg GOARCH=${GOARCH} --platform=${GOOS}/${GOARCH} -f ../../docker/snapshots/Dockerfile ../../ --push
+	@ docker buildx build -t ${IMG} -t ${LATEST} --build-arg VERSION=${VERSION} --build-arg GOMODCACHE=${GOMODCACHE} --build-arg GOCACHE=${GOCACHE} --build-arg GOOS=${GOOS} --build-arg GOARCH=${GOARCH} --platform=${GOOS}/${GOARCH} -f ../../docker/snapshots_v2/Dockerfile ../../ --push
 
 docker.debug:
 	docker run -it --entrypoint /bin/bash zeusfyi/snapshots:latest
