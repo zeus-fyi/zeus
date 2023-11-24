@@ -39,8 +39,8 @@ func (t *JobsCookbookTestSuite) SetupTest() {
 	tc := configs.InitLocalTestConfigs()
 	t.Tc = tc
 	// uses the bearer token from test/configs/config.yaml
-	//t.ZeusTestClient = zeus_client.NewDefaultZeusClient(tc.Bearer)
-	t.ZeusTestClient = zeus_client.NewZeusClient("http://localhost:9001", tc.Bearer)
+	t.ZeusTestClient = zeus_client.NewDefaultZeusClient(tc.Bearer)
+	//t.ZeusTestClient = zeus_client.NewZeusClient("http://localhost:9001", tc.Bearer)
 	cookbooks.ChangeToCookbookDir()
 }
 
