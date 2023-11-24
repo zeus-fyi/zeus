@@ -33,7 +33,7 @@ jobs:
       - name: Login to Docker Registry
         run: docker login -u zeusfyi -p ${{ secrets.DOCKER_ACCESS_TOKEN }}
 
-      - name: Build And Publish Zeusfyi Docs Site
+      - name: Build And Push Snapshots App
         run: |
           depot build \
           -t ${{ env.REPO }}/${{ env.NAME }}:${{ env.TAG}} \
