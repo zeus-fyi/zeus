@@ -3,6 +3,11 @@ go 1.21
 use (
 	.
 
+	./apps/external/web3
+	./apps/hades
+
+	./apps/hercules
+
 	./apps/microservices/choreography
 	./apps/microservices/load_simulator
 	./apps/microservices/server_template
@@ -12,10 +17,5 @@ use (
 	./apps/serverless/ethereum/bls_signatures
 	./apps/serverless/ethereum/secrets_keygen
 	./apps/serverless/ethereum/validators_deposits_gen
-
-	./apps/external/web3
-	./apps/hades
-
-	./apps/hercules
 	./apps/snapshots
 )
