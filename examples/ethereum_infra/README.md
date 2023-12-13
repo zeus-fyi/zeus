@@ -7,7 +7,7 @@ and add your API key to use any of our test cases on this repo, or for this exam
 you can replace the bearer token in the ethereum_test.go file with your own.
 
 ```go
-    s.Tc = configs.InitLocalTestConfigs()
+s.Tc = configs.InitLocalTestConfigs()
 s.ZeusTestClient = zeus_client.NewDefaultZeusClient(s.Tc.Bearer)
 ```
 
