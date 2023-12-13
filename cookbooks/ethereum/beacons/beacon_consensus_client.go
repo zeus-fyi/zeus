@@ -27,11 +27,11 @@ var DeployConsensusClientKnsReq = zeus_req_types.TopologyDeployRequest{
 const (
 	consensusClientEphemeralRequestCPU    = "2.5"
 	consensusClientEphemeralRequestMemory = "4Gi"
-	consensusClientMainnetCPU             = "7"
+	consensusClientMainnetCPU             = "6"
 	consensusClientMainnetCPUMemory       = "13Gi"
 )
 
-func GetConsensusClientNetworkConfig(consensusClient, network string, choreographySecretsExist bool) zeus_cluster_config_drivers.ComponentBaseDefinition {
+func GetConsensusClientNetworkConfig(beaconConfig BeaconConfig) zeus_cluster_config_drivers.ComponentBaseDefinition {
 	dockerImage := ""
 	cmConfig := ""
 	diskSize := consensusStorageDiskSizeMainnet
@@ -41,7 +41,7 @@ func GetConsensusClientNetworkConfig(consensusClient, network string, choreograp
 	memSize := consensusClientMainnetCPUMemory
 	var ports []v1Core.ContainerPort
 	var svcDriver *config_overrides.ServiceDriver
-	switch consensusClient {
+	switch beaconConfig.ConsensusClient {
 	case client_consts.Lodestar:
 		svcDriver = &config_overrides.ServiceDriver{
 			Service: v1Core.Service{
@@ -93,7 +93,7 @@ func GetConsensusClientNetworkConfig(consensusClient, network string, choreograp
 			},
 		}
 
-		switch network {
+		switch beaconConfig.Network {
 		case hestia_req_types.Ephemery, "ephemeral":
 			dockerImage = lodestarDockerImage
 			cmConfig = LodestarEphemeral
@@ -104,7 +104,7 @@ func GetConsensusClientNetworkConfig(consensusClient, network string, choreograp
 			memSize = consensusClientEphemeralRequestMemory
 		}
 	case client_consts.Lighthouse:
-		switch network {
+		switch beaconConfig.Network {
 		case hestia_req_types.Ephemery, "ephemeral":
 			dockerImage = lighthouseDockerImage
 			cmConfig = LighthouseEphemeral
@@ -124,24 +124,24 @@ func GetConsensusClientNetworkConfig(consensusClient, network string, choreograp
 			"cpu":    resource.MustParse(cpuSize),
 			"memory": resource.MustParse(memSize),
 		},
+		Limits: v1Core.ResourceList{
+			"cpu":    resource.MustParse(cpuSize),
+			"memory": resource.MustParse(memSize),
+		},
 	}
 	cp := filepaths.Path{
 		PackageName: "",
 		DirIn:       "./ethereum/beacons/infra/consensus_client",
 		DirOut:      "./ethereum/outputs",
-		FnIn:        consensusClient + "Hercules", // filename for your gzip workload
+		FnIn:        beaconConfig.ConsensusClient, // filename for your gzip workload
 		FnOut:       "",
 		Env:         "",
 	}
 
 	initContDriver := config_overrides.ContainerDriver{
-		AppendEnvVars: []v1Core.EnvVar{BearerTokenSecretFromChoreography},
-	}
-	if choreographySecretsExist {
-		initContDriver = config_overrides.ContainerDriver{
-			IsInitContainer: true,
-			AppendEnvVars:   []v1Core.EnvVar{BearerTokenSecretFromChoreography},
-		}
+		IsInitContainer:   true,
+		IsDeleteContainer: !beaconConfig.WithChoreography,
+		AppendEnvVars:     []v1Core.EnvVar{BearerTokenSecretFromChoreography},
 	}
 	sbDef := zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
 		SkeletonBaseChart:         zeus_req_types.TopologyCreateRequest{},
@@ -162,7 +162,7 @@ func GetConsensusClientNetworkConfig(consensusClient, network string, choreograp
 				ContainerDrivers: map[string]config_overrides.ContainerDriver{
 					initSnapshots: initContDriver,
 					zeusConsensusClient: {Container: v1Core.Container{
-						Name:      consensusClient,
+						Name:      beaconConfig.ConsensusClient,
 						Image:     dockerImage,
 						Ports:     ports,
 						Resources: rr,
@@ -179,11 +179,9 @@ func GetConsensusClientNetworkConfig(consensusClient, network string, choreograp
 					}},
 			},
 		}}
-	if choreographySecretsExist {
-	}
 	compBase := zeus_cluster_config_drivers.ComponentBaseDefinition{
 		SkeletonBases: map[string]zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
-			"consensusClient" + "Hercules": sbDef,
+			"consensus-client": sbDef,
 		},
 	}
 	return compBase
@@ -245,13 +243,13 @@ var ConsensusClientSkeletonBaseMonitoringConfig = zeus_cluster_config_drivers.Cl
 }
 
 var ConsensusClientChart = zeus_req_types.TopologyCreateRequest{
-	TopologyName:      "lighthouseHercules",
-	ChartName:         "lighthouseHercules",
-	ChartDescription:  "lighthouseHercules",
-	Version:           fmt.Sprintf("lighthouseHerculesv0.0.%d", time.Now().Unix()),
-	ClusterClassName:  "ethereumBeacons",
-	ComponentBaseName: "zeusConsensusClient",
-	SkeletonBaseName:  "lighthouseHercules",
+	TopologyName:      "lighthouse-hercules",
+	ChartName:         "lighthouse-hercules",
+	ChartDescription:  "lighthouse-hercules",
+	Version:           fmt.Sprintf("lighthouse-herculesv0.0.%d", time.Now().Unix()),
+	ClusterClassName:  "ethereum-beacons",
+	ComponentBaseName: "zeus-consensus-client",
+	SkeletonBaseName:  "lighthouse-hercules",
 	Tag:               "latest",
 }
 
@@ -259,7 +257,7 @@ var BeaconConsensusClientChartPath = filepaths.Path{
 	PackageName: "",
 	DirIn:       "./ethereum/beacons/infra/consensus_client",
 	DirOut:      "./ethereum/outputs",
-	FnIn:        "lighthouseHercules", // filename for your gzip workload
+	FnIn:        "lighthouse-hercules", // filename for your gzip workload
 	FnOut:       "",
 	Env:         "",
 }

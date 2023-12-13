@@ -7,7 +7,7 @@ import (
 
 var (
 	BeaconGoerliClusterDefinition = zeus_cluster_config_drivers.ClusterDefinition{
-		ClusterClassName: "ethereumGoerliBeacons",
+		ClusterClassName: "ethereum-goerli-beacons",
 		CloudCtxNs:       BeaconGoerliCloudCtxNs,
 		ComponentBases:   BeaconGoerliComponentBases,
 	}
@@ -19,17 +19,17 @@ var (
 		Env:           "production",
 	}
 	BeaconGoerliComponentBases = map[string]zeus_cluster_config_drivers.ComponentBaseDefinition{
-		"consensusClients": ConsensusClientGoerliComponentBase,
-		"execClients":      ExecClientGoerliComponentBase,
+		"consensus-clients": ConsensusClientGoerliComponentBase,
+		"exec-clients":      ExecClientGoerliComponentBase,
 	}
 	ConsensusClientGoerliComponentBase = zeus_cluster_config_drivers.ComponentBaseDefinition{
 		SkeletonBases: map[string]zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
-			"lodestarHercules": ConsensusClientGoerliSkeletonBaseConfig,
+			"lodestar-hercules": ConsensusClientGoerliSkeletonBaseConfig,
 		},
 	}
 	ExecClientGoerliComponentBase = zeus_cluster_config_drivers.ComponentBaseDefinition{
 		SkeletonBases: map[string]zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
-			"gethHercules": ExecClientGoerliSkeletonBaseConfig,
+			"geth-hercules": ExecClientGoerliSkeletonBaseConfig,
 		},
 	}
 )

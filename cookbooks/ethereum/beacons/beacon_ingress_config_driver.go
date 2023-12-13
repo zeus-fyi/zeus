@@ -23,13 +23,13 @@ var BeaconIngressSkeletonBaseConfig = zeus_cluster_config_drivers.ClusterSkeleto
 }
 
 var IngressChart = zeus_req_types.TopologyCreateRequest{
-	TopologyName:      "beaconIngress",
-	ChartName:         "beaconIngress",
-	ChartDescription:  "beaconIngress",
-	Version:           fmt.Sprintf("beaconIngress-v.0.%d", time.Now().Unix()),
-	SkeletonBaseName:  "beaconIngress",
-	ComponentBaseName: "beaconIngress",
-	ClusterClassName:  "ethereumBeacon",
+	TopologyName:      "beacon-ingress",
+	ChartName:         "beacon-ingress",
+	ChartDescription:  "beacon-ingress",
+	Version:           fmt.Sprintf("beacon-ingress-v.0.%d", time.Now().Unix()),
+	SkeletonBaseName:  "beacon-ingress",
+	ComponentBaseName: "beacon-ingress",
+	ClusterClassName:  "ethereum-beacon",
 	Tag:               "latest",
 }
 
@@ -37,7 +37,7 @@ var IngressChartPath = filepaths.Path{
 	PackageName: "",
 	DirIn:       "./ethereum/beacons/infra/ingress",
 	DirOut:      "./ethereum/beacons/infra/processed_beacon_ingress",
-	FnIn:        "beaconIngress", // filename for your gzip workload
+	FnIn:        "beacon-ingress", // filename for your gzip workload
 	FnOut:       "",
 	Env:         "",
 }

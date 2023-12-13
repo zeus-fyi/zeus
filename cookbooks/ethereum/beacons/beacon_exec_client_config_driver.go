@@ -25,7 +25,7 @@ const (
 
 	execClientEphemeralRequestCPU    = "2.5"
 	execClientEphemeralRequestMemory = "4Gi"
-	execClientMainnetCPU             = "7"
+	execClientMainnetCPU             = "6"
 	execClientMainnetCPUMemory       = "20Gi"
 
 	hercules          = "hercules"
@@ -35,18 +35,18 @@ const (
 	GethMainnet       = "geth"
 
 	downloadGethEphemeral = "downloadGethEphemeral"
-	gethDockerImage       = "ethereum/client-go:v1.12.0"
+	gethDockerImage       = "ethereum/client-go:v1.13.5"
 
 	gethDockerImageCapella = "ethpandaops/geth:master"
 
-	rethDockerImage = "ghcr.io/paradigmxyz/reth:v0.1.0-alpha.1"
+	rethDockerImage = "ghcr.io/paradigmxyz/reth:v0.1.0-alpha.13"
 	rethMainnet     = "reth"
 	rethDownload    = "downloadReth"
 
 	execClientRethDiskSizeMainnet = "3Ti"
 )
 
-func GetExecClientNetworkConfig(execClient, network string, choreographySecretsExist bool) zeus_cluster_config_drivers.ComponentBaseDefinition {
+func GetExecClientNetworkConfig(beaconConfig BeaconConfig) zeus_cluster_config_drivers.ComponentBaseDefinition {
 	dockerImage := ""
 	cmConfig := ""
 	diskSize := execClientDiskSizeMainnet
@@ -55,9 +55,9 @@ func GetExecClientNetworkConfig(execClient, network string, choreographySecretsE
 	cpuSize := execClientMainnetCPU
 	memSize := execClientMainnetCPUMemory
 
-	switch execClient {
+	switch beaconConfig.ExecClient {
 	case client_consts.Geth:
-		switch network {
+		switch beaconConfig.Network {
 		case hestia_req_types.Ephemery, "ephemeral":
 			cpuSize = execClientEphemeralRequestCPU
 			memSize = execClientEphemeralRequestMemory
@@ -68,6 +68,7 @@ func GetExecClientNetworkConfig(execClient, network string, choreographySecretsE
 			downloadStartup = downloadGethEphemeral + ".sh"
 		case hestia_req_types.Mainnet:
 			cmConfig = GethMainnet
+			dockerImage = gethDockerImage
 		}
 	case client_consts.Reth:
 		diskSize = execClientRethDiskSizeMainnet
@@ -79,21 +80,23 @@ func GetExecClientNetworkConfig(execClient, network string, choreographySecretsE
 		PackageName: "",
 		DirIn:       "./ethereum/beacons/infra/exec_client",
 		DirOut:      "./ethereum/outputs",
-		FnIn:        execClient + "Hercules", // filename for your gzip workload
+		FnIn:        beaconConfig.ExecClient, // filename for your gzip workload
 		FnOut:       "",
 		Env:         "",
 	}
+
 	initContDriver := config_overrides.ContainerDriver{
-		AppendEnvVars: []v1Core.EnvVar{BearerTokenSecretFromChoreography},
+		IsInitContainer:   true,
+		IsDeleteContainer: !beaconConfig.WithChoreography,
+		AppendEnvVars:     []v1Core.EnvVar{BearerTokenSecretFromChoreography},
 	}
-	if choreographySecretsExist {
-		initContDriver = config_overrides.ContainerDriver{
-			IsInitContainer: true,
-			AppendEnvVars:   []v1Core.EnvVar{BearerTokenSecretFromChoreography},
-		}
-	}
+
 	rr := v1Core.ResourceRequirements{
 		Requests: v1Core.ResourceList{
+			"cpu":    resource.MustParse(cpuSize),
+			"memory": resource.MustParse(memSize),
+		},
+		Limits: v1Core.ResourceList{
 			"cpu":    resource.MustParse(cpuSize),
 			"memory": resource.MustParse(memSize),
 		},
@@ -136,7 +139,7 @@ func GetExecClientNetworkConfig(execClient, network string, choreographySecretsE
 		}}
 	execCompBase := zeus_cluster_config_drivers.ComponentBaseDefinition{
 		SkeletonBases: map[string]zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
-			execClient + "Hercules": sbCfg,
+			beaconConfig.ExecClient: sbCfg,
 		},
 	}
 	return execCompBase

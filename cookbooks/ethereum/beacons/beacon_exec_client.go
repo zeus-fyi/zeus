@@ -79,13 +79,13 @@ var ExecClientSkeletonBaseMonitoringConfig = zeus_cluster_config_drivers.Cluster
 }
 
 var ExecClientChart = zeus_req_types.TopologyCreateRequest{
-	TopologyName:      "gethHercules",
-	ChartName:         "gethHercules",
-	ChartDescription:  "gethHercules",
+	TopologyName:      "geth-hercules",
+	ChartName:         "geth-hercules",
+	ChartDescription:  "geth-hercules",
 	Version:           fmt.Sprintf("gethHerculesv0.0.%d", time.Now().Unix()),
-	ClusterClassName:  "ethereumBeacons",
-	ComponentBaseName: "executionClient",
-	SkeletonBaseName:  "gethHercules",
+	ClusterClassName:  "ethereum-beacons",
+	ComponentBaseName: "execution-client",
+	SkeletonBaseName:  "geth-hercules",
 	Tag:               "latest",
 }
 
@@ -93,7 +93,7 @@ var BeaconExecClientChartPath = filepaths.Path{
 	PackageName: "",
 	DirIn:       "./ethereum/beacons/infra/exec_client",
 	DirOut:      "./ethereum/outputs",
-	FnIn:        "gethHercules", // filename for your gzip workload
+	FnIn:        "geth-hercules", // filename for your gzip workload
 	FnOut:       "",
 	Env:         "",
 }

@@ -15,15 +15,15 @@ const (
 	consensusStorageDiskSizeMainnet   = "300Gi"
 
 	LighthouseMainnet           = "lighthouse"
-	LodestarEphemeral           = "lodestarEphemeral"
-	LighthouseEphemeral         = "lighthouseEphemeral"
+	LodestarEphemeral           = "lodestar-ephemeral"
+	LighthouseEphemeral         = "lighthouse-ephemeral"
 	downloadLighthouseEphemeral = "downloadLighthouseEphemeral"
 
-	lighthouseDockerImage        = "sigp/lighthouse:v4.2.0"
+	lighthouseDockerImage        = "sigp/lighthouse:v4.5.0"
 	lighthouseDockerImageCapella = "sigp/lighthouse:capella"
 
-	LodestarGoerli      = "lodestarGoerli"
-	lodestarDockerImage = "chainsafe/lodestar:v1.7.2"
+	LodestarGoerli      = "lodestar-goerli"
+	lodestarDockerImage = "chainsafe/lodestar:v1.12.1"
 )
 
 func EphemeralConsensusClientLighthouseConfig(inf topology_workloads.TopologyBaseInfraWorkload) {

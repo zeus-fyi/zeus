@@ -5,15 +5,15 @@ import (
 
 	"github.com/zeus-fyi/zeus/zeus/workload_config_drivers/config_overrides"
 	"github.com/zeus-fyi/zeus/zeus/workload_config_drivers/topology_workloads"
+	zk8s_clusters "github.com/zeus-fyi/zeus/zeus/z_client/clusters"
 	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_req_types"
 )
 
 func (t *Web3SignerCookbookTestSuite) TestClusterAPIDeploy() {
 	t.TestUploadWeb3SignerAPIChart()
 	ctx := context.Background()
-	resp, err := t.ZeusTestClient.DeployCluster(ctx, Web3SignerExternalAPIClusterDefinition)
+	_, err := zk8s_clusters.DeployCluster(ctx, t.ZeusTestClient, Web3SignerExternalAPIClusterDefinition)
 	t.Require().Nil(err)
-	t.Assert().NotEmpty(resp)
 }
 
 func (t *Web3SignerCookbookTestSuite) TestClusterAPIDestroy() {

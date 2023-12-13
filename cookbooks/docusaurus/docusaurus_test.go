@@ -41,6 +41,7 @@ func (t *DocusaurusCookbookTestSuite) TestUploadDocusaurus() {
 	_, rerr := DocusaurusClusterDefinition.UploadChartsFromClusterDefinition(ctx, t.ZeusTestClient, true)
 	t.Require().Nil(rerr)
 }
+
 func (t *DocusaurusCookbookTestSuite) TestCreateDocFunc() {
 	err := CreateDocusaurusDeployment(ctx, t.ZeusTestClient, true)
 	t.Require().Nil(err)

@@ -3,6 +3,7 @@ package avax_node_cookbooks
 import (
 	"fmt"
 
+	zk8s_clusters "github.com/zeus-fyi/zeus/zeus/z_client/clusters"
 	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_req_types"
 )
 
@@ -23,8 +24,9 @@ func (t *AvaxCookbookTestSuite) TestFujiClusterDeploy() {
 	t.Assert().NotEmpty(sbDefs)
 
 	cdep := cd.GenerateDeploymentRequest()
-	_, err = t.ZeusTestClient.DeployCluster(ctx, cdep)
+	_, err = zk8s_clusters.DeployCluster(ctx, t.ZeusTestClient, cdep)
 	t.Require().Nil(err)
+
 }
 
 func (t *AvaxCookbookTestSuite) TestFujiClusterDestroy() {

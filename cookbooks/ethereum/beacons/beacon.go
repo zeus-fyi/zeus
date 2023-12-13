@@ -5,8 +5,6 @@ import (
 	zeus_cluster_config_drivers "github.com/zeus-fyi/zeus/zeus/cluster_config_drivers"
 	zeus_topology_config_drivers "github.com/zeus-fyi/zeus/zeus/workload_config_drivers/config_overrides"
 	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_common_types"
-	"golang.org/x/text/cases"
-	"golang.org/x/text/language"
 )
 
 const (
@@ -17,7 +15,7 @@ const (
 
 var (
 	BeaconClusterDefinition = zeus_cluster_config_drivers.ClusterDefinition{
-		ClusterClassName: "ethereumEphemeralBeaconsDev",
+		ClusterClassName: "ethereum-ephemeral-beacons",
 		CloudCtxNs:       BeaconCloudCtxNs,
 		ComponentBases:   BeaconComponentBases,
 	}
@@ -29,58 +27,85 @@ var (
 		Env:           "production",
 	}
 	BeaconComponentBases = map[string]zeus_cluster_config_drivers.ComponentBaseDefinition{
-		"beaconIngress":                 IngressComponentBase,
-		"consensusClients":              ConsensusClientComponentBase,
-		"execClients":                   ExecClientComponentBase,
-		"serviceMonitorConsensusClient": ConsensusClientMonitoringComponentBase,
-		"serviceMonitorExecClient":      ExecClientMonitoringComponentBase,
-		"choreography":                  choreography_cookbooks.ChoreographyComponentBase,
+		"beacon-ingress":                  IngressComponentBase,
+		"consensus-clients":               ConsensusClientComponentBase,
+		"exec-clients":                    ExecClientComponentBase,
+		"servicemonitor-consensus-client": ConsensusClientMonitoringComponentBase,
+		"servicemonitor-exec-client":      ExecClientMonitoringComponentBase,
+		"choreography":                    choreography_cookbooks.ChoreographyComponentBase,
 	}
 	ConsensusClientComponentBase = zeus_cluster_config_drivers.ComponentBaseDefinition{
 		SkeletonBases: map[string]zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
-			"lodestarHercules": ConsensusClientSkeletonBaseConfig,
+			"lodestar-hercules": ConsensusClientSkeletonBaseConfig,
 		},
 	}
 	ConsensusClientMonitoringComponentBase = zeus_cluster_config_drivers.ComponentBaseDefinition{
 		SkeletonBases: map[string]zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
-			"serviceMonitorConsensusClient": ConsensusClientSkeletonBaseMonitoringConfig,
+			"servicemonitor-consensus-client": ConsensusClientSkeletonBaseMonitoringConfig,
 		},
 	}
 	ExecClientComponentBase = zeus_cluster_config_drivers.ComponentBaseDefinition{
 		SkeletonBases: map[string]zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
-			"gethHercules": ExecClientSkeletonBaseConfig,
+			"geth-hercules": ExecClientSkeletonBaseConfig,
 		},
 	}
 	ExecClientMonitoringComponentBase = zeus_cluster_config_drivers.ComponentBaseDefinition{
 		SkeletonBases: map[string]zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
-			"serviceMonitorExecClient": ExecClientSkeletonBaseMonitoringConfig,
+			"servicemonitor-exec-client": ExecClientSkeletonBaseMonitoringConfig,
 		},
 	}
 	IngressComponentBase = zeus_cluster_config_drivers.ComponentBaseDefinition{
 		SkeletonBases: map[string]zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
-			"beaconIngress": BeaconIngressSkeletonBaseConfig,
+			"beacon-ingress": BeaconIngressSkeletonBaseConfig,
 		},
 	}
 	BearerTokenSecretFromChoreography = zeus_topology_config_drivers.MakeSecretEnvVar("BEARER", "bearer", "choreography")
 )
 
+type BeaconConfig struct {
+	ConsensusClient    string
+	ExecClient         string
+	Network            string
+	WithIngress        bool
+	WithServiceMonitor bool
+	WithChoreography   bool
+}
+
 func GetClientClusterDef(consensusClient, execClient, network string, withIngress bool) zeus_cluster_config_drivers.ClusterDefinition {
+	beaconConfig := BeaconConfig{
+		ConsensusClient:    consensusClient,
+		ExecClient:         execClient,
+		Network:            network,
+		WithIngress:        withIngress,
+		WithServiceMonitor: true,
+	}
 	return zeus_cluster_config_drivers.ClusterDefinition{
-		ClusterClassName: "ethereumBeacon" + cases.Title(language.English).String(network) + cases.Title(language.English).String(consensusClient) + cases.Title(language.English).String(execClient),
-		ComponentBases:   GetComponentBases(consensusClient, execClient, network, withIngress),
+		ClusterClassName: "ethereum-beacon" + "-" + beaconConfig.Network + "-" + beaconConfig.ConsensusClient + "-" + beaconConfig.ExecClient,
+		ComponentBases:   GetComponentBases(beaconConfig),
 	}
 }
 
-func GetComponentBases(consensusClient, execClient, network string, withIngress bool) map[string]zeus_cluster_config_drivers.ComponentBaseDefinition {
-	beaconComponentBases := map[string]zeus_cluster_config_drivers.ComponentBaseDefinition{
-		"consensusClients":              GetConsensusClientNetworkConfig(consensusClient, network, true),
-		"execClients":                   GetExecClientNetworkConfig(execClient, network, true),
-		"serviceMonitorConsensusClient": ConsensusClientMonitoringComponentBase,
-		"serviceMonitorExecClient":      ExecClientMonitoringComponentBase,
-		"choreography":                  choreography_cookbooks.ChoreographyComponentBase,
+func CreateClientClusterDefWithParams(beaconConfig BeaconConfig) zeus_cluster_config_drivers.ClusterDefinition {
+	return zeus_cluster_config_drivers.ClusterDefinition{
+		ClusterClassName: "ethereum-beacon" + "-" + beaconConfig.Network + "-" + beaconConfig.ConsensusClient + "-" + beaconConfig.ExecClient,
+		ComponentBases:   GetComponentBases(beaconConfig),
 	}
-	if withIngress {
-		beaconComponentBases["beaconIngress"] = IngressComponentBase
+}
+
+func GetComponentBases(beaconConfig BeaconConfig) map[string]zeus_cluster_config_drivers.ComponentBaseDefinition {
+	beaconComponentBases := map[string]zeus_cluster_config_drivers.ComponentBaseDefinition{
+		"consensus-clients": GetConsensusClientNetworkConfig(beaconConfig),
+		"exec-clients":      GetExecClientNetworkConfig(beaconConfig),
+	}
+	if beaconConfig.WithServiceMonitor {
+		beaconComponentBases["servicemonitor-consensus-client"] = ConsensusClientMonitoringComponentBase
+		beaconComponentBases["servicemonitor-exec-client"] = ExecClientMonitoringComponentBase
+	}
+	if beaconConfig.WithChoreography {
+		beaconComponentBases["choreography"] = choreography_cookbooks.ChoreographyComponentBase
+	}
+	if beaconConfig.WithIngress {
+		beaconComponentBases["beacon-ingress"] = IngressComponentBase
 	}
 	return beaconComponentBases
 }

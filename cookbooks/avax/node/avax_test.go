@@ -11,6 +11,7 @@ import (
 	"github.com/zeus-fyi/zeus/test/test_suites"
 	"github.com/zeus-fyi/zeus/zeus/workload_config_drivers/config_overrides"
 	zeus_client "github.com/zeus-fyi/zeus/zeus/z_client"
+	zk8s_clusters "github.com/zeus-fyi/zeus/zeus/z_client/clusters"
 	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_req_types"
 )
 
@@ -29,7 +30,7 @@ func (t *AvaxCookbookTestSuite) TestClusterDeploy() {
 	t.Require().Nil(err)
 
 	cdep := cd.GenerateDeploymentRequest()
-	_, err = t.ZeusTestClient.DeployCluster(ctx, cdep)
+	_, err = zk8s_clusters.DeployCluster(ctx, t.ZeusTestClient, cdep)
 	t.Require().Nil(err)
 }
 

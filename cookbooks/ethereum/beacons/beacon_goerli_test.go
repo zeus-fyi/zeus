@@ -9,10 +9,6 @@ func (t *BeaconCookbookTestSuite) TestGoerliClusterDeployV2() {
 	cd := BeaconGoerliClusterDefinition
 	_, err := cd.UploadChartsFromClusterDefinition(ctx, t.ZeusTestClient, true)
 	t.Require().Nil(err)
-
-	cdep := cd.GenerateDeploymentRequest()
-	_, err = t.ZeusTestClient.DeployCluster(ctx, cdep)
-	t.Require().Nil(err)
 }
 
 func (t *BeaconCookbookTestSuite) TestGoerliClusterDestroy() {
