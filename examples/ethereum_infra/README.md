@@ -29,7 +29,7 @@ parameters in:
 
 ### Execution Client Config Drivers: `cookbooks/ethereum/beacons/beacon_exec_client_config_driver.go`
 
-## Dashboard UI Usage
+## Dashboard Usage
 
 ### Navigating to your beacon
 
