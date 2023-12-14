@@ -195,7 +195,7 @@ func GetConsensusClientNetworkConfig(beaconConfig BeaconConfig) zeus_cluster_con
 		}}
 	compBase := zeus_cluster_config_drivers.ComponentBaseDefinition{
 		SkeletonBases: map[string]zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
-			"consensus-client": sbDef,
+			beaconConfig.ConsensusClient: sbDef,
 		},
 	}
 	return compBase

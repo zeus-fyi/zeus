@@ -4,7 +4,7 @@ GOMODCACHE := $(shell go env GOMODCACHE)
 GOCACHE := $(shell go env GOCACHE)
 GOOS 	:= linux
 GOARCH  := amd64
-VERSION := 1.0.0-beta.rc4
+VERSION := 1.0.0-beta.rc5
 
 # hercules build info
 REPO	:= zeusfyi
