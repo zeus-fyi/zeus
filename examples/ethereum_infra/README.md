@@ -18,12 +18,12 @@ you want it to be a private network or not and call the base function to create 
 
 ```go
 beaconConfig := ethereum_beacon_cookbooks.BeaconConfig{
-ConsensusClient:    consensusClient,
-ExecClient:         execClient,
-Network:            network,
-WithIngress:        true,
-WithServiceMonitor: false,
-WithChoreography:   false,
+    ConsensusClient:    consensusClient,
+    ExecClient:         execClient,
+    Network:            network,
+    WithIngress:        true,
+    WithServiceMonitor: false,
+    WithChoreography:   false,
 }
 cd := ethereum_beacon_cookbooks.CreateClientClusterDefWithParams(bc)
 ```
