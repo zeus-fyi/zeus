@@ -21,7 +21,8 @@ We keep a reference folder in cookbooks/sui/node/sui_config
     fullnode.yaml
     p2p-mainnet
     p2p-testnet
-    Generating node Kubernetes configs
+
+Generating node Kubernetes configs
 
 …for every combination of
 

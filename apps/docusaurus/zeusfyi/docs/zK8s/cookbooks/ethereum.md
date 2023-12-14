@@ -33,6 +33,9 @@ beaconConfig := ethereum_beacon_cookbooks.BeaconConfig{
     WithChoreography:   false,
 }
 cd := ethereum_beacon_cookbooks.CreateClientClusterDefWithParams(bc)
+gcd := cd.BuildClusterDefinitions()
+ccd := gcd.CreateClusterClassDefinitions(context.Background(), s.ZeusTestClient)
+_, err := cd.UploadChartsFromClusterDefinition(ctx, s.ZeusTestClient, true)
 ```
 
 ## Customizing the beacon
