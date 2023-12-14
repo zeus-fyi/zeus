@@ -86,9 +86,10 @@ func GetExecClientNetworkConfig(beaconConfig BeaconConfig) zeus_cluster_config_d
 	}
 
 	initContDriver := config_overrides.ContainerDriver{
-		IsInitContainer:   true,
-		IsDeleteContainer: !beaconConfig.WithChoreography,
-		AppendEnvVars:     []v1Core.EnvVar{BearerTokenSecretFromChoreography},
+		IsInitContainer: true,
+	}
+	if beaconConfig.WithChoreography {
+		initContDriver.AppendEnvVars = []v1Core.EnvVar{BearerTokenSecretFromChoreography}
 	}
 
 	rr := v1Core.ResourceRequirements{
