@@ -49,7 +49,7 @@ workload, and displays the total cost, including any block storage costs.
 
 You can navigate to all apps with the same class name as your beacon using the cluster view. Find your beacon and click
 the row button to view the beacon page. Delete will delete the beacon and the infra in that namespace,
-but it does not deprovision nodes. You can do that in the Compute page.
+but it does not deprovision servers. You can do that in the Compute page.
 
 ![ClusterView](https://github.com/zeus-fyi/zeus/assets/17446735/569f0daa-04dd-457b-a32f-ed57351d1f7b)
 
