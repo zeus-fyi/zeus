@@ -14,11 +14,20 @@ s.ZeusTestClient = zeus_client.NewDefaultZeusClient(s.Tc.Bearer)
 ## Default Setup Options
 
 You provide a param to specify consensus client type, and execution client type, and network, and if
-you want it to be a private network or not and call the base function.
+you want it to be a private network or not and call the base function to create a cluster definition.
 
 ```go
-    cd := ethereum_beacon_cookbooks.GetClientClusterDef(consensusClient, execClient, network, true)
+beaconConfig := ethereum_beacon_cookbooks.BeaconConfig{
+ConsensusClient:    consensusClient,
+ExecClient:         execClient,
+Network:            network,
+WithIngress:        true,
+WithServiceMonitor: false,
+WithChoreography:   false,
+}
+cd := ethereum_beacon_cookbooks.CreateClientClusterDefWithParams(bc)
 ```
+
 ## Customizing the beacon
 
 To customize startup scripts, resource requests, docker container images, etc you can update the constants and
