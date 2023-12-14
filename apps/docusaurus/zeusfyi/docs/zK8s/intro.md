@@ -23,6 +23,11 @@ You can sign up for a free account at [https://cloud.zeus.fyi/login](https://clo
 
 You can use your Google account to sign up, or you can sign up with your email address and verify your email.
 
+## Quick Start
+
+See our Cookbooks/Ethereum section on our docs site for a quick start guide on how to deploy an Ethereum beacon and you'll
+get familiar with the platform in no time.
+
 ## Start with Reading the Platform Overview
 
 This section covers the system elements for the platform, and how they work together. It also shows you the code

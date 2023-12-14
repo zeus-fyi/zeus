@@ -7,6 +7,8 @@ displayed_sidebar: zK8s
 
 ## Setup
 
+Checkout our new examples directory on our GitHub page and you'll see the full code for this at examples/ethereum_infra
+
 You can use the configs test setup `test/configs` via creating a config.yaml and setting `BEARER: "{YOUR_API_KEY}"`
 and add your API key to use any of our test cases on this repo, or for this example directory specifically,
 you can replace the bearer token in the ethereum_test.go file with your own.
@@ -23,12 +25,12 @@ you want it to be a private network or not and call the base function to create 
 
 ```go
 beaconConfig := ethereum_beacon_cookbooks.BeaconConfig{
-ConsensusClient:    consensusClient,
-ExecClient:         execClient,
-Network:            network,
-WithIngress:        true,
-WithServiceMonitor: false,
-WithChoreography:   false,
+    ConsensusClient:    consensusClient,
+    ExecClient:         execClient,
+    Network:            network,
+    WithIngress:        true,
+    WithServiceMonitor: false,
+    WithChoreography:   false,
 }
 cd := ethereum_beacon_cookbooks.CreateClientClusterDefWithParams(bc)
 ```
