@@ -40,7 +40,7 @@ const (
 	consensusClientEphemeralRequestCPU    = "2.5"
 	consensusClientEphemeralRequestMemory = "4Gi"
 	consensusClientMainnetCPU             = "6"
-	consensusClientMainnetCPUMemory       = "13Gi"
+	consensusClientMainnetMemory          = "13Gi"
 )
 
 func GetConsensusClientNetworkConfig(beaconConfig BeaconConfig) zeus_cluster_config_drivers.ComponentBaseDefinition {
@@ -50,7 +50,7 @@ func GetConsensusClientNetworkConfig(beaconConfig BeaconConfig) zeus_cluster_con
 	downloadStartup := download + ".sh"
 	herculesStartup := hercules + ".sh"
 	cpuSize := consensusClientMainnetCPU
-	memSize := consensusClientMainnetCPUMemory
+	memSize := consensusClientMainnetMemory
 	var ports []v1Core.ContainerPort
 	var svcDriver *config_overrides.ServiceDriver
 	switch beaconConfig.ConsensusClient {
