@@ -8,10 +8,6 @@ displayed_sidebar: zK8s
 We currently use Stripe and send out an invoice every month to your primary email address. You'll be able to see time
 usage, start, end times and costs per services in aggregates for servers, disks, etc provisioned cloud resource.
 
-#### Setup
-
-- i.e. How to get started, how to deploy an app, how to use the load balancer, how to deploy/destroy a cluster ...
-
 #### Pricing Questions
 
 Along the lines of things like ...

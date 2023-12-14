@@ -59,8 +59,8 @@ app row to view the beacon app deployment page.
 ## App Deployment View
 
 Select the servers that make sense for your application, and click the "Deploy" button to deploy your beacon.
-It will provision the nodes, and deploy the beacon app to the nodes. It summarizes your resource requests per
-workload, and displays the total cost, including any block storage costs.
+It will provision and taint the servers so that only your app can deploy on them, and then deploy the beacon app to run on them.
+It summarizes your resource requests per workload, and displays the total cost, including any block storage costs.
 
 ![TaintedServerDeployment](https://github.com/zeus-fyi/zeus/assets/17446735/dc968bcf-c124-4df0-908e-bc0358b51ddc)
 
@@ -72,7 +72,7 @@ but it does not deprovision servers. You can do that in the Compute page.
 
 ![ClusterView](https://github.com/zeus-fyi/zeus/assets/17446735/569f0daa-04dd-457b-a32f-ed57351d1f7b)
 
-You can use the dashboard UI to view the status of your beacon and the nodes in your cluster. It's also useful for
+You can use the dashboard UI to view the status of your beacon in your cluster. It's also useful for
 rapid development & debugging.
 
 ![Dashboard](https://github.com/zeus-fyi/zeus/assets/17446735/30869445-89b9-4bd6-bf1f-28c8154fd17f)
