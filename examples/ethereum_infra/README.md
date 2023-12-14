@@ -66,3 +66,11 @@ The zK8s App page button will take you to the infra config page.
 
 You can make changes to the config and click the "Apply" button to update your beacon configuration. Back on the beacon
 page, you can click the "Deploy Latest" button to upgrade your beacon to the new config.
+
+## Beacon API
+
+If you selected an ingress for your beacon, the namespace of your cluster will be the same as the beacon url path
+
+    namespace: ethereum-beacon-mainnet-lighthouse-geth-7627d4b5
+    domain: zeus.fyi
+    url: ethereum-beacon-mainnet-lighthouse-geth-7627d4b5.zeus.fyi
