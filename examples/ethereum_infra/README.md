@@ -19,7 +19,6 @@ you want it to be a private network or not and call the base function.
 ```go
     cd := ethereum_beacon_cookbooks.GetClientClusterDef(consensusClient, execClient, network, true)
 ```
-
 ## Customizing the beacon
 
 To customize startup scripts, resource requests, docker container images, etc you can update the constants and
@@ -29,9 +28,24 @@ parameters in:
 
 ### Execution Client Config Drivers: `cookbooks/ethereum/beacons/beacon_exec_client_config_driver.go`
 
-## Dashboard Usage
+# Dashboard Usage
 
-### Navigating to your beacon
+## Apps Page
+
+After you've created your beacon definition, you can navigate to the Apps page to deploy your beacon. Click on the
+app row to view the beacon app deployment page.
+
+![AppsPage](https://github.com/zeus-fyi/zeus/assets/17446735/5d0066d0-9e14-4a1b-989f-35ca9f741fd3)
+
+## App Deployment View
+
+Select the servers that make sense for your application, and click the "Deploy" button to deploy your beacon.
+It will provision the nodes, and deploy the beacon app to the nodes. It summarizes your resource requests per
+workload, and displays the total cost, including any block storage costs.
+
+![TaintedServerDeployment](https://github.com/zeus-fyi/zeus/assets/17446735/dc968bcf-c124-4df0-908e-bc0358b51ddc)
+
+### Navigating to your cluster devops page
 
 You can navigate to all apps with the same class name as your beacon using the cluster view. Find your beacon and click
 the row button to view the beacon page. Delete will delete the beacon and the infra in that namespace,
