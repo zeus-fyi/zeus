@@ -5,7 +5,8 @@ displayed_sidebar: mockingbird
 
 # Overview
 
-Mockingbird is a time series controlled AI systems coordinator & workflow executor system that builds control loops and
+Mockingbird is a time series controlled AI systems coordinator & workflow executor, and scheduler that builds control
+loops and
 hierarchical planning rules around higher order goals & objectives using automated evaluation systems and
 model-to-model communication via quorums. It is designed to be a general purpose system that is eventually
 capable of becoming generally intelligent, and then super intelligent.
