@@ -52,7 +52,7 @@ throttled if you exceed our usage limits while using our API key.
     - Tasking single-to-multi-model task planning
     - Tasking scheduling, recursive workflows, objective overrides
   - Shared workflows contexts, selective contexts, searchable contexts
-  - Workflow generator
+  - Scenario driven workflow generator
 - Multi-Model-Single-Model communication via quorums
 - Multi-Model-Multi-Model communication via quorums + task planning + synchronization
 - Multi-Modal (Text, Image, Video, Audio) analysis
