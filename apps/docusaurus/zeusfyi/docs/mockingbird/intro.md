@@ -58,5 +58,6 @@ throttled if you exceed our usage limits while using our API key.
 - Multi-Modal (Text, Image, Video, Audio) analysis
 - AI driven compute infrastructure, building, purchasing, maintenance, & monitoring systems for Kubernetes + Cloud
   Vendor APIs
+- PagerDuty integration
 
 Any questions or want access to research features? Contact us at support@zeus.fyi
