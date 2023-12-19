@@ -37,6 +37,7 @@ throttled if you exceed our usage limits while using our API key.
 - Run Scheduler/Controller
 - Run Step-by-Step Cycle Execution History
 - Run Token Usage
+- Human-in-the-loop control trigger actions (coming later this week)
 
 ## Features Available To Researchers & Partners
 
@@ -50,6 +51,8 @@ throttled if you exceed our usage limits while using our API key.
 - Experimental distributed executive task planner
     - Tasking single-to-multi-model task planning
     - Tasking scheduling, recursive workflows, objective overrides
+  - Shared workflows contexts, selective contexts, searchable contexts
+  - Workflow generator
 - Multi-Model-Single-Model communication via quorums
 - Multi-Model-Multi-Model communication via quorums + task planning + synchronization
 - Multi-Modal (Text, Image, Video, Audio) analysis

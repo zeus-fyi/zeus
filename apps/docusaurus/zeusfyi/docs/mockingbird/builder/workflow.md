@@ -61,14 +61,16 @@ and set the aggregation cycle count to 2, it will run on time cycle 4 after the 
 
 Think of this as your AI Cpu Time. This is the minimum time interval between AI actions per cycle of workflow execution.
 So if you have a 5 minute fundamental time period, and you have 3 analysis stages in your workflow per one cycle of run
-time,
-it will run 3 stages each 5 minutes.
+time, it will run 3 stages each 5 minutes.
+
+## Checkpoints for Stage Driven Workflows
+
+We're still working on the UI for this, coming soon.
 
 ## Run Overrides
 
 Using the run scheduler, you can change your fundamental time period, and the run scheduler will automatically adjust
-the run times,
-this also changes the search window sizes for analysis, aggregation, etc stages.
+the run times, this also changes the search window sizes for analysis, aggregation, etc stages.
 
 ![AAAA](https://github.com/zeus-fyi/zeus/assets/17446735/bc8099bc-b8b2-4c4a-bbb8-053c4d2f4c22)
 
