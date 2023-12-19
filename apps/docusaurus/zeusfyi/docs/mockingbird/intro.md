@@ -5,7 +5,7 @@ displayed_sidebar: mockingbird
 
 # Overview
 
-Mockingbird is a time series controlled AI coordination & orchestration system that builds control loops and
+Mockingbird is a time series controlled AI systems coordinator & workflow executor system that builds control loops and
 hierarchical planning rules around higher order goals & objectives using automated evaluation systems and
 model-to-model communication via quorums. It is designed to be a general purpose system that is eventually
 capable of becoming generally intelligent, and then super intelligent.
@@ -18,10 +18,9 @@ features as we evaluate the system and build out the core functionality.
 ## Costs
 
 Mockingbird is currently free to use for self-service features at this time. Though we may restrict account usage if we
-see abuse.
-If you connect your own OpenAI API key, you will be responsible for any costs associated with that, otherwise we will
-use
-our API key and then charge you 1-to-1 for the cost of the API usage that we incur, however you may have your usage
+see abuse. If you connect your own OpenAI API key, you will be responsible for any costs associated with that, otherwise
+we will
+use our API key and then charge you 1-to-1 for the cost of the API usage that we incur, however you may have your usage
 throttled if you exceed our usage limits while using our API key.
 
 ## Features Available via Self Service UI
