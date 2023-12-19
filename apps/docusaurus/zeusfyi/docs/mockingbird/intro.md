@@ -54,6 +54,8 @@ throttled if you exceed our usage limits while using our API key.
   - Scenario driven workflow generator
 - Multi-Model-Single-Model communication via quorums
 - Multi-Model-Multi-Model communication via quorums + task planning + synchronization
+- Ranked/Promotable-Model-Leader-Model-Follower
+- Multi-Model Team vs Multi-Model Team Competitive Scenarios
 - Multi-Modal (Text, Image, Video, Audio) analysis
 - AI driven compute infrastructure, building, purchasing, maintenance, & monitoring systems for Kubernetes + Cloud
   Vendor APIs
