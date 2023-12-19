@@ -73,6 +73,7 @@ const config = {
                         position: 'right',
                         href: 'https://cloud.zeus.fyi/login',
                     },
+                    {to: '/docs/mockingbird/intro', label: 'Mockingbird', position: 'left'},
                     {to: '/docs/zK8s/intro', label: 'Platform & APIs', position: 'left'},
                     {to: '/docs/lb/intro', label: 'Adaptive RPC Load Balancer', position: 'left'},
                     {
