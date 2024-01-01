@@ -3,13 +3,7 @@ sidebar_position: 6
 displayed_sidebar: mockingbird
 ---
 
-# Evals
-
-### Pre-Release
-
-You can only save and view evals at the moment. We are doing QA and some final development still on the public evals
-feature
-integration and will be releasing it in stages this week.
+# Automated Evals
 
 This allows you to setup scoring rules for AI system outputs that set metrics for the AI to use in its decision
 making process. For metric array types, the comparison value returns the true/false if every array element item passes
@@ -47,19 +41,20 @@ inject the JSON instructions into the model to generate the output into well for
 
 ### Eval Scoring
 
-You can select results types from: [Pass, Fail, Reject]
-
-### Reject
-
-Reject will discard the result and not use it in the analysis. This is useful for filtering out results that you
-don't want to use in some analysis.
+You can select results types from: [Pass, Fail]
 
 ![Scree](https://github.com/poga/redis-percentile/assets/17446735/745f4044-c44f-4554-9fe9-7ac9e2b29071)
 
-## API Evals
+## API Evals (Coming Early 2024)
 
 For this we will forward the response from the model stage directly to your own api endpoint. You can then score
 using whatever method you want and return eval compatible JSON responses back. The model will then check the responses
 against your evals tabulate the results.
 
 ![ScreenshoM](https://github.com/poga/redis-percentile/assets/17446735/1cf688cb-3902-4a72-85aa-6aeb28b2f0dd)
+
+## Eval Results
+
+For workflows with Evals, you'll be able to see the results in the Run section, in its own mini collapsible section.
+
+![runs+eval](https://github.com/zeus-fyi/zeus/assets/17446735/37d2aea5-132c-4afa-bc00-ccb0c643b185)
