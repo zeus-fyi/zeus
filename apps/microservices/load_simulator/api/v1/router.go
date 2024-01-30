@@ -8,6 +8,7 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/labstack/echo/v4"
 	"github.com/rs/zerolog/log"
 )
 
@@ -79,12 +80,12 @@ func SimulatedLoadResponse(c echo.Context) error {
 	respSizeUnit := c.Request().Header.Get(RouteResponseSizeUnitsHeader)
 	var respSizeNum int
 	if respSize == "" {
-		respSizeNum = 0
+		respSizeNum = 1
 	} else {
 		sz, err := strconv.Atoi(respSize)
 		if err != nil {
 			log.Err(err).Msgf("SimulatedLoadResponse: strconv.Atoi")
-			respSizeNum = 0
+			respSizeNum = 1
 		} else {
 			respSizeNum = sz
 		}
@@ -177,6 +178,12 @@ func SimulatedLoadResponse(c echo.Context) error {
 	case "string":
 		return c.String(respStatusCode, string(data))
 	default:
-		return c.String(http.StatusOK, "")
+		type RandomJSON struct {
+			Data []byte `json:"data"`
+		}
+		randomObject := RandomJSON{
+			Data: data,
+		}
+		return c.JSON(respStatusCode, randomObject)
 	}
 }
