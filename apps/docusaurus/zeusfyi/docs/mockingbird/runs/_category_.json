@@ -1,6 +1,6 @@
 {
   "label": "Runs",
-  "position": 2,
+  "position": 3,
   "link": {
     "type": "generated-index",
     "description": "How to manage mockingbird workflow runs."
