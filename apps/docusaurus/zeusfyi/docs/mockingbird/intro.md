@@ -36,13 +36,14 @@ throttled if you exceed our usage limits while using our API key.
 - Run Scheduler/Controller
 - Run Step-by-Step Cycle Execution History
 - Run Token Usage
-- Human-in-the-loop control trigger actions (coming later this week)
+- Human-in-the-loop control trigger actions like API requests
+- Automated evaluation systems
+- Integrated JSON schema builder
 
 ## Features Available To Researchers & Partners
 
 - Additional indexing sources (News, Blogs, Forums, etc)
 - Adaptive time series control via Metrics + Evals (PromQL, Adaptive)
-- Automated evaluation systems
 - Analysis cache feedback searching (eg. reviewing previous model generated analysis to steer actions)
 - Objective building for complex decision making, and milestone tracking
 - Decision tree generation for structured decision making
