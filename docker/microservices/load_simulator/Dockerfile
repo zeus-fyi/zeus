@@ -6,8 +6,11 @@ ARG GOMODCACHE
 ARG GOCACHE
 ARG GOOS
 ARG GOARCH
+
+COPY . .
+RUN --mount=type=cache,target=${GOMODCACHE} go mod download
 # manage dependencies
-COPY apps/cookbooks/microservices/load_simulator ./
+COPY . .
 RUN GO_ENABLED=1 GOOS=${GOOS} GOARCH=${GOARCH} go build -ldflags="-s -w" -o api apps/cookbooks/microservices/load_simulator/main.go
 
 FROM ubuntu:22.04
