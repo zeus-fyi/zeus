@@ -7,12 +7,8 @@ ARG GOCACHE
 ARG GOOS
 ARG GOARCH
 # manage dependencies
-COPY apps/microservices/load_simulator ./
-
-RUN --mount=type=cache,target=${GOMODCACHE} go mod download
 COPY . .
-
-RUN --mount=type=cache,target=${GOCACHE} CGO_ENABLED=1 GOOS=${GOOS} GOARCH=${GOARCH} go build -ldflags="-s -w" -o api apps/cookbooks/microservices/load_simulator/main.go
+RUN GO_ENABLED=1 GOOS=${GOOS} GOARCH=${GOARCH} go build -ldflags="-s -w" -o api apps/cookbooks/microservices/load_simulator/main.go
 
 FROM ubuntu:22.04
 RUN apt-get update && apt-get install -y ca-certificates
