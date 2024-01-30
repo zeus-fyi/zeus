@@ -50,7 +50,6 @@ require (
 	github.com/wealdtech/go-eth2-wallet-types/v2 v2.10.1
 	github.com/zeus-fyi/memoryfs v0.0.0-20221107215020-c71d8bb73852
 	golang.org/x/crypto v0.14.0
-	golang.org/x/text v0.13.0
 	k8s.io/api v0.26.1
 	k8s.io/apimachinery v0.26.1
 	k8s.io/client-go v0.26.1
@@ -186,6 +185,7 @@ require (
 	golang.org/x/sync v0.3.0 // indirect
 	golang.org/x/sys v0.13.0 // indirect
 	golang.org/x/term v0.13.0 // indirect
+	golang.org/x/text v0.13.0 // indirect
 	golang.org/x/time v0.3.0 // indirect
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
