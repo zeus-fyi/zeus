@@ -12,15 +12,15 @@ system that is eventually capable of becoming generally intelligent, and then su
 
 ## Usage
 
-Mockingbird is an active research and development project. We're allowing free public usage of a curated set of
-features as we evaluate the system and build out the core functionality.
+Mockingbird is an active research and development project, that is now in Beta.
+We're allowing free public usage of a curated set of features as we evaluate the system during this phase.
 
 ## Costs
 
-Mockingbird is currently free to use for self-service features at this time. Though we may restrict account usage if we
+Mockingbird is currently free to use for self-service features while in beta. Though we may restrict account usage if we
 see abuse. If you connect your own OpenAI API key, you will be responsible for any costs associated with that, otherwise
-we will
-use our API key and then charge you 1-to-1 for the cost of the API usage that we incur, however you may have your usage
+we will use our API key and then charge you 1-to-1 for the cost of the API usage that we incur, however you may have
+your usage
 throttled if you exceed our usage limits while using our API key.
 
 ## Features Available via Self Service UI
