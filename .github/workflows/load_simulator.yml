@@ -3,7 +3,7 @@ name: Build Load Simulator Service
 on:
   push:
     paths:
-      - .github/workflows/docusaurus.yml
+      - .github/workflows/load_simulator.yml
       - apps/microservices/load_simulator/**
     branches:
       - main
@@ -32,7 +32,7 @@ jobs:
       - name: Login to Docker Registry
         run: docker login -u zeusfyi -p ${{ secrets.DOCKER_ACCESS_TOKEN }}
 
-      - name: Build And Publish Zeusfyi Docs Site
+      - name: Build And Publish Zeusfyi Load Simulator
         run: |
           depot build \
           -t ${{ env.REPO }}/${{ env.NAME }}:${{ env.TAG}} \
