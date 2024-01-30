@@ -5,6 +5,7 @@ on:
     paths:
       - .github/workflows/load_simulator.yml
       - apps/microservices/load_simulator/**
+      - docker/microservices/load_simulator/**
     branches:
       - main
 
