@@ -1,5 +1,4 @@
 name: Build Load Simulator Service
-
 on:
   push:
     paths:
@@ -33,9 +32,14 @@ jobs:
       - name: Login to Docker Registry
         run: docker login -u zeusfyi -p ${{ secrets.DOCKER_ACCESS_TOKEN }}
 
+      - name: Clone external repos into workspace
+        run: |
+          mkdir -p apps/external
+          cd apps/external
+          git clone https://github.com/zeus-fyi/web3.git --branch master --single-branch
+
       - name: Build And Publish Zeusfyi Load Simulator
         run: |
-          sed -i '/\.\/apps\/external\/web3/d' go.work
           depot build \
           -t ${{ env.REPO }}/${{ env.NAME }}:${{ env.TAG}} \
           --platform=${{ env.GOOS }}/${{ env.GOARCH }} \
