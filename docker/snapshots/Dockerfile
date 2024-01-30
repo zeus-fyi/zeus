@@ -8,8 +8,7 @@ ARG GOCACHE
 ARG GOOS
 ARG GOARCH
 # manage dependencies
-COPY . .
-RUN --mount=type=cache,target=${GOMODCACHE} go mod download
+
 COPY . .
 RUN --mount=type=cache,target=${GOCACHE} CGO_ENABLED=1 GOOS=${GOOS} GOARCH=${GOARCH} go build -ldflags="-s -w" -o snapshots apps/snapshots/main.go
 
