@@ -80,12 +80,13 @@ func SimulatedLoadResponse(c echo.Context) error {
 	respSizeUnit := c.Request().Header.Get(RouteResponseSizeUnitsHeader)
 	var respSizeNum int
 	if respSize == "" {
-		respSizeNum = 1
+		respSizeNum = 0
 	} else {
 		sz, err := strconv.Atoi(respSize)
 		if err != nil {
 			log.Err(err).Msgf("SimulatedLoadResponse: strconv.Atoi")
-			respSizeNum = 1
+			err = nil
+			respSizeNum = 0
 		} else {
 			respSizeNum = sz
 		}
@@ -114,6 +115,7 @@ func SimulatedLoadResponse(c echo.Context) error {
 		if err != nil {
 			log.Err(err).Msgf("SimulatedLoadResponse: strconv.Atoi")
 			latencyDelayMs = 0
+			err = nil
 		}
 	}
 	if latencyDelayMs > 0 {
@@ -128,6 +130,7 @@ func SimulatedLoadResponse(c echo.Context) error {
 		if err != nil {
 			log.Err(err).Msgf("SimulatedLoadResponse: strconv.Atoi")
 			respStatusCode = http.StatusOK
+			err = nil
 		}
 	}
 	failureStatusCode := http.StatusInternalServerError
@@ -138,6 +141,7 @@ func SimulatedLoadResponse(c echo.Context) error {
 		if err != nil {
 			log.Err(err).Msgf("SimulatedLoadResponse: strconv.Atoi")
 			failureStatusCode = http.StatusInternalServerError
+			err = nil
 		}
 	}
 	failureRate := FailureOffset
@@ -148,6 +152,7 @@ func SimulatedLoadResponse(c echo.Context) error {
 		if err != nil {
 			log.Err(err).Msgf("SimulatedLoadResponse: strconv.ParseFloat")
 			failureRate = 0.0
+			err = nil
 		}
 	}
 	data := make([]byte, respUnitSizeTotal)
@@ -180,6 +185,11 @@ func SimulatedLoadResponse(c echo.Context) error {
 	default:
 		type RandomJSON struct {
 			Data []byte `json:"data"`
+		}
+		data = make([]byte, 1*1024)
+		if _, err := rand.Read(data); err != nil {
+			log.Err(err).Msgf("SimulatedLoadResponse: rand.Read")
+			return c.JSON(failureStatusCode, nil)
 		}
 		randomObject := RandomJSON{
 			Data: data,
