@@ -20,8 +20,7 @@ We're allowing free public usage of a curated set of features as we evaluate the
 Mockingbird is currently free to use for self-service features while in beta. Though we may restrict account usage if we
 see abuse. If you connect your own OpenAI API key, you will be responsible for any costs associated with that, otherwise
 we will use our API key and then charge you 1-to-1 for the cost of the API usage that we incur, however you may have
-your usage
-throttled if you exceed our usage limits while using our API key.
+your usage throttled if you exceed our usage limits while using our API key.
 
 ## Features Available via Self Service UI
 
@@ -29,7 +28,7 @@ throttled if you exceed our usage limits while using our API key.
 - Retrievals (API, Social Media)
 - Analysis/Aggregation Tasks
 - Integrated Time Window Search by Aggregation Windows
-- Single model-to-model communication
+- Multi-model communication and I/O
 - Time series controlled AI workflows, with dynamic time step control
 - Workflow + relationship builder (UI)
 - Integrated OpenAI + Social integration APIs, natively via Platform Secrets
