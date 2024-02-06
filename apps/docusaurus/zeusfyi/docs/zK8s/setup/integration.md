@@ -1,11 +1,9 @@
 ---
-sidebar_position: 2
+sidebar_position: 3
 displayed_sidebar: zK8s
 ---
 
-# External Clusters
-
-## AWS Platform Secrets
+# AWS - Platform Secrets
 
 Format for secret key names
 
