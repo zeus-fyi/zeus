@@ -1,0 +1,8 @@
+{
+  "label": "Setup",
+  "position": 1,
+  "link": {
+    "type": "generated-index",
+    "description": "How to setup and integrate your private managed Kubernetes clusters with Zeus"
+  }
+}

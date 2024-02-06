@@ -3,9 +3,7 @@ sidebar_position: 1
 displayed_sidebar: zK8s
 ---
 
-# Setup
-
-## Overview
+# Introduction
 
 You can use the Zeus API to programmatically interact with our cloud platform's core infrastructure apis and services,
 or you can use our web interface to interact with the platform.

@@ -3,7 +3,7 @@ sidebar_position: 1
 displayed_sidebar: mockingbird
 ---
 
-# Overview
+# Introduction
 
 Mockingbird is a time series controlled AI systems coordinator & workflow executor system, data indexer and searcher,
 that builds control loops and hierarchical planning rules around higher order goals & objectives using automated
