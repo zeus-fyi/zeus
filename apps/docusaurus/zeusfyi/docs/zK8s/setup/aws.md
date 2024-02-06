@@ -5,12 +5,11 @@ displayed_sidebar: zK8s
 
 # AWS - Create EKS Cluster
 
-### Overview:
+### Overview
 
 1. IAM: Authorization Setups
 2. VPC Networking Setup
 3. EKS Cluster Creation
-4. Create kubeconfig
 
 ## Create IAM service account EKS cluster role
 
