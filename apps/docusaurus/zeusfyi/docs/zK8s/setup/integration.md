@@ -5,24 +5,42 @@ displayed_sidebar: zK8s
 
 # AWS - Platform Secrets
 
-Format for secret key names
+## Connect Service Account Authentication
 
-    KEY={CLOUD_PROVIDER}-{SERVICE}-{REGION}
+Required secret name formatting for AWS services
+
+    NAME_PREFIX=zeus
+    SERVICE_KEY={CLOUD_PROVIDER}-{SERVICE}-{REGION}
+    
+    ACCOUNT_KEY_SUFFIX=service-account-access-key
+    SECRET_KEY_SUFFIX=service-account-secret-key
+    
+    ACCESS_KEY={NAME_PREFIX}-{SERVICE_KEY}-{ACCESS_KEY_SUFFIX}
+    SECRET_KEY={NAME_PREFIX}-{SERVICE_KEY}-{SECRET_KEY_SUFFIX}
 
 Example
 
-    aws-eks-us-east-2
+    CLOUD_PROVIDER=aws
+    SERVICE=eks
+    REGION=us-east-2
 
-Format for platform service account secret names
+    SERVICE_KEY=aws-eks-us-east-2
 
-    zeus-{KEY}-service-account-access-key
-    zeus-{KEY}-service-account-secret-key
+Full example format for platform service account secret names
+
+    ACCESS_KEY=zeus-aws-eks-us-east-2-service-account-access-key
+    SECRET_KEY=zeus-aws-eks-us-east-2-service-account-secret-key
+
+Key name for secret reference is your EKS cluster name
+
+    KEY={YOUR_EKS_CLUSTER_NAME}
+
+![ScreenM](https://github.com/zeus-fyi/zeus/assets/17446735/58a69aed-1188-45e6-9a1e-717c848ef90c)
 
 Example
 
-    zeus-aws-eks-us-east-2-service-account-access-key
-    zeus-aws-eks-us-east-2-service-account-secret-key
+    KEY=zeus-eks-us-east-2
 
 Full Example
 
-![ScreenshM](https://github.com/zeus-fyi/zeus/assets/17446735/45f3253a-031b-41ea-b1c4-1f8c5ad1de5b)
+![ScreenM](https://github.com/zeus-fyi/zeus/assets/17446735/e2b36677-bd2c-43b6-8dd9-571ba6b3cb8f)
