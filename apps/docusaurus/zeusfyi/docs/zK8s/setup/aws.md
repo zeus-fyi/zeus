@@ -3,7 +3,7 @@ sidebar_position: 1
 displayed_sidebar: zK8s
 ---
 
-# AWS - Create EKS Cluster
+# AWS - EKS Cluster Creation
 
 ### Overview
 
@@ -28,7 +28,9 @@ displayed_sidebar: zK8s
 
 ![ScreenM](https://github.com/zeus-fyi/zeus/assets/17446735/3ee2e0cd-649c-4b50-9bf1-b34c82314c61)
 
-1. Click next
+Permissions policies:
+
+- AmazonEKSClusterPolicy
 
 ### Name, review, and create
 

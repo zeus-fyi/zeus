@@ -3,7 +3,7 @@ sidebar_position: 3
 displayed_sidebar: zK8s
 ---
 
-# AWS - Platform Secrets
+# AWS - EKS Account Secrets
 
 ## Connect Service Account Authentication
 
