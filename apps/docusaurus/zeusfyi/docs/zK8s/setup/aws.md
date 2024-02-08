@@ -56,7 +56,7 @@ Permissions policies:
 #### VPC settings
 
     [X] VPC and more
-    [X] Auto-generae
+    [X] Auto-generate
     Name: zeus-eks-us-east-2
 
 Review and once everything looks good Create VPC
