@@ -115,3 +115,19 @@ roleName: zeusEksClusterRole
 Alternatively, you can create the user and then attach the policies afterwards.
 
 ![ScreenshM](https://github.com/zeus-fyi/zeus/assets/17446735/e91b0054-e39a-4536-81b0-c63a8cdec7ea)
+
+## Create Access and Secret Keys
+
+![Screensho](https://github.com/zeus-fyi/zeus/assets/17446735/a452c006-2ef6-474a-b2b9-f45da1ed6cd7)
+
+![Screens](https://github.com/zeus-fyi/zeus/assets/17446735/150b3991-1f12-4917-9e90-afb3a529fddc)
+
+    [x] Third-party service
+    [x] I understand the above recommendation and want to proceed to create an access key.
+
+![Screen](https://github.com/zeus-fyi/zeus/assets/17446735/99189052-050e-45b7-8ed3-e82f237aacf2)
+
+You'll need to add the access key and secret key to your platform secrets in the next step.
+
+    Access key ID: {ACCESS_KEY}
+    Secret access key: {SECRET_KEY}

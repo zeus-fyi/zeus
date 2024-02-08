@@ -12,11 +12,11 @@ Required secret name formatting for AWS services
     NAME_PREFIX=zeus
     SERVICE_KEY={CLOUD_PROVIDER}-{SERVICE}-{REGION}
     
-    ACCOUNT_KEY_SUFFIX=service-account-access-key
+    ACCESS_KEY_SUFFIX=service-account-access-key
     SECRET_KEY_SUFFIX=service-account-secret-key
     
-    ACCESS_KEY={NAME_PREFIX}-{SERVICE_KEY}-{ACCESS_KEY_SUFFIX}
-    SECRET_KEY={NAME_PREFIX}-{SERVICE_KEY}-{SECRET_KEY_SUFFIX}
+    SECRET_NAME_ACCESS_KEY={NAME_PREFIX}-{SERVICE_KEY}-{ACCESS_KEY_SUFFIX}
+    SECRET_NAME_SECRET_KEY={NAME_PREFIX}-{SERVICE_KEY}-{SECRET_KEY_SUFFIX}
 
 Example
 
@@ -28,8 +28,8 @@ Example
 
 Full example format for platform service account secret names
 
-    ACCESS_KEY=zeus-aws-eks-us-east-2-service-account-access-key
-    SECRET_KEY=zeus-aws-eks-us-east-2-service-account-secret-key
+    SECRET_NAME_ACCESS_KEY=zeus-aws-eks-us-east-2-service-account-access-key
+    SECRET_NAME_SECRET_KEY=zeus-aws-eks-us-east-2-service-account-secret-key
 
 Key name for secret reference is your EKS cluster name
 
