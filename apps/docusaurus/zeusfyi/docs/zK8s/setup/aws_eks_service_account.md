@@ -16,6 +16,32 @@ This guide will walk you through the process of creating a service account in AW
 - AmazonEKS_CNI_Policy (if not already attached)
 - AmazonEKSClusterPolicy (should be attached during EKS cluster creation setup)
 
+Under the "Trust relationships" tab
+
+![ScreeM](https://github.com/zeus-fyi/zeus/assets/17446735/8538ad25-021b-41bc-9d73-fffd62673c8d)
+
+You'll need to set ec2 and eks roles.
+
+### Trusted entities
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Service": [
+          "eks.amazonaws.com",
+          "ec2.amazonaws.com"
+        ]
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+```
+
 ## Create AWS-EKS-Role
 
 ![ScreenshPM](https://github.com/zeus-fyi/zeus/assets/17446735/09f22345-de95-4f27-8328-91c890837ee1)
@@ -49,6 +75,14 @@ Amazon Managed Policies
 ![aws](https://github.com/zeus-fyi/zeus/assets/17446735/c8d72d5f-b31c-43e1-a8df-e790f2b636c6)
 
 Customer Managed Policies
+
+#### AWS UI Navigation: IAM>Policies>Create policy
+
+![ScreenshotM](https://github.com/zeus-fyi/zeus/assets/17446735/9085dbfd-d773-4828-9580-177d55dc6682)
+
+![ScreenshM](https://github.com/zeus-fyi/zeus/assets/17446735/2edfe144-c40b-4b61-bf29-203903d38e35)
+
+![ScreenshotM](https://github.com/zeus-fyi/zeus/assets/17446735/b83a508e-5152-4e78-986f-58e8caa6ea09)
 
 - ZeusEksServiceAccountPolicy
 
@@ -87,8 +121,8 @@ roleName: zeusEksClusterRole
         "iam:ListAttachedRolePolicies"
       ],
       "Resource": [
-        "arn:aws:iam::{ACCOUNT_NUMBER}:role/AWS-EKS-Role",
-        "arn:aws:iam::{ACCOUNT_NUMBER}:role/zeusEksClusterRole"
+        "arn:aws:iam::{USER_NUMBER}:role/AWS-EKS-Role",
+        "arn:aws:iam::{USER_NUMBER}:role/zeusEksClusterRole"
       ]
     }
   ]
@@ -104,7 +138,7 @@ roleName: zeusEksClusterRole
     {
       "Effect": "Allow",
       "Action": "iam:PassRole",
-      "Resource": "arn:aws:iam::{ACCOUNT_NUMBER}:role/AWS-EKS-Role"
+      "Resource": "*"
     }
   ]
 }
