@@ -1,7 +1,7 @@
 package zeus_common_types
 
 type CloudCtxNs struct {
-	ClusterCfgID int `json:"clusterCfgID,omitempty"`
+	ClusterCfgStrID string `json:"clusterCfgStrID,omitempty"`
 
 	CloudProvider string `json:"cloudProvider"`
 	Region        string `json:"region"`
