@@ -20,7 +20,7 @@ Under the "Trust relationships" tab
 
 ![ScreeM](https://github.com/zeus-fyi/zeus/assets/17446735/8538ad25-021b-41bc-9d73-fffd62673c8d)
 
-You'll need to set ec2 and eks roles.
+You'll need to set ec2 and eks service principals
 
 ### Trusted entities
 
