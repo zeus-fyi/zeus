@@ -118,8 +118,6 @@ Alternatively, you can create the user and then attach the policies afterwards.
 
 ## Create Access and Secret Keys
 
-![Screensho](https://github.com/zeus-fyi/zeus/assets/17446735/a452c006-2ef6-474a-b2b9-f45da1ed6cd7)
-
 ![Screens](https://github.com/zeus-fyi/zeus/assets/17446735/150b3991-1f12-4917-9e90-afb3a529fddc)
 
     [x] Third-party service
@@ -129,5 +127,5 @@ Alternatively, you can create the user and then attach the policies afterwards.
 
 You'll need to add the access key and secret key to your platform secrets in the next step.
 
-    Access key ID: {ACCESS_KEY}
+    Access key: {ACCESS_KEY}
     Secret access key: {SECRET_KEY}
