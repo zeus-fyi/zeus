@@ -107,18 +107,25 @@ The cluster will source authenticated IAM principals from both EKS access entry 
 
 ### Step 2: Specify Networking
 
-![ScreenshotM](https://github.com/zeus-fyi/zeus/assets/17446735/d8ad6401-aea5-4ef8-9cb4-470f5b3e10e0)
+![Screens](https://github.com/zeus-fyi/zeus/assets/17446735/ed372d0e-514e-4f2c-8d4f-c54f4ec86075)
 
-1. Select a public subnet in each availability zone
-2. Remove the private subnets (if any populated)
-3. Add the security group from the VPC setup.
+1. Select a subnet in each availability zone
+2. Add the security group from the VPC setup.
+
+
+1. Set cluster endpoint access to public or public and private if you added private subnets.
 
 ![ScreenshotM](https://github.com/zeus-fyi/zeus/assets/17446735/877cfcdd-3070-49fc-9f39-4e203e04d7c0)
 
-1. Set cluster endpoint access to public
-
 [X] Public-The cluster endpoint is accessible from outside of your VPC. Worker node traffic will leave your VPC to
 connect to the endpoint.
+
+OR
+
+![ScreeM](https://github.com/zeus-fyi/zeus/assets/17446735/9a0803d9-3e04-4762-add2-c809e00b8bce)
+
+[X] Public and private The cluster endpoint is accessible from outside of your VPC. Worker node traffic to the endpoint
+will stay within your VPC.
 
 ### Step 3: Configure observability
 
