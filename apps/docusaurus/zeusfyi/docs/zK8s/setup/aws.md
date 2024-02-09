@@ -67,6 +67,14 @@ Review and once everything looks good Create VPC
 
 You'll need your VPC ID, and Security group ID for EKS Setup
 
+### VPC Subnets - Enable auto-assign public IPv4 address
+
+![Screens](https://github.com/zeus-fyi/zeus/assets/17446735/b28f1892-e6c3-46d9-881f-e7e33187ad7e)
+
+Repeat this process for each public subnet that was created in the prior step.
+
+![Screen](https://github.com/zeus-fyi/zeus/assets/17446735/6e514052-8300-4bde-a423-a877ab8d3d3d)
+
 ## Create EKS Cluster
 
 ### AWS UI Navigation: EKS>Clusters>Create EKS cluster
