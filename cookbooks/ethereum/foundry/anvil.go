@@ -35,7 +35,7 @@ var (
 	}
 	anvilChartPath = filepaths.Path{
 		PackageName: "",
-		DirIn:       "./ethereum/foundry/anvil/infra",
+		DirIn:       "./ethereum/foundry/anvil",
 		DirOut:      "./ethereum/outputs",
 		FnIn:        "anvil", // filename for your gzip workload
 		FnOut:       "",

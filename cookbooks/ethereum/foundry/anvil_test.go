@@ -25,6 +25,8 @@ func (t *HardhatCookbookTestSuite) TestCreateClusterClassAnvil() {
 }
 
 func (t *HardhatCookbookTestSuite) TestChartUploadAnvil() {
+	cookbooks.ChangeToCookbookDir()
+
 	cd := anvilClusterDefinition
 	_, err := cd.UploadChartsFromClusterDefinition(ctx, t.ZeusTestClient, true)
 	t.Require().Nil(err)
