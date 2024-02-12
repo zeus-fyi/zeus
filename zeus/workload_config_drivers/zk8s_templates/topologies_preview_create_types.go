@@ -24,9 +24,10 @@ type StatefulSet struct {
 }
 
 type PVCTemplate struct {
-	Name               string `json:"name"`
-	AccessMode         string `json:"accessMode"`
-	StorageSizeRequest string `json:"storageSizeRequest"`
+	Name               string  `json:"name"`
+	AccessMode         string  `json:"accessMode"`
+	StorageSizeRequest string  `json:"storageSizeRequest"`
+	StorageClassName   *string `json:"storageClassName"`
 }
 
 type ResourceRequirements struct {

@@ -18,12 +18,3 @@ func CreateComputeResourceRequirementsLimit(cpuSize, memSize string) v1Core.Reso
 	}
 	return rr
 }
-
-func CreateDiskResourceRequirementsLimit(diskSize string) v1Core.ResourceRequirements {
-	rr := v1Core.ResourceRequirements{
-		Requests: v1Core.ResourceList{
-			"storage": resource.MustParse(diskSize),
-		},
-	}
-	return rr
-}

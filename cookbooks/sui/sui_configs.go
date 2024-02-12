@@ -15,6 +15,7 @@ import (
 	do_nvme "github.com/zeus-fyi/zeus/zeus/cluster_resources/nvme/do"
 	gcp_nvme "github.com/zeus-fyi/zeus/zeus/cluster_resources/nvme/gcp"
 	"github.com/zeus-fyi/zeus/zeus/workload_config_drivers/config_overrides"
+	"github.com/zeus-fyi/zeus/zeus/workload_config_drivers/zk8s_templates"
 	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_req_types"
 	v1Core "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -141,6 +142,14 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 	if !cfg.DownloadSnapshot {
 		wkType = "min"
 	}
+
+	pvcTemplate := zk8s_templates.PVCTemplate{
+		Name:               "",
+		AccessMode:         "",
+		StorageSizeRequest: diskSize,
+		StorageClassName:   storageClassName,
+	}
+
 	downloadCmd := fmt.Sprintf("#!/bin/sh\nexec snapshots --downloadURL=\"\" --protocol=\"sui\" --network=\"%s\" --workload-type=\"%s\" --dataDir=\"%s\"", cfg.Network, wkType, dataDir)
 	sbCfg := zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
 		SkeletonBaseChart:         zeus_req_types.TopologyCreateRequest{},
@@ -205,13 +214,7 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 				},
 				PVCDriver: &config_overrides.PersistentVolumeClaimsConfigDriver{
 					PersistentVolumeClaimDrivers: map[string]v1Core.PersistentVolumeClaim{
-						suiDiskName: {
-							ObjectMeta: metav1.ObjectMeta{Name: suiDiskName},
-							Spec: v1Core.PersistentVolumeClaimSpec{
-								Resources:        config_overrides.CreateDiskResourceRequirementsLimit(diskSize),
-								StorageClassName: storageClassName,
-							},
-						},
+						suiDiskName: zk8s_templates.GetPvcTemplate(pvcTemplate),
 					}},
 			},
 		}}
