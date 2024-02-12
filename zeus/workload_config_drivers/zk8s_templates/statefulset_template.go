@@ -7,7 +7,6 @@ import (
 	"github.com/zeus-fyi/zeus/zeus/workload_config_drivers/config_overrides"
 	v1 "k8s.io/api/apps/v1"
 	v1Core "k8s.io/api/core/v1"
-	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -64,18 +63,8 @@ func BuildStatefulSetDriver(ctx context.Context, containers Containers, sts Stat
 		PersistentVolumeClaimDrivers: make(map[string]v1Core.PersistentVolumeClaim),
 	}
 	for _, pvcTemplate := range sts.PVCTemplates {
-		storageReq := v1Core.ResourceList{"storage": resource.MustParse(pvcTemplate.StorageSizeRequest)}
-		pvc := v1Core.PersistentVolumeClaim{
-			Spec: v1Core.PersistentVolumeClaimSpec{
-				AccessModes: []v1Core.PersistentVolumeAccessMode{v1Core.PersistentVolumeAccessMode(pvcTemplate.AccessMode)},
-				Resources: v1Core.ResourceRequirements{
-					Requests: storageReq,
-				},
-				VolumeName: pvcTemplate.Name,
-			},
-		}
 		pvcCfg.AppendPVC[pvcTemplate.Name] = true
-		pvcCfg.PersistentVolumeClaimDrivers[pvcTemplate.Name] = pvc
+		pvcCfg.PersistentVolumeClaimDrivers[pvcTemplate.Name] = GetPvcTemplate(pvcTemplate)
 	}
 	stsDriver.PVCDriver = &pvcCfg
 	return stsDriver, nil
