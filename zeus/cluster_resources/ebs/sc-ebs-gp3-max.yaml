@@ -1,0 +1,10 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: gp3-max-performance
+provisioner: ebs.csi.aws.com # This is the AWS EBS CSI driver
+parameters:
+  type: gp3
+  iops: "16000"  # Max IOPS for gp3
+  throughput: "1000" # Max throughput in MB/s for gp3
+volumeBindingMode: WaitForFirstConsumer

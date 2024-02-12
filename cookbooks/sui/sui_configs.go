@@ -9,6 +9,7 @@ import (
 	"github.com/ghodss/yaml"
 	yaml_fileio "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/yaml"
 	zeus_cluster_config_drivers "github.com/zeus-fyi/zeus/zeus/cluster_config_drivers"
+	aws_ebs "github.com/zeus-fyi/zeus/zeus/cluster_resources/ebs"
 	zeus_nvme "github.com/zeus-fyi/zeus/zeus/cluster_resources/nvme"
 	aws_nvme "github.com/zeus-fyi/zeus/zeus/cluster_resources/nvme/aws"
 	do_nvme "github.com/zeus-fyi/zeus/zeus/cluster_resources/nvme/do"
@@ -41,6 +42,11 @@ const (
 	// testnet compute resources
 	cpuCoresTestnet   = "7500m"
 	memorySizeTestnet = "63Gi"
+
+	// devnet compute resources
+	cpuCoresDevnet   = "4"
+	memorySizeDevnet = "12Gi"
+
 	// testnet workload disk sizes
 	testnetDiskSize = "3Ti"
 	devnetDiskSize  = "2Ti"
@@ -91,8 +97,8 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 		dockerImageSui = dockerImageTestnet
 	case devnet:
 		diskSize = devnetDiskSize
-		cpuSize = cpuCoresTestnet
-		memSize = memorySizeTestnet
+		cpuSize = cpuCoresDevnet
+		memSize = memorySizeDevnet
 		dockerImageSui = dockerImageDevnet
 		entryPointScript = "noFallBackEntrypoint.sh"
 	}
@@ -117,6 +123,9 @@ func GetSuiClientNetworkConfigBase(cfg SuiConfigOpts) zeus_cluster_config_driver
 	var storageClassName *string
 	if cfg.WithLocalNvme {
 		storageClassName = aws.String(zeus_nvme.ConfigureCloudProviderStorageClass(cfg.CloudProvider))
+	}
+	if cfg.CloudProvider == "aws" && !cfg.WithLocalNvme {
+		storageClassName = aws.String(aws_ebs.Gp3MaxPerformanceStorageClass)
 	}
 	if !cfg.WithArchivalFallback {
 		entryPointScript = "noFallBackEntrypoint.sh"
