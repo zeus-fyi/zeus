@@ -22,7 +22,7 @@ var (
 )
 
 func StartUp() {
-	log.Info().Msg("Snapshots: starting")
+	log.Info().Msg("StartUp: starting")
 	ctx := context.Background()
 	log.Info().Interface("workload", Workload).Msg("Downloader: WorkloadInfo")
 
@@ -32,6 +32,7 @@ func StartUp() {
 	log.Info().Msg("Download: starting")
 	Download(ctx, Workload)
 	log.Info().Msg("Download: done")
+	log.Info().Msg("StartUp: done")
 }
 
 func init() {
