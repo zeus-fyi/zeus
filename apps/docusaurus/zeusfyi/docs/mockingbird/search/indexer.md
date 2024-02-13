@@ -5,6 +5,10 @@ displayed_sidebar: mockingbird
 
 # Indexer
 
+The indexers will use your search parameters and accounts to create a time series of the fetched data every few minutes.
+It only requests the latest data since the last time it was run, and should not fetch the same data twice within the
+same search group. The indexer will also store the data in the database for archiving and retrieval.
+
 ## Twitter
 
 ![SScreM](https://github.com/zeus-fyi/zeus/assets/17446735/7026105b-f2bc-462e-8e7b-9c9ddd99d062)
@@ -37,7 +41,7 @@ account, that's fine, you can create a new account and use that for the API cred
 
 ![S](https://github.com/zeus-fyi/zeus/assets/17446735/d2ca5fe5-b191-42fc-a769-ee4f9ca4aaf3)
 
-## Activate / Deactivate Indexer
+## Activate / Deactivate Indexing
 
 ![ScrM](https://github.com/zeus-fyi/zeus/assets/17446735/b9bb2c6e-58b3-467e-b45a-c59a7bf067e2)
 
