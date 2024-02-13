@@ -20,8 +20,10 @@ func Download(ctx context.Context, w WorkloadInfo) {
 			EthereumChainDownload(ctx, w)
 		case "sui":
 			SuiStartup(ctx, w)
+			log.Info().Msg("SuiStartup: done")
 			err := SuiDownloadSnapshotS3(w)
 			if err != nil {
+				log.Err(err).Interface("w", w).Msg("SuiDownloadSnapshotS3")
 				panic(err)
 			}
 		}
