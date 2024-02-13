@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"os"
 	"os/exec"
 	"path"
 	"time"
@@ -26,6 +27,15 @@ func SuiStartup(ctx context.Context, w WorkloadInfo) {
 		log.Info().Msg("genesis.blob already exists, skipping download")
 		return
 	}
+	// Check if the directory exists, if not create it
+	if _, err := os.Stat(w.DataDir.DirIn); os.IsNotExist(err) {
+		log.Info().Msg("Directory does not exist, creating it")
+		if err = os.MkdirAll(w.DataDir.DirIn, 0755); err != nil { // 0755 is commonly used permissions
+			log.Fatal().Err(err).Msg("Failed to create directory")
+			return
+		}
+	}
+
 	switch w.Network {
 	case "devnet":
 		urlPath = "https://github.com/MystenLabs/sui-genesis/raw/main/devnet/genesis.blob"
@@ -103,7 +113,7 @@ func DownloadGenesisBlob(w WorkloadInfo, blobURL string) error {
 	// Downloads to your datadir
 	req, err := grab.NewRequest(w.DataDir.DirIn, blobURL)
 	if err != nil {
-		log.Err(err).Interface("w", w).Msgf("DownloadChainSnapshotRequest: NewRequest, %s", blobURL)
+		log.Err(err).Interface("w", w).Msgf("DownloadGenesisBlob: NewRequest, %s", blobURL)
 		return err
 	}
 	// start download
@@ -125,7 +135,7 @@ func DownloadGenesisBlob(w WorkloadInfo, blobURL string) error {
 		// download is complete
 		err = resp.Err()
 		if err != nil {
-			log.Err(err).Interface("w", w).Msg("DownloadChainSnapshotRequest")
+			log.Err(err).Interface("w", w).Msg("DownloadGenesisBlob")
 			return err
 		}
 	}
