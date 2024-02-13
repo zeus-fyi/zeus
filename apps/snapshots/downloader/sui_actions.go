@@ -37,6 +37,7 @@ func SuiStartup(ctx context.Context, w WorkloadInfo) {
 
 	err := DownloadGenesisBlob(w, urlPath)
 	if err != nil {
+		log.Warn().Err(err).Interface("url", urlPath).Interface("w", w).Msg("SuiStartup: error downloading genesis.blob")
 		panic(err)
 	}
 }
