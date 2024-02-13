@@ -59,6 +59,8 @@ func SuiDownloadSnapshotS3(w WorkloadInfo) error {
 		s3 = suiMainnetSnapshotS3
 	case "testnet":
 		s3 = suiTestnetSnapshotS3
+	case "devnet":
+		return nil
 	default:
 		log.Warn().Msg("SuiDownloadSnapshotS3: network type not supported and/or provided")
 		return nil
