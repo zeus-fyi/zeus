@@ -10,7 +10,7 @@ and sort by date, and filter by negative and positive keywords.
 
 ### Search Response Format
 
-    Timestamp | Platform | Tweet Body
+    Timestamp | Platform | Body
 
 ### Global Indexer Search
 
