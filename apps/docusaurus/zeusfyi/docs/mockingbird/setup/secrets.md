@@ -34,6 +34,10 @@ For each platform, you will need to use the exact secret name as listed below:
     reddit-oauth2-public
     twitter-oauth2-public
     twitter-oauth2-secret
+    twitter-consumer-key
+    twitter-consumer-secret
+    twitter-access-token-public
+    twitter-access-token-secret
 
 ### Enter the Key Name
 
