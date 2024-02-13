@@ -30,7 +30,7 @@ const (
 	// docker image references
 	dockerImage        = "mysten/sui-node:mainnet"
 	dockerImageTestnet = "mysten/sui-node:testnet"
-	dockerImageDevnet  = "mysten/sui-node:devnet"
+	dockerImageDevnet  = "mysten/sui-node:devnet-v1.18.0"
 
 	hercules = "hercules"
 
