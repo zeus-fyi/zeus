@@ -11,6 +11,7 @@ import (
 
 	"github.com/cavaliergopher/grab/v3"
 	"github.com/rs/zerolog/log"
+	"github.com/zeus-fyi/zeus/pkg/utils/host_info"
 )
 
 const (
@@ -19,6 +20,12 @@ const (
 )
 
 func SuiStartup(ctx context.Context, w WorkloadInfo) {
+	stats, serr := host_info.GetDiskUsageStats(ctx, w.DataDir.DirIn)
+	if serr != nil {
+		log.Panic().Err(serr).Msg("GetDiskUsageStats")
+	}
+	log.Info().Msgf("disk usage stats: %+v", stats)
+	log.Info().Float64("disk usage stats.UsedPercent", stats.UsedPercent)
 	// mainnet default
 	urlPath := "https://github.com/MystenLabs/sui-genesis/raw/main/mainnet/genesis.blob"
 
