@@ -10,6 +10,7 @@ import (
 	zeus_cluster_config_drivers "github.com/zeus-fyi/zeus/zeus/cluster_config_drivers"
 	"github.com/zeus-fyi/zeus/zeus/workload_config_drivers/config_overrides"
 	"github.com/zeus-fyi/zeus/zeus/workload_config_drivers/topology_workloads"
+	"github.com/zeus-fyi/zeus/zeus/workload_config_drivers/zk8s_templates"
 	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_req_types"
 	v1Core "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
@@ -157,6 +158,10 @@ func GetConsensusClientNetworkConfig(beaconConfig BeaconConfig) zeus_cluster_con
 		initContDriver.AppendEnvVars = []v1Core.EnvVar{BearerTokenSecretFromChoreography}
 	}
 
+	pvcTemp := zk8s_templates.PVCTemplate{
+		Name:               consensusStorageDiskName,
+		StorageSizeRequest: diskSize,
+	}
 	sbDef := zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
 		SkeletonBaseChart:         zeus_req_types.TopologyCreateRequest{},
 		SkeletonBaseNameChartPath: cp,
@@ -184,15 +189,11 @@ func GetConsensusClientNetworkConfig(beaconConfig BeaconConfig) zeus_cluster_con
 				},
 				PVCDriver: &config_overrides.PersistentVolumeClaimsConfigDriver{
 					PersistentVolumeClaimDrivers: map[string]v1Core.PersistentVolumeClaim{
-						consensusStorageDiskName: {
-							ObjectMeta: metav1.ObjectMeta{Name: consensusStorageDiskName},
-							Spec: v1Core.PersistentVolumeClaimSpec{Resources: v1Core.ResourceRequirements{
-								Requests: v1Core.ResourceList{"storage": resource.MustParse(diskSize)},
-							}},
-						},
-					}},
-			},
-		}}
+						consensusStorageDiskName: zk8s_templates.GetPvcTemplate(pvcTemp),
+					},
+				}},
+		},
+	}
 	compBase := zeus_cluster_config_drivers.ComponentBaseDefinition{
 		SkeletonBases: map[string]zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
 			beaconConfig.ConsensusClient: sbDef,
@@ -201,6 +202,10 @@ func GetConsensusClientNetworkConfig(beaconConfig BeaconConfig) zeus_cluster_con
 	return compBase
 }
 
+var pvcTempEph = zk8s_templates.PVCTemplate{
+	Name:               consensusStorageDiskName,
+	StorageSizeRequest: consensusStorageDiskSizeEphemeral,
+}
 var ConsensusClientSkeletonBaseConfig = zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
 	SkeletonBaseChart:         zeus_req_types.TopologyCreateRequest{},
 	SkeletonBaseNameChartPath: BeaconConsensusClientChartPath,
@@ -222,15 +227,11 @@ var ConsensusClientSkeletonBaseConfig = zeus_cluster_config_drivers.ClusterSkele
 			},
 			PVCDriver: &config_overrides.PersistentVolumeClaimsConfigDriver{
 				PersistentVolumeClaimDrivers: map[string]v1Core.PersistentVolumeClaim{
-					consensusStorageDiskName: {
-						ObjectMeta: metav1.ObjectMeta{Name: consensusStorageDiskName},
-						Spec: v1Core.PersistentVolumeClaimSpec{Resources: v1Core.ResourceRequirements{
-							Requests: v1Core.ResourceList{"storage": resource.MustParse(consensusStorageDiskSizeEphemeral)},
-						}},
-					},
-				}},
-		},
-	}}
+					consensusStorageDiskName: zk8s_templates.GetPvcTemplate(pvcTempEph),
+				},
+			}},
+	},
+}
 
 var ConsensusClientSkeletonBaseMonitoringConfig = zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
 	SkeletonBaseChart:         zeus_req_types.TopologyCreateRequest{},

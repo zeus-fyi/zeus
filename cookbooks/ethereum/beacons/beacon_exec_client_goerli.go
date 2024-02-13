@@ -3,9 +3,9 @@ package ethereum_beacon_cookbooks
 import (
 	zeus_cluster_config_drivers "github.com/zeus-fyi/zeus/zeus/cluster_config_drivers"
 	"github.com/zeus-fyi/zeus/zeus/workload_config_drivers/config_overrides"
+	"github.com/zeus-fyi/zeus/zeus/workload_config_drivers/zk8s_templates"
 	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_req_types"
 	v1Core "k8s.io/api/core/v1"
-	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -34,12 +34,12 @@ var ExecClientGoerliSkeletonBaseConfig = zeus_cluster_config_drivers.ClusterSkel
 			},
 			PVCDriver: &config_overrides.PersistentVolumeClaimsConfigDriver{
 				PersistentVolumeClaimDrivers: map[string]v1Core.PersistentVolumeClaim{
-					execClientDiskName: {
-						ObjectMeta: metav1.ObjectMeta{Name: execClientDiskName},
-						Spec: v1Core.PersistentVolumeClaimSpec{Resources: v1Core.ResourceRequirements{
-							Requests: v1Core.ResourceList{"storage": resource.MustParse(execClientDiskSizeGoerli)},
-						}},
-					},
+					execClientDiskName: zk8s_templates.GetPvcTemplate(pvcTempGoeExecClient),
 				}},
 		},
 	}}
+
+var pvcTempGoeExecClient = zk8s_templates.PVCTemplate{
+	Name:               execClientDiskName,
+	StorageSizeRequest: execClientDiskSizeGoerli,
+}

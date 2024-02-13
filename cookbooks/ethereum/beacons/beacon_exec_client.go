@@ -7,11 +7,11 @@ import (
 	v1 "github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v1"
 	filepaths "github.com/zeus-fyi/zeus/pkg/utils/file_io/lib/v0/paths"
 	"github.com/zeus-fyi/zeus/zeus/workload_config_drivers/config_overrides"
+	"github.com/zeus-fyi/zeus/zeus/workload_config_drivers/zk8s_templates"
 	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_req_types"
 
 	zeus_cluster_config_drivers "github.com/zeus-fyi/zeus/zeus/cluster_config_drivers"
 	v1Core "k8s.io/api/core/v1"
-	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -21,6 +21,10 @@ var DeployExecClientKnsReq = zeus_req_types.TopologyDeployRequest{
 	CloudCtxNs: BeaconCloudCtxNs,
 }
 
+var pvcTempEphExecClient = zk8s_templates.PVCTemplate{
+	Name:               execClientDiskName,
+	StorageSizeRequest: execClientDiskSizeEphemeral,
+}
 var ExecClientSkeletonBaseConfig = zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
 	SkeletonBaseChart:         zeus_req_types.TopologyCreateRequest{},
 	SkeletonBaseNameChartPath: BeaconExecClientChartPath,
@@ -44,13 +48,9 @@ var ExecClientSkeletonBaseConfig = zeus_cluster_config_drivers.ClusterSkeletonBa
 			},
 			PVCDriver: &config_overrides.PersistentVolumeClaimsConfigDriver{
 				PersistentVolumeClaimDrivers: map[string]v1Core.PersistentVolumeClaim{
-					execClientDiskName: {
-						ObjectMeta: metav1.ObjectMeta{Name: execClientDiskName},
-						Spec: v1Core.PersistentVolumeClaimSpec{Resources: v1Core.ResourceRequirements{
-							Requests: v1Core.ResourceList{"storage": resource.MustParse(execClientDiskSizeEphemeral)},
-						}},
-					},
-				}},
+					execClientDiskName: zk8s_templates.GetPvcTemplate(pvcTempEphExecClient),
+				},
+			},
 		},
 	}}
 

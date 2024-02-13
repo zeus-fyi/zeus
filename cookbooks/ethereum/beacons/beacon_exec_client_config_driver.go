@@ -9,6 +9,7 @@ import (
 	zeus_cluster_config_drivers "github.com/zeus-fyi/zeus/zeus/cluster_config_drivers"
 	"github.com/zeus-fyi/zeus/zeus/workload_config_drivers/config_overrides"
 	"github.com/zeus-fyi/zeus/zeus/workload_config_drivers/topology_workloads"
+	"github.com/zeus-fyi/zeus/zeus/workload_config_drivers/zk8s_templates"
 	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_req_types"
 
 	v1Core "k8s.io/api/core/v1"
@@ -102,6 +103,11 @@ func GetExecClientNetworkConfig(beaconConfig BeaconConfig) zeus_cluster_config_d
 			"memory": resource.MustParse(memSize),
 		},
 	}
+
+	pvcTemp := zk8s_templates.PVCTemplate{
+		Name:               execClientDiskName,
+		StorageSizeRequest: diskSize,
+	}
 	sbCfg := zeus_cluster_config_drivers.ClusterSkeletonBaseDefinition{
 		SkeletonBaseChart:         zeus_req_types.TopologyCreateRequest{},
 		SkeletonBaseNameChartPath: cp,
@@ -129,12 +135,7 @@ func GetExecClientNetworkConfig(beaconConfig BeaconConfig) zeus_cluster_config_d
 				},
 				PVCDriver: &config_overrides.PersistentVolumeClaimsConfigDriver{
 					PersistentVolumeClaimDrivers: map[string]v1Core.PersistentVolumeClaim{
-						execClientDiskName: {
-							ObjectMeta: metav1.ObjectMeta{Name: execClientDiskName},
-							Spec: v1Core.PersistentVolumeClaimSpec{Resources: v1Core.ResourceRequirements{
-								Requests: v1Core.ResourceList{"storage": resource.MustParse(diskSize)},
-							}},
-						},
+						execClientDiskName: zk8s_templates.GetPvcTemplate(pvcTemp),
 					}},
 			},
 		}}

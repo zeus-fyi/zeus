@@ -3,9 +3,9 @@ package ethereum_beacon_cookbooks
 import (
 	zeus_cluster_config_drivers "github.com/zeus-fyi/zeus/zeus/cluster_config_drivers"
 	"github.com/zeus-fyi/zeus/zeus/workload_config_drivers/config_overrides"
+	"github.com/zeus-fyi/zeus/zeus/workload_config_drivers/zk8s_templates"
 	"github.com/zeus-fyi/zeus/zeus/z_client/zeus_req_types"
 	v1Core "k8s.io/api/core/v1"
-	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/intstr"
 )
@@ -82,12 +82,13 @@ var ConsensusClientGoerliSkeletonBaseConfig = zeus_cluster_config_drivers.Cluste
 			},
 			PVCDriver: &config_overrides.PersistentVolumeClaimsConfigDriver{
 				PersistentVolumeClaimDrivers: map[string]v1Core.PersistentVolumeClaim{
-					consensusStorageDiskName: {
-						ObjectMeta: metav1.ObjectMeta{Name: consensusStorageDiskName},
-						Spec: v1Core.PersistentVolumeClaimSpec{Resources: v1Core.ResourceRequirements{
-							Requests: v1Core.ResourceList{"storage": resource.MustParse(consensusStorageDiskSizeGoerli)},
-						}},
-					},
-				}},
+					consensusStorageDiskName: zk8s_templates.GetPvcTemplate(pvcTempGoerliConsClient),
+				},
+			},
 		},
 	}}
+
+var pvcTempGoerliConsClient = zk8s_templates.PVCTemplate{
+	Name:               consensusStorageDiskName,
+	StorageSizeRequest: consensusStorageDiskSizeGoerli,
+}
