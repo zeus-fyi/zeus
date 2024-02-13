@@ -103,7 +103,7 @@ func DownloadGenesisBlob(w WorkloadInfo, blobURL string) error {
 	// Downloads to your datadir
 	req, err := grab.NewRequest(w.DataDir.DirIn, blobURL)
 	if err != nil {
-		log.Err(err).Msgf("DownloadChainSnapshotRequest: NewRequest, %s", blobURL)
+		log.Err(err).Interface("w", w).Msgf("DownloadChainSnapshotRequest: NewRequest, %s", blobURL)
 		return err
 	}
 	// start download
@@ -125,7 +125,7 @@ func DownloadGenesisBlob(w WorkloadInfo, blobURL string) error {
 		// download is complete
 		err = resp.Err()
 		if err != nil {
-			log.Err(err).Msg("DownloadChainSnapshotRequest")
+			log.Err(err).Interface("w", w).Msg("DownloadChainSnapshotRequest")
 			return err
 		}
 	}
