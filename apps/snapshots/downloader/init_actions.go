@@ -61,6 +61,8 @@ func InitWorkloadAction(ctx context.Context, w WorkloadInfo) {
 			ephemery_reset.ExtractAndDecEphemeralTestnetConfig(Workload.DataDir, clientName)
 		}
 	case "sui":
+		log.Info().Msg("SuiStartup: starting")
 		SuiStartup(ctx, w)
+		log.Info().Msg("SuiStartup: done")
 	}
 }

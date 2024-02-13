@@ -25,9 +25,13 @@ func StartUp() {
 	log.Info().Msg("Snapshots: starting")
 	ctx := context.Background()
 	log.Info().Interface("workload", Workload).Msg("Downloader: WorkloadInfo")
+
+	log.Info().Msg("InitWorkloadAction: starting")
 	InitWorkloadAction(ctx, Workload)
+	log.Info().Msg("InitWorkloadAction: done")
+	log.Info().Msg("Download: starting")
 	Download(ctx, Workload)
-	log.Info().Msg("Snapshots: done")
+	log.Info().Msg("Download: done")
 }
 
 func init() {
