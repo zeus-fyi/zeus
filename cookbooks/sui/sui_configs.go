@@ -45,8 +45,8 @@ const (
 	memorySizeTestnet = "63Gi"
 
 	// devnet compute resources
-	cpuCoresDevnet   = "4"
-	memorySizeDevnet = "12Gi"
+	cpuCoresDevnet   = "6"
+	memorySizeDevnet = "28Gi"
 
 	// testnet workload disk sizes
 	testnetDiskSize = "3Ti"

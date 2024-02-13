@@ -87,8 +87,12 @@ var (
 )
 
 func GetSuiClientClusterDef(cfg SuiConfigOpts) zeus_cluster_config_drivers.ClusterDefinition {
+	ccName := strings.ToLower(Sui) + "-" + strings.ToLower(cfg.Network) + "-" + strings.ToLower(cfg.CloudProvider)
+	if !cfg.WithLocalNvme {
+		ccName += "-ssd"
+	}
 	return zeus_cluster_config_drivers.ClusterDefinition{
-		ClusterClassName: strings.ToLower(Sui) + "-" + strings.ToLower(cfg.Network) + "-" + strings.ToLower(cfg.CloudProvider),
+		ClusterClassName: ccName,
 		ComponentBases:   GetSuiConfig(cfg),
 	}
 }
