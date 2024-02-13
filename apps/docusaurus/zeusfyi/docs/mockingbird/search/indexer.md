@@ -11,9 +11,9 @@ same search group. The indexer will also store the data in the database for arch
 
 ## Twitter
 
-![SScreM](https://github.com/zeus-fyi/zeus/assets/17446735/7026105b-f2bc-462e-8e7b-9c9ddd99d062)
+![Screen](https://github.com/zeus-fyi/zeus/assets/17446735/2b32bdaa-216d-4379-8006-679cc26bd2c6)
 
-Set the Twitter API OAuth2 credentials in the platform secrets to start indexing tweets,
+Set the Twitter API credentials in the platform secrets to start indexing tweets,
 then set the platform search query using the v2 Twitter search API format.
 
 ### Platform Search Query
