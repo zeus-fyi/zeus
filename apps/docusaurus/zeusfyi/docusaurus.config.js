@@ -58,7 +58,7 @@ const config = {
                 // Plugin Options for loading OpenAPI files
                 specs: [
                     {
-                        spec: '/Users/alex/go/Olympus/Zeus/.openapi_v3_1/mockingbird.yaml',
+                        spec: 'https://raw.githubusercontent.com/zeus-fyi/zeus/main/.openapi_v3_1/mockingbird.yaml',
                         route: '/docs/mockingbird/api/',
                     },
                 ],

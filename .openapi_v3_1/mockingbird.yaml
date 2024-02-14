@@ -62,11 +62,11 @@ paths:
           description: Successful response
   /runs/ai:
     get:
-      summary: AI Runs Analysis
-      operationId: getAIRunsAnalysis
+      summary: Workflow Runs Analyses
+      operationId: getAIRunsAnalyses
       responses:
         '200':
-          description: An array of orchestrations analysis
+          description: An array of orchestrations analyses
           content:
             application/json:
               schema:
