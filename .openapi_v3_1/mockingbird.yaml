@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: API Title
+  title: Mockingbird API
   description: API Description
   version: "1.0.0"
 servers:
