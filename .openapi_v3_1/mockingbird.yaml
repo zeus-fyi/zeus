@@ -62,7 +62,7 @@ paths:
           description: Successful response
   /runs/ai:
     get:
-      summary: Workflow Runs Analyses
+      summary: Workflow Runs
       operationId: getAIRunsAnalyses
       responses:
         '200':
