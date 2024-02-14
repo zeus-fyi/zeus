@@ -99,8 +99,6 @@ components:
           type: string
         orchestrationID:
           type: integer
-        orgID:
-          type: integer
         active:
           type: boolean
         groupName:
