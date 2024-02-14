@@ -1,0 +1,283 @@
+openapi: 3.0.3
+info:
+  title: API Title
+  description: API Description
+  version: "1.0.0"
+servers:
+  - url: https://api.zeus.fyi/v1
+paths:
+  /workflows/ai/actions:
+    post:
+      summary: Exec Workflow
+      operationId: execWorkflow
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - action # Indicating that 'action' is a required field
+                - workflows
+              properties:
+                action:
+                  type: string
+                  enum:
+                    - start # Restricting to only allow "start"
+                unixStartTime:
+                  type: integer
+                duration:
+                  type: integer
+                durationUnit:
+                  type: string
+                  enum: # Restricting to the specified units
+                    - minutes
+                    - minute
+                    - hours
+                    - hour
+                    - hrs
+                    - hr
+                    - days
+                    - day
+                    - weeks
+                    - week
+                    - cycles
+                customBasePeriod:
+                  type: boolean
+                customBasePeriodStepSize:
+                  type: integer
+                customBasePeriodStepSizeUnit:
+                  type: string
+                workflows:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - workflowName
+                    properties:
+                      workflowName:
+                        type: string
+      responses:
+        '200':
+          description: Successful response
+  /runs/ai:
+    get:
+      summary: AI Runs Analysis
+      operationId: getAIRunsAnalysis
+      responses:
+        '200':
+          description: An array of orchestrations analysis
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrchestrationsAnalysis'
+components:
+  schemas:
+    OrchestrationsAnalysis:
+      type: object
+      properties:
+        totalWorkflowTokenUsage:
+          type: integer
+        runCycles:
+          type: integer
+        aggregatedData:
+          type: array
+          items:
+            $ref: '#/components/schemas/AggregatedData'
+        aggregatedEvalResults:
+          type: array
+          items:
+            $ref: '#/components/schemas/EvalMetric'
+        orchestration:
+          $ref: '#/components/schemas/Orchestrations'
+    Orchestrations:
+      type: object
+      properties:
+        orchestrationStrID:
+          type: string
+        orchestrationID:
+          type: integer
+        orgID:
+          type: integer
+        active:
+          type: boolean
+        groupName:
+          type: string
+        type:
+          type: string
+        instructions:
+          type: string
+        orchestrationName:
+          type: string
+    AggregatedData:
+      type: object
+      properties:
+        workflowResultID:
+          type: integer
+        orchestrationID:
+          type: integer
+        responseID:
+          type: integer
+        sourceTaskID:
+          type: integer
+        iterationCount:
+          type: integer
+        chunkOffset:
+          type: integer
+        runningCycleNumber:
+          type: integer
+        searchWindowUnixStart:
+          type: integer
+        searchWindowUnixEnd:
+          type: integer
+        skipAnalysis:
+          type: boolean
+        metadata:
+          type: string
+          format: byte
+        completionChoices:
+          type: string
+          format: byte
+        taskName:
+          type: string
+        taskType:
+          type: string
+        model:
+          type: string
+        prompt:
+          type: string
+          format: byte
+        promptTokens:
+          type: integer
+        completionTokens:
+          type: integer
+        totalTokens:
+          type: integer
+    EvalMetric:
+      type: object
+      properties:
+        evalMetricStrID:
+          type: string
+          nullable: true
+        evalMetricID:
+          type: integer
+          nullable: true
+        evalField:
+          $ref: '#/components/schemas/JsonSchemaField'
+        evalName:
+          type: string
+          nullable: true
+        evalMetricResult:
+          $ref: '#/components/schemas/EvalMetricResult'
+        evalOperator:
+          type: string
+        evalState:
+          type: string
+        evalExpectedResultState:
+          type: string
+        evalMetricComparisonValues:
+          $ref: '#/components/schemas/EvalMetricComparisonValues'
+    EvalMetricComparisonValues:
+      type: object
+      properties:
+        evalComparisonBoolean:
+          type: boolean
+          nullable: true
+        evalComparisonNumber:
+          type: number
+          format: double
+          nullable: true
+        evalComparisonString:
+          type: string
+          nullable: true
+        evalComparisonInteger:
+          type: integer
+          nullable: true
+    JsonSchemaField:
+      type: object
+      properties:
+        fieldID:
+          type: integer
+        fieldStrID:
+          type: string
+          nullable: true
+        fieldName:
+          type: string
+        fieldDescription:
+          type: string
+        dataType:
+          type: string
+        fieldValue:
+          $ref: '#/components/schemas/FieldValue'
+        evalMetrics:
+          type: array
+          items:
+            $ref: '#/components/schemas/EvalMetric'
+    FieldValue:
+      type: object
+      properties:
+        integerValue:
+          type: integer
+          nullable: true
+        stringValue:
+          type: string
+          nullable: true
+        numberValue:
+          type: number
+          format: double
+          nullable: true
+        booleanValue:
+          type: boolean
+          nullable: true
+        integerValueSlice:
+          type: array
+          items:
+            type: integer
+        stringValueSlice:
+          type: array
+          items:
+            type: string
+        numberValueSlice:
+          type: array
+          items:
+            type: number
+            format: double
+        booleanValueSlice:
+          type: array
+          items:
+            type: boolean
+        isValidated:
+          type: boolean
+    EvalMetricResult:
+      type: object
+      properties:
+        evalMetricsResultStrID:
+          type: string
+          nullable: true
+        evalMetricsResultID:
+          type: integer
+          nullable: true
+        evalResultOutcomeBool:
+          type: boolean
+          nullable: true
+        evalResultOutcomeStateStr:
+          type: string
+          nullable: true
+        runningCycleNumber:
+          type: integer
+          nullable: true
+        evalIterationCount:
+          type: integer
+          nullable: true
+        searchWindowUnixStart:
+          type: integer
+          nullable: true
+        searchWindowUnixEnd:
+          type: integer
+          nullable: true
+        evalMetadata:
+          type: string
+          format: byte
+          nullable: true

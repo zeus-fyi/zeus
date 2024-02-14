@@ -52,6 +52,23 @@ const config = {
 
             }),
         ],
+        [
+            'redocusaurus',
+            {
+                // Plugin Options for loading OpenAPI files
+                specs: [
+                    {
+                        spec: '/Users/alex/go/Olympus/Zeus/openapi_v3_1/mockingbird.yaml',
+                        route: '/docs/mockingbird/api/',
+                    },
+                ],
+                // Theme Options for modifying how redoc renders them
+                theme: {
+                    // Change with your site colors
+                    primaryColor: '#1890ff',
+                },
+            },
+        ],
     ],
 
     // algolia if not using preset-classic
