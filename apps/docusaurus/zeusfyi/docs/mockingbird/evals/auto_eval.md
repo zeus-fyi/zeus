@@ -34,8 +34,8 @@ I.e. say you have an array of objects of the object type, and your eval is
     expecting msg_id > 0 to pass
         desired outcome: msg_id > 0
 
-    expecting spam_score > 5 to fail
-        desired outcome: spam_score > 5 and to fail
+    expecting spam_score > 4 to fail
+        desired outcome: spam_score > 4 to fail
         actual outcome: spam_score = 3, so since it did not fail like we expected,
                         this object will be filtered out of the final result.
 
@@ -185,7 +185,30 @@ If you have any specific use cases for this you like us to include in the featur
 ## Result States
 
 ### Pass
+
+Passing means the result of your operators did match the expected result.
+
+```text
+Operator:
+    if len(str) > 5
+        
+        Result:
+            len("123456") > 5 == true | Expected: PASS, Actual: PASS
+            len("123") > 5 == false   | Expected: PASS, Actual: FAIL
+```
+
 ### Fail
+
+Failing means the result of your operators did not match the expected result.
+
+```text
+Operator:
+    if len(str) > 5
+        
+        Result:
+            len("123456") > 5 == true | Expected: FAIL, Actual: PASS
+            len("123") > 5 == false   | Expected: FAIL, Actual: FAIL
+```
 
 ### Ignore
 
@@ -227,8 +250,9 @@ msg_id > 0, or msg_body contains "spam" for example.
 The msg_body keyword returns the retrieval platform specific content. For example, if you're using the Twitter indexer,
 msg_body would return the tweet timestamp and content as msg_id and msg_body respectively.
 
+## Eval Comparison Code
 
-## Eval Comparison Code To Simulate Eval Scoring
+To Simulate Eval Scoring, we use the following code to transform the JSON Schema Definition to Eval Scored Metrics.
 
 ```go
 func TransformJSONToEvalScoredMetrics(jsonSchemaDef *artemis_orchestrations.JsonSchemaDefinition) error {
