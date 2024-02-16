@@ -41,7 +41,7 @@ inject the JSON instructions into the model to generate the output into well for
 
 ### Eval Scoring
 
-You can select results types from: [Pass, Fail]
+You can select results types from: [Pass, Fail, Ignore]
 
 ![Scree](https://github.com/poga/redis-percentile/assets/17446735/745f4044-c44f-4554-9fe9-7ac9e2b29071)
 
