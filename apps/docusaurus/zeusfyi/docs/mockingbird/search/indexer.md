@@ -45,3 +45,16 @@ account, that's fine, you can create a new account and use that for the API cred
 ![ScrM](https://github.com/zeus-fyi/zeus/assets/17446735/b9bb2c6e-58b3-467e-b45a-c59a7bf067e2)
 
 Select the relevant search query row, and click the Activate/Deactivate button to start/stop indexing data.
+
+## Reserved Keywords
+
+### Indexer Usage Retrievals
+
+- msg_id
+- msg_body
+
+When you retrieve data from an indexer source, you can use these reserved keywords to add to an eval request to filter
+msg_id > 0, or msg_body contains "spam" for example.
+
+The msg_body keyword returns the retrieval platform specific content. For example, if you're using the Twitter indexer,
+msg_body would return the tweet timestamp and content as msg_id and msg_body respectively.
