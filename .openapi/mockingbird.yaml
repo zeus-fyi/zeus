@@ -28,6 +28,27 @@ paths:
           description: Bad Request
         '500':
           description: Server Error
+  /schemas/ai:
+    post:
+      summary: Create/Update JsonSchemaDefinition
+      operationId: createJsonSchemaDefinition
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JsonSchemaDefinition'
+      responses:
+        '201':
+          description: Successfully created JsonSchemaDefinition
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JsonSchemaDefinition'
+        '400':
+          description: Invalid input
+        '500':
+          description: Internal server error
   /workflows/ai/actions:
     post:
       summary: Exec Workflow
@@ -217,6 +238,11 @@ components:
           nullable: true
     JsonSchemaField:
       type: object
+      required:
+        - fieldName
+        - fieldDescription
+        - dataType
+        - fieldValue
       properties:
         fieldID:
           type: integer
@@ -272,6 +298,11 @@ components:
           type: boolean
     JsonSchemaDefinition:
       type: object
+      required:
+        - schemaName
+        - schemaGroup
+        - schemaDescription
+        - isObjArray
       properties:
         schemaID:
           type: integer
