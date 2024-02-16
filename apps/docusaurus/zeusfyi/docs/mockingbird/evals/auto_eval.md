@@ -237,9 +237,9 @@ determining the final result of the group metric scoring.
 - Array[String]
 - Array[Boolean]
 
-### Reserved Keywords
+## Reserved Keywords
 
-#### Indexer Usage
+### Indexer Usage
 
 - msg_id
 - msg_body

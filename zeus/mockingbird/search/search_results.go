@@ -7,13 +7,20 @@ import (
 )
 
 type SearchResult struct {
-	UnixTimestamp  int            `json:"unixTimestamp"`
-	Source         string         `json:"source"`
-	Value          string         `json:"value"`
-	Group          string         `json:"group"`
-	Verified       *bool          `json:"verified,omitempty"`
-	RedditMetadata RedditMetadata `json:"redditMetadata"`
-	WebResponse    WebResponse    `json:"webResponses,omitempty"`
+	UnixTimestamp   int              `json:"unixTimestamp"`
+	Source          string           `json:"source"`
+	Value           string           `json:"value"`
+	Group           string           `json:"group"`
+	Verified        *bool            `json:"verified,omitempty"`
+	RedditMetadata  RedditMetadata   `json:"redditMetadata"`
+	TwitterMetadata *TwitterMetadata `json:"twitterMetadata,omitempty"`
+	WebResponse     WebResponse      `json:"webResponses,omitempty"`
+}
+
+type TwitterMetadata struct {
+	TweetID    int    `json:"tweet_id"`
+	TweetStrID string `json:"in_reply_to_tweet_id"`
+	Text       string `json:"text"`
 }
 
 type RedditMetadata struct {

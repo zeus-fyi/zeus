@@ -14,15 +14,19 @@ func FormatSearchResultsV5(results []mb_search.SearchResult) string {
 	}
 	var newResults []interface{}
 	for _, result := range results {
-		// Always include the UnixTimestamp
 		if result.WebResponse.Body != nil {
 			if result.Value != "" {
 				result.WebResponse.Body["msg_body"] = result.Value
 			}
 			newResults = append(newResults, result.WebResponse.Body)
-		} else if result.Verified != nil && *result.Verified && result.UnixTimestamp > 0 {
+		}
+		if result.Verified != nil && *result.Verified && result.UnixTimestamp > 0 {
+			msgID := fmt.Sprintf("%d", result.UnixTimestamp)
+			if result.TwitterMetadata != nil && result.TwitterMetadata.TweetStrID != "" {
+				msgID = result.TwitterMetadata.TweetStrID
+			}
 			nr := mb_search.SimplifiedSearchResultJSON{
-				MessageID:   fmt.Sprintf("%d", result.UnixTimestamp),
+				MessageID:   msgID,
 				MessageBody: result.Value,
 			}
 			newResults = append(newResults, nr)
@@ -36,7 +40,7 @@ func FormatSearchResultsV5(results []mb_search.SearchResult) string {
 	}
 	b, err := json.Marshal(newResults)
 	if err != nil {
-		log.Err(err).Msg("FormatSearchResultsV3: Error marshalling search results")
+		log.Err(err).Msg("FormatSearchResultsV5: Error marshalling search results")
 		return ""
 	}
 	return string(b)
