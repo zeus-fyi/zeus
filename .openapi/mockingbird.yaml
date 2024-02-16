@@ -73,6 +73,8 @@ paths:
     post:
       summary: Exec Workflow
       operationId: execWorkflow
+      tags:
+        - Workflows
       requestBody:
         required: true
         content:
@@ -127,6 +129,8 @@ paths:
     get:
       summary: Workflow Runs
       operationId: getAIRunsAnalyses
+      tags:
+        - Runs
       responses:
         '200':
           description: An array of orchestrations analyses
