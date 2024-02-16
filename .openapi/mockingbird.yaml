@@ -11,6 +11,8 @@ paths:
       description: "Create an AI Task to be used in a workflow. This will be used to
        generate a prompt for the AI model to generate a response."
       operationId: createOrUpdateAITask
+      tags:
+        - Tasks
       requestBody:
         required: true
         content:
@@ -29,9 +31,27 @@ paths:
         '500':
           description: Server Error
   /schemas/ai:
+    get:
+      summary: Get JsonSchemaDefinitions
+      operationId: getJsonSchemaDefinitions
+      tags:
+        - Schemas
+      responses:
+        '200':
+          description: A list or map of JsonSchemaDefinitions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JsonSchemasGroup'
+        '404':
+          description: JsonSchemaDefinitions not found
+        '500':
+          description: Internal server error
     post:
       summary: Create/Update JsonSchemaDefinition
       operationId: createJsonSchemaDefinition
+      tags:
+        - Schemas
       requestBody:
         required: true
         content:
@@ -406,3 +426,14 @@ components:
           enum:
             - json
             - text
+    JsonSchemasGroup:
+      type: object
+      properties:
+        jsonSchemaDefinitionsSlice:
+          type: array
+          items:
+            $ref: '#/components/schemas/JsonSchemaDefinition'
+        jsonSchemaDefinitionsMap:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/JsonSchemaDefinition'
