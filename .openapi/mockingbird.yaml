@@ -1,15 +1,80 @@
 openapi: 3.0.3
 info:
   title: Mockingbird API
-  description: API Description
-  version: "1.0.0"
+  version: "1.0.1-beta.rc0"
 servers:
   - url: https://api.zeus.fyi/v1
 paths:
+  /tasks/ai:
+    post:
+      summary: Create/Update AI Tasks
+      description: "Create an AI Task to be used in a workflow. This will be used to
+       generate a prompt for the AI model to generate a response."
+      operationId: createOrUpdateAITask
+      tags:
+        - Tasks
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AITaskLibrary'
+      responses:
+        '200':
+          description: AI Task successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AITaskLibrary'
+        '400':
+          description: Bad Request
+        '500':
+          description: Server Error
+  /schemas/ai:
+    get:
+      summary: Get JsonSchemaDefinitions
+      operationId: getJsonSchemaDefinitions
+      tags:
+        - Schemas
+      responses:
+        '200':
+          description: A list or map of JsonSchemaDefinitions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JsonSchemasGroup'
+        '404':
+          description: JsonSchemaDefinitions not found
+        '500':
+          description: Internal server error
+    post:
+      summary: Create/Update JsonSchemaDefinition
+      operationId: createJsonSchemaDefinition
+      tags:
+        - Schemas
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JsonSchemaDefinition'
+      responses:
+        '201':
+          description: Successfully created JsonSchemaDefinition
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JsonSchemaDefinition'
+        '400':
+          description: Invalid input
+        '500':
+          description: Internal server error
   /workflows/ai/actions:
     post:
       summary: Exec Workflow
       operationId: execWorkflow
+      tags:
+        - Workflows
       requestBody:
         required: true
         content:
@@ -64,6 +129,8 @@ paths:
     get:
       summary: Workflow Runs
       operationId: getAIRunsAnalyses
+      tags:
+        - Runs
       responses:
         '200':
           description: An array of orchestrations analyses
@@ -195,6 +262,11 @@ components:
           nullable: true
     JsonSchemaField:
       type: object
+      required:
+        - fieldName
+        - fieldDescription
+        - dataType
+        - fieldValue
       properties:
         fieldID:
           type: integer
@@ -248,6 +320,30 @@ components:
             type: boolean
         isValidated:
           type: boolean
+    JsonSchemaDefinition:
+      type: object
+      required:
+        - schemaName
+        - schemaGroup
+        - schemaDescription
+        - isObjArray
+      properties:
+        schemaID:
+          type: integer
+        schemaStrID:
+          type: string
+        schemaName:
+          type: string
+        schemaGroup:
+          type: string
+        schemaDescription:
+          type: string
+        isObjArray:
+          type: boolean
+        fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/JsonSchemaField'
     EvalMetricResult:
       type: object
       properties:
@@ -279,3 +375,69 @@ components:
           type: string
           format: byte
           nullable: true
+    AITaskLibrary:
+      type: object
+      required:
+        - taskName
+        - taskGroup
+        - taskType
+        - model
+        - responseFormat
+      properties:
+        taskStrID:
+          type: string
+        taskID:
+          type: integer
+        maxTokensPerTask:
+          type: integer
+        taskType:
+          type: string
+        taskName:
+          type: string
+        taskGroup:
+          type: string
+        tokenOverflowStrategy:
+          type: string
+          enum:
+            - deduce
+            - truncate
+        model:
+          type: string
+          enum:
+            - gpt-3.5-turbo-0125
+            - gpt-3.5-turbo-1106
+            - gpt-4-32k
+            - gpt-4-32k-0613
+            - gpt-4-0613
+            - gpt-4-1106-preview
+            - gpt-4-0125-preview
+        temperature:
+          type: number
+          minimum: 0
+          maximum: 2
+        marginBuffer:
+          type: number
+          minimum: 0.2
+          maximum: 0.8
+        prompt:
+          type: string
+        schemas:
+          type: array
+          items:
+            $ref: '#/components/schemas/JsonSchemaDefinition'
+        responseFormat:
+          type: string
+          enum:
+            - json
+            - text
+    JsonSchemasGroup:
+      type: object
+      properties:
+        jsonSchemaDefinitionsSlice:
+          type: array
+          items:
+            $ref: '#/components/schemas/JsonSchemaDefinition'
+        jsonSchemaDefinitionsMap:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/JsonSchemaDefinition'
