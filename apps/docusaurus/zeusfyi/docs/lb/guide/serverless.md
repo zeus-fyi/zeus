@@ -6,14 +6,6 @@ sidebar_position: 6
 
 ### Foundry's Anvil as an EVM Sim Environment on Demand
 
-## Free Beta Access
-
-During beta testing we're offering free access to our serverless on-demand anvil execution environments,
-which you can use to run Tx simulations or smart contract CI/CD. Not to mention, while also even load balancing
-your production traffic through our Adaptive RPC Load Balancer on QuickNode Marketplace, truly all in one.
-
-#### Requires Adaptive RPC Load Balancer Sign Up on QuickNode Marketplace.
-
 ## Overview
 
 Serverless EVM environments that you can use your QuickNode, other providers, or even your own self-managed endpoints
