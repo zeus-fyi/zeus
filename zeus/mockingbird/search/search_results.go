@@ -18,7 +18,6 @@ type SearchResult struct {
 }
 
 type TwitterMetadata struct {
-	TweetID    int    `json:"tweet_id"`
 	TweetStrID string `json:"in_reply_to_tweet_id"`
 	Text       string `json:"text"`
 }

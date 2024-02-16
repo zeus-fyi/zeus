@@ -32,7 +32,7 @@ func FormatSearchResultsV5(results []mb_search.SearchResult) string {
 			newResults = append(newResults, nr)
 		} else {
 			m := map[string]interface{}{
-				"msg_id":   result.UnixTimestamp,
+				"msg_id":   fmt.Sprintf("%d", result.UnixTimestamp),
 				"msg_body": result.Value,
 			}
 			newResults = append(newResults, m)
