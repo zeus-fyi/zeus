@@ -59,7 +59,7 @@ func (t *SuiCookbookTestSuite) TestReadFullNodeConfig() {
 func (t *SuiCookbookTestSuite) TestSuiTestnetCfg() {
 	cfg := SuiConfigOpts{
 		WithLocalNvme:    true,
-		DownloadSnapshot: false,
+		DownloadSnapshot: true,
 		WithIngress:      false,
 		CloudProvider:    "do",
 		Network:          testnet,
@@ -94,11 +94,7 @@ func (t *SuiCookbookTestSuite) TestSuiTestnetCfg() {
 			seen++
 		}
 	}
-	for _, ct := range inf.StatefulSet.Spec.Template.Spec.InitContainers {
-		if ct.Name == "init-snapshots" {
-			t.Fail("init-snapshots should not be present")
-		}
-	}
+
 	// init-snapshots
 	t.Require().Equal(seen, 1)
 	for k, v := range inf.ConfigMap.Data {
