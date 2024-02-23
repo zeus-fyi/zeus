@@ -24,7 +24,6 @@ or social media platforms.
 Function: Once data is retrieved, the analysis stage interprets and processes the information using selected AI models.
 Configuration: Assign a name, group, and the AI model to be used for analysis, along with setting the analysis cycle
 count, determining how frequently the analysis should occur.
-Aggregation
 
 ### Aggregation
 
