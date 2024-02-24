@@ -13,6 +13,8 @@ RUN yarn install --frozen-lockfile
 # Copy the rest of the application code into the container
 COPY apps/docusaurus/zeusfyi/ ./
 
+COPY .openapi/mockingbird.yaml ./static/
+
 # Build the React app for production
 RUN yarn run build
 
