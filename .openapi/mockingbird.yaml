@@ -5,6 +5,152 @@ info:
 servers:
   - url: https://api.zeus.fyi/v1
 paths:
+  /search:
+    post:
+      summary: Search Indexer Request
+      description: "Executes an AI search with the specified parameters."
+      operationId: aiSearchRequest
+      tags:
+        - Search
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AiSearchRequest'
+      responses:
+        '200':
+          description: Search completed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '400':
+          description: Bad request
+        '500':
+          description: Internal server error
+  /actions/ai:
+    get:
+      summary: Read AI Actions
+      description: "Retrieves a list of AI actions as `TriggerAction` entities."
+      operationId: aiActionsReader
+      tags:
+        - Actions
+      responses:
+        '200':
+          description: Successfully retrieved list of AI actions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TriggerAction'
+        '400':
+          description: Bad request
+        '500':
+          description: Internal server error
+    post:
+      summary: Create or Update Trigger Actions
+      description: "Handles the creation or updating of triggered actions via the TriggerAction entity."
+      operationId: aiActionsHandler
+      tags:
+        - Actions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TriggerAction'
+      responses:
+        '200':
+          description: AI Action successfully created or updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '400':
+          description: Bad request due to invalid input or missing request body
+        '500':
+          description: Internal server error
+  /retrievals/ai:
+    post:
+      summary: Create or Update AI Retrieval Items
+      description: "Creates or updates a retrieval item for AI operations."
+      operationId: createOrUpdateRetrievalRequest
+      tags:
+        - Retrievals
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrUpdateRetrievalRequest'
+      responses:
+        '200':
+          description: Retrieval item created or updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '400':
+          description: Bad request due to invalid input
+        '500':
+          description: Internal server error
+  /evals/ai:
+    get:
+      summary: Get Eval Functions
+      description: "Retrieves a list of evaluation functions (`EvalFn` entities)."
+      operationId: getEvalsRequest
+      tags:
+        - Evals
+      responses:
+        '200':
+          description: Successfully retrieved list of evaluation functions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EvalFn'
+        '400':
+          description: Bad request
+        '500':
+          description: Internal server error
+    post:
+      summary: Create or Update Eval Functions
+      description: "Creates or updates an evaluation function for AI operations."
+      operationId: createOrUpdateEvals
+      tags:
+        - Evals
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrUpdateEvalsRequest'
+      responses:
+        '200':
+          description: Evaluation function created or updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '400':
+          description: Bad request due to invalid input
+        '500':
+          description: Internal server error
   /tasks/ai:
     post:
       summary: Create/Update AI Tasks
@@ -140,8 +286,46 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/OrchestrationsAnalysis'
+  /workflows/ai:
+    post:
+      summary: Create Workflow Request
+      description: "Submits a request to create or update a workflow, including task models, evaluations, and analyses."
+      operationId: postWorkflowsRequest
+      tags:
+        - Workflows
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostWorkflowsRequest'
+      responses:
+        '200':
+          description: Workflow successfully created or updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '400':
+          description: Bad Request
+        '500':
+          description: Server Error
+
 components:
   schemas:
+    CreateOrUpdateRetrievalRequest:
+      type: object
+      properties:
+        RetrievalItem:
+          $ref: '#/components/schemas/RetrievalItem'
+    CreateOrUpdateEvalsRequest:
+      type: object
+      properties:
+        EvalFn:
+          $ref: '#/components/schemas/EvalFn'
     OrchestrationsAnalysis:
       type: object
       properties:
@@ -441,3 +625,358 @@ components:
           type: object
           additionalProperties:
             $ref: '#/components/schemas/JsonSchemaDefinition'
+    EvalFn:
+      type: object
+      properties:
+        evalStrID:
+          type: string
+          nullable: true
+        evalID:
+          type: integer
+          nullable: true
+        evalName:
+          type: string
+        evalType:
+          type: string
+        evalGroupName:
+          type: string
+        evalModel:
+          type: string
+          nullable: true
+        evalFormat:
+          type: string
+        evalCycleCount:
+          type: integer
+          nullable: true
+        triggerActions:
+          type: array
+          items:
+            $ref: '#/components/schemas/TriggerAction'
+        schemas:
+          type: array
+          items:
+            $ref: '#/components/schemas/JsonSchemaDefinition'
+        schemasMap:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/JsonSchemaDefinition'
+    TriggerAction:
+      type: object
+      properties:
+        triggerStrID:
+          type: string
+          nullable: true
+        triggerID:
+          type: integer
+          nullable: true
+        triggerName:
+          type: string
+        triggerGroup:
+          type: string
+        triggerAction:
+          type: string
+        triggerExpirationDuration:
+          type: number
+          format: double
+          nullable: true
+        triggerExpirationTimeUnit:
+          type: string
+          nullable: true
+        triggerRetrievals:
+          type: array
+          items:
+            $ref: '#/components/schemas/RetrievalItem'
+        evalTriggerAction:
+          $ref: '#/components/schemas/EvalTriggerActions'
+        evalTriggerActions:
+          type: array
+          items:
+            $ref: '#/components/schemas/EvalTriggerActions'
+        triggerActionsApprovals:
+          type: array
+          items:
+            $ref: '#/components/schemas/TriggerActionsApproval'
+    RetrievalItemInstruction:
+      type: object
+      properties:
+        retrievalPlatform:
+          type: string
+        retrievalPrompt:
+          type: string
+          nullable: true
+        retrievalPlatformGroups:
+          type: string
+          nullable: true
+        retrievalKeywords:
+          type: string
+          nullable: true
+        retrievalNegativeKeywords:
+          type: string
+          nullable: true
+        retrievalUsernames:
+          type: string
+          nullable: true
+        discordFilters:
+          $ref: '#/components/schemas/DiscordFilters'
+        webFilters:
+          $ref: '#/components/schemas/WebFilters'
+        instructions:
+          type: string
+          format: binary
+          nullable: true
+    RetrievalItem:
+      type: object
+      properties:
+        retrievalStrID:
+          type: string
+          nullable: true
+        retrievalID:
+          type: integer
+          nullable: true
+        retrievalName:
+          type: string
+        retrievalGroup:
+          type: string
+        retrievalItemInstruction:
+          $ref: '#/components/schemas/RetrievalItemInstruction'
+    WebFilters:
+      type: object
+      properties:
+        routingGroup:
+          type: string
+          nullable: true
+        lbStrategy:
+          type: string
+          nullable: true
+        maxRetries:
+          type: integer
+          nullable: true
+        backoffCoefficient:
+          type: number
+          format: double
+          nullable: true
+        endpointRoutePath:
+          type: string
+          nullable: true
+        endpointREST:
+          type: string
+          nullable: true
+        payloadPreProcessing:
+          type: string
+          nullable: true
+        regexPatterns:
+          type: array
+          items:
+            type: string
+    DiscordFilters:
+      type: object
+      properties:
+        categoryTopic:
+          type: string
+          nullable: true
+        categoryName:
+          type: string
+          nullable: true
+        category:
+          type: string
+          nullable: true
+    TriggerActionsApproval:
+      type: object
+      properties:
+        triggerAction:
+          type: string
+        approvalStrID:
+          type: string
+          nullable: true
+        approvalID:
+          type: integer
+        evalID:
+          type: integer
+        evalStrID:
+          type: string
+        triggerID:
+          type: integer
+        triggerStrID:
+          type: string
+        workflowResultID:
+          type: integer
+        workflowResultStrID:
+          type: string
+        approvalState:
+          type: string
+        requestSummary:
+          type: string
+        updatedAt:
+          type: string
+          format: date-time
+        requests:
+          type: string
+          format: binary
+        responses:
+          type: string
+          format: binary
+    EvalTriggerActions:
+      type: object
+      properties:
+        evalID:
+          type: integer
+          nullable: true
+        evalStrID:
+          type: string
+          nullable: true
+        triggerID:
+          type: integer
+          nullable: true
+        triggerStrID:
+          type: string
+          nullable: true
+        evalTriggerState:
+          type: string
+        evalResultsTriggerOn:
+          type: string
+    TaskModelInstructions:
+      type: object
+      required:
+        - taskStrID
+        - taskID
+        - model
+        - taskType
+        - taskGroup
+        - taskName
+        - maxTokens
+        - tokenOverflowStrategy
+        - prompt
+        - cycleCount
+      properties:
+        taskStrID:
+          type: string
+        taskID:
+          type: integer
+        model:
+          type: string
+        taskType:
+          type: string
+        temperature:
+          type: number
+          format: double
+          nullable: true
+        marginBuffer:
+          type: number
+          format: double
+          nullable: true
+        taskGroup:
+          type: string
+        taskName:
+          type: string
+        maxTokens:
+          type: integer
+        tokenOverflowStrategy:
+          type: string
+        prompt:
+          type: string
+        cycleCount:
+          type: integer
+        evalFns:
+          type: array
+          items:
+            $ref: '#/components/schemas/EvalFn'
+    PostWorkflowsRequest:
+      type: object
+      required:
+        - workflowName
+        - workflowGroupName
+        - stepSize
+        - stepSizeUnit
+        - models
+        - analysisRetrievalsMap
+      properties:
+        workflowName:
+          type: string
+        workflowGroupName:
+          type: string
+        stepSize:
+          type: integer
+        stepSizeUnit:
+          type: string
+        models:
+          $ref: '#/components/schemas/TaskMap'
+        evalsMap:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/EvalFn'
+        evalTasksMap:
+          $ref: '#/components/schemas/TaskEvalsMap'
+        aggregateSubTasksMap:
+          $ref: '#/components/schemas/AggregateSubTasksMap'
+        analysisRetrievalsMap:
+          $ref: '#/components/schemas/AnalysisRetrievalsMap'
+        taskMap:
+          $ref: '#/components/schemas/TaskMap'
+    TaskMap:
+      type: object
+      additionalProperties:
+        $ref: '#/components/schemas/TaskModelInstructions'
+    TaskEvalsMap:
+      description: |
+        A map where each key (referred to as `taskStrID`) represents the string identifier of a task, mapping to another map. The second-level map uses keys (referred to as `evalFnStrID`) representing the string identifiers of evaluation functions. The boolean value associated with each `evalFnStrID` indicates whether there is a relationship between the task and the evaluation function (`true` means such a relationship exists).
+      type: object
+      additionalProperties:
+        description: |
+          A nested map where each key (`evalFnStrID`) is the string identifier of an evaluation function. The boolean value indicates whether a relationship with the task (identified by `taskStrID`) should be established.
+        type: object
+        additionalProperties:
+          type: boolean
+    AnalysisRetrievalsMap:
+      type: object
+      description: "Maps analysis task IDs to a map of retrieval IDs and a boolean indicating whether to add the relationship. A value of true for the boolean indicates that the relationship should be added."
+      additionalProperties:
+        type: object
+        description: "A map where each key is a retrieval entity ID and the boolean value indicates whether the relationship with the analysis entity ID should be added."
+        additionalProperties:
+          type: boolean
+    AggregateSubTasksMap:
+      description: |
+        A map where each key (referred to as `taskStrID` for aggregation) represents the string identifier of an aggregation task, mapping to another map. The second-level map uses keys (referred to as `taskStrID` for analysis) representing the string identifiers of analysis tasks. The boolean value associated with each analysis `taskStrID` indicates whether there is a relationship between the aggregation task and the analysis task (`true` means such a relationship exists).
+      type: object
+      additionalProperties:
+        description: |
+          A nested map where each key (`taskStrID` for analysis) is the string identifier of an analysis task. The boolean value indicates whether a relationship with the aggregation task (identified by `taskStrID` for aggregation) should be established.
+        type: object
+        additionalProperties:
+          type: boolean
+    AiSearchParams:
+      type: object
+      properties:
+        retrieval:
+          $ref: '#/components/schemas/RetrievalItem'
+        timeRange:
+          type: string
+          nullable: true
+        window:
+          $ref: '#/components/schemas/Window'
+      description: "Search parameters for AI, including retrieval item, time range, and window of operation."
+    Window:
+      type: object
+      properties:
+        start:
+          type: string
+          format: date-time
+          nullable: true
+        end:
+          type: string
+          format: date-time
+          nullable: true
+        unixStartTime:
+          type: integer
+          format: int64
+          nullable: true
+        unixEndTime:
+          type: integer
+          format: int64
+          nullable: true
+      description: "Defines a time window for operations, including both conventional and Unix time representations."
+    AiSearchRequest:
+      type: object
+      properties:
+        searchParams:
+          $ref: '#/components/schemas/AiSearchParams'
