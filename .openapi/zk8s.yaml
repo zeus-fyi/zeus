@@ -220,11 +220,6 @@ components:
       properties:
         cloudCtxNs:
           $ref: '#/components/schemas/CloudCtxNs'
-        freeTrial:
-          type: boolean
-        monthlyCost:
-          type: number
-          format: double
         disk:
           $ref: '#/components/schemas/Disks'  # Correctly reference the Disks schema
         nodes:
@@ -246,8 +241,6 @@ components:
           type: boolean
       required:
         - cloudCtxNs
-        - freeTrial
-        - monthlyCost
         - nodes
         - count
         - namespaceAlias
