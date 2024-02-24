@@ -40,3 +40,4 @@ jobs:
           --token ${{ secrets.DEPOT_TOKEN }} \
           --provenance=false \
           -f docker/docusaurus/Dockerfile . --push
+
