@@ -59,7 +59,7 @@ const config = {
                 specs: [
                     {
                         //spec: '/Users/alex/go/Olympus/Zeus/.openapi/mockingbird.yaml',
-                        spec: '/mockingbird.yaml',
+                        spec: '/static/mockingbird.yaml',
                         route: '/docs/mockingbird/api/',
                     },
                 ],
