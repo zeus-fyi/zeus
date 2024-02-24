@@ -58,10 +58,15 @@ const config = {
                 // Plugin Options for loading OpenAPI files
                 specs: [
                     {
-                        //spec: '/Users/alex/go/Olympus/Zeus/.openapi/mockingbird.yaml',
+                        // spec: '/Users/alex/go/Olympus/Zeus/.openapi/mockingbird.yaml',
                         spec: './static/mockingbird.yaml',
                         route: '/docs/mockingbird/api/',
                     },
+                    {
+                        // spec: '/Users/alex/go/Olympus/Zeus/.openapi/zk8s.yaml',
+                        spec: './static/zk8s.yaml',
+                        route: '/docs/zK8s/docs/zk8s',
+                    }
                 ],
                 // Theme Options for modifying how redoc renders them
                 theme: {

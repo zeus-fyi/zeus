@@ -360,6 +360,95 @@ components:
           type: string
         orchestrationName:
           type: string
+    EntitiesFilter:
+      type: object
+      properties:
+        nickname:
+          type: string
+        platform:
+          type: string
+        firstName:
+          type: string
+          nullable: true
+        lastName:
+          type: string
+          nullable: true
+        labels:
+          type: array
+          items:
+            type: string
+        metadataJsonb:
+          type: string
+          format: byte
+          nullable: true
+        metadataText:
+          type: string
+          nullable: true
+        sinceUnixTimestamp:
+          type: integer
+          nullable: true
+      required:
+        - nickname
+        - platform
+        - labels
+    UserEntity:
+      type: object
+      properties:
+        entityId:
+          type: integer
+        nickname:
+          type: string
+        platform:
+          type: string
+        firstName:
+          type: string
+          nullable: true
+        lastName:
+          type: string
+          nullable: true
+        mdSlice:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserEntityMetadata'
+      required:
+        - entityId
+        - nickname
+        - platform
+    UserEntityMetadata:
+      type: object
+      properties:
+        entityMetadataId:
+          type: integer
+        entityId:
+          type: integer
+        jsonData:
+          type: string
+          format: byte
+          nullable: true
+        textData:
+          type: string
+          nullable: true
+        labels:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserEntityMetadataLabel'
+      required:
+        - entityMetadataId
+        - entityId
+
+    UserEntityMetadataLabel:
+      type: object
+      properties:
+        entityMetadataLabelId:
+          type: integer
+        entityMetadataId:
+          type: integer
+        label:
+          type: string
+      required:
+        - entityMetadataLabelId
+        - entityMetadataId
+        - label
     AggregatedData:
       type: object
       properties:

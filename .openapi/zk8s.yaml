@@ -1,0 +1,486 @@
+openapi: 3.0.3
+info:
+  title: zK8s API
+  version: "1.0.0"
+servers:
+  - url: https://api.zeus.fyi/v1
+paths:
+  /deploy/app:
+    post:
+      summary: Setup Cluster Topology Deployment
+      description: "Initiates the deployment setup for a cluster topology with specified configurations."
+      operationId: setupClusterTopologyDeployment
+      tags:
+        - Deploys
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TopologyDeployRequest'
+      responses:
+        '200':
+          description: Deployment setup initiated successfully
+        '400':
+          description: Invalid request parameters
+        '500':
+          description: Internal server error
+  /deploy/update/restart/fleet:
+    post:
+      summary: Rollout Restart Fleet
+      description: "Triggers a restart rollout for a fleet based on the specified cluster class name."
+      operationId: rolloutRestartFleet
+      tags:
+        - Updates
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FleetRolloutRequest'
+      responses:
+        '200':
+          description: Fleet restart rollout initiated successfully
+        '400':
+          description: Invalid request
+        '500':
+          description: Internal server error
+components:
+  schemas:
+    TopologyClusterDeployRequest:
+      type: object
+      properties:
+        clusterClassName:
+          type: string
+        skeletonBaseOptions:
+          type: array
+          items:
+            type: string
+        appTaint:
+          type: boolean
+        cloudCtxNs:
+          $ref: '#/components/schemas/CloudCtxNs'
+    CloudCtxNs:
+      type: object
+      properties:
+        clusterCfgStrID:
+          type: string
+          nullable: true
+        cloudProvider:
+          type: string
+          enum: [ do, ovh, gcp, aws, custom ]
+        region:
+          type: string
+        context:
+          type: string
+        namespace:
+          type: string
+        alias:
+          type: string
+          nullable: true
+        env:
+          type: string
+          nullable: true
+      required:
+        - cloudProvider
+        - region
+        - context
+        - namespace
+    FleetRolloutRequest:
+      type: object
+      properties:
+        clusterClassName:
+          type: string
+      required:
+        - clusterClassName
+    Nodes:
+      type: object
+      properties:
+        extCfgStrID:
+          type: string
+        memory:
+          type: integer
+        vcpus:
+          type: number
+          format: double
+        disk:
+          type: integer
+        diskUnits:
+          type: string
+        diskType:
+          type: string
+        priceHourly:
+          type: number
+          format: double
+        region:
+          type: string
+        cloudProvider:
+          type: string
+          enum: [ do, ovh, gcp, aws, custom ]
+        resourceID:
+          type: integer
+        description:
+          type: string
+        slug:
+          type: string
+        memoryUnits:
+          type: string
+        priceMonthly:
+          type: number
+          format: double
+        gpus:
+          type: integer
+        gpuType:
+          type: string
+      required:
+        - extCfgStrID
+        - memory
+        - vcpus
+        - disk
+        - diskUnits
+        - diskType
+        - priceHourly
+        - region
+        - cloudProvider
+        - resourceID
+        - description
+        - slug
+        - memoryUnits
+        - priceMonthly
+        - gpus
+        - gpuType
+    Disks:
+      type: object
+      properties:
+        extCfgStrID:
+          type: string
+        resourceStrID:
+          type: string
+        resourceID:
+          type: integer
+        diskUnits:
+          type: string
+        priceMonthly:
+          type: number
+          format: double
+        description:
+          type: string
+        type:
+          type: string
+        subType:
+          type: string
+        diskSize:
+          type: integer
+        priceHourly:
+          type: number
+          format: double
+        region:
+          type: string
+        cloudProvider:
+          type: string
+          enum: [ do, ovh, gcp, aws, custom ]
+      required:
+        - extCfgStrID
+        - resourceStrID
+        - resourceID
+        - diskUnits
+        - priceMonthly
+        - description
+        - type
+        - subType
+        - diskSize
+        - priceHourly
+        - region
+        - cloudProvider
+    DiskResourceRequirements:
+      type: object
+      properties:
+        resourceID:
+          type: string
+        componentBaseName:
+          type: string
+        skeletonBaseName:
+          type: string
+        resourceSumsDisk:
+          type: string
+        replicas:
+          type: string
+        blockStorageCostUnit:
+          type: number
+          format: double
+      required:
+        - resourceID
+        - componentBaseName
+        - skeletonBaseName
+        - resourceSumsDisk
+        - replicas
+        - blockStorageCostUnit
+    TopologyDeployRequest:
+      type: object
+      properties:
+        cloudCtxNs:
+          $ref: '#/components/schemas/CloudCtxNs'
+        freeTrial:
+          type: boolean
+        monthlyCost:
+          type: number
+          format: double
+        disk:
+          $ref: '#/components/schemas/Disks'  # Correctly reference the Disks schema
+        nodes:
+          $ref: '#/components/schemas/Nodes'  # Correctly reference the Nodes schema
+        count:
+          type: number
+          format: double
+        namespaceAlias:
+          type: string
+        cluster:
+          $ref: '#/components/schemas/Cluster'  # Ensure this is correctly referenced if Cluster schema is defined
+        resourceRequirements:
+          type: array
+          items:
+            $ref: '#/components/schemas/DiskResourceRequirements'
+        isPublic:
+          type: boolean
+        appTaint:
+          type: boolean
+      required:
+        - cloudCtxNs
+        - freeTrial
+        - monthlyCost
+        - nodes
+        - count
+        - namespaceAlias
+        - cluster
+        - resourceRequirements
+        - isPublic
+        - appTaint
+    Cluster:
+      type: object
+      properties:
+        clusterName:
+          type: string
+        componentBases:
+          $ref: '#/components/schemas/ComponentBases'
+        ingressSettings:
+          $ref: '#/components/schemas/Ingress'
+        ingressPaths:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/IngressPath'
+        filePath:
+          type: string
+          description: "This field is ignored in JSON payloads"
+      required:
+        - clusterName
+        - componentBases
+        - ingressSettings
+        - ingressPaths
+    ComponentBases:
+      type: object
+      additionalProperties:
+        $ref: '#/components/schemas/SkeletonBases'
+    SkeletonBases:
+      type: object
+      additionalProperties:
+        $ref: '#/components/schemas/SkeletonBase'
+    SkeletonBase:
+      type: object
+      properties:
+        topologyID:
+          type: string
+        addStatefulSet:
+          type: boolean
+        addDeployment:
+          type: boolean
+        addConfigMap:
+          type: boolean
+        addService:
+          type: boolean
+        addIngress:
+          type: boolean
+        addServiceMonitor:
+          type: boolean
+        configMap:
+          $ref: '#/components/schemas/ConfigMap'
+        deployment:
+          $ref: '#/components/schemas/Deployment'
+        statefulSet:
+          $ref: '#/components/schemas/StatefulSet'
+        containers:
+          $ref: '#/components/schemas/Containers'
+      required:
+        - addStatefulSet
+        - addDeployment
+        - addConfigMap
+        - addService
+        - addIngress
+        - addServiceMonitor
+
+    Containers:
+      type: object
+      additionalProperties:
+        $ref: '#/components/schemas/Container'
+
+    Container:
+      type: object
+      properties:
+        isInitContainer:
+          type: boolean
+        imagePullPolicy:
+          type: string
+          nullable: true
+        dockerImage:
+          $ref: '#/components/schemas/DockerImage'
+      required:
+        - isInitContainer
+        - dockerImage
+
+    DockerImage:
+      type: object
+      properties:
+        imageName:
+          type: string
+        cmd:
+          type: string
+        args:
+          type: string
+        resourceRequirements:
+          $ref: '#/components/schemas/ResourceRequirements'
+        envVars:
+          type: array
+          items:
+            $ref: '#/components/schemas/EnvVar'
+        ports:
+          type: array
+          items:
+            $ref: '#/components/schemas/Port'
+        volumeMounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/VolumeMount'
+      required:
+        - imageName
+
+    ResourceRequirements:
+      type: object
+      properties:
+        CPU:
+          type: string
+        Memory:
+          type: string
+
+    EnvVar:
+      type: object
+      properties:
+        name:
+          type: string
+        value:
+          type: string
+      required:
+        - name
+        - value
+
+    Port:
+      type: object
+      properties:
+        name:
+          type: string
+        number:
+          type: string
+        protocol:
+          type: string
+        ingressEnabledPort:
+          type: boolean
+        probeSettings:
+          $ref: '#/components/schemas/ProbeSettings'
+      required:
+        - name
+        - number
+        - protocol
+
+    VolumeMount:
+      type: object
+      properties:
+        name:
+          type: string
+        mountPath:
+          type: string
+      required:
+        - name
+        - mountPath
+
+    ProbeSettings:
+      type: object
+      properties:
+        useForLivenessProbe:
+          type: boolean
+        useForReadinessProbe:
+          type: boolean
+        useTcpSocket:
+          type: boolean
+
+    ConfigMap:
+      type: object
+      additionalProperties:
+        type: string
+
+    Ingress:
+      type: object
+      properties:
+        authServerURL:
+          type: string
+        host:
+          type: string
+      required:
+        - authServerURL
+        - host
+
+    IngressPath:
+      type: object
+      properties:
+        path:
+          type: string
+        pathType:
+          type: string
+      required:
+        - path
+        - pathType
+
+    Deployment:
+      type: object
+      properties:
+        replicaCount:
+          type: integer
+      required:
+        - replicaCount
+
+    StatefulSet:
+      type: object
+      properties:
+        replicaCount:
+          type: integer
+        pvcTemplates:
+          type: array
+          items:
+            $ref: '#/components/schemas/PVCTemplate'
+      required:
+        - replicaCount
+        - pvcTemplates
+
+    PVCTemplate:
+      type: object
+      properties:
+        name:
+          type: string
+        accessMode:
+          type: string
+        storageSizeRequest:
+          type: string
+        storageClassName:
+          type: string
+          nullable: true
+      required:
+        - name
+        - accessMode
+        - storageSizeRequest
