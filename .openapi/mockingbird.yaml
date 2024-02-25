@@ -78,7 +78,53 @@ paths:
           description: Bad request due to invalid input or missing request body
         '500':
           description: Internal server error
+  /retrieval/ai/{id}:
+    get:
+      summary: Get Specific AI Retrieval Item
+      description: "Retrieves a specific AI retrieval item by its unique identifier."
+      operationId: getSpecificRetrievalItem
+      tags:
+        - Retrievals
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: Unique identifier of the retrieval item
+      responses:
+        '200':
+          description: Successfully retrieved the retrieval item
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetrievalItem'
+        '400':
+          description: Bad request due to invalid input
+        '404':
+          description: Retrieval item not found
+        '500':
+          description: Internal server error
   /retrievals/ai:
+    get:
+      summary: Get Retrievals
+      description: Retrieves retrieval items based on organization and user context.
+      operationId: getRetrievals
+      tags:
+        - Retrievals
+      responses:
+        '200':
+          description: Successfully retrieved retrieval items
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RetrievalItem'
+        '400':
+          description: Bad request due to invalid input
+        '500':
+          description: Internal server error
     post:
       summary: Create or Update AI Retrieval Items
       description: "Creates or updates a retrieval item for AI operations."
@@ -103,6 +149,34 @@ paths:
                     type: string
         '400':
           description: Bad request due to invalid input
+        '500':
+          description: Internal server error
+  /eval/ai/{id}:
+    get:
+      summary: Get Specific Eval Function
+      description: Retrieves a specific evaluation function by its unique identifier.
+      operationId: getSpecificEvalFn
+      tags:
+        - Evals
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: Unique identifier of the evaluation function
+      responses:
+        '200':
+          description: Successfully retrieved the evaluation function
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EvalFn'
+        '400':
+          description: Bad request due to invalid input
+        '404':
+          description: Evaluation function not found
         '500':
           description: Internal server error
   /evals/ai:
@@ -151,7 +225,53 @@ paths:
           description: Bad request due to invalid input
         '500':
           description: Internal server error
+  /task/ai/{id}:
+    get:
+      summary: Get a Specific Task
+      description: Retrieves a specific task by its unique identifier, provided the user has a billing method set up.
+      operationId: getSpecificTask
+      tags:
+        - Tasks
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: Unique identifier of the task
+      responses:
+        '200':
+          description: Successfully retrieved the task
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AITaskLibrary'
+        '400':
+          description: Bad request due to invalid input
+        '412':
+          description: Precondition Failed - User does not have a billing method set up
+        '500':
+          description: Internal server error
   /tasks/ai:
+    get:
+      summary: Get AI Tasks
+      description: Retrieves an array of AI Tasks that have been created.
+      operationId: getAITasks
+      tags:
+        - Tasks
+      responses:
+        '200':
+          description: Successfully retrieved list of AI tasks
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AITaskLibrary'
+        '400':
+          description: Bad Request
+        '500':
+          description: Server Error
     post:
       summary: Create/Update AI Tasks
       description: "Create an AI Task to be used in a workflow. This will be used to
