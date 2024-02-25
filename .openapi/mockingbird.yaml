@@ -552,6 +552,15 @@ components:
           type: string
         dataType:
           type: string
+          enum:
+            - string
+            - integer
+            - number
+            - boolean
+            - array[number]
+            - array[integer]
+            - array[string]
+            - array[boolean]
         fieldValue:
           $ref: '#/components/schemas/FieldValue'
         evalMetrics:
