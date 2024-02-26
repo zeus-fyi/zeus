@@ -1,0 +1,24 @@
+{
+  "retrievalStrID": "0",
+  "retrievalID": 0,
+  "retrievalName": "tweets-retrieval",
+  "retrievalGroup": "demo",
+  "retrievalItemInstruction": {
+    "retrievalPlatform": "twitter",
+    "retrievalPrompt": "",
+    "retrievalPlatformGroups": "llm",
+    "retrievalKeywords": "",
+    "retrievalUsernames": "",
+    "discordFilters": {
+      "categoryTopic": "",
+      "categoryName": "",
+      "category": ""
+    },
+    "webFilters": {
+      "routingGroup": "",
+      "lbStrategy": "",
+      "endpointRoutePath": "",
+      "endpointREST": "POST"
+    }
+  }
+}

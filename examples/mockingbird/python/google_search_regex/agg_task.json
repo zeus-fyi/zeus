@@ -1,0 +1,16 @@
+[
+  {
+    "taskStrID": "0",
+    "taskID": 0,
+    "maxTokensPerTask": 0,
+    "taskType": "aggregation",
+    "taskName": "biz-lead-google-search-summary",
+    "taskGroup": "google-search",
+    "tokenOverflowStrategy": "deduce",
+    "model": "gpt-4-0125-preview",
+    "temperature": 1,
+    "marginBuffer": 0.5,
+    "prompt": "Can you summarize the relevant person and/or associated business from the search results? It should use the most relevant search result that matches best and ignore others to prevent mixing multiple profiles. I want to know what this person does and what kind of role they perform, and summarize any other details that you can find and you should add more weight to LinkedIn information, you should strive for accuracy over greater inclusion.",
+    "responseFormat": "text"
+  }
+]
