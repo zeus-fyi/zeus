@@ -1,0 +1,27 @@
+{
+  "workflowName": "wf-name",
+  "workflowGroupName": "wf-group",
+  "stepSize": 5,
+  "stepSizeUnit": "minutes",
+  "models": {
+    "task_name": {
+      "taskStrID": "0",
+      "taskID": 0,
+      "model": "gpt-4-0125-preview",
+      "taskType": "analysis",
+      "temperature": "null",
+      "marginBuffer": "null",
+      "taskGroup": "group",
+      "taskName": "name",
+      "maxTokens": 2048,
+      "tokenOverflowStrategy": "deduce",
+      "prompt": "",
+      "cycleCount": 1,
+      "evalFns": []
+    }
+  },
+  "evalsMap": {},
+  "evalTasksMap": {},
+  "aggregateSubTasksMap": {},
+  "analysisRetrievalsMap": {}
+}
