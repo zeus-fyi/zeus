@@ -1,0 +1,9 @@
+{
+  "schemaID": 0,
+  "schemaStrID": "0",
+  "schemaName": "fake_schema",
+  "schemaGroup": "demo",
+  "schemaDescription": "This is a sample schema template.",
+  "isObjArray": true,
+  "fields": []
+}
