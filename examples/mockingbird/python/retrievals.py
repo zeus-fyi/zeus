@@ -8,7 +8,6 @@ from examples.mockingbird.python.api_setup import get_headers, api_v1_path
 def get_retrieval(rid):
     headers = get_headers()
     url = api_v1_path + "/retrieval/ai/" + rid
-
     response = requests.get(url, headers=headers)
 
     if response.status_code == 200:
