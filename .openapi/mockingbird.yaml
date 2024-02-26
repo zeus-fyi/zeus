@@ -391,6 +391,28 @@ paths:
       responses:
         '200':
           description: Successful response
+  /run/ai/{id}:
+    get:
+      summary: Get Run by ID
+      operationId: getRunById
+      tags:
+        - Runs
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the run, which can be a string or an int64.
+      responses:
+        '200':
+          description: Details of the run
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrchestrationsAnalysis'
+        '404':
+          description: Run not found
   /runs/ai:
     get:
       summary: Workflow Runs
