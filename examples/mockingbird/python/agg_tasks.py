@@ -26,4 +26,5 @@ if __name__ == '__main__':
     payload['model'] = 'gpt-3.5-turbo-0125'
     payload['prompt'] = ('how do you think AI will respond to being offered a'
                          ' decision tree with cost assigned options and a budget?')
-    print(payload)
+
+    create_agg_task(payload)
