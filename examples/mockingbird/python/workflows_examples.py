@@ -1,7 +1,22 @@
 import json
 
-from examples.mockingbird.python.workflows import wf_model_task_template, create_wf
+from examples.mockingbird.python.workflows import create_wf
 
+wf_model_task_template = {
+    "taskStrID": "",
+    "taskID": 0,
+    "model": "",
+    "taskType": "analysis",
+    "temperature": 1.0,
+    "marginBuffer": 0.5,
+    "taskGroup": "group",
+    "taskName": "name",
+    "maxTokens": 0,
+    "tokenOverflowStrategy": "deduce",
+    "prompt": "",
+    "cycleCount": 1,
+    "evalFns": []
+}
 
 # Example Workflow Patterns
 
