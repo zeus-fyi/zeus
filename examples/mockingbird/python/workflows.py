@@ -11,6 +11,7 @@ def start_or_schedule_wf(wf_exec_params):
     response = requests.post(url, json=wf_exec_params, headers=headers)
     # Check the response status
     if response.status_code == 200:
+        print(response.json())
         print("Workflow created successfully!")
     else:
         print(response.json())
@@ -23,18 +24,33 @@ def create_wf(wf):
     response = requests.post(url, json=wf, headers=headers)
     # Check the response status
     if response.status_code == 200:
+        print(response.json())
         print("Workflow created successfully!")
     else:
         print(response.json())
         print("Failed to create workflow. Status Code:", response.status_code)
 
 
-if __name__ == '__main__':
-    with open('templates/exec_wf.json', 'r') as file:
-        payload = json.load(file)
+wf_exec_template = {
+    "action": "start",
+    "unixStartTime": 0,
+    "duration": 1,
+    "durationUnit": "cycles",
+    "customBasePeriod": True,
+    "customBasePeriodStepSize": 30,
+    "customBasePeriodStepSizeUnit": "minutes",
+    "workflows": []
+}
 
-    payload['workflows'] = {
-        "workflowName": "wf-name-example",
-        "workflowGroup": "demo"
-    }
-    start_or_schedule_wf(payload)
+wf_item_details = {
+    "workflowName": "",
+}
+
+if __name__ == '__main__':
+    # Starts a workflow
+    wf_item_details['workflowName'] = 'demo-analysis-only-workflow'
+    wf_exec_template['workflows'] = [wf_item_details]
+
+    pretty_data = json.dumps(wf_exec_template, indent=4)
+    print(pretty_data)
+    start_or_schedule_wf(wf_exec_template)

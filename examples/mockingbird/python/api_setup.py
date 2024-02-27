@@ -10,8 +10,6 @@ headers = {
 }
 
 api_v1_path = "https://api.zeus.fyi/v1"
-
-
 # api_v1_path = "http://localhost:9001/v1"
 
 
