@@ -22,7 +22,6 @@ def get_retrieval(rid):
 
 def create_or_update_retrieval(ret):
     url = api_v1_path + "/retrievals/ai"
-    print(url)
     headers = get_headers()
     response = requests.post(url, json=ret, headers=headers)
     # Check the response status
