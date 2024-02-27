@@ -431,7 +431,7 @@ paths:
   /workflows/ai:
     post:
       summary: Create Workflow Request
-      description: "Submits a request to create or update a workflow, including task models, evaluations, and analyses."
+      description: "Submits a request to create or update a workflow, including task models, evaluations, and analyses. Returns run id if successful."
       operationId: postWorkflowsRequest
       tags:
         - Workflows
