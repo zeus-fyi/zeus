@@ -1,0 +1,51 @@
+{
+  "triggerStrID": "0",
+  "triggerID": 0,
+  "triggerName": "google-qp-search-regex",
+  "triggerGroup": "google-search",
+  "triggerAction": "api-retrieval",
+  "triggerRetrievals": [
+    {
+      "retrievalStrID": "0",
+      "retrievalID": 0,
+      "retrievalName": "google-query-params",
+      "retrievalGroup": "google-search",
+      "retrievalItemInstruction": {
+        "retrievalPlatform": "api",
+        "retrievalPrompt": "",
+        "retrievalPlatformGroups": "",
+        "retrievalKeywords": "",
+        "retrievalNegativeKeywords": "",
+        "retrievalUsernames": "",
+        "discordFilters": {
+          "categoryTopic": "",
+          "categoryName": "",
+          "category": ""
+        },
+        "webFilters": {
+          "routingGroup": "google-search",
+          "lbStrategy": "",
+          "maxRetries": 6,
+          "backoffCoefficient": 2,
+          "endpointRoutePath": "customsearch/v1?q={q}&cx=SEARCH_KEY&key=API_KEY",
+          "endpointREST": "get",
+          "payloadPreProcessing": "iterate",
+          "regexPatterns": [
+            "`https?://[^\\s<>\"]+|www\\.[^\\s<>\"]+`",
+            "`og:([^\":]+)\":\\s*\"([^\"]+)`"
+          ]
+        }
+      }
+    }
+  ],
+  "evalTriggerActions": [
+    {
+      "evalID": 0,
+      "evalStrID": "0",
+      "triggerID": 0,
+      "triggerStrID": "0",
+      "evalTriggerState": "filter",
+      "evalResultsTriggerOn": "all-pass"
+    }
+  ]
+}

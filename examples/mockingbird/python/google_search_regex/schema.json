@@ -1,0 +1,17 @@
+{
+  "schemaID": 0,
+  "schemaStrID": "0",
+  "schemaName": "google-search-query-params",
+  "schemaGroup": "google-search",
+  "schemaDescription": "Gets query value string for google api call",
+  "isObjArray": false,
+  "fields": [
+    {
+      "fieldID": 0,
+      "fieldStrID": "0",
+      "fieldName": "q",
+      "fieldDescription": "this will be a google search query string to look up more information about the request shown.\n\nexample: prompt: \"business: openai, person: brockman\", response: \"what does brockman do at openai\"\n\nyou should not add ? in your response",
+      "dataType": "string"
+    }
+  ]
+}

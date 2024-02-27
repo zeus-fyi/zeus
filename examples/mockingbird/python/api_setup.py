@@ -12,6 +12,9 @@ headers = {
 api_v1_path = "https://api.zeus.fyi/v1"
 
 
+# api_v1_path = "http://localhost:9001/v1"
+
+
 def get_headers():
     # Read the config file and extract the BEARER token
     with open(config_file_path, 'r') as fl:
