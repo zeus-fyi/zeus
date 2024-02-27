@@ -1,0 +1,24 @@
+{
+  "retrievalStrID": "0",
+  "retrievalID": 0,
+  "retrievalName": "",
+  "retrievalGroup": "",
+  "retrievalItemInstruction": {
+    "retrievalPlatform": "",
+    "retrievalPrompt": "",
+    "retrievalPlatformGroups": "",
+    "retrievalKeywords": "",
+    "retrievalUsernames": "",
+    "discordFilters": {
+      "categoryTopic": "",
+      "categoryName": "",
+      "category": ""
+    },
+    "webFilters": {
+      "routingGroup": "",
+      "lbStrategy": "",
+      "endpointRoutePath": "",
+      "endpointREST": "POST"
+    }
+  }
+}

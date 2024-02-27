@@ -1,0 +1,25 @@
+{
+  "triggerStrID": "0",
+  "triggerID": 0,
+  "triggerName": "google-qp-search-regex",
+  "triggerGroup": "google-search",
+  "triggerAction": "api-retrieval",
+  "triggerRetrievals": [
+    {
+      "retrievalStrID": "0",
+      "retrievalID": 0,
+      "retrievalName": "google-query-params",
+      "retrievalGroup": "google-search"
+    }
+  ],
+  "evalTriggerActions": [
+    {
+      "evalID": 0,
+      "evalStrID": "0",
+      "triggerID": 0,
+      "triggerStrID": "0",
+      "evalTriggerState": "filter",
+      "evalResultsTriggerOn": "all-pass"
+    }
+  ]
+}
