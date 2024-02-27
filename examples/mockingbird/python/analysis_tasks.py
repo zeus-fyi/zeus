@@ -22,7 +22,6 @@ def get_task(tid):
 
 def create_analysis_task(task):
     url = api_v1_path + "/tasks/ai"
-    print(url)
     headers = get_headers()
     response = requests.post(url, json=task, headers=headers)
     # Check the response status
