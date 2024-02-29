@@ -2,7 +2,7 @@ import json
 
 import requests
 
-from examples.mockingbird.python.api_setup import api_v1_path, get_headers
+from examples.mockingbird.mockingbooks_py.api_setup import api_v1_path, get_headers
 
 
 def create_agg_task(task):
@@ -15,6 +15,7 @@ def create_agg_task(task):
     else:
         print(response.json())
         print("Failed to create task. Status Code:", response.status_code)
+    return response.json()
 
 
 if __name__ == '__main__':

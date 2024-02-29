@@ -2,8 +2,8 @@ import json  # Import the json module
 
 import requests
 
-from examples.mockingbird.python.api_setup import get_headers, api_v1_path
-from examples.mockingbird.python.triggers import trigger_function_template
+from examples.mockingbird.mockingbooks_py.api_setup import get_headers, api_v1_path
+from examples.mockingbird.mockingbooks_py.triggers import trigger_function_template
 
 
 def get_evals():
@@ -16,6 +16,7 @@ def get_evals():
         print(pretty_data)
     else:
         print("Status Code:", response.status_code)
+    return response.json()
 
 
 def create_or_update_eval(eval_fn):
@@ -28,6 +29,7 @@ def create_or_update_eval(eval_fn):
         print(pretty_data)
     else:
         print("Status Code:", response.status_code)
+    return response.json()
 
 
 if __name__ == '__main__':

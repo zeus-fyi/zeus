@@ -1,0 +1,24 @@
+{
+  "retrievalStrID": "1709234959989201000",
+  "retrievalID": 1709234959989201000,
+  "retrievalName": "get_llm_tweets",
+  "retrievalGroup": "mockingbird_wai",
+  "retrievalItemInstruction": {
+    "retrievalPlatform": "twitter",
+    "retrievalPrompt": "",
+    "retrievalPlatformGroups": "llm",
+    "retrievalKeywords": "",
+    "retrievalUsernames": "",
+    "discordFilters": {
+      "categoryTopic": "",
+      "categoryName": "",
+      "category": ""
+    },
+    "webFilters": {
+      "routingGroup": "",
+      "lbStrategy": "",
+      "endpointRoutePath": "",
+      "endpointREST": ""
+    }
+  }
+}

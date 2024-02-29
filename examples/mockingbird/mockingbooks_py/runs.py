@@ -2,7 +2,7 @@ import json  # Import the json module
 
 import requests
 
-from examples.mockingbird.python.api_setup import get_headers, api_v1_path
+from examples.mockingbird.mockingbooks_py.api_setup import get_headers, api_v1_path
 
 
 def get_runs():

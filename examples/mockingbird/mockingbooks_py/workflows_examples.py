@@ -1,6 +1,6 @@
 import json
 
-from examples.mockingbird.python.workflows import create_wf
+from examples.mockingbird.mockingbooks_py.workflows import create_wf
 
 wf_model_task_template = {
     "taskStrID": "",

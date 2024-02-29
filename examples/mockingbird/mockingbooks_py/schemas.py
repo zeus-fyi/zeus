@@ -2,7 +2,7 @@ import json  # Import the json module
 
 import requests
 
-from examples.mockingbird.python.api_setup import get_headers, api_v1_path
+from examples.mockingbird.mockingbooks_py.api_setup import get_headers, api_v1_path
 
 
 def get_schemas():
@@ -10,10 +10,11 @@ def get_schemas():
     headers = get_headers()
     response = requests.get(url, headers=headers)
     if response.status_code == 200:
-        pretty_data = json.dumps(data, indent=4)
+        pretty_data = json.dumps(response.json(), indent=4)
         print(pretty_data)
     else:
         print("Status Code:", response.status_code)
+    return response.json()
 
 
 def create_or_update_schema(schema):
@@ -25,6 +26,7 @@ def create_or_update_schema(schema):
     else:
         print(response.json())
         print("Failed to create schema. Status Code:", response.status_code)
+    return response.json()
 
 
 field_data_template = {

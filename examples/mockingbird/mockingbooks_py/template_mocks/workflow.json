@@ -3,7 +3,8 @@
   "workflowGroupName": "wf-group",
   "stepSize": 5,
   "stepSizeUnit": "minutes",
-  "models": {},
+  "models": {
+  },
   "evalsMap": {},
   "evalTasksMap": {},
   "aggregateSubTasksMap": {},

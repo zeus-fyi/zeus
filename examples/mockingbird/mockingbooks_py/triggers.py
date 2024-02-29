@@ -2,7 +2,7 @@ import json  # Import the json module
 
 import requests
 
-from examples.mockingbird.python.api_setup import get_headers, api_v1_path
+from examples.mockingbird.mockingbooks_py.api_setup import get_headers, api_v1_path
 
 
 def get_triggers():
@@ -15,6 +15,7 @@ def get_triggers():
         print(pretty_data)
     else:
         print("Status Code:", response.status_code)
+    return response.json()
 
 
 def create_or_update_trigger(trigger_fn):
@@ -27,8 +28,7 @@ def create_or_update_trigger(trigger_fn):
         print(pretty_data)
     else:
         print("Status Code:", response.status_code)
-
-    pass
+    return response.json()
 
 
 trigger_function_template = {

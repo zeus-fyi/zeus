@@ -1,0 +1,23 @@
+{
+  "triggerStrID": "1709235049105085000",
+  "triggerID": 1709235049105085000,
+  "triggerName": "tweet-like-trigger",
+  "triggerGroup": "twitter-mb",
+  "triggerAction": "api-retrieval",
+  "triggerRetrievals": [
+    {
+      "retrievalStrID": "1709234668011517000",
+      "retrievalID": 1709234668011517000,
+      "retrievalName": "likes_llm_tweets",
+      "retrievalGroup": "mockingbird_wai"
+    }
+  ],
+  "evalTriggerActions": [
+    {
+      "triggerID": 1709235049105085000,
+      "triggerStrID": "1709235049105085000",
+      "evalTriggerState": "filter",
+      "evalResultsTriggerOn": "all-pass"
+    }
+  ]
+}

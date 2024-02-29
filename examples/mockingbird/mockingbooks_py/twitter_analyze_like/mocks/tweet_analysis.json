@@ -1,0 +1,40 @@
+{
+  "taskStrID": "1709235859232537000",
+  "taskID": 1709235859232537000,
+  "maxTokensPerTask": 0,
+  "taskType": "analysis",
+  "taskName": "extract_relevant_tweets",
+  "taskGroup": "mockingbird",
+  "tokenOverflowStrategy": "deduce",
+  "model": "gpt-4-0125-preview",
+  "temperature": 1,
+  "marginBuffer": 0.5,
+  "prompt": "",
+  "responseFormat": "json",
+  "schemas": [
+    {
+      "schemaID": 1709233769412026000,
+      "schemaStrID": "1709233769412026000",
+      "schemaName": "extract_relevant_tweets",
+      "schemaGroup": "mockingbird",
+      "schemaDescription": "This extracts tweet ids and calculates a spam score from 1-5.",
+      "isObjArray": true,
+      "fields": [
+        {
+          "fieldID": 1709233769424400433,
+          "fieldStrID": "1709233769424400433",
+          "fieldName": "msg_id",
+          "fieldDescription": "The analyzed id value.",
+          "dataType": "string"
+        },
+        {
+          "fieldID": 1709234264553647000,
+          "fieldStrID": "1709234264553647000",
+          "fieldName": "msg_spam_score",
+          "fieldDescription": "Score each message from 1-5 Scoring System Score 5: Likely Spam, Commercial, or Job Listing Contains phrases like \"Find unclaimed airdrops\", \"Start of the Year with a Big Pump\", or direct links to commercial products or services.Includes job listings or straightforward job-related announcements.Lacks personal interaction or conversational tone. Score 4: General Announcements or Basic Information Sharing Includes general updates or news without a clear invitation for discussion.May contain links to blogs, news articles, or general information about Kubernetes or related technology, but lacks personal engagement. Score 3: Mildly Engaging or Indirectly Inviting Interaction Tweets that share information with a slight personal touch or a hint of seeking interaction.Might include personal opinions or experiences related to Kubernetes, GitOps, or DevOps but doesn\u2019t actively seek responses. Score 2: Directly Engaging and Discussion Oriented Clearly seeks interaction by asking questions or soliciting opinions.Includes tweets that share experiences or problems related to Kubernetes, GitOps, LLMs, or DevOps with a clear invitation for advice or discussion. Score 1: Highly Interactive and Response-Oriented Directly asks for help, suggestions, or recommendations related to Kubernetes, GitOps, DevOps, MLOps, LLMs, or developer platforms. Demonstrates a clear intention to engage in a conversation or discussion.May include tweets responding to others' queries, offering advice, or sharing knowledge in an interactive manner. ",
+          "dataType": "string"
+        }
+      ]
+    }
+  ]
+}

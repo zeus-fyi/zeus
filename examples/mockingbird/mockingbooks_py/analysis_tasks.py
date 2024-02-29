@@ -2,7 +2,7 @@ import json  # Import the json module
 
 import requests
 
-from examples.mockingbird.python.api_setup import get_headers, api_v1_path
+from examples.mockingbird.mockingbooks_py.api_setup import get_headers, api_v1_path
 
 
 def get_task(tid):
@@ -18,6 +18,7 @@ def get_task(tid):
         print(pretty_task_data)
     else:
         print("Failed to fetch task data. Status Code:", response.status_code)
+    return response.json()
 
 
 def create_analysis_task(task):
@@ -30,6 +31,7 @@ def create_analysis_task(task):
     else:
         print(response.json())
         print("Failed to create task. Status Code:", response.status_code)
+    return response.json()
 
 
 if __name__ == '__main__':

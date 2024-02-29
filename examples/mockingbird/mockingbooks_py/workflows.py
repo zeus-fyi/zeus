@@ -2,7 +2,7 @@ import json
 
 import requests
 
-from examples.mockingbird.python.api_setup import api_v1_path, get_headers
+from examples.mockingbird.mockingbooks_py.api_setup import api_v1_path, get_headers
 
 
 def start_or_schedule_wf(wf_exec_params):
@@ -16,6 +16,7 @@ def start_or_schedule_wf(wf_exec_params):
     else:
         print(response.json())
         print("Failed to create workflow. Status Code:", response.status_code)
+    return response.json()
 
 
 def create_wf(wf):
@@ -29,6 +30,7 @@ def create_wf(wf):
     else:
         print(response.json())
         print("Failed to create workflow. Status Code:", response.status_code)
+    return response.json()
 
 
 wf_exec_template = {
