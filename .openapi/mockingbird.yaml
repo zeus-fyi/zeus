@@ -1021,6 +1021,13 @@ components:
           type: array
           items:
             type: string
+        dontRetryStatusCodes:
+          type: array
+          items:
+            type: integer
+            minimum: 400
+            maximum: 599
+          nullable: true
     DiscordFilters:
       type: object
       properties:

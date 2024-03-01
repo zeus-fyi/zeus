@@ -20,6 +20,13 @@
       "endpointRoutePath": "users/1752505182343286784/likes",
       "endpointREST": "post",
       "payloadPreProcessing": "iterate",
+      "dontRetryStatusCodes": [
+        400,
+        403,
+        406,
+        410,
+        422
+      ],
       "payloadKeys": [
         "tweet_id"
       ]
