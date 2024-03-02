@@ -68,3 +68,4 @@ Thumbs.db
 /test/configs/config.yaml
 /cookbooks/custom_docusaurus-template/
 /examples/mockingbird/python/mock/
+/examples/mockingbird/mockingbooks_py/mock/

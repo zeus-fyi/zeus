@@ -1,0 +1,13 @@
+{
+  "nickname": "SampleDemo",
+  "platform": "twitter",
+  "firstName": "Mockingbird",
+  "lastName": "Wai",
+  "labels": [
+    "mb",
+    "zeusfyi"
+  ],
+  "metadataJsonb": "{\"key1\": \"value1\", \"key2\": 2}",
+  "metadataText": "Some metadata text",
+  "sinceTimestampUnix": 1234567890
+}
