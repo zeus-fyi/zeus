@@ -453,7 +453,14 @@ func EvaluateBooleanArray(array []bool, expected bool) ([]bool, error) {
 }
 
 func GetStringEvalComparisonResult(operator string, actual, expected string) bool {
-	switch operator {
+switch operator {
+case "equals-one-from-list":
+acceptable := strings.Split(expected, ",")
+for _, a := range acceptable {
+if actual == a {
+return true
+}
+}
 	case "contains":
 		if strings.Contains(actual, expected) {
 			return true
