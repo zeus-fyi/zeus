@@ -46,7 +46,7 @@ if __name__ == '__main__':
     eval_fn_pl['evalModel'] = 'gpt-4-0125-preview'
 
     # Add schema
-    with open('google_search_regex/schema.json', 'r') as file:
+    with open('google_search_regex/basic_search/schema.json', 'r') as file:
         efn_schema = json.load(file)
 
     efn_schema['schemaStrID'] = '1708624962876732000'

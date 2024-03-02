@@ -1,0 +1,27 @@
+{
+  "retrievalStrID": "1709415776852179000",
+  "retrievalID": 1709415776852179000,
+  "retrievalName": "create_entities",
+  "retrievalGroup": "entities",
+  "retrievalItemInstruction": {
+    "retrievalPlatform": "api",
+    "retrievalPrompt": "",
+    "retrievalPlatformGroups": "",
+    "retrievalKeywords": "",
+    "retrievalUsernames": "",
+    "discordFilters": {
+      "categoryTopic": "",
+      "categoryName": "",
+      "category": ""
+    },
+    "webFilters": {
+      "routingGroup": "zeus",
+      "lbStrategy": "",
+      "maxRetries": 10,
+      "backoffCoefficient": 2,
+      "endpointRoutePath": "/v1/entities/ai",
+      "endpointREST": "post",
+      "payloadPreProcessing": "bulk"
+    }
+  }
+}

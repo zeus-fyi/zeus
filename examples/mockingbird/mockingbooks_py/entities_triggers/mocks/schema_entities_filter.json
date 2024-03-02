@@ -1,0 +1,59 @@
+{
+  "schemaID": 1709414130286568000,
+  "schemaStrID": "1709414130286568000",
+  "schemaName": "entities_filter",
+  "schemaGroup": "entities",
+  "schemaDescription": "Used for searching ingested entities from data indexer",
+  "isObjArray": false,
+  "fields": [
+    {
+      "fieldID": 1709414130752379000,
+      "fieldStrID": "1709414130752379000",
+      "fieldName": "firstName",
+      "fieldDescription": "This should extract the first name, if provided, else add an empty string, for broad platform searches, this should be an empty string",
+      "dataType": "string"
+    },
+    {
+      "fieldID": 1709414130880344000,
+      "fieldStrID": "1709414130880344000",
+      "fieldName": "labels",
+      "fieldDescription": "Generate keywords that describe the examined task request and content related to the entity and potential action if called for, for example, it should be a label for business, personal, google-search, user-info. For the action, things such as follow-up, or todo. For statuses, deadlines, priority can add labels like urgent, or a timeframe, If the task instructions for example is to create prospecting leads, then it should add tags that describe the purpose, You should strive for accurate labels that are consistently generated, the labels should make it easy to keyword search find for most related task specific content, action, status, etc. In most cases you should add no more than a few labels",
+      "dataType": "array[string]"
+    },
+    {
+      "fieldID": 1709414130806403000,
+      "fieldStrID": "1709414130806403000",
+      "fieldName": "lastName",
+      "fieldDescription": "This should extract the last name, if provided, else add an empty string, for broad platform searches, this should be an empty string",
+      "dataType": "string"
+    },
+    {
+      "fieldID": 1709414130945235000,
+      "fieldStrID": "1709414130945235000",
+      "fieldName": "metadataText",
+      "fieldDescription": "This should extract the contents of the examined content related to the entity, if the contents contains lots of non-language elements like html or js, it should summarize the findings using the most logical english description summary",
+      "dataType": "string"
+    },
+    {
+      "fieldID": 1709414130607968000,
+      "fieldStrID": "1709414130607968000",
+      "fieldName": "nickname",
+      "fieldDescription": "The format should follow platform-specific conventions. E.g., for Twitter, use the unique handle of the user including the '@' symbol; for Email, provide a valid email address format (username@example.com), for broad platform searches, this should be an empty string",
+      "dataType": "string"
+    },
+    {
+      "fieldID": 1709414130697124000,
+      "fieldStrID": "1709414130697124000",
+      "fieldName": "platform",
+      "fieldDescription": "Acceptable options: kubernetes, linkedIn, reddit, twitter, github, email, discord, slack, telegram, sms, unspecified. select the platform that matches best from the information provided.",
+      "dataType": "string"
+    },
+    {
+      "fieldID": 1709414131014391000,
+      "fieldStrID": "1709414131014391000",
+      "fieldName": "sinceTimestampUnix",
+      "fieldDescription": "If specified, you should add a negative integer of seconds, to limit the search window. For instance, if you are searching only the last 24 hours, you should add -86400 seconds to the current time. If not specified, you should search all available data, by setting this to 0",
+      "dataType": "integer"
+    }
+  ]
+}

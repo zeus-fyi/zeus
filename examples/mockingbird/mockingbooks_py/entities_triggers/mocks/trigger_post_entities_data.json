@@ -1,0 +1,21 @@
+{
+  "triggerStrID": "1709416914281318000",
+  "triggerID": 1709416914281318000,
+  "triggerName": "trigger_entities_indexer",
+  "triggerGroup": "indexer",
+  "triggerAction": "api-retrieval",
+  "triggerRetrievals": [
+    {
+      "retrievalStrID": "1709415776852179000",
+      "retrievalID": 1709415776852179000,
+      "retrievalName": "create_entities",
+      "retrievalGroup": "entities"
+    }
+  ],
+  "evalTriggerActions": [
+    {
+      "evalTriggerState": "filter",
+      "evalResultsTriggerOn": "all-pass"
+    }
+  ]
+}
