@@ -18,14 +18,7 @@ def start_wf(prompt=None, agg_prompt=None):
     if prompt:
         tmp['zeusfyi-verbatim'] = {'replacePrompt': prompt}
     if agg_prompt:
-        if 'zeusfyi-verbatim' in tmp:  # Check if the key already exists
-            # Merge 'agg_prompt' into 'zeusfyi-verbatim' if you need to combine them
-            # For example, appending or modifying the existing entry
-            # This is just an example and might need adjustment based on your actual needs
-            tmp['zeusfyi-verbatim']['replacePrompt'] += f" {agg_prompt}"
-        else:
-            # If 'zeusfyi-verbatim' does not exist, create a new entry for 'agg_prompt'
-            tmp['biz-lead-google-search-summary'] = {'replacePrompt': agg_prompt}
+        tmp['biz-lead-google-search-summary'] = {'replacePrompt': agg_prompt}
 
     if tmp:
         wf_exec['taskOverrides'] = tmp

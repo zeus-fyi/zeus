@@ -1,6 +1,6 @@
 import re
 
-from examples.mockingbird.mockingbooks_py.google_search_regex.dynamic_google_search import start_wf, poll_run
+from examples.mockingbird.mockingbooks_py.google_search_regex.dynamic_google_search import start_wf
 
 # Path to the file
 file_path = 'tmp/tmp.txt'
@@ -29,10 +29,15 @@ matches2 = re.findall(pattern2, text)
 if len(matches1) > len(matches2):
     matches1, matches2 = matches2, matches1
 
+offset_l = 2
+offset_r = 10
+
+# skip next
 for i in range(len(matches1)):
-    if i < 1:
-        person_company = f"{i}: {matches2[i]} (person), {matches1[i]} (company)"
+    person_company = f"{i}: {matches2[i]} (person), {matches1[i]} (company)"
+    if 0 + offset_l < i < 1 + offset_r:
+        print(person_company)
         start_wf(person_company, agg_prompt)
 
-if __name__ == '__main__':
-    poll_run('1709446959958934000')
+# if __name__ == '__main__':
+#     poll_run('1709446959958934000')
