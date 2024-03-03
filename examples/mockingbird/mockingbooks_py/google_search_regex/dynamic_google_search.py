@@ -5,7 +5,7 @@ from examples.mockingbird.mockingbooks_py.runs import get_run
 from examples.mockingbird.mockingbooks_py.workflows import start_or_schedule_wf
 
 
-def start_wf():
+def start_wf(prompt=None, agg_prompt=None):
     with open('mocks/wf_exec.json', 'r') as file:
         wf_exec = json.load(file)
 
@@ -14,14 +14,21 @@ def start_wf():
     #     inputs = json.load(file)
     # Inject override prompt, allows wf inputs to operate like function inputs
 
-    wf_exec['taskOverrides'] = {
-        'zeusfyi-verbatim': {
-            'replacePrompt': "ctrl-alt-lulz Zeusfyi",
-        },
-        # 'biz-lead-google-search-summary': {
-        #     'replacePrompt': "",
-        # }
-    }
+    tmp = {}
+    if prompt:
+        tmp['zeusfyi-verbatim'] = {'replacePrompt': prompt}
+    if agg_prompt:
+        if 'zeusfyi-verbatim' in tmp:  # Check if the key already exists
+            # Merge 'agg_prompt' into 'zeusfyi-verbatim' if you need to combine them
+            # For example, appending or modifying the existing entry
+            # This is just an example and might need adjustment based on your actual needs
+            tmp['zeusfyi-verbatim']['replacePrompt'] += f" {agg_prompt}"
+        else:
+            # If 'zeusfyi-verbatim' does not exist, create a new entry for 'agg_prompt'
+            tmp['biz-lead-google-search-summary'] = {'replacePrompt': agg_prompt}
+
+    if tmp:
+        wf_exec['taskOverrides'] = tmp
     wf_item = {
         'workflowName': 'google-query-regex-index-wf',
     }
