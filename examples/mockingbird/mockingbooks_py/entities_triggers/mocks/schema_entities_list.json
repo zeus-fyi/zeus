@@ -3,7 +3,7 @@
   "schemaStrID": "1709414328098705000",
   "schemaName": "entities",
   "schemaGroup": "entities",
-  "schemaDescription": "Used for reading or classifying entities from/to the data indexing service",
+  "schemaDescription": "Used for reading or classifying entities from/to the data indexing service, you should only create one entity per unique (platform, nickname) combination, and must to group all labels you've assigned for it into that single entity. You should usually focus on the most common and apparent entity, unless it's clear that the results are intended to have many unique entities that are about equally intended as the focus of the content.",
   "isObjArray": true,
   "fields": [
     {
@@ -38,7 +38,7 @@
       "fieldID": 1709414328259537000,
       "fieldStrID": "1709414328259537000",
       "fieldName": "nickname",
-      "fieldDescription": "The format should follow platform-specific conventions. E.g., for Twitter, use the unique handle of the user including the '@' symbol; for Email, provide a valid email address format (username@example.com).",
+      "fieldDescription": "The format should follow platform-specific conventions. E.g., for linkedIn, when you see links like: https://www.linkedin.com/in/alexandersgeorge/, you should should extract it from the route path, e.g. alexandersgeorge, for the nickname, for Twitter, use the unique handle of the user including the '@' symbol; for Email, provide a valid email address format (username@example.com).",
       "dataType": "string"
     },
     {

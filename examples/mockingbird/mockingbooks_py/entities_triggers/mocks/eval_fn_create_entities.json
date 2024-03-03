@@ -14,11 +14,16 @@
       "triggerGroup": "indexer",
       "triggerAction": "api-retrieval",
       "evalTriggerAction": {
-        "evalTriggerState": "",
-        "evalResultsTriggerOn": ""
+        "evalID": 1709417012941534000,
+        "evalStrID": "1709417012941534000",
+        "triggerID": 1709416914281318000,
+        "triggerStrID": "1709416914281318000",
+        "evalTriggerState": "filter",
+        "evalResultsTriggerOn": "all-pass"
       },
       "evalTriggerActions": [
         {
+          "evalID": 1709417012941534000,
           "evalStrID": "1709417012941534000",
           "triggerID": 1709416914281318000,
           "triggerStrID": "1709416914281318000",
@@ -30,44 +35,30 @@
   ],
   "schemas": [
     {
-      "schemaID": 1709233769412026000,
-      "schemaStrID": "1709233769412026000",
-      "schemaName": "extract_relevant_tweets",
-      "schemaGroup": "mockingbird",
-      "schemaDescription": "This extracts tweet ids and calculates a spam score from 1-5.",
+      "schemaID": 1709414328098705000,
+      "schemaStrID": "1709414328098705000",
+      "schemaName": "entities",
+      "schemaGroup": "entities",
+      "schemaDescription": "Used for reading or classifying entities from/to the data indexing service, you should only create one entity per unique (platform, nickname) combination, and must to group all labels you've assigned for it into that single entity. You should usually focus on the most common and apparent entity, unless it's clear that the results are intended to have many unique entities that are about equally intended as the focus of the content.",
       "isObjArray": true,
       "fields": [
         {
-          "fieldID": 1709414328387614000,
-          "fieldStrID": "1709414328387614000",
-          "fieldName": "firstName",
-          "fieldDescription": "This should extract the first name, if provided, else add an empty string",
+          "fieldID": 1709414328578950000,
+          "fieldStrID": "1709414328578950000",
+          "fieldName": "metadataText",
+          "fieldDescription": "This should extract the contents of the examined content related to the entity, if the contents contains lots of non-language elements like html or js, it should summarize the findings using the most logical english description summary",
           "dataType": "string",
           "evalMetrics": [
             {
-              "evalMetricID": 1709417439072005000,
-              "evalOperator": "",
-              "evalState": "filter",
-              "evalExpectedResultState": "ignore",
-              "evalMetricComparisonValues": {}
-            }
-          ]
-        },
-        {
-          "fieldID": 1709414328512017000,
-          "fieldStrID": "1709414328512017000",
-          "fieldName": "labels",
-          "fieldDescription": "Generate keywords that describe the examined task request and content related to the entity and potential action if called for, for example, it should be a label for business, personal, google-search, user-info. For the action, things such as follow-up, or todo. For statuses, deadlines, priority can add labels like urgent, or a timeframe, If the task instructions for example is to create prospecting leads, then it should add tags that describe the purpose, You should strive for accurate labels that are consistently generated, the labels should make it easy to keyword search find for most related task specific content, action, status, etc. In most cases you should add no more than a few labels",
-          "dataType": "array[string]",
-          "evalMetrics": [
-            {
-              "evalMetricID": 1709417439110431000,
+              "evalMetricID": 1709417439172547000,
               "evalOperator": "length-greater-than",
               "evalState": "filter",
               "evalExpectedResultState": "pass",
               "evalMetricComparisonValues": {
-                "evalComparisonNumber": null,
-                "evalComparisonString": "1"
+                "evalComparisonBoolean": false,
+                "evalComparisonNumber": 0,
+                "evalComparisonString": "100",
+                "evalComparisonInteger": 0
               }
             }
           ]
@@ -84,24 +75,32 @@
               "evalOperator": "",
               "evalState": "filter",
               "evalExpectedResultState": "ignore",
-              "evalMetricComparisonValues": {}
+              "evalMetricComparisonValues": {
+                "evalComparisonBoolean": false,
+                "evalComparisonNumber": 0,
+                "evalComparisonString": "",
+                "evalComparisonInteger": 0
+              }
             }
           ]
         },
         {
-          "fieldID": 1709414328578950000,
-          "fieldStrID": "1709414328578950000",
-          "fieldName": "metadataText",
-          "fieldDescription": "This should extract the contents of the examined content related to the entity, if the contents contains lots of non-language elements like html or js, it should summarize the findings using the most logical english description summary",
+          "fieldID": 1709414328387614000,
+          "fieldStrID": "1709414328387614000",
+          "fieldName": "firstName",
+          "fieldDescription": "This should extract the first name, if provided, else add an empty string",
           "dataType": "string",
           "evalMetrics": [
             {
-              "evalMetricID": 1709417439172547000,
-              "evalOperator": "length-greater-than",
+              "evalMetricID": 1709417439072005000,
+              "evalOperator": "",
               "evalState": "filter",
-              "evalExpectedResultState": "pass",
+              "evalExpectedResultState": "ignore",
               "evalMetricComparisonValues": {
-                "evalComparisonString": "100"
+                "evalComparisonBoolean": false,
+                "evalComparisonNumber": 0,
+                "evalComparisonString": "",
+                "evalComparisonInteger": 0
               }
             }
           ]
@@ -110,7 +109,7 @@
           "fieldID": 1709414328259537000,
           "fieldStrID": "1709414328259537000",
           "fieldName": "nickname",
-          "fieldDescription": "The format should follow platform-specific conventions. E.g., for reddit use reddit usernames, for twitter, use the unique handle of the user including the '@' symbol; for Email, provide a valid email address format (username@example.com), for linkedIn should be the linked in route like this: https://www.linkedin.com/in/alexandersgeorge/",
+          "fieldDescription": "The format should follow platform-specific conventions. E.g., for linkedIn, when you see links like: https://www.linkedin.com/in/alexandersgeorge/, you should should extract it from the route path, e.g. alexandersgeorge, for the nickname, for Twitter, use the unique handle of the user including the '@' symbol; for Email, provide a valid email address format (username@example.com).",
           "dataType": "string",
           "evalMetrics": [
             {
@@ -118,7 +117,12 @@
               "evalOperator": "",
               "evalState": "filter",
               "evalExpectedResultState": "ignore",
-              "evalMetricComparisonValues": {}
+              "evalMetricComparisonValues": {
+                "evalComparisonBoolean": false,
+                "evalComparisonNumber": 0,
+                "evalComparisonString": "",
+                "evalComparisonInteger": 0
+              }
             }
           ]
         },
@@ -135,7 +139,31 @@
               "evalState": "filter",
               "evalExpectedResultState": "pass",
               "evalMetricComparisonValues": {
-                "evalComparisonString": "kubernetes, linkedIn, reddit, twitter, email, discord, slack, telegram, sms, unspecified"
+                "evalComparisonBoolean": false,
+                "evalComparisonNumber": 0,
+                "evalComparisonString": "kubernetes, linkedIn, reddit, twitter, email, discord, slack, telegram, sms, unspecified",
+                "evalComparisonInteger": 0
+              }
+            }
+          ]
+        },
+        {
+          "fieldID": 1709414328512017000,
+          "fieldStrID": "1709414328512017000",
+          "fieldName": "labels",
+          "fieldDescription": "Generate keywords that describe the examined task request and content related to the entity and potential action if called for, for example, it should be a label for business, personal, google-search, user-info. For the action, things such as follow-up, or todo. For statuses, deadlines, priority can add labels like urgent, or a timeframe, If the task instructions for example is to create prospecting leads, then it should add tags that describe the purpose, You should strive for accurate labels that are consistently generated, the labels should make it easy to keyword search find for most related task specific content, action, status, etc. In most cases you should add no more than a few labels. If any links exist, you should add them as labels, however, only add links that appear relevant to the task, eg. adding a linkedin link to a profile is fine, a link to minified js, or only tangentially related should be excluded",
+          "dataType": "array[string]",
+          "evalMetrics": [
+            {
+              "evalMetricID": 1709417439110431000,
+              "evalOperator": "length-greater-than",
+              "evalState": "filter",
+              "evalExpectedResultState": "pass",
+              "evalMetricComparisonValues": {
+                "evalComparisonBoolean": false,
+                "evalComparisonNumber": 0,
+                "evalComparisonString": "1",
+                "evalComparisonInteger": 0
               }
             }
           ]
