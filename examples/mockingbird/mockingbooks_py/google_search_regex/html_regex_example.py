@@ -13,12 +13,13 @@ with open(file_path, 'r') as file:
 pattern1 = r'data-anonymize="person-name">\s*([^<]+?)\s*</a>'
 pattern2 = r'<span data-anonymize="company-name">\s*([^<]+?)\s*</span>'
 
-agg_prompt = ("Can you summarize the relevant person and/or associated business from the search results? It should "
-              "use the most relevant search result that matches best and ignore others to prevent mixing multiple "
-              "profiles. I want to know what this person does and what kind of role they perform, and summarize any "
-              "other details that you can find and you should add more weight to LinkedIn information, you should "
-              "strive for accuracy over greater inclusion. You should also make what platform you select clear"
-              "with the metadata sources that are associated from that platform, ie. LinkedIn, Twitter, etc."
+agg_prompt = ("Can you summarize the relevant person and/or associated business entity from the search results? It "
+              "should use the most relevant search result that matches best and ignore others to prevent mixing"
+              " multiple profiles. I want to know what this person does and what kind of role they perform, and "
+              "summarize any other details that you can find and you should add more weight"
+              "to LinkedIn information, you should strive for accuracy over greater inclusion."
+              "You should also make what platform you select clear"
+              "with the metadata sources that are associated from that platform, business, ie. LinkedIn, Twitter, etc."
               "so that we associate the correct entity metadata with the correct platforms.")
 
 # Find all matches for both patterns
@@ -29,12 +30,12 @@ matches2 = re.findall(pattern2, text)
 if len(matches1) > len(matches2):
     matches1, matches2 = matches2, matches1
 
-offset_l = 10
-offset_r = 40
+offset_l = 80
+offset_r = 100
 
 # skip next
 for i in range(len(matches1)):
-    person_company = f"{i}: {matches2[i]} (person), {matches1[i]} (company)"
+    person_company = f"{i}:{matches1[i]} (company)"
     if 0 + offset_l < i < 1 + offset_r:
         print(person_company)
         start_wf(person_company, agg_prompt)

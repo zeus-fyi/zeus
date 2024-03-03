@@ -46,6 +46,6 @@ def fetch_entities():
 
 
 if __name__ == '__main__':
-    start_wf()
+    fetch_entities()
     # fetch_entities()
     # poll_run('1709435054427175000')
