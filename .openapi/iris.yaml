@@ -1,0 +1,315 @@
+openapi: 3.0.3
+info:
+  title: Iris LoadBalancer API
+  version: "1.0.0"
+servers:
+  - url: https://hestia.zeus.fyi/v1
+    description: Hestia API Server
+  - url: https://iris.zeus.fyi/v1
+    description: Iris API Server
+paths:
+  /v1/iris/routes/create:
+    post:
+      summary: Create Iris routes
+      servers:
+        - url: https://hestia.zeus.fyi/v1
+      tags:
+        - Load Balancer Configuration
+      operationId: createIrisRoutes
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IrisOrgGroupRoutesRequest'
+      responses:
+        '200':
+          description: Routes created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /v1/iris/routes/read:
+    get:
+      summary: Read Iris routes
+      tags:
+        - Load Balancer Configuration
+      servers:
+        - url: https://hestia.zeus.fyi/v1
+      operationId: readIrisRoutes
+      responses:
+        '200':
+          description: Routes read successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrgRoutesResponse'
+  /v1/iris/routes/delete:
+    delete:
+      summary: Delete Iris routes
+      tags:
+        - Load Balancer Configuration
+      servers:
+        - url: https://hestia.zeus.fyi/v1
+      operationId: deleteIrisRoutes
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IrisOrgGroupRoutesRequest'
+      responses:
+        '200':
+          description: Routes deleted successfully
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /v1/iris/routes/groups/create:
+    post:
+      summary: Create Iris route groups
+      tags:
+        - Load Balancer Configuration
+      servers:
+        - url: https://hestia.zeus.fyi/v1
+      operationId: createIrisGroupRoutes
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IrisOrgGroupRoutesRequest'
+      responses:
+        '200':
+          description: Group routes created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /v1/iris/routes/groups/read:
+    get:
+      summary: Read Iris route groups
+      tags:
+        - Load Balancer Configuration
+      servers:
+        - url: https://hestia.zeus.fyi/v1
+      operationId: readIrisGroupRoutes
+      responses:
+        '200':
+          description: Group routes read successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrgGroupsRoutesResponse'
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /v1/iris/routes/groups/delete:
+    delete:
+      summary: Delete Iris route groups
+      tags:
+        - Load Balancer Configuration
+      servers:
+        - url: https://hestia.zeus.fyi/v1
+      operationId: deleteIrisGroupRoutes
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IrisOrgGroupRoutesRequest'
+      responses:
+        '200':
+          description: Group routes deleted successfully
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /router/{extendedPath}:
+    parameters:
+      - name: extendedPath
+        in: path
+        required: false
+        description: The extended route path after /v1/router/.
+        schema:
+          type: string
+    get:
+      summary: Proxy GET request
+      servers:
+        - url: https://iris.zeus.fyi/v1
+      description: Proxies a GET request to the configured backend service based on the X-Route-Group header.
+      tags:
+        - Adaptive Load Balancer
+      operationId: proxyGetRequest
+      parameters:
+        - $ref: '#/components/parameters/RouteGroupHeader'
+        - $ref: '#/components/parameters/QueryParameters'
+      responses:
+        '200':
+          description: Successfully proxied GET request.
+    post:
+      summary: Proxy POST request
+      tags:
+        - Adaptive Load Balancer
+      description: Proxies a POST request to the configured backend service based on the X-Route-Group header and request body.
+      servers:
+        - url: https://iris.zeus.fyi/v1
+      operationId: proxyPostRequest
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: JSON payload for the POST request.
+      responses:
+        '200':
+          description: Successfully proxied POST request.
+    put:
+      summary: Proxy PUT request
+      servers:
+        - url: https://iris.zeus.fyi/v1
+      tags:
+        - Adaptive Load Balancer
+      description: Proxies a PUT request to the configured backend service based on the X-Route-Group header and request body.
+      operationId: proxyPutRequest
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: JSON payload for the PUT request.
+      responses:
+        '200':
+          description: Successfully proxied PUT request.
+    delete:
+      summary: Proxy DELETE request
+      tags:
+        - Adaptive Load Balancer
+      description: Proxies a DELETE request to the configured backend service based on the X-Route-Group header.
+      servers:
+        - url: https://iris.zeus.fyi/v1
+      operationId: proxyDeleteRequest
+      responses:
+        '200':
+          description: Successfully proxied DELETE request.
+  /mempool:
+    get:
+      summary: Establish a WebSocket connection to the Mempool
+      servers:
+        - url: https://iris.zeus.fyi/v1
+      description: |
+        This route is used to establish a long-running WebSocket (WS) connection for receiving live mempool transactions. Clients can connect to this WebSocket endpoint to subscribe and continuously receive transaction data from the mempool.
+        
+        WebSocket URL: wss://iris.zeus.fyi/v1/mempool
+        
+        ### Request Headers
+        - `Authorization`: Required. Use this header to provide your bearer token for authentication.
+        
+        ### WebSocket Messages
+        Once connected, the server will stream transaction data to the client. Clients should be prepared to handle incoming messages that contain transaction information.
+        
+        ### Handling Messages
+        - Each message received through the WebSocket connection contains a serialized transaction. Clients need to deserialize this message to access the transaction details.
+        
+        ### Error Handling
+        - Clients should handle errors and potential disconnections by attempting to reconnect to the WebSocket server.
+
+      operationId: establishWebSocketMempool
+      tags:
+        - Adaptive Load Balancer
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          description: Bearer token for authentication.
+          schema:
+            type: string
+      responses:
+        '101':
+          description: WebSocket upgrade successful. The connection will now receive live mempool transaction data.
+        default:
+          description: Error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  parameters:
+    RouteGroupHeader:
+      name: X-Route-Group
+      in: header
+      required: true
+      description: Header specifying the route group for the request.
+      schema:
+        type: string
+    QueryParameters:
+      name: query
+      in: query
+      required: false
+      description: Query parameters to be included in the proxied request.
+      schema:
+        type: string
+  schemas:
+    IrisOrgGroupRoutesRequest:
+      type: object
+      properties:
+        groupName:
+          type: string
+        routes:
+          type: array
+          items:
+            type: string
+    OrgRoutesResponse:
+      type: object
+      properties:
+        routes:
+          type: array
+          items:
+            type: string
+    OrgGroupRoutesResponse:
+      type: object
+      properties:
+        groupName:
+          type: string
+        routes:
+          type: array
+          items:
+            type: string
+    OrgGroupsRoutesResponse:
+      type: object
+      properties:
+        orgGroupsRoutes:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: integer
+

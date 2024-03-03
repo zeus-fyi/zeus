@@ -9,6 +9,7 @@ COPY apps/docusaurus/zeusfyi/package.json apps/docusaurus/zeusfyi/yarn.lock ./
 
 COPY .openapi/mockingbird.yaml ./static/
 COPY .openapi/zk8s.yaml ./static/
+COPY .openapi/iris.yaml ./static/
 
 # Install any needed packages
 RUN yarn install --frozen-lockfile

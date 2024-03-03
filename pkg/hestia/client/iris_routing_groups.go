@@ -18,7 +18,7 @@ func (h *Hestia) CreateIrisGroupRoutes(ctx context.Context, rr hestia_req_types.
 		if err == nil {
 			err = fmt.Errorf("non-OK status code: %d", resp.StatusCode())
 		}
-		log.Ctx(ctx).Err(err).Msg("Hestia: IrisCreateRoutesPath")
+		log.Err(err).Msg("Hestia: IrisCreateRoutesPath")
 		return err
 	}
 	h.PrintRespJson(resp.Body())
@@ -35,7 +35,7 @@ func (h *Hestia) ReadIrisGroupRoutes(ctx context.Context, groupName string) (hes
 		if err == nil {
 			err = fmt.Errorf("non-OK status code: %d", resp.StatusCode())
 		}
-		log.Ctx(ctx).Err(err).Msg("Hestia: ReadIrisGroupRoutes")
+		log.Err(err).Msg("Hestia: ReadIrisGroupRoutes")
 		return respJson, err
 	}
 	h.PrintRespJson(resp.Body())
@@ -51,7 +51,7 @@ func (h *Hestia) ReadIrisGroupsRoutes(ctx context.Context) (hestia_resp_types.Or
 		if err == nil {
 			err = fmt.Errorf("non-OK status code: %d", resp.StatusCode())
 		}
-		log.Ctx(ctx).Err(err).Msg("Hestia: ReadIrisGroupRoutes")
+		log.Err(err).Msg("Hestia: ReadIrisGroupRoutes")
 		return respJson, err
 	}
 	h.PrintRespJson(resp.Body())
@@ -68,7 +68,7 @@ func (h *Hestia) UpdateIrisGroupRoutes(ctx context.Context, rr hestia_req_types.
 		if err == nil {
 			err = fmt.Errorf("non-OK status code: %d", resp.StatusCode())
 		}
-		log.Ctx(ctx).Err(err).Msg("Hestia: UpdateIrisGroupRoutes")
+		log.Err(err).Msg("Hestia: UpdateIrisGroupRoutes")
 		return err
 	}
 	h.PrintRespJson(resp.Body())
@@ -84,7 +84,7 @@ func (h *Hestia) DeleteIrisGroupRoutes(ctx context.Context, rr hestia_req_types.
 		if err == nil {
 			err = fmt.Errorf("non-OK status code: %d", resp.StatusCode())
 		}
-		log.Ctx(ctx).Err(err).Msg("Hestia: DeleteIrisGroupRoutes")
+		log.Err(err).Msg("Hestia: DeleteIrisGroupRoutes")
 		return err
 	}
 	h.PrintRespJson(resp.Body())
