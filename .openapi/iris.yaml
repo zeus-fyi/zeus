@@ -351,12 +351,6 @@ paths:
       responses:
         '101':
           description: WebSocket upgrade successful. The connection will now receive live mempool transaction data.
-        default:
-          description: Error response.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
   /plan/usage:
     get:
       summary: Get Plan Usage Details
@@ -423,12 +417,8 @@ paths:
           description: Bad request. Invalid input parameters.
         '404':
           description: Not found. The specified table group does not exist.
-        default:
-          description: Unexpected error.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error.
   /table/{groupName}/metrics:
     get:
       summary: Get Table Metrics Details
@@ -485,12 +475,8 @@ paths:
           description: Bad request. Invalid input parameters.
         '404':
           description: Not found. The specified table group does not exist.
-        default:
-          description: Unexpected error.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error.
 components:
   parameters:
     RoutingProcedureHeader:
