@@ -144,6 +144,35 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /v1/serverless/{sessionID}:
+    delete:
+      summary: End a Serverless Environment Session Early
+      description: Terminates a serverless environment session early by specifying the session ID.
+      tags:
+        - Adaptive Load Balancer
+      servers:
+        - url: https://iris.zeus.fyi/v1
+      operationId: endServerlessEnvironment
+      parameters:
+        - name: sessionID
+          in: path
+          required: true
+          description: The session ID of the serverless environment to be ended.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Session ended successfully.
+        '400':
+          description: Bad request. The session ID was invalid or not provided.
+        '404':
+          description: Not found. The session ID does not exist.
+        default:
+          description: An unexpected error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /router/{extendedPath}:
     parameters:
       - name: extendedPath
@@ -162,10 +191,23 @@ paths:
       operationId: proxyGetRequest
       parameters:
         - $ref: '#/components/parameters/RouteGroupHeader'
-        - $ref: '#/components/parameters/QueryParameters'
       responses:
         '200':
           description: Successfully proxied GET request.
+          headers:
+            X-Response-Latency-Milliseconds:
+              description: The latency of the response in milliseconds.
+              schema:
+                type: integer
+            X-Response-Received-At-UTC:
+              description: The UTC timestamp when the response was received.
+              schema:
+                type: string
+                format: date-time
+            X-Selected-Route:
+              description: The path that was selected for routing the request.
+              schema:
+                type: string
     post:
       summary: Proxy POST request
       tags:
@@ -184,6 +226,20 @@ paths:
       responses:
         '200':
           description: Successfully proxied POST request.
+          headers:
+            X-Response-Latency-Milliseconds:
+              description: The latency of the response in milliseconds.
+              schema:
+                type: integer
+            X-Response-Received-At-UTC:
+              description: The UTC timestamp when the response was received.
+              schema:
+                type: string
+                format: date-time
+            X-Selected-Route:
+              description: The path that was selected for routing the request.
+              schema:
+                type: string
     put:
       summary: Proxy PUT request
       servers:
@@ -202,6 +258,20 @@ paths:
       responses:
         '200':
           description: Successfully proxied PUT request.
+          headers:
+            X-Response-Latency-Milliseconds:
+              description: The latency of the response in milliseconds.
+              schema:
+                type: integer
+            X-Response-Received-At-UTC:
+              description: The UTC timestamp when the response was received.
+              schema:
+                type: string
+                format: date-time
+            X-Selected-Route:
+              description: The path that was selected for routing the request.
+              schema:
+                type: string
     delete:
       summary: Proxy DELETE request
       tags:
@@ -213,6 +283,20 @@ paths:
       responses:
         '200':
           description: Successfully proxied DELETE request.
+          headers:
+            X-Response-Latency-Milliseconds:
+              description: The latency of the response in milliseconds.
+              schema:
+                type: integer
+            X-Response-Received-At-UTC:
+              description: The UTC timestamp when the response was received.
+              schema:
+                type: string
+                format: date-time
+            X-Selected-Route:
+              description: The path that was selected for routing the request.
+              schema:
+                type: string
   /mempool:
     get:
       summary: Establish a WebSocket connection to the Mempool
@@ -254,8 +338,155 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /plan/usage:
+    get:
+      summary: Get Plan Usage Details
+      operationId: getPlanUsageDetails
+      servers:
+        - url: https://iris.zeus.fyi/v1
+      tags:
+        - Adaptive Load Balancer
+      responses:
+        '200':
+          description: Successfully retrieved plan usage details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlanUsageDetailsResponse'
+  /table/{groupName}/scale/latency:
+    post:
+      summary: Update Table Latency Scale Factor
+      operationId: updateTableLatencyScaleFactor
+      tags:
+        - Adaptive Load Balancer
+      parameters:
+        - name: groupName
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScaleFactorsUpdateRequest'
+      responses:
+        '200':
+          description: Scale factor updated successfully.
+  /table/{groupName}/scale/error:
+    post:
+      summary: Update Table Error Scale Factor
+      operationId: updateTableErrorScaleFactor
+      tags:
+        - Adaptive Load Balancer
+      parameters:
+        - name: groupName
+          in: path
+          required: true
+          description: The name of the table group for which to update the error scale factor.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScaleFactorsUpdateRequest'
+      responses:
+        '200':
+          description: Error scale factor updated successfully.
+        '400':
+          description: Bad request. Invalid input parameters.
+        '404':
+          description: Not found. The specified table group does not exist.
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /table/{groupName}/metrics:
+    get:
+      summary: Get Table Metrics Details
+      servers:
+        - url: https://iris.zeus.fyi/v1
+      tags:
+        - Adaptive Load Balancer
+      operationId: getTableMetricsDetails
+      parameters:
+        - name: groupName
+          in: path
+          required: true
+          description: The name of the table group for which to retrieve metrics.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved table metrics details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TableMetricsSummary'
+        '400':
+          description: Bad request, such as missing or invalid parameters.
+        '404':
+          description: The specified table group name does not exist.
+        '500':
+          description: Internal server error.
+  /table/{groupName}/scale/decay:
+    post:
+      summary: Update Table Decay Scale Factor
+      tags:
+        - Adaptive Load Balancer
+      operationId: updateTableDecayScaleFactor
+      parameters:
+        - name: groupName
+          in: path
+          required: true
+          description: The name of the table group for which to update the decay scale factor.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScaleFactorsUpdateRequest'
+      responses:
+        '200':
+          description: Decay scale factor updated successfully.
+        '400':
+          description: Bad request. Invalid input parameters.
+        '404':
+          description: Not found. The specified table group does not exist.
+        default:
+          description: Unexpected error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 components:
   parameters:
+    ServerlessAnvilHeader:
+      name: X-Anvil-Session-Lock-ID
+      in: header
+      required: false # Assuming it's not required for all requests; adjust as necessary.
+      description: |
+        A unique session identifier for serverless EVM sessions. This ID is used to create or 
+        link a request to a specific serverless session, which is maintained for up to 10 minutes. 
+        The value must be a non-empty string shorter than 256 characters.
+      schema:
+        type: string
+        minLength: 1  # Ensures the string is at least 1 character long.
+        maxLength: 255 # Ensures the string does not exceed 255 characters.
+    AdaptiveMetricsHeader:
+      name: X-Adaptive-Metrics-Key
+      in: header
+      required: false
+      description: If specified, it will use the key-value from the body contents of the returned response for the adaptive metric it corresponds to.
+      schema:
+        type: string
     RouteGroupHeader:
       name: X-Route-Group
       in: header
@@ -263,14 +494,78 @@ components:
       description: Header specifying the route group for the request.
       schema:
         type: string
-    QueryParameters:
-      name: query
-      in: query
-      required: false
-      description: Query parameters to be included in the proxied request.
+    LoadBalancingStrategyHeader:
+      name: X-Load-Balancing-Strategy
+      in: header
+      required: true
+      description: Header specifying the load balancing option for the request, else it will default to Adaptive.
       schema:
         type: string
+        enum:
+          - Adaptive
+          - RoundRobin
   schemas:
+    ScaleFactors:
+      type: object
+      properties:
+        latencyScaleFactor:
+          type: number
+          format: double
+          nullable: true
+          description: |
+            Adjusts the priority score based on latency. The adjusted priority score is calculated as 
+            newScore = currentScore x (latency(percentile) + latencyScaleFactor). This factor 
+            allows for tuning how latency impacts the scoring, with a default value of 0.52.
+        errorScaleFactor:
+          type: number
+          format: double
+          nullable: true
+          description: |
+            Used to adjust the priority score when a 4xx or 5xx error is returned. The adjusted 
+            priority score is calculated as newScore = currentScore x errorScaleFactor. This 
+            factor influences the impact of errors on scoring, with a default value of 3.
+        decayScaleFactor:
+          type: number
+          format: double
+          nullable: true
+          description: |
+            Applies when N (the number of table endpoints equals adaptive requests) have been made 
+            relative to an endpoint. The adjusted priority score is calculated as 
+            newScore = currentScore x decayScaleFactor. This factor determines the effect of request 
+            frequency on scoring, with a default value of 0.95.
+    MetricSample:
+      type: object
+      properties:
+        percentile:
+          type: number
+          format: double
+        latency:
+          type: number
+          format: double
+    TableMetric:
+      type: object
+      properties:
+        sampleCount:
+          type: integer
+        metricPercentiles:
+          type: array
+          items:
+            $ref: '#/components/schemas/MetricSample'
+    TableMetricsSummary:
+      type: object
+      properties:
+        tableName:
+          type: string
+        scaleFactors:
+          $ref: '#/components/schemas/ScaleFactors' # Assuming ScaleFactors is defined elsewhere
+        routes:
+          type: array
+          items:
+            type: object # Define more specifically if possible
+        metrics:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/TableMetric'
     IrisOrgGroupRoutesRequest:
       type: object
       properties:
@@ -312,4 +607,54 @@ components:
           type: string
         code:
           type: integer
-
+    ScaleFactorsUpdateRequest:
+      type: object
+      properties:
+        score:
+          type: number
+          format: double
+    TableUsageAndUserSettings:
+      type: object
+      properties:
+        tutorialOn:
+          type: boolean
+          description: Indicates if the tutorial is active for the user.
+        endpointCount:
+          type: integer
+          description: The number of endpoints the user has.
+        tableCount:
+          type: integer
+          description: The number of tables the user has.
+        monthlyBudgetTableCount:
+          type: integer
+          description: The monthly budget for table count, if applicable.
+          nullable: true
+    UsageMeter:
+      type: object
+      properties:
+        rateLimit:
+          type: number
+          format: double
+          description: The rate limit for the user's plan in ZU units.
+        currentRate:
+          type: number
+          format: double
+          description: The current rate of usage for the user's plan in ZU units.
+        monthlyUsage:
+          type: number
+          format: double
+          description: The monthly usage so far in ZU units.
+        monthlyBudgetZU:
+          type: number
+          format: double
+          description: The monthly budget in ZU units, if applicable.
+          nullable: true
+    PlanUsageDetailsResponse:
+      type: object
+      properties:
+        planName:
+          type: string
+        computeUsage:
+          $ref: '#/components/schemas/UsageMeter' # Define this schema based on your application's structure
+        tableUsage:
+          $ref: '#/components/schemas/TableUsageAndUserSettings' # Define this schema based on your application's structure

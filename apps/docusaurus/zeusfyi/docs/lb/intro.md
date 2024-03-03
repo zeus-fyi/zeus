@@ -16,18 +16,19 @@ requests/sec than any single endpoint can handle. That's in addition to the othe
 and error rate reductions you can expect from our adaptive load balancing technology, see our benchmarking section for
 details.
 
-## Free Mempool Access During Beta
+## Free Mempool Access
 
-During beta testing we're offering unlimited free access to our mempool service at a level which is comparable to:
+We're offering unlimited free access to our mempool service at a level which is comparable to:
 
 - BloXroute - Enterprise/Enterprise-Elite ($1250-5000/mo)
 - Blocknative - Growth1-Growth2 ($1250-5000/mo)
 
-Don't wait. We'll be out of beta testing within the next couple of weeks, and free access will be gone forever.
-
-#### Requires Adaptive RPC Load Balancer Sign Up on QuickNode Marketplace.
 
 # Sign Up
+
+You can use the free tier to get started, and then upgrade to a paid plan at any time, by setting a credit card on your
+account and paying as you go, or by prepaying for a plan.
+https://cloud.zeus.fyi/billing
 
 Sign up here:
 https://marketplace.quicknode.com/add-on/zeusfyi-4

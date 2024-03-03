@@ -23,12 +23,12 @@ function HomepageHeader() {
                     <Link
                         className="button button--secondary button--lg"
                         to="/docs/zk8s/intro">
-                        Platform & APIs
+                        Developer Platform
                     </Link>
                     <Link
                         className="button button--secondary button--lg"
                         to="/docs/lb/intro">
-                        RPC Load Balancer
+                        Adaptive Load Balancer
                     </Link>
                 </div>
             </div>

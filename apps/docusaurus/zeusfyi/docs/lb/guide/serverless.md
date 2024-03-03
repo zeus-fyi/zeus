@@ -14,7 +14,7 @@ RPC Load Balancer on QuickNode Marketplace.
 
 - Each serverless execution environment lasts for up to 10 minutes max, but you can end early to release.
 - Each environment contains an anvil service you can use for simulations/forks + automated smart contract CI/CD.
-- Each user during beta can run up to 5 concurrent serverless execution environments for free.
+- Each user can run up to 5 concurrent serverless execution environments for 250 ZU per session
 - It will automatically convert `hardhat_` prefixed rpc methods to the equivalent `anvil_` method.
 - Integrated Go web3 client under `pkg/artemis/web3/client` on our GitHub repo.
 - We disabled the embedded Anvil rate limiter, so you can use at full speed. `NO_RATE_LIMITS=true`

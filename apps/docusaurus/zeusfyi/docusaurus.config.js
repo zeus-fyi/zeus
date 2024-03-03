@@ -71,7 +71,7 @@ const config = {
                     //     spec: '/Users/alex/go/Olympus/Zeus/.openapi/iris.yaml',
                     //     //spec: './static/iris.yaml',
                     //     route: '/docs/lb/api/',
-                    // }
+                    // },
                     {
                         spec: './static/mockingbird.yaml',
                         route: '/docs/mockingbird/api/',
@@ -114,8 +114,8 @@ const config = {
                         href: 'https://cloud.zeus.fyi/login',
                     },
                     {to: '/docs/mockingbird/intro', label: 'Mockingbird', position: 'left'},
-                    {to: '/docs/zK8s/intro', label: 'Platform & APIs', position: 'left'},
-                    {to: '/docs/lb/intro', label: 'Adaptive RPC Load Balancer', position: 'left'},
+                    {to: '/docs/zK8s/intro', label: 'Developer Platform', position: 'left'},
+                    {to: '/docs/lb/intro', label: 'Adaptive Load Balancer', position: 'left'},
                     {
                         label: 'LinkTree',
                         position: 'right',
