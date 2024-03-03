@@ -131,6 +131,8 @@ if __name__ == '__main__':
     with open('mocks/wf_exec.json', 'r') as file:
         exec_wf_json = json.load(file)
 
+    exec_wf_json['duration'] = 1
+    exec_wf_json['durationUnit'] = "days"
     exec_wf_json['isStrictTimeWindow'] = True
     exec_wf_json['unixStartTime'] = 1707887880
     wf_item_details = {
