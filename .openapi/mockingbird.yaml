@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Mockingbird API
-  version: "1.0.3-beta.rc0"
+  version: "1.0.0"
 servers:
   - url: https://api.zeus.fyi/v1
 paths:
