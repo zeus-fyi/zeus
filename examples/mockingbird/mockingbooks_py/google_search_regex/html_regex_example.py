@@ -29,8 +29,8 @@ matches2 = re.findall(pattern2, text)
 if len(matches1) > len(matches2):
     matches1, matches2 = matches2, matches1
 
-offset_l = 2
-offset_r = 10
+offset_l = 10
+offset_r = 40
 
 # skip next
 for i in range(len(matches1)):
