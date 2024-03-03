@@ -68,7 +68,7 @@
               "evalState": "filter",
               "evalExpectedResultState": "pass",
               "evalMetricComparisonValues": {
-                "evalComparisonNumber": 4
+                "evalComparisonNumber": 3
               }
             }
           ]
