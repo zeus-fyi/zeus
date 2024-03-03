@@ -30,7 +30,6 @@ if len(matches1) > len(matches2):
     matches1, matches2 = matches2, matches1
 
 for i in range(len(matches1)):
-
     if i < 1:
         person_company = f"{i}: {matches2[i]} (person), {matches1[i]} (company)"
         start_wf(person_company, agg_prompt)
