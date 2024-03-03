@@ -1,0 +1,25 @@
+{
+  "triggerStrID": "1709494095246402000",
+  "triggerID": 1709494095246402000,
+  "triggerName": "tweet_create_content_trigger",
+  "triggerGroup": "twitter-mb",
+  "triggerAction": "api-retrieval",
+  "triggerRetrievals": [
+    {
+      "retrievalStrID": "1709493996550940000",
+      "retrievalID": 1709493996550940000,
+      "retrievalName": "tweet_content_writer",
+      "retrievalGroup": "mockingbird_wai",
+      "retrievalItemInstruction": {
+        "retrievalPlatform": ""
+      }
+    }
+  ],
+  "evalTriggerActions": [
+    {
+      "triggerStrID": "0",
+      "evalTriggerState": "filter",
+      "evalResultsTriggerOn": "all-pass"
+    }
+  ]
+}

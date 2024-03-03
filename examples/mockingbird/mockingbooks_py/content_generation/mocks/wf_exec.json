@@ -1,0 +1,11 @@
+{
+  "action": "start",
+  "unixStartTime": 0,
+  "duration": 1,
+  "durationUnit": "cycles",
+  "isStrictTimeWindow": false,
+  "customBasePeriod": false,
+  "customBasePeriodStepSize": 15,
+  "customBasePeriodStepSizeUnit": "minutes",
+  "workflows": []
+}

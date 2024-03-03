@@ -43,14 +43,14 @@ def create_llm_tweet_retrieval():
     create_or_update_retrieval(ret_twitter_json)
 
 
-def create_ef_like_tweet():
+def create_ef_tweet():
     with open('mocks/eval_fn_trigger.json', 'r') as file:
         eval_fn_pl = json.load(file)
     create_or_update_eval(eval_fn_pl)
 
 
-def create_trigger_like_tweet():
-    with open('mocks/trigger_like_tweet.json', 'r') as file:
+def create_trigger_tweet():
+    with open('mocks/trigger_tweet.json', 'r') as file:
         tlt = json.load(file)
     create_or_update_trigger(tlt)
 
@@ -67,22 +67,15 @@ def create_tweet_analysis_task():
     create_analysis_task(at)
 
 
-def create_llm_likes_wf():
+def create_tweet_cg_wf():
     with open('mocks/workflow.json', 'r') as file:
         jdata = json.load(file)
 
     # Add a task to the workflow
-    task_str_id = '1709235859232537000'
+    task_str_id = '1709494294817279000'
     wf_model_task_template['taskStrID'] = task_str_id
     jdata['models'][task_str_id] = wf_model_task_template
 
-    # Add llm tweets retrieval to the workflow
-    retrieval_id = '1709234959989201000'
-    jdata['analysisRetrievalsMap'] = {
-        task_str_id: {
-            retrieval_id: True,
-        }
-    }
     # Get eval fn template
     with open('mocks/eval_fn_trigger.json', 'r') as file:
         ef_data = json.load(file)
@@ -108,39 +101,48 @@ def create_tweet_like_wf():
     # step 2. create api call definition
     create_api_call()
 
-    # step 3. create llm tweets retrieval
-    create_llm_tweet_retrieval()
+    # step 3. create a trigger
+    create_trigger_tweet()
 
-    # step 4. create a trigger
-    create_trigger_like_tweet()
+    # step 4. create eval fn that triggers a tweet like POST request
+    create_ef_tweet()
 
-    # step 5. create eval fn that triggers a tweet like POST request
-    create_ef_like_tweet()
-
-    # step 6. create extract tweets task
+    # step 5. create extract tweets task
     create_tweet_analysis_task()
 
-    # step 7. create a workflow that uses the eval fn
-    create_llm_likes_wf()
+    # step 6. create a workflow that uses the eval fn
+    create_tweet_cg_wf()
 
     # optionally. replace the json id str values with the real ones to update the mocks via the same functions
 
 
-if __name__ == '__main__':
+def start_wf():
+    # content source
+    with open('content/example.txt', 'r') as file:
+        content_input = file.read()
+
     # then exec workflow
     with open('mocks/wf_exec.json', 'r') as file:
-        exec_wf_json = json.load(file)
+        wf_exec = json.load(file)
 
-    exec_wf_json['duration'] = 1
-    exec_wf_json['durationUnit'] = "hours"
-    exec_wf_json['isStrictTimeWindow'] = True
-    exec_wf_json['unixStartTime'] = 1707895080
-    wf_item_details = {
-        "workflowName": "like_llm_tweets_wf",
+    wf_item = {
+        "workflowName": "tweet_content_writer_wf",
     }
-    exec_wf_json['workflows'] = [wf_item_details]
-    start_or_schedule_wf(exec_wf_json)
+    wf_exec['workflows'] = [wf_item]
 
+    tmp = {'tweet_create_content': {'replacePrompt': content_input}}
+    wf_exec['taskOverrides'] = tmp
+
+    pretty_data = json.dumps(wf_exec, indent=4)
+    print(pretty_data)
+
+    start_or_schedule_wf(wf_exec)
+
+
+if __name__ == '__main__':
+    # create_schema()
+
+    start_wf()
     # lookup wf run id you get from the response
     # you can poll this for the status of the workflow run
 

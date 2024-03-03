@@ -1,0 +1,74 @@
+Deploying Large Language Models (LLMs) in the Enterprise
+
+The recent announcement that Open AI is considering launching an App Store for AI Apps (link) is quite interesting. It is to be expected that other major players, e.g., Google, AWS, Hugging Face, will follow suit. While the motive is clear, i.e., to become the preferred platform for Generative AI (GenAI) / Large Language Model (LLM) adoption; there is also a risk that an enterprise app published on the platform will overshadow the underlying platform.
+
+It remains to be seen if the AI Apps Store will turn out be as much of a game changer as the Apple App Store was for iPhone / Mobile devices — interesting times ahead!
+
+It also got me thinking as to what are the LLM deployment options today for an Enterprise. I can think of at least 5 deployment architectures:
+
+Black-box LLM APIs
+Enterprise Apps in LLM App Store
+LLMOps — LLM fine-tuning
+Retrieval Augmented Generation (RAG)
+Multi-agent LLM Orchestration
+
+Fig: LLMOps deployment architecture patterns
+Some observations reg. the 5 deployment patterns:
+
+1. Black-box LLM APIs
+This is your classic ChatGPT [1] example, where we have black-box access to a LLM API/UI. Similar LLM APIs can be considered for other Natural Language Processing (NLP) core tasks, e.g., Knowledge Retrieval, Summarization, Auto-Correct, Translation, Natural Language Generation (NLG).
+
+Prompts are the primary interaction mechanism here and we are all still trying to perfect our Prompt Engineering skills -:)
+
+Prompts refers to adapting the user input, providing the right context and guidance to the LLM API — to maximize the chances of getting the ‘right’ response. It has led to the rise of Prompt Engineering as a professional discipline, where prompt engineers systematically perform trials, recording their findings, to arrive at the ‘right’ prompt to elicit the ‘best’ response.
+
+2. Enterprise Apps in LLM App Store
+While Enterprise LLM Apps have the potential to be a multi-billion dollar marketplace and accelerate LLM adoption by providing an enterprise ready solution; the same caution needs to be exercised as you would do before using a 3rd party ML model — validate LLM/training data ownership, IP, liability clauses [2].
+
+Data ownership: Data is critical for Supervised AI/ML systems, esp. so for LLMs which are often trained on public datasets, whose data usage rights for AI/ML training are not well defined and can evolve in future. For example, Reddit recently announced (link) that it will start charging for Enterprise AI/ML models learning from its extremely human archives.
+
+Given this, negotiation of ownership issues around not only training data, but input data, output data, and other generated data is critical.
+
+On the other hand, it is also important to understand / assess how the Enterprise App Provider will be using the data received / generated as a result of its interactions with the users.
+
+3. LLMOps — LLM fine-tuning to domain specific SLMs
+LLMs are generic in nature. To realize the full potential of LLMs for Enterprises, they need to be contextualized with enterprise knowledge captured in terms of documents, wikis, business processes, etc.
+
+This is achieved by fine-tuning a LLM with enterprise knowledge / embeddings to develop a context-specific LLM [3].
+
+
+Fig: Enterprise LLM contextualization strategy
+Fine-tuning entails taking a pre-trained Large Language Model (LLM), and retraining it with (smaller) enterprise data. Technically, this implies updating the weights of the last layer(s) of the trained neural network to reflect the enterprise data and task.
+
+Given this, access to the base model weights is needed to perform fine-tuning, which is not possible for closed models, e.g., ChatGPT.
+
+This is where open-source pre-trained LLMs come to the rescue, e.g., Meta AI, who recently open-sourced their LLM — LLaMA. The Stanford Alpaca project showed that it is possible to fine-tune LLaMA for $600 — to a model performance comparable with ChatGPT.
+
+So fine-tuning a LLM does not necessarily need to be very complex or expensive.
+
+Given that the enterprise is responsible for the ML (fine-tuning) pipeline in this case, LLMOps (MLOps [4] for LLMs) is needed to deliver this in a scalable fashion.
+
+LLMOps can be considered as more complex than usual MLOps pipelines, esp. to enable the continuous improvement feedback loop — Reinforcement Learning from Human Feedback (RLHF) [5].
+
+LMFlow (link) is a good example of an emerging MLOps framework for LLMs.
+
+4. Retrieval Augmented Generation (RAG)
+Fine-tuning is a computationally intensive process.
+
+RAG provides a viable alternative by providing additional context with the prompt, grounding the retrieval / responses to the given context.
+
+The prompts can be relatively long, so it is possible to embed enterprise context within the prompt. For example, referring to the below solution architecture on Azure, the Cognitive Search Results are provided as additional context with the prompt — to limit the responses.
+
+
+Fig: Integrating enterprise data with ChatGPT on Azure (Source: [6])
+Below is how the same RAG reference architecture looks like on Databricks:
+
+
+Fig: Reference architecture to implement RAGs on Databricks (Source: [7])
+5. Multi-agent LLM Orchestration
+This is the future where enterprises will be able to develop new Enterprise AI Apps by orchestrating / composing multiple existing AI Apps.
+
+The discussion around ChatGPT, has now evolved into AutoGPT. While ChatGPT is primarily a Chatbot that can generate text responses, AutoGPT is a more powerful AI Agent that can execute complex tasks, e.g., make a sale, plan a trip, make a flight booking, book a contractor to do a house job, order a pizza. LangChain (link) is probably the most mature framework today to compose LLMs.
+
+AutoGPT follows a long history of research around Autonomous Agents, especially, Goal Oriented Agents; and we have considered in detail the discovery aspects of enabling an AI Agents Marketplace in [7].
+

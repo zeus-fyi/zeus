@@ -1,0 +1,33 @@
+{
+  "taskStrID": "1709494294817279000",
+  "taskID": 1709494294817279000,
+  "maxTokensPerTask": 0,
+  "taskType": "analysis",
+  "taskName": "tweet_create_content",
+  "taskGroup": "mockingbird",
+  "tokenOverflowStrategy": "deduce",
+  "model": "gpt-4-0125-preview",
+  "temperature": 1,
+  "marginBuffer": 0.5,
+  "prompt": "",
+  "responseFormat": "json",
+  "schemas": [
+    {
+      "schemaID": 1709493233748562000,
+      "schemaStrID": "1709493233748562000",
+      "schemaName": "tweet_create",
+      "schemaGroup": "mockingbird",
+      "schemaDescription": "This schema is used for translating the content body into one or more sequential tweets covering only the topic of the content.",
+      "isObjArray": true,
+      "fields": [
+        {
+          "fieldID": 1709493233754451455,
+          "fieldStrID": "1709493233754451455",
+          "fieldName": "text",
+          "fieldDescription": "Text of the Tweet being created. This field is required if media.media_ids is not present.Example: {\"text\": \"Hello World!\"}",
+          "dataType": "string"
+        }
+      ]
+    }
+  ]
+}

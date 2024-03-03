@@ -1,0 +1,17 @@
+{
+  "schemaID": 1709493233748562000,
+  "schemaStrID": "1709493233748562000",
+  "schemaName": "tweet_create",
+  "schemaGroup": "mockingbird",
+  "schemaDescription": "Read the blog post below and suggest 3 questions that a reader will have that are not answered in the article, then write your answer into one or more sequential tweets answering those questions.",
+  "isObjArray": true,
+  "fields": [
+    {
+      "fieldID": 1709493233754451455,
+      "fieldStrID": "1709493233754451455",
+      "fieldName": "text",
+      "fieldDescription": "Text of the Tweet being created. This field is required if media.media_ids is not present.Example: {\"text\": \"Hello World!\"}",
+      "dataType": "string"
+    }
+  ]
+}

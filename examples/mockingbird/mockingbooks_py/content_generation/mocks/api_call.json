@@ -1,0 +1,36 @@
+{
+  "retrievalStrID": "1709493996550940000",
+  "retrievalID": 1709493996550940000,
+  "retrievalName": "tweet_content_writer",
+  "retrievalGroup": "mockingbird",
+  "retrievalItemInstruction": {
+    "retrievalPlatform": "api",
+    "retrievalPrompt": "",
+    "retrievalPlatformGroups": "",
+    "retrievalKeywords": "",
+    "retrievalUsernames": "",
+    "discordFilters": {
+      "categoryTopic": "",
+      "categoryName": "",
+      "category": ""
+    },
+    "webFilters": {
+      "routingGroup": "twitter-mockingbird_wai",
+      "lbStrategy": "",
+      "endpointRoutePath": "tweets",
+      "endpointREST": "post",
+      "payloadPreProcessing": "iterate",
+      "dontRetryStatusCodes": [
+        429,
+        400,
+        403,
+        406,
+        410,
+        422
+      ],
+      "payloadKeys": [
+        "text"
+      ]
+    }
+  }
+}

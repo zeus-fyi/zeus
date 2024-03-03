@@ -23,6 +23,8 @@ def create_or_update_schema(schema):
     response = requests.post(url, json=schema, headers=headers)
     if response.status_code == 200:
         print("Schema created successfully!")
+        pretty_data = json.dumps(response.json(), indent=4)
+        print(pretty_data)
     else:
         print(response.json())
         print("Failed to create schema. Status Code:", response.status_code)

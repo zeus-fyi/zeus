@@ -1,0 +1,57 @@
+{
+  "evalStrID": "1709494206553563214",
+  "evalID": 1709494206553563214,
+  "evalName": "write_tweets_eval_mb",
+  "evalType": "model",
+  "evalGroupName": "twitter-mb",
+  "evalModel": "gpt-4-0125-preview",
+  "evalFormat": "json",
+  "triggerFunctions": [
+    {
+      "triggerStrID": "1709494095246402000",
+      "triggerID": 1709494095246402000,
+      "triggerName": "tweet_create_content_trigger",
+      "triggerGroup": "twitter-mb",
+      "triggerAction": "api-retrieval",
+      "evalTriggerActions": [
+        {
+          "evalStrID": "1709494206553563214",
+          "triggerID": 1709494095246402000,
+          "triggerStrID": "1709494095246402000",
+          "evalTriggerState": "filter",
+          "evalResultsTriggerOn": "all-pass"
+        }
+      ]
+    }
+  ],
+  "schemas": [
+    {
+      "schemaID": 1709493233748562000,
+      "schemaStrID": "1709493233748562000",
+      "schemaName": "tweet",
+      "schemaGroup": "mockingbird",
+      "schemaDescription": "This schema is used for translating the content body into one or more sequential tweets covering only the topic of the content.",
+      "isObjArray": true,
+      "fields": [
+        {
+          "fieldID": 1709493233754451455,
+          "fieldStrID": "1709493233754451455",
+          "fieldName": "text",
+          "fieldDescription": "Text of the Tweet being created. This field is required if media.media_ids is not present.Example: {\"text\": \"Hello World!\"}",
+          "dataType": "string",
+          "evalMetrics": [
+            {
+              "evalMetricID": 1709494206564928100,
+              "evalOperator": "length-less-than-eq",
+              "evalState": "filter",
+              "evalExpectedResultState": "pass",
+              "evalMetricComparisonValues": {
+                "evalComparisonString": "280"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

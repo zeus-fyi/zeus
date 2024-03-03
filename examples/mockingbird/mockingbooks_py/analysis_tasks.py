@@ -28,6 +28,8 @@ def create_analysis_task(task):
     # Check the response status
     if response.status_code == 200:
         print("Task created successfully!")
+        pretty_task_data = json.dumps(response.json(), indent=4)
+        print(pretty_task_data)
     else:
         print(response.json())
         print("Failed to create task. Status Code:", response.status_code)
