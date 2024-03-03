@@ -376,6 +376,8 @@ paths:
     post:
       summary: Update Table Latency Scale Factor
       operationId: updateTableLatencyScaleFactor
+      servers:
+        - url: https://iris.zeus.fyi/v1
       tags:
         - Adaptive Load Balancer
       parameters:
@@ -397,6 +399,8 @@ paths:
     post:
       summary: Update Table Error Scale Factor
       operationId: updateTableErrorScaleFactor
+      servers:
+        - url: https://iris.zeus.fyi/v1
       tags:
         - Adaptive Load Balancer
       parameters:
@@ -456,6 +460,8 @@ paths:
   /table/{groupName}/scale/decay:
     post:
       summary: Update Table Decay Scale Factor
+      servers:
+        - url: https://iris.zeus.fyi/v1
       tags:
         - Adaptive Load Balancer
       operationId: updateTableDecayScaleFactor
