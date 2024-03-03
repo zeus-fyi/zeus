@@ -131,7 +131,8 @@ if __name__ == '__main__':
     with open('mocks/wf_exec.json', 'r') as file:
         exec_wf_json = json.load(file)
 
-    exec_wf_json['unixStartTime'] = 1707883380
+    exec_wf_json['isStrictTimeWindow'] = True
+    exec_wf_json['unixStartTime'] = 1707886980
     wf_item_details = {
         "workflowName": "like_llm_tweets_wf",
     }

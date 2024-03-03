@@ -9,7 +9,10 @@
       "retrievalStrID": "1709415776852179000",
       "retrievalID": 1709415776852179000,
       "retrievalName": "create_entities",
-      "retrievalGroup": "entities"
+      "retrievalGroup": "entities",
+      "retrievalItemInstruction": {
+        "retrievalPlatform": "api"
+      }
     }
   ],
   "evalTriggerActions": [

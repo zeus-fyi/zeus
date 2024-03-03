@@ -1,0 +1,12 @@
+{
+  "workflowName": "google-query-regex-index-wf",
+  "workflowGroupName": "google-search",
+  "stepSize": 5,
+  "stepSizeUnit": "minutes",
+  "models": {
+  },
+  "evalsMap": {},
+  "evalTasksMap": {},
+  "aggregateSubTasksMap": {},
+  "analysisRetrievalsMap": {}
+}

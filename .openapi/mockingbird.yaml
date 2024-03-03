@@ -364,48 +364,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - action # Indicating that 'action' is a required field
-                - workflows
-              properties:
-                action:
-                  type: string
-                  enum:
-                    - start # Restricting to only allow "start"
-                unixStartTime:
-                  type: integer
-                duration:
-                  type: integer
-                durationUnit:
-                  type: string
-                  enum: # Restricting to the specified units
-                    - minutes
-                    - minute
-                    - hours
-                    - hour
-                    - hrs
-                    - hr
-                    - days
-                    - day
-                    - weeks
-                    - week
-                    - cycles
-                customBasePeriod:
-                  type: boolean
-                customBasePeriodStepSize:
-                  type: integer
-                customBasePeriodStepSizeUnit:
-                  type: string
-                workflows:
-                  type: array
-                  items:
-                    type: object
-                    required:
-                      - workflowName
-                    properties:
-                      workflowName:
-                        type: string
+              $ref: '#/components/schemas/WorkflowsActionsRequest'
       responses:
         '200':
           description: Successful response
@@ -560,6 +519,53 @@ paths:
           description: Internal server error
 components:
   schemas:
+    WorkflowsActionsRequest:
+      type: object
+      required:
+        - action
+        - workflows
+      properties:
+        action:
+          type: string
+          enum:
+            - start
+        unixStartTime:
+          type: integer
+        duration:
+          type: integer
+        durationUnit:
+          type: string
+          enum:
+            - minutes
+            - minute
+            - hours
+            - hour
+            - hrs
+            - hr
+            - days
+            - day
+            - weeks
+            - week
+            - cycles
+        isStrictTimeWindow:
+          type: boolean
+          description: "If true, it will sleep over the time-series window, even if the time start relative deadline has passed. Useful for historical data that needs time delays"
+        customBasePeriod:
+          type: boolean
+        customBasePeriodStepSize:
+          type: integer
+        customBasePeriodStepSizeUnit:
+          type: string
+        workflows:
+          type: array
+          items:
+            type: string
+    TaskOverride:
+      type: object
+      description: Used to override task parameters, use the task name as the key.
+      properties:
+        replacePrompt:
+          type: string
     EntitiesFilter:
       type: object
       properties:

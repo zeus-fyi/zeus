@@ -2,9 +2,10 @@
   "action": "start",
   "unixStartTime": 1707883380,
   "duration": 1,
-  "durationUnit": "cycles",
-  "customBasePeriod": false,
-  "customBasePeriodStepSize": 1,
-  "customBasePeriodStepSizeUnit": "hour",
+  "durationUnit": "hours",
+  "isStrictTimeWindow": true,
+  "customBasePeriod": true,
+  "customBasePeriodStepSize": 15,
+  "customBasePeriodStepSizeUnit": "minutes",
   "workflows": []
 }

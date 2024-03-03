@@ -1,89 +1,68 @@
-[
-  {
-    "taskStrID": "0",
-    "taskID": 0,
-    "maxTokensPerTask": 0,
-    "taskType": "analysis",
-    "taskName": "zeusfyi-verbatim",
-    "taskGroup": "default",
-    "tokenOverflowStrategy": "deduce",
-    "model": "gpt-4-0125-preview",
-    "temperature": 1,
-    "marginBuffer": 0.5,
-    "prompt": "Name, company",
-    "schemas": [
-      {
-        "schemaID": 0,
-        "schemaStrID": "0",
-        "schemaName": "google-search-query-params",
-        "schemaGroup": "google-search",
-        "schemaDescription": "Gets query value string for google api call",
-        "isObjArray": false,
-        "fields": [
-          {
-            "fieldID": 0,
-            "fieldStrID": "0",
-            "fieldName": "q",
-            "fieldDescription": "this will be a google search query string to look up more information about the request shown.\n\nexample: prompt: \"business: openai, person: brockman\", response: \"what does brockman do at openai\"\n\nyou should not add ? in your response",
-            "dataType": "string"
-          }
-        ]
-      }
-    ],
-    "schemasMap": {
-      "0": {
-        "schemaID": 0,
-        "schemaStrID": "0",
-        "schemaName": "google-search-query-params",
-        "schemaGroup": "google-search",
-        "schemaDescription": "Gets query value string for google api call",
-        "isObjArray": false,
-        "fields": [
-          {
-            "fieldID": 0,
-            "fieldStrID": "",
-            "fieldName": "q",
-            "fieldDescription": "this will be a google search query string to look up more information about the request shown.\n\nexample: prompt: \"business: openai, person: brockman\", response: \"what does brockman do at openai\"\n\nyou should not add ? in your response",
-            "dataType": "string"
-          }
-        ]
-      }
-    },
-    "responseFormat": "json",
-    "evalFns": [
-      {
-        "evalID": 0,
-        "evalName": "google-search-query-param",
-        "evalType": "model",
-        "evalGroupName": "google-search",
-        "evalModel": "gpt-4-0125-preview",
-        "evalFormat": "json",
-        "schemas": [
-          {
-            "schemaID": 0,
-            "schemaName": "google-search-query-params",
-            "schemaGroup": "google-search",
-            "schemaDescription": "Gets query value string for google api call",
-            "isObjArray": false,
-            "fields": [
-              {
-                "fieldID": 0,
-                "fieldName": "q",
-                "fieldDescription": "this will be a google search query string to look up more information about the request shown.\n\nexample: prompt: \"business: openai, person: brockman\", response: \"what does brockman do at openai\"\n\nyou should not add ? in your response",
-                "dataType": "string",
-                "evalMetrics": [
-                  {
-                    "evalMetricID": 0,
-                    "evalOperator": "length-less-than",
-                    "evalState": "filter",
-                    "evalExpectedResultState": "pass"
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  }
-]
+{
+  "taskStrID": "0",
+  "taskID": 0,
+  "maxTokensPerTask": 0,
+  "taskType": "analysis",
+  "taskName": "zeusfyi-verbatim",
+  "taskGroup": "default",
+  "tokenOverflowStrategy": "deduce",
+  "model": "gpt-4-0125-preview",
+  "temperature": 1,
+  "marginBuffer": 0.5,
+  "prompt": "Name, company",
+  "schemas": [
+    {
+      "schemaID": 0,
+      "schemaStrID": "0",
+      "schemaName": "google-search-query-params",
+      "schemaGroup": "google-search",
+      "schemaDescription": "Gets query value string for google api call",
+      "isObjArray": false,
+      "fields": [
+        {
+          "fieldID": 0,
+          "fieldStrID": "0",
+          "fieldName": "q",
+          "fieldDescription": "this will be a google search query string to look up more information about the request shown.\n\nexample: prompt: \"business: openai, person: brockman\", response: \"what does brockman do at openai\"\n\nyou should not add ? in your response",
+          "dataType": "string"
+        }
+      ]
+    }
+  ],
+  "responseFormat": "json",
+  "evalFns": [
+    {
+      "evalID": 0,
+      "evalName": "google-search-query-param",
+      "evalType": "model",
+      "evalGroupName": "google-search",
+      "evalModel": "gpt-4-0125-preview",
+      "evalFormat": "json",
+      "schemas": [
+        {
+          "schemaID": 0,
+          "schemaName": "google-search-query-params",
+          "schemaGroup": "google-search",
+          "schemaDescription": "Gets query value string for google api call",
+          "isObjArray": false,
+          "fields": [
+            {
+              "fieldID": 0,
+              "fieldName": "q",
+              "fieldDescription": "this will be a google search query string to look up more information about the request shown.\n\nexample: prompt: \"business: openai, person: brockman\", response: \"what does brockman do at openai\"\n\nyou should not add ? in your response",
+              "dataType": "string",
+              "evalMetrics": [
+                {
+                  "evalMetricID": 0,
+                  "evalOperator": "length-less-than",
+                  "evalState": "filter",
+                  "evalExpectedResultState": "pass"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
