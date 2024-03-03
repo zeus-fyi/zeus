@@ -224,6 +224,7 @@ paths:
         - $ref: '#/components/parameters/LoadBalancingStrategyHeader'
         - $ref: '#/components/parameters/ServerlessAnvilHeader'
         - $ref: '#/components/parameters/AdaptiveMetricsHeader'
+        - $ref: '#/components/parameters/RoutingProcedureHeader'
       requestBody:
         required: true
         content:
@@ -486,6 +487,20 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   parameters:
+    RoutingProcedureHeader:
+      name: X-Routing-Procedure
+      in: header
+      required: false
+      description: |
+        Uses a routing procedure to execute and/or transform the request. The value must be a non-empty string.
+      schema:
+        type: string
+        enum:
+          - eth_maxBlockAggReduce
+          - avax_maxBlockAggReduce
+          - avax_platformMaxHeightAggReduce
+          - near_maxBlockAggReduce
+          - btc_maxBlockAggReduce
     ServerlessAnvilHeader:
       name: X-Anvil-Session-Lock-ID
       in: header
