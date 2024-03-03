@@ -38,14 +38,14 @@
       "fieldID": 1709414328259537000,
       "fieldStrID": "1709414328259537000",
       "fieldName": "nickname",
-      "fieldDescription": "The format should follow platform-specific conventions. E.g., for linkedIn, when you see links like: https://www.linkedin.com/in/alexandersgeorge/, you should should extract it from the route path, e.g. alexandersgeorge, for the nickname, for Twitter, use the unique handle of the user including the '@' symbol; for Email, provide a valid email address format (username@example.com).",
+      "fieldDescription": "The format should follow platform-specific conventions. E.g., for a business, the business name, for linkedIn, when you see links like: https://www.linkedin.com/in/alexandersgeorge/, you should should extract it from the route path, e.g. alexandersgeorge, for the nickname, for Twitter, use the unique handle of the user including the '@' symbol; for Email, provide a valid email address format (username@example.com).",
       "dataType": "string"
     },
     {
       "fieldID": 1709414328316873000,
       "fieldStrID": "1709414328316873000",
       "fieldName": "platform",
-      "fieldDescription": "Acceptable options: kubernetes, linkedIn, reddit, twitter, email, discord, slack, telegram, sms, unspecified. select the platform that matches best from the information provided.",
+      "fieldDescription": "Acceptable options: kubernetes, linkedIn, reddit, twitter, email, discord, slack, telegram, sms, business, unspecified. select the platform that matches best from the information provided.",
       "dataType": "string"
     }
   ]
