@@ -21,6 +21,7 @@
       "endpointREST": "post",
       "payloadPreProcessing": "iterate",
       "dontRetryStatusCodes": [
+        429,
         400,
         403,
         406,
