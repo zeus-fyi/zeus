@@ -191,6 +191,9 @@ paths:
       operationId: proxyGetRequest
       parameters:
         - $ref: '#/components/parameters/RouteGroupHeader'
+        - $ref: '#/components/parameters/LoadBalancingStrategyHeader'
+        - $ref: '#/components/parameters/ServerlessAnvilHeader'
+        - $ref: '#/components/parameters/AdaptiveMetricsHeader'
       responses:
         '200':
           description: Successfully proxied GET request.
@@ -216,6 +219,11 @@ paths:
       servers:
         - url: https://iris.zeus.fyi/v1
       operationId: proxyPostRequest
+      parameters:
+        - $ref: '#/components/parameters/RouteGroupHeader'
+        - $ref: '#/components/parameters/LoadBalancingStrategyHeader'
+        - $ref: '#/components/parameters/ServerlessAnvilHeader'
+        - $ref: '#/components/parameters/AdaptiveMetricsHeader'
       requestBody:
         required: true
         content:
@@ -248,6 +256,11 @@ paths:
         - Adaptive Load Balancer
       description: Proxies a PUT request to the configured backend service based on the X-Route-Group header and request body.
       operationId: proxyPutRequest
+      parameters:
+        - $ref: '#/components/parameters/RouteGroupHeader'
+        - $ref: '#/components/parameters/LoadBalancingStrategyHeader'
+        - $ref: '#/components/parameters/ServerlessAnvilHeader'
+        - $ref: '#/components/parameters/AdaptiveMetricsHeader'
       requestBody:
         required: true
         content:
@@ -280,6 +293,11 @@ paths:
       servers:
         - url: https://iris.zeus.fyi/v1
       operationId: proxyDeleteRequest
+      parameters:
+        - $ref: '#/components/parameters/RouteGroupHeader'
+        - $ref: '#/components/parameters/LoadBalancingStrategyHeader'
+        - $ref: '#/components/parameters/ServerlessAnvilHeader'
+        - $ref: '#/components/parameters/AdaptiveMetricsHeader'
       responses:
         '200':
           description: Successfully proxied DELETE request.
@@ -490,14 +508,14 @@ components:
     RouteGroupHeader:
       name: X-Route-Group
       in: header
-      required: true
-      description: Header specifying the route group for the request.
+      required: false # Updated to reflect optional status when ServerlessAnvilHeader is used.
+      description: Header specifying the route group for the request. It becomes optional when the ServerlessAnvilHeader is used.
       schema:
         type: string
     LoadBalancingStrategyHeader:
       name: X-Load-Balancing-Strategy
       in: header
-      required: true
+      required: false
       description: Header specifying the load balancing option for the request, else it will default to Adaptive.
       schema:
         type: string
