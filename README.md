@@ -11,7 +11,7 @@ model-to-model communication via synchronized quorums.
 
 ### Usage
 
-Mockingbird is an active research and development project, and now a product you can use. Like ChatGPT 4, but with power steering and cruise control.
+Mockingbird is an active research and development project, and now a product you can use, like ChatGPT 4, but with power steering and cruise control.
 
 ### Costs
 
