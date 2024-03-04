@@ -2,7 +2,9 @@ import json
 
 from examples.mockingbird.mockingbooks_py.agg_tasks import create_agg_task
 from examples.mockingbird.mockingbooks_py.analysis_tasks import create_analysis_task
+from examples.mockingbird.mockingbooks_py.entities import EntitiesFilter, search_entities
 from examples.mockingbird.mockingbooks_py.evals import create_or_update_eval
+from examples.mockingbird.mockingbooks_py.runs import get_run
 from examples.mockingbird.mockingbooks_py.schemas import create_or_update_schema
 from examples.mockingbird.mockingbooks_py.workflows import create_wf, wf_exec_template, start_or_schedule_wf
 from examples.mockingbird.mockingbooks_py.workflows_examples import wf_model_task_template, wf_model_agg_task_template
@@ -92,13 +94,13 @@ def create_agg_msg_dev_platform():
 
 def create_agg(at, body_context):
     at['prompt'] = (
-                "As a top-tier SaaS sales professional with a proven track record of swiftly closing deals, you understand the "
-                "importance of first impressions. You've just received a promising lead, and you have our company product info and customer profile"
-                "included to help assess from the context you're reviewing and need to craft an impactful cold outbound linkedIn message. Your approach combines deep insights into the potential client’s challenges with a concise "
-                "showcase of how your software provides the perfect solution, all while creating a sense of urgency and "
-                "exclusivity. Your goal is to not just introduce the software, but to create an immediate connection and "
-                "schedule a follow-up demo or meeting, leveraging your legendary closing skills to make this opportunity "
-                "impossible for the prospect to pass up. \n" + body_context)
+            "As a top-tier SaaS sales professional with a proven track record of swiftly closing deals, you understand the "
+            "importance of first impressions. You've just received a promising lead, and you have our company product info and customer profile"
+            "included to help assess from the context you're reviewing and need to craft an impactful cold outbound linkedIn message. Your approach combines deep insights into the potential client’s challenges with a concise "
+            "showcase of how your software provides the perfect solution, all while creating a sense of urgency and "
+            "exclusivity. Your goal is to not just introduce the software, but to create an immediate connection and "
+            "schedule a follow-up demo or meeting, leveraging your legendary closing skills to make this opportunity "
+            "impossible for the prospect to pass up. \n" + body_context)
     return create_agg_task(at)
 
 
@@ -132,8 +134,8 @@ def create_lead_score_llm_wf(task_str_id, agg_task_str_id):
             task_str_id: True
         }
     }
-    pretty_data = json.dumps(jdata, indent=4)
-    print(pretty_data)
+    pretty_data_out = json.dumps(jdata, indent=4)
+    print(pretty_data_out)
     create_wf(jdata)
 
 
@@ -202,37 +204,58 @@ def create_scoring_wfs():
     create_lead_score_dp_wf(dev_task_str_id, dev_agg_task_str_id)
 
 
+def run_dp_scoring_wf(entity, dry_run=False):
+    # dp_lead_scoring_wf
+    wf_item_details['workflowName'] = 'dp_lead_scoring_wf'
+    wf_exec_template['workflows'] = [wf_item_details]
+    tmp = {'developer_platform_scoring': {'replacePrompt': entity}}
+    wf_exec_template['taskOverrides'] = tmp
+    pretty_data = json.dumps(wf_exec_template, indent=4)
+    print(pretty_data)
+
+    if not dry_run:
+        start_or_schedule_wf(wf_exec_template)
+
+
+def run_llm_wfs_scoring_wf(entity, dry_run=False):
+    # llm_lead_scoring_wfs
+    wf_item_details['workflowName'] = 'llm_lead_scoring_wf'
+    wf_exec_template['workflows'] = [wf_item_details]
+
+    tmp = {'llm_wf_scoring': {'replacePrompt': entity}}
+    wf_exec_template['taskOverrides'] = tmp
+
+    pretty_data = json.dumps(wf_exec_template, indent=4)
+    print(pretty_data)
+    if not dry_run:
+        start_or_schedule_wf(wf_exec_template)
+
+
 wf_item_details = {
     "workflowName": "",
 }
 
 if __name__ == '__main__':
-    # Starts a workflow
-    # llm_lead_scoring_wfs
-    wf_item_details['workflowName'] = 'llm_lead_scoring_wf'
-    wf_exec_template['workflows'] = [wf_item_details]
+    # gets all entities
+    search_entities_f = EntitiesFilter(
+        platform="linkedIn",
+    )
 
-    pretty_data = json.dumps(wf_exec_template, indent=4)
-    print(pretty_data)
-    start_or_schedule_wf(wf_exec_template)
-
-    # dp_lead_scoring_wf
-    wf_item_details['workflowName'] = 'dp_lead_scoring_wf'
-    wf_exec_template['workflows'] = [wf_item_details]
-
-    pretty_data = json.dumps(wf_exec_template, indent=4)
-    print(pretty_data)
-    start_or_schedule_wf(wf_exec_template)
-
-    # # create eval fn that triggers a tweet like POST request
-    # # create a workflow that uses the eval fn
-    # create_lead_score_wf()
-    # search_entities_f = EntitiesFilter()
-    #
-    # pretty_data1 = search_entities(search_entities_f)
-    # pretty_data2 = json.dumps(pretty_data1, indent=4)
+    pretty_data1 = search_entities(search_entities_f)
+    pretty_data2 = json.dumps(pretty_data1, indent=4)
     # print(pretty_data2)
+
+    # # for when you want to analyze a targeted entity/platform,
+    # # 1. quick local find + target wf
+    # # 2. local prototyping of the wf using real entity data without larger scale AI search
     #
-    # for v in pretty_data1:
-    #     print(v)
-    #     print('---')
+    dry_run_wf = False
+    target_entity_name = 'lazarus-ai'
+    for tgt in pretty_data1:
+        nn = tgt['nickname']
+        if tgt['platform'] == 'linkedIn' and nn == target_entity_name:
+            run_dp_scoring_wf(json.dumps(tgt), dry_run_wf)
+            # run_llm_wfs_scoring_wf(tgt, dry_run)
+
+    # poll the run status
+    get_run('1709582814922225000')
