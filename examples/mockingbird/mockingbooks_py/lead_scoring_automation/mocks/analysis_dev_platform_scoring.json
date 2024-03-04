@@ -1,0 +1,90 @@
+[
+  {
+    "taskStrID": "1709526931827736000",
+    "taskID": 1709526931827736000,
+    "maxTokensPerTask": 0,
+    "taskType": "analysis",
+    "taskName": "developer_platform_scoring",
+    "taskGroup": "mockingbird",
+    "tokenOverflowStrategy": "deduce",
+    "model": "gpt-4-0125-preview",
+    "temperature": 1,
+    "marginBuffer": 0.5,
+    "prompt": "",
+    "schemas": [
+      {
+        "schemaID": 1709526930657354000,
+        "schemaStrID": "1709526930657354000",
+        "schemaName": "lead_scoring_dev_platform",
+        "schemaGroup": "sales_automation",
+        "schemaDescription": "Scores entities based on their potential to convert to a customer, and generates a message if the score is high enough to warrant a salesperson's attention.  The production version of this schema will be used to score leads and generate messages in the sales automation platform.",
+        "isObjArray": true,
+        "fields": [
+          {
+            "fieldID": 1709526930660803039,
+            "fieldStrID": "1709526930660803039",
+            "fieldName": "lead_score",
+            "fieldDescription": "For the Kubernetes developer platform, the lead scoring rubric should be tailored to prioritize profiles that indicate a need for Kubernetes orchestration, DevOps capabilities, and an interest in infrastructure management. Here\u2019s how you can score leads based on the metadata and labels from the shared profiles format:\n\nLead Scoring Rubric for Kubernetes Developer Platform:\n\nIndustry and Technological Relevance (0-5 points):\n\nLabels indicating tech industry, especially cloud, AI, or data analytics: +5\nLabels indicating industries that often use Kubernetes (e.g., software development): +4\nLabels indicating unrelated industries: +0\n\nProfessional Role and Influence (0-5 points):\n\nLabels indicating senior technology leadership (e.g., CTO, VP of Engineering): +5\nLabels indicating roles in DevOps, cloud architecture, or infrastructure: +4\nLabels indicating junior or non-technical roles: +1\nNo relevant role information: +0\n\nTechnical Needs and Pain Points (0-5 points):\n\nLabels indicating a need for scaling, containerization, or orchestration: +5\nLabels indicating interest in DevOps tooling and automation: +4\nLabels indicating general technology needs without specifics: +2\nNo labels indicating relevant technical needs: +0\n\nNetworking and Community Engagement (0-3 points):\n\nLabels with 500+ connections or evidence of active community engagement: +3\nLabels indicating moderate networking activity: +1\nNo labels indicating networking or community engagement: +0\n\nGeographical Focus (0-2 points):\n\nLabels indicating the location in recognized tech hubs or regions with high Kubernetes adoption: +2\nLabels indicating other locations: +1\nNo location specified: +0\n\nCompany Size (0-3 points):\n\nLabels from profiles of individuals in large enterprises (more likely to use Kubernetes at scale): +3\nLabels from profiles of individuals in medium-sized companies: +2\nLabels from profiles of individuals in small companies or startups: +1\nCurrent Solutions and Engagement (0-5 points):\n\nLabels indicating use of competing Kubernetes management platforms (potential switchers): +5\nLabels indicating use of cloud services (potential for Kubernetes integration): +4\nLabels indicating no current solutions or lack of engagement with relevant platforms: +0\n\nScoring Interpretation:\n\n23-28 points: High priority lead. Strong alignment with Kubernetes platform needs and likely to be highly interested.\n15-22 points: Medium priority lead. Some signals of alignment but may need more nurturing or information.\n8-14 points: Low priority lead. Limited signals of alignment, requiring further qualification.\n0-7 points: Not a priority. Unlikely to need a Kubernetes orchestration platform at this time.",
+            "dataType": "integer"
+          }
+        ]
+      }
+    ],
+    "schemasMap": {
+      "1709526930657354000": {
+        "schemaID": 1709526930657354000,
+        "schemaStrID": "1709526930657354000",
+        "schemaName": "lead_scoring_dev_platform",
+        "schemaGroup": "sales_automation",
+        "schemaDescription": "Scores entities based on their potential to convert to a customer, and generates a message if the score is high enough to warrant a salesperson's attention.  The production version of this schema will be used to score leads and generate messages in the sales automation platform.",
+        "isObjArray": true,
+        "fields": [
+          {
+            "fieldID": 1709526930660803039,
+            "fieldStrID": "1709526930660803039",
+            "fieldName": "lead_score",
+            "fieldDescription": "For the Kubernetes developer platform, the lead scoring rubric should be tailored to prioritize profiles that indicate a need for Kubernetes orchestration, DevOps capabilities, and an interest in infrastructure management. Here\u2019s how you can score leads based on the metadata and labels from the shared profiles format:\n\nLead Scoring Rubric for Kubernetes Developer Platform:\n\nIndustry and Technological Relevance (0-5 points):\n\nLabels indicating tech industry, especially cloud, AI, or data analytics: +5\nLabels indicating industries that often use Kubernetes (e.g., software development): +4\nLabels indicating unrelated industries: +0\n\nProfessional Role and Influence (0-5 points):\n\nLabels indicating senior technology leadership (e.g., CTO, VP of Engineering): +5\nLabels indicating roles in DevOps, cloud architecture, or infrastructure: +4\nLabels indicating junior or non-technical roles: +1\nNo relevant role information: +0\n\nTechnical Needs and Pain Points (0-5 points):\n\nLabels indicating a need for scaling, containerization, or orchestration: +5\nLabels indicating interest in DevOps tooling and automation: +4\nLabels indicating general technology needs without specifics: +2\nNo labels indicating relevant technical needs: +0\n\nNetworking and Community Engagement (0-3 points):\n\nLabels with 500+ connections or evidence of active community engagement: +3\nLabels indicating moderate networking activity: +1\nNo labels indicating networking or community engagement: +0\n\nGeographical Focus (0-2 points):\n\nLabels indicating the location in recognized tech hubs or regions with high Kubernetes adoption: +2\nLabels indicating other locations: +1\nNo location specified: +0\n\nCompany Size (0-3 points):\n\nLabels from profiles of individuals in large enterprises (more likely to use Kubernetes at scale): +3\nLabels from profiles of individuals in medium-sized companies: +2\nLabels from profiles of individuals in small companies or startups: +1\nCurrent Solutions and Engagement (0-5 points):\n\nLabels indicating use of competing Kubernetes management platforms (potential switchers): +5\nLabels indicating use of cloud services (potential for Kubernetes integration): +4\nLabels indicating no current solutions or lack of engagement with relevant platforms: +0\n\nScoring Interpretation:\n\n23-28 points: High priority lead. Strong alignment with Kubernetes platform needs and likely to be highly interested.\n15-22 points: Medium priority lead. Some signals of alignment but may need more nurturing or information.\n8-14 points: Low priority lead. Limited signals of alignment, requiring further qualification.\n0-7 points: Not a priority. Unlikely to need a Kubernetes orchestration platform at this time.",
+            "dataType": "integer"
+          }
+        ]
+      }
+    },
+    "responseFormat": "json",
+    "evalFns": [
+      {
+        "evalID": 1709528428030516484,
+        "evalName": "dev_platform_filter",
+        "evalType": "model",
+        "evalGroupName": "sales_automation",
+        "evalModel": "gpt-4-0125-preview",
+        "evalFormat": "json",
+        "schemas": [
+          {
+            "schemaID": 1709526930657354000,
+            "schemaName": "lead_scoring_dev_platform",
+            "schemaGroup": "sales_automation",
+            "schemaDescription": "Scores entities based on their potential to convert to a customer, and generates a message if the score is high enough to warrant a salesperson's attention.  The production version of this schema will be used to score leads and generate messages in the sales automation platform.",
+            "isObjArray": true,
+            "fields": [
+              {
+                "fieldID": 1709526930660803039,
+                "fieldName": "lead_score",
+                "fieldDescription": "For the Kubernetes developer platform, the lead scoring rubric should be tailored to prioritize profiles that indicate a need for Kubernetes orchestration, DevOps capabilities, and an interest in infrastructure management. Here\u2019s how you can score leads based on the metadata and labels from the shared profiles format:\n\nLead Scoring Rubric for Kubernetes Developer Platform:\n\nIndustry and Technological Relevance (0-5 points):\n\nLabels indicating tech industry, especially cloud, AI, or data analytics: +5\nLabels indicating industries that often use Kubernetes (e.g., software development): +4\nLabels indicating unrelated industries: +0\n\nProfessional Role and Influence (0-5 points):\n\nLabels indicating senior technology leadership (e.g., CTO, VP of Engineering): +5\nLabels indicating roles in DevOps, cloud architecture, or infrastructure: +4\nLabels indicating junior or non-technical roles: +1\nNo relevant role information: +0\n\nTechnical Needs and Pain Points (0-5 points):\n\nLabels indicating a need for scaling, containerization, or orchestration: +5\nLabels indicating interest in DevOps tooling and automation: +4\nLabels indicating general technology needs without specifics: +2\nNo labels indicating relevant technical needs: +0\n\nNetworking and Community Engagement (0-3 points):\n\nLabels with 500+ connections or evidence of active community engagement: +3\nLabels indicating moderate networking activity: +1\nNo labels indicating networking or community engagement: +0\n\nGeographical Focus (0-2 points):\n\nLabels indicating the location in recognized tech hubs or regions with high Kubernetes adoption: +2\nLabels indicating other locations: +1\nNo location specified: +0\n\nCompany Size (0-3 points):\n\nLabels from profiles of individuals in large enterprises (more likely to use Kubernetes at scale): +3\nLabels from profiles of individuals in medium-sized companies: +2\nLabels from profiles of individuals in small companies or startups: +1\nCurrent Solutions and Engagement (0-5 points):\n\nLabels indicating use of competing Kubernetes management platforms (potential switchers): +5\nLabels indicating use of cloud services (potential for Kubernetes integration): +4\nLabels indicating no current solutions or lack of engagement with relevant platforms: +0\n\nScoring Interpretation:\n\n23-28 points: High priority lead. Strong alignment with Kubernetes platform needs and likely to be highly interested.\n15-22 points: Medium priority lead. Some signals of alignment but may need more nurturing or information.\n8-14 points: Low priority lead. Limited signals of alignment, requiring further qualification.\n0-7 points: Not a priority. Unlikely to need a Kubernetes orchestration platform at this time.",
+                "dataType": "integer",
+                "evalMetrics": [
+                  {
+                    "evalMetricID": 1709528428032173714,
+                    "evalOperator": "gt",
+                    "evalState": "filter",
+                    "evalExpectedResultState": "pass"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "schemaMap": null
+      }
+    ]
+  }
+]

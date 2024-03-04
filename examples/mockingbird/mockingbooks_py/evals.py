@@ -14,6 +14,7 @@ def get_evals():
         data = response.json()
         pretty_data = json.dumps(data, indent=4)
         print(pretty_data)
+        return pretty_data
     else:
         print("Status Code:", response.status_code)
     return response.json()
@@ -27,6 +28,7 @@ def create_or_update_eval(eval_fn):
         data = response.json()
         pretty_data = json.dumps(data, indent=4)
         print(pretty_data)
+        return pretty_data
     else:
         print("Status Code:", response.status_code)
     return response.json()

@@ -1,0 +1,38 @@
+Industry Relevance:
+
+Tech companies focused on AI and ML: +5 points
+R&D organizations in AI: +4 points
+Any enterprise in digital transformation: +3 points
+Unrelated industries: 0 points
+Company Size:
+
+Large enterprises (1000+ employees): +5 points
+Medium-sized businesses (250-999 employees): +3 points
+Small businesses (10-249 employees): +1 point
+Micro-businesses (1-9 employees): 0 points
+Decision-Maker Role:
+
+CTOs/VPs of Engineering: +5 points
+Data Science Managers/AI Team Leads: +4 points
+Heads of R&D: +4 points
+Technical roles not in decision-making capacity: +1 point
+Non-technical roles: 0 points
+Technological Needs:
+
+Actively using AI for predictive analytics and decision-making: +5 points
+Planning to use AI and requiring orchestration: +4 points
+Have a dedicated data science team: +3 points
+Expressed need for AI-driven process automation: +3 points
+No expressed need for AI or automation: 0 points
+Operational Challenges:
+
+Difficulty managing AI tasks and workflows: +4 points
+Require fault-tolerant systems for AI actions: +3 points
+Need for human-in-the-loop decision points: +3 points
+Satisfied with current AI systems and tools: -2 points
+Current Solutions and Pain Points:
+
+Current AI systems integration tools lack robustness or control: +4 points
+Workflow fragmentation present: +3 points
+Looking for a unifying AI automation platform: +3 points
+No significant pain points with current AI systems: -2 points

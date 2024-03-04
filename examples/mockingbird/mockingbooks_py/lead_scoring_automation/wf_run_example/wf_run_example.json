@@ -1,0 +1,259 @@
+[
+  {
+    "totalWorkflowTokenUsage": 1721,
+    "runCycles": 1,
+    "aggregatedData": [
+      {
+        "workflowResultID": 1709587149437117000,
+        "orchestrationID": 1709587037378025000,
+        "responseID": 1709587149239110000,
+        "sourceTaskID": 1709526980909318000,
+        "iterationCount": 0,
+        "chunkOffset": 0,
+        "runningCycleNumber": 1,
+        "searchWindowUnixStart": 1709587036,
+        "searchWindowUnixEnd": 1709588836,
+        "skipAnalysis": false,
+        "metadata": {
+          "textInput": "Subject: Transform Your AI Initiatives with Cutting-edge Orchestration\n\nDear [Recipient\u2019s Name],\n\nI hope this message finds you well in the midst of your ground-breaking work at [Company Name]. As someone deeply involved in [specific project or field, e.g., AI-driven analytics or large-scale data processing], I understand the pivotal role that seamless integration and efficient orchestration play in magnifying the impact of technology.\n\nGiven your role as [Recipient\u2019s Role, e.g., Chief Technology Officer], you\u2019ve undoubtedly encountered the common bottlenecks that can hinder AI initiatives \u2013 limitations in current AI tools, the quest for enhanced reliability in automated decision-making, and the daunting task of managing vast data volumes effectively.\n\nI\u2019m reaching out because [Your Company Name] has developed a breakthrough platform specifically designed to address these challenges. Our solution offers unmatched orchestration capabilities for large language models (LLMs), integrating effortlessly into existing workflows and elevating control, reliability, and efficiency in AI-driven processes.\n\nThe unique proposition of our platform lies not just in its technological prowess but also in its adaptability to dynamic control for time series AI workflows, coupled with a smooth implementation of human-in-the-loop oversight, ensuring decisions are always on point and without compromise on efficiency.\n\nYour track record as an early adopter and innovator within the [Industry, e.g., technology] space tells me that the strategic advantages of our solution could propel [Company Name]\u2019s projects to unprecedented success. I would be delighted to explore how we can tailor our platform to fit your specific needs and overcome the bottlenecks currently faced.\n\nWould you be open to a brief demonstration? I\u2019m confident that a 20-minute discussion could unveil new horizons for your AI initiatives. Let\u2019s schedule a time that suits you best \u2013 your future victories are just a conversation away.\n\nLooking forward to the opportunity to collaborate,\n\n[Your Name]  \n[Your Position]  \n[Your Contact Information]  \n[Your Company Name]  \n\nP.S. As we continuously strive to stay ahead of the curve, your insights would be invaluable in shaping the future of AI orchestration. Let\u2019s pioneer the next leap together.\n",
+          "baseSearchResultsGroup": {
+            "window": {
+              "end": "0001-01-01T00:00:00Z",
+              "start": "0001-01-01T00:00:00Z"
+            },
+            "platformName": "",
+            "searchResults": [],
+            "functionDefinition": {
+              "name": "",
+              "parameters": null
+            },
+            "filteredSearchResultsMap": null,
+            "searchResultChunkTokenEstimates": 0
+          },
+          "chatCompletionQueryResponse": {
+            "params": {
+              "model": "",
+              "prompt": "",
+              "maxTokens": 0,
+              "functionDefinition": {
+                "name": "",
+                "parameters": null
+              }
+            },
+            "prompt": {
+              "prompt": "As a top-tier SaaS sales professional with a proven track record of swiftly closing deals, you understand the importance of first impressions. You've just received a promising lead, and you have our company product info and customer profileincluded to help assess from the context you're reviewing and need to craft an impactful cold outbound linkedIn message. Your approach combines deep insights into the potential client\u2019s challenges with a concise showcase of how your software provides the perfect solution, all while creating a sense of urgency and exclusivity. Your goal is to not just introduce the software, but to create an immediate connection and schedule a follow-up demo or meeting, leveraging your legendary closing skills to make this opportunity impossible for the prospect to pass up. \nIndustry Verticals:\n\nTechnology companies, especially those working with AI and machine learning.\nResearch and Development institutions that focus on AI applications.\nEnterprises with large-scale data analytics needs.\nCompanies in the social media, marketing, and digital content sectors that rely on sentiment analysis and trend aggregation.\nCompany Size:\n\nMedium to large enterprises that handle substantial data workflows.\nStartups and scale-ups that are innovation-driven and have received significant funding for R&D.\nDepartmental Focus:\n\nData Science and Analytics teams that require complex data indexing and searching.\nDevOps teams looking for reliable orchestration at scale.\nResearch teams in need of hierarchical planning around AI systems.\nMarketing departments that monitor and analyze social media engagement.\n\nKey Roles/Titles:\n\nChief Technology Officer (CTO)\nHead of Data Science\nAI/ML Research Lead\nDirector of Engineering\nDevOps Manager\nChief Innovation Officer\nMarketing Analytics Manager\nTechnological Needs:\n\nOrganizations that currently utilize or are planning to utilize large language models (LLMs) and require orchestration tools.\nCompanies with existing workflows that need to integrate AI tasks seamlessly.\nEntities requiring robust and fault-tolerant systems for complex automation tasks.\nTeams needing a system that can handle time series AI workflows with dynamic control.\nPain Points:\n\nFrustration with the limitations of current AI integration tools.\nNeed for improved reliability and control in AI-driven decision-making processes.\nChallenges in managing and structuring large volumes of data for AI processing.\nThe requirement for systems that provide human-in-the-loop oversight without sacrificing efficiency.\nBehavioral Attributes:\n\nEarly adopters of cutting-edge technologies.\nOrganizations that value innovation as a core principle.\nData-driven decision-makers with a strong reliance on analytics.\nCompanies actively seeking to streamline operations and increase efficiency through automation.\n\nGeographic Location:\n\nGlobally distributed, with a focus on tech hubs and regions known for innovation in AI and data science.\nBudget:\n\nOrganizations with a designated R&D budget for innovation in AI and data processing.\nCompanies willing to invest in beta technologies with the potential",
+              "content": "\n"
+            },
+            "schemas": null,
+            "response": {
+              "id": "chatcmpl-8z9zvayoY7YmwqetciKQDNtuETZhf",
+              "model": "gpt-4-0125-preview",
+              "usage": {
+                "total_tokens": 1022,
+                "prompt_tokens": 589,
+                "completion_tokens": 433
+              },
+              "object": "chat.completion",
+              "choices": [
+                {
+                  "index": 0,
+                  "message": {
+                    "role": "assistant",
+                    "content": "Subject: Transform Your AI Initiatives with Cutting-edge Orchestration\n\nDear [Recipient\u2019s Name],\n\nI hope this message finds you well in the midst of your ground-breaking work at [Company Name]. As someone deeply involved in [specific project or field, e.g., AI-driven analytics or large-scale data processing], I understand the pivotal role that seamless integration and efficient orchestration play in magnifying the impact of technology.\n\nGiven your role as [Recipient\u2019s Role, e.g., Chief Technology Officer], you\u2019ve undoubtedly encountered the common bottlenecks that can hinder AI initiatives \u2013 limitations in current AI tools, the quest for enhanced reliability in automated decision-making, and the daunting task of managing vast data volumes effectively.\n\nI\u2019m reaching out because [Your Company Name] has developed a breakthrough platform specifically designed to address these challenges. Our solution offers unmatched orchestration capabilities for large language models (LLMs), integrating effortlessly into existing workflows and elevating control, reliability, and efficiency in AI-driven processes.\n\nThe unique proposition of our platform lies not just in its technological prowess but also in its adaptability to dynamic control for time series AI workflows, coupled with a smooth implementation of human-in-the-loop oversight, ensuring decisions are always on point and without compromise on efficiency.\n\nYour track record as an early adopter and innovator within the [Industry, e.g., technology] space tells me that the strategic advantages of our solution could propel [Company Name]\u2019s projects to unprecedented success. I would be delighted to explore how we can tailor our platform to fit your specific needs and overcome the bottlenecks currently faced.\n\nWould you be open to a brief demonstration? I\u2019m confident that a 20-minute discussion could unveil new horizons for your AI initiatives. Let\u2019s schedule a time that suits you best \u2013 your future victories are just a conversation away.\n\nLooking forward to the opportunity to collaborate,\n\n[Your Name]  \n[Your Position]  \n[Your Contact Information]  \n[Your Company Name]  \n\nP.S. As we continuously strive to stay ahead of the curve, your insights would be invaluable in shaping the future of AI orchestration. Let\u2019s pioneer the next leap together."
+                  },
+                  "finish_reason": "stop"
+                }
+              ],
+              "created": 1709587131,
+              "system_fingerprint": "fp_70b2088885"
+            },
+            "responseTaskID": 1709526980909318000
+          }
+        },
+        "completionChoices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "Subject: Transform Your AI Initiatives with Cutting-edge Orchestration\n\nDear [Recipient\u2019s Name],\n\nI hope this message finds you well in the midst of your ground-breaking work at [Company Name]. As someone deeply involved in [specific project or field, e.g., AI-driven analytics or large-scale data processing], I understand the pivotal role that seamless integration and efficient orchestration play in magnifying the impact of technology.\n\nGiven your role as [Recipient\u2019s Role, e.g., Chief Technology Officer], you\u2019ve undoubtedly encountered the common bottlenecks that can hinder AI initiatives \u2013 limitations in current AI tools, the quest for enhanced reliability in automated decision-making, and the daunting task of managing vast data volumes effectively.\n\nI\u2019m reaching out because [Your Company Name] has developed a breakthrough platform specifically designed to address these challenges. Our solution offers unmatched orchestration capabilities for large language models (LLMs), integrating effortlessly into existing workflows and elevating control, reliability, and efficiency in AI-driven processes.\n\nThe unique proposition of our platform lies not just in its technological prowess but also in its adaptability to dynamic control for time series AI workflows, coupled with a smooth implementation of human-in-the-loop oversight, ensuring decisions are always on point and without compromise on efficiency.\n\nYour track record as an early adopter and innovator within the [Industry, e.g., technology] space tells me that the strategic advantages of our solution could propel [Company Name]\u2019s projects to unprecedented success. I would be delighted to explore how we can tailor our platform to fit your specific needs and overcome the bottlenecks currently faced.\n\nWould you be open to a brief demonstration? I\u2019m confident that a 20-minute discussion could unveil new horizons for your AI initiatives. Let\u2019s schedule a time that suits you best \u2013 your future victories are just a conversation away.\n\nLooking forward to the opportunity to collaborate,\n\n[Your Name]  \n[Your Position]  \n[Your Contact Information]  \n[Your Company Name]  \n\nP.S. As we continuously strive to stay ahead of the curve, your insights would be invaluable in shaping the future of AI orchestration. Let\u2019s pioneer the next leap together."
+            },
+            "finish_reason": "stop"
+          }
+        ],
+        "taskName": "llm_workflows_agg_msg_suggestion",
+        "taskType": "aggregation",
+        "model": "gpt-4-0125-preview",
+        "prompt": {
+          "prompt": "As a top-tier SaaS sales professional with a proven track record of swiftly closing deals, you understand the importance of first impressions. You've just received a promising lead, and you have our company product info and customer profileincluded to help assess from the context you're reviewing and need to craft an impactful cold outbound linkedIn message. Your approach combines deep insights into the potential client\u2019s challenges with a concise showcase of how your software provides the perfect solution, all while creating a sense of urgency and exclusivity. Your goal is to not just introduce the software, but to create an immediate connection and schedule a follow-up demo or meeting, leveraging your legendary closing skills to make this opportunity impossible for the prospect to pass up. \nIndustry Verticals:\n\nTechnology companies, especially those working with AI and machine learning.\nResearch and Development institutions that focus on AI applications.\nEnterprises with large-scale data analytics needs.\nCompanies in the social media, marketing, and digital content sectors that rely on sentiment analysis and trend aggregation.\nCompany Size:\n\nMedium to large enterprises that handle substantial data workflows.\nStartups and scale-ups that are innovation-driven and have received significant funding for R&D.\nDepartmental Focus:\n\nData Science and Analytics teams that require complex data indexing and searching.\nDevOps teams looking for reliable orchestration at scale.\nResearch teams in need of hierarchical planning around AI systems.\nMarketing departments that monitor and analyze social media engagement.\n\nKey Roles/Titles:\n\nChief Technology Officer (CTO)\nHead of Data Science\nAI/ML Research Lead\nDirector of Engineering\nDevOps Manager\nChief Innovation Officer\nMarketing Analytics Manager\nTechnological Needs:\n\nOrganizations that currently utilize or are planning to utilize large language models (LLMs) and require orchestration tools.\nCompanies with existing workflows that need to integrate AI tasks seamlessly.\nEntities requiring robust and fault-tolerant systems for complex automation tasks.\nTeams needing a system that can handle time series AI workflows with dynamic control.\nPain Points:\n\nFrustration with the limitations of current AI integration tools.\nNeed for improved reliability and control in AI-driven decision-making processes.\nChallenges in managing and structuring large volumes of data for AI processing.\nThe requirement for systems that provide human-in-the-loop oversight without sacrificing efficiency.\nBehavioral Attributes:\n\nEarly adopters of cutting-edge technologies.\nOrganizations that value innovation as a core principle.\nData-driven decision-makers with a strong reliance on analytics.\nCompanies actively seeking to streamline operations and increase efficiency through automation.\n\nGeographic Location:\n\nGlobally distributed, with a focus on tech hubs and regions known for innovation in AI and data science.\nBudget:\n\nOrganizations with a designated R&D budget for innovation in AI and data processing.\nCompanies willing to invest in beta technologies with the potential",
+          "content": "\n"
+        },
+        "promptTokens": 589,
+        "completionTokens": 433,
+        "totalTokens": 1022
+      },
+      {
+        "workflowResultID": 1709587128360819000,
+        "orchestrationID": 1709587037378025000,
+        "responseID": 1709587128100742000,
+        "sourceTaskID": 1709526913053514000,
+        "iterationCount": 0,
+        "chunkOffset": 0,
+        "runningCycleNumber": 1,
+        "searchWindowUnixStart": 1709587036,
+        "searchWindowUnixEnd": 1709588836,
+        "skipAnalysis": false,
+        "metadata": {
+          "chatCompletionQueryResponse": {
+            "params": {
+              "model": "",
+              "prompt": "",
+              "maxTokens": 0,
+              "functionDefinition": {
+                "name": "",
+                "parameters": null
+              }
+            },
+            "prompt": null,
+            "schemas": null,
+            "response": {
+              "id": "",
+              "model": "",
+              "usage": {
+                "total_tokens": 0,
+                "prompt_tokens": 0,
+                "completion_tokens": 0
+              },
+              "object": "",
+              "choices": null,
+              "created": 0,
+              "system_fingerprint": ""
+            },
+            "jsonResponseResults": [
+              {
+                "fields": [
+                  {
+                    "fieldID": 1709526912781269886,
+                    "dataType": "integer",
+                    "intValue": 23,
+                    "fieldName": "lead_score",
+                    "fieldStrID": "1709526912781269886",
+                    "isValidated": true,
+                    "fieldDescription": ""
+                  }
+                ],
+                "schemaID": 1709526912670787000,
+                "fieldsMap": {
+                  "1709526912781269886": {
+                    "fieldID": 1709526912781269886,
+                    "dataType": "integer",
+                    "intValue": 23,
+                    "fieldName": "lead_score",
+                    "fieldStrID": "1709526912781269886",
+                    "isValidated": true,
+                    "fieldDescription": ""
+                  }
+                },
+                "isObjArray": true,
+                "schemaName": "lead_scoring_llm_wfs",
+                "schemaGroup": "sales_automation",
+                "schemaStrID": "1709526912670787000",
+                "totalEvalMetrics": [
+                  {
+                    "evalState": "filter",
+                    "evalMetricID": 1709528427876811971,
+                    "evalOperator": "gt",
+                    "evalMetricResult": {
+                      "evalMetadata": {
+                        "intValue": 23,
+                        "operator": "gt",
+                        "isValidated": true,
+                        "evalOpCtxStr": "lead_score 23 gt 0",
+                        "evalComparisonString": "",
+                        "evalComparisonBoolean": false,
+                        "evalComparisonInteger": 0
+                      },
+                      "evalMetricsResultID": 1709587129225264000,
+                      "evalResultOutcomeBool": true,
+                      "evalMetricsResultStrID": "1709587129225264000"
+                    },
+                    "evalExpectedResultState": "pass",
+                    "evalMetricComparisonValues": {
+                      "evalComparisonString": "",
+                      "evalComparisonBoolean": false,
+                      "evalComparisonInteger": 0
+                    }
+                  }
+                ],
+                "schemaDescription": "Scores entities based on their potential to convert to a customer, and generates a message if the score is high enough to warrant a salesperson's attention.  The production version of this schema will be used to score leads and generate messages in the sales automation platform."
+              }
+            ]
+          }
+        },
+        "completionChoices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "{\n  \"tool_uses\": [\n    {\n      \"recipient_name\": \"functions.lead_scoring_llm_wfs\",\n      \"parameters\": {\n        \"lead_scoring_llm_wfs\": [\n          {\n            \"lead_score\": 23\n          }\n        ]\n      }\n    }\n  ]\n}"
+            },
+            "finish_reason": "stop"
+          }
+        ],
+        "taskName": "llm_wf_scoring",
+        "taskType": "analysis",
+        "model": "gpt-4-0125-preview",
+        "prompt": "{\"nickname\": \"lazarus-ai\", \"platform\": \"linkedIn\", \"metadata\": [{\"jsonData\": null, \"textData\": \"Lazarus AI focuses on applying artificial intelligence and computer vision to develop products and custom solutions, optimizing processes through enhanced accuracy in data extraction from PDFs.\", \"labels\": [{\"label\": \"AI\"}, {\"label\": \"computer vision\"}, {\"label\": \"data extraction\"}, {\"label\": \"PDF processing\"}, {\"label\": \"optimizing processes\"}, {\"label\": \"https://www.linkedin.com/company/lazarus-ai\"}]}]}\n",
+        "promptTokens": 635,
+        "completionTokens": 64,
+        "totalTokens": 699
+      }
+    ],
+    "aggregatedEvalResults": [
+      {
+        "evalMetricStrID": "1709528427876811971",
+        "evalMetricID": 1709528427876811971,
+        "evalField": {
+          "fieldID": 0,
+          "fieldName": "lead_score",
+          "fieldDescription": "",
+          "dataType": "integer"
+        },
+        "evalName": "lead_scoring_llm_filter",
+        "evalMetricResult": {
+          "evalMetricsResultStrID": "1709587129225264000",
+          "evalMetricsResultID": 1709587129225264000,
+          "evalResultOutcomeBool": true,
+          "evalResultOutcomeStateStr": "Pass",
+          "runningCycleNumber": 1,
+          "evalIterationCount": 0,
+          "searchWindowUnixStart": 1709587036,
+          "searchWindowUnixEnd": 1709588836,
+          "evalMetadata": {
+            "intValue": 23,
+            "operator": "gt",
+            "isValidated": true,
+            "evalOpCtxStr": "lead_score 23 gt 0",
+            "evalComparisonString": "",
+            "evalComparisonBoolean": false,
+            "evalComparisonInteger": 0
+          }
+        },
+        "evalOperator": "gt",
+        "evalState": "filter",
+        "evalExpectedResultState": "Pass",
+        "evalMetricComparisonValues": {
+          "evalComparisonInteger": 15
+        }
+      }
+    ],
+    "orchestration": {
+      "orchestrationStrID": "1709587037378025000",
+      "orchestrationID": 1709587037378025000,
+      "active": false,
+      "groupName": "auto_sell",
+      "type": "llm_lead_scoring_wf",
+      "instructions": "",
+      "orchestrationName": "llm_lead_scoring_wf-46a67d23-ea82"
+    }
+  }
+]

@@ -1,0 +1,10 @@
+{
+  "evalStrID": "0",
+  "evalID": 0,
+  "evalName": "auto_eval_lead_scoring_filter",
+  "evalType": "model",
+  "evalGroupName": "sales_automation",
+  "evalModel": "gpt-4-0125-preview",
+  "evalFormat": "json",
+  "schemas": []
+}

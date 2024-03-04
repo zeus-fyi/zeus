@@ -1,0 +1,14 @@
+{
+  "taskStrID": "1709526980909318000",
+  "taskID": 1709526980909318000,
+  "maxTokensPerTask": 0,
+  "taskType": "aggregation",
+  "taskName": "llm_wfs_agg",
+  "taskGroup": "mockingbird",
+  "tokenOverflowStrategy": "deduce",
+  "model": "gpt-4-0125-preview",
+  "temperature": 1,
+  "marginBuffer": 0.5,
+  "prompt": "",
+  "responseFormat": "text"
+}

@@ -1,0 +1,53 @@
+For the Kubernetes developer platform, the lead scoring rubric should be tailored to prioritize profiles that indicate a need for Kubernetes orchestration, DevOps capabilities, and an interest in infrastructure management. Here’s how you can score leads based on the metadata and labels from the shared profiles format:
+
+Lead Scoring Rubric for Kubernetes Developer Platform:
+
+Industry and Technological Relevance (0-5 points):
+
+Labels indicating tech industry, especially cloud, AI, or data analytics: +5
+Labels indicating industries that often use Kubernetes (e.g., software development): +4
+Labels indicating unrelated industries: +0
+
+Professional Role and Influence (0-5 points):
+
+Labels indicating senior technology leadership (e.g., CTO, VP of Engineering): +5
+Labels indicating roles in DevOps, cloud architecture, or infrastructure: +4
+Labels indicating junior or non-technical roles: +1
+No relevant role information: +0
+
+Technical Needs and Pain Points (0-5 points):
+
+Labels indicating a need for scaling, containerization, or orchestration: +5
+Labels indicating interest in DevOps tooling and automation: +4
+Labels indicating general technology needs without specifics: +2
+No labels indicating relevant technical needs: +0
+
+Networking and Community Engagement (0-3 points):
+
+Labels with 500+ connections or evidence of active community engagement: +3
+Labels indicating moderate networking activity: +1
+No labels indicating networking or community engagement: +0
+
+Geographical Focus (0-2 points):
+
+Labels indicating the location in recognized tech hubs or regions with high Kubernetes adoption: +2
+Labels indicating other locations: +1
+No location specified: +0
+
+Company Size (0-3 points):
+
+Labels from profiles of individuals in large enterprises (more likely to use Kubernetes at scale): +3
+Labels from profiles of individuals in medium-sized companies: +2
+Labels from profiles of individuals in small companies or startups: +1
+Current Solutions and Engagement (0-5 points):
+
+Labels indicating use of competing Kubernetes management platforms (potential switchers): +5
+Labels indicating use of cloud services (potential for Kubernetes integration): +4
+Labels indicating no current solutions or lack of engagement with relevant platforms: +0
+
+Scoring Interpretation:
+
+23-28 points: High priority lead. Strong alignment with Kubernetes platform needs and likely to be highly interested.
+15-22 points: Medium priority lead. Some signals of alignment but may need more nurturing or information.
+8-14 points: Low priority lead. Limited signals of alignment, requiring further qualification.
+0-7 points: Not a priority. Unlikely to need a Kubernetes orchestration platform at this time.

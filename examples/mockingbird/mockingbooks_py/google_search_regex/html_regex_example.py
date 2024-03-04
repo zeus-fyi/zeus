@@ -1,6 +1,7 @@
+import json
 import re
 
-from examples.mockingbird.mockingbooks_py.google_search_regex.dynamic_google_search import start_wf
+from examples.mockingbird.mockingbooks_py.entities import EntitiesFilter, search_entities
 
 # Path to the file
 file_path = 'tmp/tmp.txt'
@@ -34,11 +35,30 @@ offset_l = 80
 offset_r = 100
 
 # skip next
-for i in range(len(matches1)):
-    person_company = f"{i}:{matches1[i]} (company)"
-    if 0 + offset_l < i < 1 + offset_r:
-        print(person_company)
-        start_wf(person_company, agg_prompt)
+# for i in range(len(matches1)):
+#     person_company = f"{i}:{matches1[i]} (company)"
+#     if 0 + offset_l < i < 1 + offset_r:
+#         print(person_company)
+#         start_wf(person_company, agg_prompt)
 
-# if __name__ == '__main__':
-#     poll_run('1709446959958934000')
+
+# Example iteration and action simulation with 'start_wf' function.
+# Since the 'start_wf' function is a conceptual example, we'll simulate its operation as a print statement.
+# for person_company in formatted_people_companies:
+#     # Simulate calling 'start_wf' function with the person_company tuple and aggregated prompt.
+#     start_wf(person_company, agg_prompt)
+#
+
+# skip next
+
+if __name__ == '__main__':
+    search_entities_f = EntitiesFilter()
+
+    pretty_data1 = search_entities(search_entities_f)
+    pretty_data2 = json.dumps(pretty_data1, indent=4)
+    print(pretty_data2)
+
+    for v in pretty_data1:
+        print(v)
+        print('---')
+    # poll_run('1709446959958934000')
