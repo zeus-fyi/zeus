@@ -1,0 +1,12 @@
+{
+  "workflowName": "lead_scoring_wf",
+  "workflowGroupName": "auto_sell",
+  "stepSize": 5,
+  "stepSizeUnit": "minutes",
+  "models": {
+  },
+  "evalsMap": {},
+  "evalTasksMap": {},
+  "aggregateSubTasksMap": {},
+  "analysisRetrievalsMap": {}
+}

@@ -1,7 +1,7 @@
 {
   "evalStrID": "0",
   "evalID": 0,
-  "evalName": "google-seach-query-param",
+  "evalName": "google-search-query-param",
   "evalType": "model",
   "evalGroupName": "google-search",
   "evalModel": "gpt-4-0125-preview",
