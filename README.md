@@ -11,8 +11,7 @@ model-to-model communication via synchronized quorums.
 
 ### Usage
 
-Mockingbird is an active research and development project, that is now in Beta. We're allowing free public usage of a
-curated set of features as we evaluate the system during this phase.
+Mockingbird is an active research and development project, and now a product you can use. Like ChatGPT 4, but with power steering and cruise control.
 
 ### Costs
 
