@@ -3,15 +3,7 @@
   "schemaStrID": "0",
   "schemaName": "lead_scoring_dev_platform",
   "schemaGroup": "sales_automation",
-  "schemaDescription": "Scores entities based on their potential to convert to a customer, and generates a message if the score is high enough to warrant a salesperson's attention. This schema is for development purposes only. The production version of this schema will be used to score leads and generate messages in the sales automation platform.",
-  "isObjArray": false,
-  "fields": [
-    {
-      "fieldID": 0,
-      "fieldStrID": "0",
-      "fieldName": "lead_score",
-      "fieldDescription": "The score of the lead, based on the lead's potential to convert to a customer.",
-      "dataType": "string"
-    }
-  ]
+  "schemaDescription": "Scores entities based on their potential to convert to a customer, and generates a message if the score is high enough to warrant a salesperson's attention.  The production version of this schema will be used to score leads and generate messages in the sales automation platform.",
+  "isObjArray": true,
+  "fields": []
 }

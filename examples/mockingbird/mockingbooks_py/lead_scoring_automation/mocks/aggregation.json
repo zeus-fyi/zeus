@@ -4,7 +4,7 @@
   "maxTokensPerTask": 0,
   "taskType": "aggregation",
   "taskName": "",
-  "taskGroup": "",
+  "taskGroup": "mockingbird",
   "tokenOverflowStrategy": "deduce",
   "model": "gpt-4-0125-preview",
   "temperature": 1,

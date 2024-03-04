@@ -4,11 +4,12 @@
   "maxTokensPerTask": 0,
   "taskType": "analysis",
   "taskName": "",
-  "taskGroup": "",
+  "taskGroup": "mockingbird",
   "tokenOverflowStrategy": "deduce",
   "model": "gpt-4-0125-preview",
   "temperature": 1,
   "marginBuffer": 0.5,
   "prompt": "",
-  "responseFormat": "text"
+  "responseFormat": "json",
+  "schemas": []
 }
