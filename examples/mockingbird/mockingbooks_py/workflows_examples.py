@@ -18,6 +18,21 @@ wf_model_task_template = {
     "evalFns": []
 }
 
+wf_model_agg_task_template = {
+    "taskStrID": "",
+    "taskID": 0,
+    "model": "",
+    "taskType": "aggregation",
+    "temperature": 1.0,
+    "marginBuffer": 0.5,
+    "taskGroup": "group",
+    "taskName": "name",
+    "maxTokens": 0,
+    "tokenOverflowStrategy": "deduce",
+    "prompt": "",
+    "cycleCount": 1,
+    "evalFns": []
+}
 # Example Workflow Patterns
 
 

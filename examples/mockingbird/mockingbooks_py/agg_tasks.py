@@ -12,6 +12,9 @@ def create_agg_task(task):
     # Check the response status
     if response.status_code == 200:
         print("Task created successfully!")
+        pretty_data = json.dumps(response.json(), indent=4)
+        print(pretty_data)
+        return pretty_data
     else:
         print(response.json())
         print("Failed to create task. Status Code:", response.status_code)

@@ -1,0 +1,90 @@
+{
+  "workflowName": "llm_lead_scoring_wf",
+  "workflowGroupName": "auto_sell",
+  "stepSize": 5,
+  "stepSizeUnit": "minutes",
+  "models": {
+    "1709526913053514000": {
+      "taskStrID": "1709526913053514000",
+      "taskID": 0,
+      "model": "",
+      "taskType": "analysis",
+      "temperature": 1.0,
+      "marginBuffer": 0.5,
+      "taskGroup": "group",
+      "taskName": "name",
+      "maxTokens": 0,
+      "tokenOverflowStrategy": "deduce",
+      "prompt": "",
+      "cycleCount": 1,
+      "evalFns": []
+    },
+    "1709526980909318000": {
+      "taskStrID": "1709526980909318000",
+      "taskID": 0,
+      "model": "",
+      "taskType": "aggregation",
+      "temperature": 1.0,
+      "marginBuffer": 0.5,
+      "taskGroup": "group",
+      "taskName": "name",
+      "maxTokens": 0,
+      "tokenOverflowStrategy": "deduce",
+      "prompt": "",
+      "cycleCount": 1,
+      "evalFns": []
+    }
+  },
+  "evalsMap": {
+    "1709528427873919948": {
+      "evalStrID": "1709528427873919948",
+      "evalID": 1709528427873919948,
+      "evalName": "lead_scoring_llm_filter",
+      "evalType": "model",
+      "evalGroupName": "sales_automation",
+      "evalModel": "gpt-4-0125-preview",
+      "evalFormat": "json",
+      "schemas": [
+        {
+          "schemaID": 1709526912670787000,
+          "schemaStrID": "1709526912670787000",
+          "schemaName": "lead_scoring_llw_wfs",
+          "schemaGroup": "sales_automation",
+          "schemaDescription": "Scores entities based on their potential to convert to a customer, and generates a message if the score is high enough to warrant a salesperson's attention.  The production version of this schema will be used to score leads and generate messages in the sales automation platform.",
+          "isObjArray": true,
+          "fields": [
+            {
+              "fieldID": 1709526912781269886,
+              "fieldStrID": "1709526912781269886",
+              "fieldName": "lead_score",
+              "fieldDescription": "Industry Relevance:\n\nTech companies focused on AI and ML: +5 points\nR&D organizations in AI: +4 points\nAny enterprise in digital transformation: +3 points\nUnrelated industries: 0 points\nCompany Size:\n\nLarge enterprises (1000+ employees): +5 points\nMedium-sized businesses (250-999 employees): +3 points\nSmall businesses (10-249 employees): +1 point\nMicro-businesses (1-9 employees): 0 points\nDecision-Maker Role:\n\nCTOs/VPs of Engineering: +5 points\nData Science Managers/AI Team Leads: +4 points\nHeads of R&D: +4 points\nTechnical roles not in decision-making capacity: +1 point\nNon-technical roles: 0 points\nTechnological Needs:\n\nActively using AI for predictive analytics and decision-making: +5 points\nPlanning to use AI and requiring orchestration: +4 points\nHave a dedicated data science team: +3 points\nExpressed need for AI-driven process automation: +3 points\nNo expressed need for AI or automation: 0 points\nOperational Challenges:\n\nDifficulty managing AI tasks and workflows: +4 points\nRequire fault-tolerant systems for AI actions: +3 points\nNeed for human-in-the-loop decision points: +3 points\nSatisfied with current AI systems and tools: -2 points\nCurrent Solutions and Pain Points:\n\nCurrent AI systems integration tools lack robustness or control: +4 points\nWorkflow fragmentation present: +3 points\nLooking for a unifying AI automation platform: +3 points\nNo significant pain points with current AI systems: -2 points",
+              "dataType": "integer",
+              "evalMetrics": [
+                {
+                  "evalMetricID": 1709528427876811971,
+                  "evalOperator": "gt",
+                  "evalState": "filter",
+                  "evalExpectedResultState": "pass",
+                  "evalMetricComparisonValues": {
+                    "evalComparisonInteger": 15
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "evalTasksMap": {
+    "1709526913053514000": {
+      "1709528427873919948": true
+    }
+  },
+  "aggregateSubTasksMap": {
+    "1709526980909318000": {
+      "1709526913053514000": true
+    }
+  },
+  "analysisRetrievalsMap": {}
+}
