@@ -236,14 +236,14 @@ wf_item_details = {
 }
 
 if __name__ == '__main__':
-    # gets all entities
+    # gets all linkedIn entities
     search_entities_f = EntitiesFilter(
         platform="linkedIn",
     )
 
     pretty_data1 = search_entities(search_entities_f)
     pretty_data2 = json.dumps(pretty_data1, indent=4)
-    # print(pretty_data2)
+    print(pretty_data2)
 
     # # for when you want to analyze a targeted entity/platform,
     # # 1. quick local find + target wf
@@ -254,8 +254,9 @@ if __name__ == '__main__':
     for tgt in pretty_data1:
         nn = tgt['nickname']
         if tgt['platform'] == 'linkedIn' and nn == target_entity_name:
-            run_dp_scoring_wf(json.dumps(tgt), dry_run_wf)
-            # run_llm_wfs_scoring_wf(tgt, dry_run)
+            tgt_entity = json.dumps(tgt)
+            # run_dp_scoring_wf(tgt_entity, dry_run_wf)
+            run_llm_wfs_scoring_wf(tgt_entity, dry_run_wf)
 
     # poll the run status
-    get_run('1709582814922225000')
+    get_run('1709587037378025000')
