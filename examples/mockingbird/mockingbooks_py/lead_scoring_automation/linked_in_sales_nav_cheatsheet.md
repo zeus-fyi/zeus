@@ -100,7 +100,6 @@ the future of sales and marketing.
 - Apply "Senior leadership changes" to find companies that might be looking for new solutions.
 - Search for companies that have "Funding events in past 12 months", indicating potential budget availability for
   innovation.
-- Cloud Infra Dev Platform Use Case:
 
 ### Cloud Infra Dev Platform Use Case:
 
