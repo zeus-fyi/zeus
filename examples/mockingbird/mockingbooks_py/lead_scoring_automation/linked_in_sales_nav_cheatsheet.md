@@ -84,8 +84,8 @@ For example, you might believe that companies in the technology industry, with a
 of 100-500 employees, and located in the San Francisco Bay Area are more likely to be interested in your product.
 
 Then use Mockingbird to auto-lookup, classify, and lead score the prospects and companies. If you end up with higher
-lead
-scores from the AI analysis from an experiment with changing the filters, then you feedback the results to the AI to
+lead scores from the AI analysis from an experiment with changing the filters, then you feedback the results to the AI
+to
 improve the lead scoring model. If you also use Mockingbird to classify your emails, it can automatically
 track the responses and conversions to see if the leads are converting into customers, and you can have it
 automatically make changes based on this feedback, without having to do anything else. Cool right? Welcome to
