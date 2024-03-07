@@ -1,10 +1,10 @@
 import json
-import time
+import os
 
 from examples.mockingbird.mockingbooks_py.agg_tasks import create_agg_task
 from examples.mockingbird.mockingbooks_py.analysis_tasks import create_analysis_task
-from examples.mockingbird.mockingbooks_py.entities import EntitiesFilter, search_entities
 from examples.mockingbird.mockingbooks_py.evals import create_or_update_eval
+from examples.mockingbird.mockingbooks_py.google_search_regex.dynamic_google_search import poll_run
 from examples.mockingbird.mockingbooks_py.schemas import create_or_update_schema
 from examples.mockingbird.mockingbooks_py.workflows import create_wf, wf_exec_template, start_or_schedule_wf
 from examples.mockingbird.mockingbooks_py.workflows_examples import wf_model_task_template, wf_model_agg_task_template
@@ -234,11 +234,11 @@ def run_llm_wfs_scoring_wf(entity, dry_run=False):
 # Function to categorize lead score
 def categorize_score(score):
     if 23 <= score <= 28:
-        return 'High priority'
+        return 'high'
     elif 15 <= score <= 22:
-        return 'Medium priority'
+        return 'med'
     elif 8 <= score <= 14:
-        return 'Low priority'
+        return 'low'
     else:  # 0-7
         return 'Not a priority'
 
@@ -249,15 +249,15 @@ wf_item_details = {
 
 if __name__ == '__main__':
     # iterate_on_matches()
-
-    search_entities_f = EntitiesFilter(
-        sinceUnixTimestamp=-40000,
-        platform='linkedIn'
-    )
-
-    entities_saved = search_entities(search_entities_f)
-    print(len(entities_saved))
-    pretty_data2 = json.dumps(entities_saved, indent=4)
+    #
+    # search_entities_f = EntitiesFilter(
+    #     sinceUnixTimestamp=-80000,
+    #     platform='linkedIn'
+    # )
+    #
+    # entities_saved = search_entities(search_entities_f)
+    # print(len(entities_saved))
+    # pretty_data2 = json.dumps(entities_saved, indent=4)
 
     # for v in entities_saved:
     #     print(v)
@@ -267,52 +267,64 @@ if __name__ == '__main__':
     # # 1. quick local find + target wf
     # # 2. local prototyping of the wf using real entity data without larger scale AI search
     #
-    dry_run_wf = False
-    for i, tgt in enumerate(entities_saved):
-        tgt_entity = json.dumps(tgt)
-        run_dp_scoring_wf(tgt_entity, dry_run_wf)
-        run_llm_wfs_scoring_wf(tgt_entity, dry_run_wf)
-        time.sleep(60)
+    # dry_run_wf = False
+    # for i, tgt in enumerate(entities_saved):
+    #     tgt_entity = json.dumps(tgt)
+    #     run_dp_scoring_wf(tgt_entity, dry_run_wf)
+    #     run_llm_wfs_scoring_wf(tgt_entity, dry_run_wf)
+    #     time.sleep(60)
 
-    # file_path = f'tmp/tmp.txt'
-    # orchestration_results = {}
-    # empty_count = 0
-    # complete_count = 0
-    # # Open the file and read its contents
-    # with open(file_path, 'r') as file:
-    #     for line in file:
-    #         clean_line = line.strip()
-    #         res = poll_run(clean_line)
-    #
-    #         for item in res:
-    #             # Check if item and 'aggregatedEvalResults' exist and are not None, and 'aggregatedEvalResults' is a list with length > 0
-    #             if item and 'aggregatedEvalResults' in item and isinstance(item['aggregatedEvalResults'], list) and len(item['aggregatedEvalResults']) > 0:
-    #                 orchestration_name = item.get('orchestration', {}).get('type', 'Unknown')  # Default to 'Unknown' if not found
-    #
-    #                 # Initialize categories if orchestration_name is not in orchestration_results
-    #                 if orchestration_name not in orchestration_results:
-    #                     orchestration_results[orchestration_name] = {
-    #                         'High priority': 0,
-    #                         'Medium priority': 0,
-    #                         'Low priority': 0,
-    #                         'Not a priority': 0
-    #                     }
-    #
-    #                 for evr in item['aggregatedEvalResults']:
-    #                     # Ensure 'evalMetricResult' and 'evalMetadata' exist and have 'intValue'
-    #                     if evr.get('evalMetricResult') and evr['evalMetricResult'].get('evalMetadata') and 'intValue' in evr['evalMetricResult']['evalMetadata']:
-    #                         lead_score = evr['evalMetricResult']['evalMetadata']['intValue']
-    #                         category = categorize_score(lead_score)
-    #                         orchestration_results[orchestration_name][category] += 1
-    #                         complete_count += 1
-    #                     else:
-    #                         empty_count += 1
-    #             else:
-    #                 empty_count += 1
-    #
-    # # Print results
-    # for orchestration_name, categories in orchestration_results.items():
-    #     print(f"Orchestration Name: {orchestration_name}")
-    #     for category, count in categories.items():
-    #         print(f"  {category}: {count}")
-    # print(f'Empty: {empty_count}, Complete: {complete_count}')
+    base_path = 'tmp'
+    file_path = f'tmp/tmp2.txt'
+    orchestration_results = {}
+    empty_count = 0
+    complete_count = 0
+    # Open the file and read its contents
+    # Read the file and process lines
+    with open(file_path, 'r') as file:
+        for line in file:
+            clean_line = line.strip()
+            res = poll_run(clean_line)
+
+            if not res:
+                empty_count += 1
+                continue
+
+            for item in res:
+                if item and 'aggregatedEvalResults' in item and isinstance(item['aggregatedEvalResults'], list) and len(
+                        item['aggregatedEvalResults']) > 0:
+                    orchestration_name = item.get('orchestration', {}).get('type', 'Unknown')
+                    # Path for the orchestration
+                    orchestration_path = os.path.join(base_path, orchestration_name)
+
+                    if not os.path.exists(orchestration_path):
+                        os.makedirs(orchestration_path)
+
+                    for evr in item['aggregatedEvalResults']:
+                        if evr.get('evalMetricResult') and evr['evalMetricResult'].get('evalMetadata') and 'intValue' in \
+                                evr['evalMetricResult']['evalMetadata']:
+                            lead_score = evr['evalMetricResult']['evalMetadata']['intValue']
+                            category = categorize_score(lead_score)
+                            category_path = os.path.join(orchestration_path, category)
+
+                            if not os.path.exists(category_path):
+                                os.makedirs(category_path)
+
+                            # Here you would write your file or data to the directory
+                            # For example:
+                            filename = f'{line}.json'
+                            with open(os.path.join(category_path, filename), 'w') as result_file:
+                                pretty_data = json.dumps(res, indent=4)
+                                result_file.write(pretty_data)
+                            complete_count += 1
+                        else:
+                            empty_count += 1
+                else:
+                    empty_count += 1
+
+    # Print results
+    for orchestration_name, categories in orchestration_results.items():
+        print(f"Orchestration Name: {orchestration_name}")
+        for category, count in categories.items():
+            print(f"  {category}: {count}")
+    print(f'Empty: {empty_count}, Complete: {complete_count}')

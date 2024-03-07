@@ -33,7 +33,7 @@ def start_wf(prompt=None, agg_prompt=None):
 
 
 def poll_run(run_id):
-    print(get_run(run_id))
+    return get_run(run_id)
 
 
 def fetch_entities():

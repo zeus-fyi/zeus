@@ -25,6 +25,7 @@ def get_run(run_id):
         data = response.json()
         pretty_data = json.dumps(data, indent=4)
         print(pretty_data)
+        return data
     else:
         print("Status Code:", response.status_code)
 
