@@ -1,4 +1,4 @@
-# Iris Load Balancer Programmable Proxy: QuickNode Marketplace
+# Adaptive Load Balancer & Programmable Proxy
 
 ## Overview
 
@@ -11,29 +11,9 @@ Each user can store up to 1000 endpoints for free, you can then use these endpoi
 
 10 ZU minimum size for round trip request & response, up to 1kB payload request and up to 1kB response
 
-## QuickNode Marketplace Users
-
-QuickNode marketplace customers will use an SSO link from QuickNode and be directed to their load balancing stored endpoints
-table, you'll then be able to generate an API key from the access panel.
-
-### Additional Benefits:
-
-QuickNode users will have their endpoints automatically registered with the load balancer, and will have automatically
-generated routing group tables based on the network-chain type for that endpoint. E.g. ethereum mainnet endpoints will be
-automatically registered to the ethereum-mainnet routing group table. These won't count against your 
-routing table limits unless you make any manual changes to them. 
-
-### Lite
-```text
-250M ZU per $99
-Up to 25k ZU/s ~ 2.5k req/s
-Up to ~25M requests (with responses)
-25 Custom Routing Group Tables
-Round Robin 
-```
 ### Standard
 ```text
-1B ZU per $299
+1B ZU 
 Up to 50k ZU/s, ~5k req/s
 Up to ~ 100M  requests (with responses)
 50 Custom Routing Group Tables
@@ -41,16 +21,7 @@ Embedded Routing Procedures
 Priority Score Weight Tuning
 Adaptive Load Balancing + Round Robin
 ```
-### Performance
-```text
-3B ZU per $999, 
-Up to 100k ZU/s, ~10k req/s
-Up to ~300M requests (with responses)
-250 Custom Routing Group Tables
-Embedded Routing Procedures
-Priority Score Weight Tuning
-Adaptive Load Balancing + Round Robin
-```
+
 Need more? Send us a message at support@zeus.fyi
 
 ## Setup
