@@ -1,4 +1,5 @@
 import json
+import time
 
 from examples.mockingbird.mockingbooks_py.agg_tasks import create_agg_task
 from examples.mockingbird.mockingbooks_py.analysis_tasks import create_analysis_task
@@ -250,7 +251,7 @@ if __name__ == '__main__':
     # iterate_on_matches()
 
     search_entities_f = EntitiesFilter(
-        sinceUnixTimestamp=-10000,
+        sinceUnixTimestamp=-40000,
         platform='linkedIn'
     )
 
@@ -258,21 +259,20 @@ if __name__ == '__main__':
     print(len(entities_saved))
     pretty_data2 = json.dumps(entities_saved, indent=4)
 
-    # # for v in entities_saved:
-    # #     print(v)
-    # #     print('---')
-    # #
-    # # # for when you want to analyze a targeted entity/platform,
-    # # # 1. quick local find + target wf
-    # # # 2. local prototyping of the wf using real entity data without larger scale AI search
-    # #
-    # dry_run_wf = True
-    # for i, tgt in enumerate(entities_saved):
-    #     if i < 99:
-    #         continue
-    #     tgt_entity = json.dumps(tgt)
-    #     run_dp_scoring_wf(tgt_entity, dry_run_wf)
-    #     run_llm_wfs_scoring_wf(tgt_entity, dry_run_wf)
+    # for v in entities_saved:
+    #     print(v)
+    #     print('---')
+    #
+    # # for when you want to analyze a targeted entity/platform,
+    # # 1. quick local find + target wf
+    # # 2. local prototyping of the wf using real entity data without larger scale AI search
+    #
+    dry_run_wf = False
+    for i, tgt in enumerate(entities_saved):
+        tgt_entity = json.dumps(tgt)
+        run_dp_scoring_wf(tgt_entity, dry_run_wf)
+        run_llm_wfs_scoring_wf(tgt_entity, dry_run_wf)
+        time.sleep(60)
 
     # file_path = f'tmp/tmp.txt'
     # orchestration_results = {}
@@ -316,6 +316,3 @@ if __name__ == '__main__':
     #     for category, count in categories.items():
     #         print(f"  {category}: {count}")
     # print(f'Empty: {empty_count}, Complete: {complete_count}')
-    #
-    #
-    #

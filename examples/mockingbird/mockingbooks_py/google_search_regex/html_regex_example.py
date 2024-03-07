@@ -63,7 +63,7 @@ def iterate_on_matches():
         for name, company in matches:
             count += 1
 
-            if count > 200:
+            if count > 722:
                 nc = f'Name: {name}, Company: {company}'
                 print(nc)
                 start_wf(nc, agg_prompt)
