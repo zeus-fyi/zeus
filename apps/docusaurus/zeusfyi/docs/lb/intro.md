@@ -5,7 +5,7 @@ displayed_sidebar: lb
 
 # Setup
 
-## Top Reason to Use the Adaptive RPC Load Balancer?
+## Top Reason to Use the Adaptive Load Balancer?
 
 There's many, but the top one? People are sick of hitting 429 rate limiting and 5xx errors. What's
 double worse is paying for the request that failed. So we set out to solve this problem.
@@ -16,7 +16,7 @@ requests/sec than any single endpoint can handle. That's in addition to the othe
 and error rate reductions you can expect from our adaptive load balancing technology, see our benchmarking section for
 details.
 
-## Free Mempool Access
+## Web3 Users Free Mempool Access
 
 We're offering unlimited free access to our mempool service at a level which is comparable to:
 
@@ -30,8 +30,6 @@ You can use the free tier to get started, and then upgrade to a paid plan at any
 account and paying as you go, or by prepaying for a plan.
 https://cloud.zeus.fyi/billing
 
-Sign up here:
-https://marketplace.quicknode.com/add-on/zeusfyi-4
 
 ## Overview
 
@@ -50,39 +48,6 @@ API or UI Dashboard
 
 Want one-on-one help getting started? Schedule a Google meet with an expert
 at [https://calendly.com/zeusfyi/solutions-engineering](https://calendly.com/zeusfyi/solutions-engineering)
-
-## QuickNode Marketplace Users
-
-QuickNode marketplace customers will use an SSO link from QuickNode and be directed to their load balancing stored
-endpoints table, you'll then be able to generate an API key from the access panel.
-
-```mermaid
-graph TD
-
-  subgraph QuickNode Users
-    A[User Endpoints]
-  end
-  
-  subgraph Automatic Registration
-    B[Load Balancer]
-    C[Automatically Generated Routing Group Tables]
-    D[Ethereum Mainnet Endpoints]
-    E[Ethereum-Mainnet Routing Group Table]
-  end
-
-  A --> B
-  A --> C
-  D --> E
-```
-
-### Additional Benefits:
-
-QuickNode users will have their endpoints automatically registered with the load balancer, and will have automatically
-generated routing group tables based on the network-chain type for that endpoint. E.g. ethereum mainnet endpoints will
-be automatically registered to the ethereum-mainnet routing group table. These won't count against your
-routing table limits unless you make any manual changes to them.
-
-Need more? Send us a message at support@zeus.fyi
 
 ## API Key Setup
 

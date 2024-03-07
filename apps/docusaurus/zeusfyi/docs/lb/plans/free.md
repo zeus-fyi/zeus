@@ -4,7 +4,7 @@ sidebar_position: 5
 
 # Free
 
-More than enough for trying out the load balancer for any purpose, web3 or otherwise.
+More than enough for trying out the load balancer for any purpose.
 
 ```text
 10M ZU
