@@ -1,4 +1,9 @@
+import json
 import re
+import time
+
+from examples.mockingbird.mockingbooks_py.entities import EntitiesFilter, search_entities
+from examples.mockingbird.mockingbooks_py.google_search_regex.dynamic_google_search import start_wf
 
 agg_prompt = ("Can you summarize the relevant person and/or associated business entity from the search results? It "
               "should use the most relevant search result that matches best and ignore others to prevent mixing"
@@ -31,6 +36,7 @@ def process_li_element(li_text):
 def iterate_on_matches():
     # List to store all matches
     all_matches = []
+    count = 0
 
     # Process files from page1 to page60
     for page_num in range(1, 61):
@@ -55,19 +61,27 @@ def iterate_on_matches():
 
         # Iterate and print each match
         for name, company in matches:
-            print(f'Name: {name}, Company: {company}')
-            all_matches += [(name, company)]
+            count += 1
+
+            if count > 200:
+                nc = f'Name: {name}, Company: {company}'
+                print(nc)
+                start_wf(nc, agg_prompt)
+                all_matches += [(name, company)]
+                count += 1
+                time.sleep(10)
+        print(count)
 
 
 if __name__ == '__main__':
     iterate_on_matches()
-    # search_entities_f = EntitiesFilter()
-    #
-    # pretty_data1 = search_entities(search_entities_f)
-    # pretty_data2 = json.dumps(pretty_data1, indent=4)
-    # print(pretty_data2)
-    #
-    # for v in pretty_data1:
-    #     print(v)
-    #     print('---')
+    search_entities_f = EntitiesFilter()
+
+    pretty_data1 = search_entities(search_entities_f)
+    pretty_data2 = json.dumps(pretty_data1, indent=4)
+    print(pretty_data2)
+
+    for v in pretty_data1:
+        print(v)
+        print('---')
     # poll_run('1709446959958934000')
