@@ -1,10 +1,10 @@
 import json
+import time
 
 from examples.mockingbird.mockingbooks_py.agg_tasks import create_agg_task
 from examples.mockingbird.mockingbooks_py.analysis_tasks import create_analysis_task
 from examples.mockingbird.mockingbooks_py.entities import EntitiesFilter, search_entities
 from examples.mockingbird.mockingbooks_py.evals import create_or_update_eval
-from examples.mockingbird.mockingbooks_py.runs import get_run
 from examples.mockingbird.mockingbooks_py.schemas import create_or_update_schema
 from examples.mockingbird.mockingbooks_py.workflows import create_wf, wf_exec_template, start_or_schedule_wf
 from examples.mockingbird.mockingbooks_py.workflows_examples import wf_model_task_template, wf_model_agg_task_template
@@ -231,32 +231,88 @@ def run_llm_wfs_scoring_wf(entity, dry_run=False):
         start_or_schedule_wf(wf_exec_template)
 
 
+# Function to categorize lead score
+def categorize_score(score):
+    if 23 <= score <= 28:
+        return 'High priority'
+    elif 15 <= score <= 22:
+        return 'Medium priority'
+    elif 8 <= score <= 14:
+        return 'Low priority'
+    else:  # 0-7
+        return 'Not a priority'
+
+
 wf_item_details = {
     "workflowName": "",
 }
 
 if __name__ == '__main__':
-    # gets all linkedIn entities
+    # iterate_on_matches()
+
     search_entities_f = EntitiesFilter(
-        platform="linkedIn",
+        sinceUnixTimestamp=-40000,
+        platform='linkedIn'
     )
 
-    pretty_data1 = search_entities(search_entities_f)
-    pretty_data2 = json.dumps(pretty_data1, indent=4)
-    print(pretty_data2)
+    entities_saved = search_entities(search_entities_f)
+    print(len(entities_saved))
+    pretty_data2 = json.dumps(entities_saved, indent=4)
 
+    # for v in entities_saved:
+    #     print(v)
+    #     print('---')
+    #
     # # for when you want to analyze a targeted entity/platform,
     # # 1. quick local find + target wf
     # # 2. local prototyping of the wf using real entity data without larger scale AI search
     #
     dry_run_wf = False
-    target_entity_name = 'lazarus-ai'
-    for tgt in pretty_data1:
-        nn = tgt['nickname']
-        if tgt['platform'] == 'linkedIn' and nn == target_entity_name:
-            tgt_entity = json.dumps(tgt)
-            # run_dp_scoring_wf(tgt_entity, dry_run_wf)
-            run_llm_wfs_scoring_wf(tgt_entity, dry_run_wf)
+    for i, tgt in enumerate(entities_saved):
+        tgt_entity = json.dumps(tgt)
+        run_dp_scoring_wf(tgt_entity, dry_run_wf)
+        run_llm_wfs_scoring_wf(tgt_entity, dry_run_wf)
+        time.sleep(60)
 
-    # poll the run status
-    get_run('1709587037378025000')
+    # file_path = f'tmp/tmp.txt'
+    # orchestration_results = {}
+    # empty_count = 0
+    # complete_count = 0
+    # # Open the file and read its contents
+    # with open(file_path, 'r') as file:
+    #     for line in file:
+    #         clean_line = line.strip()
+    #         res = poll_run(clean_line)
+    #
+    #         for item in res:
+    #             # Check if item and 'aggregatedEvalResults' exist and are not None, and 'aggregatedEvalResults' is a list with length > 0
+    #             if item and 'aggregatedEvalResults' in item and isinstance(item['aggregatedEvalResults'], list) and len(item['aggregatedEvalResults']) > 0:
+    #                 orchestration_name = item.get('orchestration', {}).get('type', 'Unknown')  # Default to 'Unknown' if not found
+    #
+    #                 # Initialize categories if orchestration_name is not in orchestration_results
+    #                 if orchestration_name not in orchestration_results:
+    #                     orchestration_results[orchestration_name] = {
+    #                         'High priority': 0,
+    #                         'Medium priority': 0,
+    #                         'Low priority': 0,
+    #                         'Not a priority': 0
+    #                     }
+    #
+    #                 for evr in item['aggregatedEvalResults']:
+    #                     # Ensure 'evalMetricResult' and 'evalMetadata' exist and have 'intValue'
+    #                     if evr.get('evalMetricResult') and evr['evalMetricResult'].get('evalMetadata') and 'intValue' in evr['evalMetricResult']['evalMetadata']:
+    #                         lead_score = evr['evalMetricResult']['evalMetadata']['intValue']
+    #                         category = categorize_score(lead_score)
+    #                         orchestration_results[orchestration_name][category] += 1
+    #                         complete_count += 1
+    #                     else:
+    #                         empty_count += 1
+    #             else:
+    #                 empty_count += 1
+    #
+    # # Print results
+    # for orchestration_name, categories in orchestration_results.items():
+    #     print(f"Orchestration Name: {orchestration_name}")
+    #     for category, count in categories.items():
+    #         print(f"  {category}: {count}")
+    # print(f'Empty: {empty_count}, Complete: {complete_count}')

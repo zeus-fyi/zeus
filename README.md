@@ -150,9 +150,6 @@ Workflow & Proxy Programmable Automation (Rolling releases coming through end of
 #### ```artemis_workflows ```
 #### ```iris_programmable_proxy ```
 
-QuickNode MarketPlace users can find Load Balancing documentation in the iris programmable proxy directory
-+ Adaptive Load Balancer Documentation
-  
 #### API Endpoints 
 
 Documentation and code examples are found here
@@ -274,7 +271,7 @@ Recommended reading for scientists, engineers, data driven individuals
 
 https://medium.com/zeusfyi/show-me-the-stats-6740f8d6d0b7
 
-## Adaptive RPC Load Balancer on QuickNode Marketplace
+## Adaptive RPC Load Balancer
 Accurate, Reliable, Performant Node Traffic at Web3 Scale
 
 ![Screenshot 2023-09-14 at 11 11 30 PM](https://github.com/zeus-fyi/zeus/assets/17446735/802b7670-6b30-4e65-9348-e45e2a0cfcac)
@@ -283,5 +280,3 @@ https://medium.com/zeusfyi/adaptive-rpc-load-balancer-on-quicknode-marketplace-e
 
 ![Screenshot 2023-09-14 at 11 13 55 PM](https://github.com/zeus-fyi/zeus/assets/17446735/1d2a263e-5aa7-418c-a0f0-1f497cab0353)
 
-Beta Testing Sign Up (free to use): 
-https://marketplace.quicknode.com/add-on/zeusfyi-4

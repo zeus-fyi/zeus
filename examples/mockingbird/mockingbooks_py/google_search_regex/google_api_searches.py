@@ -7,7 +7,7 @@ def create_google_regex_search_index_entities_wf(task_str_id, eval_str_id, agg_t
     with open('mocks/workflow.json', 'r') as file:
         jdata = json.load(file)
 
-    jdata['stepSize'] = 5
+    jdata['stepSize'] = 15
     jdata['stepSizeUnit'] = 'minutes'
 
     # Add a task to the workflow
