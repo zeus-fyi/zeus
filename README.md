@@ -15,7 +15,7 @@ Mockingbird is currently a model based supervior entity, and soon, it will be a 
 
 ### Costs
 
-Mockingbird is free to use for the first 3 days, which starts once you add a cc and start your first workflows Though we may restrict account usage if we see abuse. If you connect your own OpenAI API key, you will be responsible for any costs associated with that, otherwise we will use our API key and then charge you 1-to-1 for the cost of the API usage that we incur, however you may have
+Mockingbird is free to use for the first 3 days, which starts once you add a cc and start your first workflow. Though we may restrict account usage if we see abuse. If you connect your own OpenAI API key, you will be responsible for any costs associated with that, otherwise we will use our API key and then charge you 1-to-1 for the cost of the API usage that we incur, however you may have
 your usage throttled if you exceed our usage limits while using our API key.
 
 ### Features Available via Self Service UI
