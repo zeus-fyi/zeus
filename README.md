@@ -11,7 +11,7 @@ model-to-model communication via synchronized quorums.
 
 ### Usage
 
-Mockingbird is currently a model based supervior entity, and soon, it will be a Model Supervised Intelligent Network, and now a product you can use, like ChatGPT 4, but with power steering and cruise control.
+Mockingbird is currently a model based supervisor entity, and soon, it will be a Model Supervised Intelligent Network, and now a product you can use, like ChatGPT 4, but with power steering and cruise control.
 
 ### Costs
 
