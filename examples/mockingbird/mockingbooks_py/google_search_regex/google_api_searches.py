@@ -1,13 +1,15 @@
 import json
 
+from examples.mockingbird.mockingbooks_py.analysis_tasks import get_task_id_by_name
+from examples.mockingbird.mockingbooks_py.evals import get_eval_id_by_name
 from examples.mockingbird.mockingbooks_py.workflows import create_wf
 
 
-def create_google_regex_search_index_entities_wf(task_str_id, eval_str_id, agg_task_str_id, agg_eval_str_id):
+def create_google_regex_search_index_entities_wf(task_str_id, eval_str_id, agg_task_str_id, agg_eval_str_id=None):
     with open('mocks/workflow.json', 'r') as file:
         jdata = json.load(file)
 
-    jdata['stepSize'] = 15
+    jdata['stepSize'] = 30
     jdata['stepSizeUnit'] = 'minutes'
 
     # Add a task to the workflow
@@ -25,12 +27,12 @@ def create_google_regex_search_index_entities_wf(task_str_id, eval_str_id, agg_t
 
     ef_data['evalStrID'] = eval_str_id
     # Add an eval to the workflow
-    with open('../entities_triggers/mocks/eval_fn_create_entities.json', 'r') as file:
-        agg_ef_data = json.load(file)
+    # with open('../entities_triggers/mocks/eval_fn_create_entities.json', 'r') as file:
+    #     agg_ef_data = json.load(file)
 
     jdata['evalsMap'] = {
         eval_str_id: ef_data,
-        agg_eval_str_id: agg_ef_data
+        # agg_eval_str_id: agg_ef_data
     }
 
     # Add an aggregate task to the workflow
@@ -50,9 +52,9 @@ def create_google_regex_search_index_entities_wf(task_str_id, eval_str_id, agg_t
         task_str_id: {
             eval_str_id: True
         },
-        agg_task_str_id: {
-            agg_eval_str_id: True
-        }
+        # agg_task_str_id: {
+        #     agg_eval_str_id: True
+        # }
     }
 
     pretty_data = json.dumps(jdata, indent=4)
@@ -62,9 +64,7 @@ def create_google_regex_search_index_entities_wf(task_str_id, eval_str_id, agg_t
 
 if __name__ == '__main__':
     # create subcomponents first, if not already created
-
-    task_str_id = '1708585225847375000'
-    eval_str_id = '1708580672263367000'
-    agg_task_str_id = '1708586569933699000'
-    agg_eval_str_id = '1709417012941534000'
-    create_google_regex_search_index_entities_wf(task_str_id, eval_str_id, agg_task_str_id, agg_eval_str_id)
+    task_str_id = get_task_id_by_name('zeusfyi-verbatim')
+    eval_str_id = get_eval_id_by_name('google-search-query-param')
+    agg_task_str_id = get_task_id_by_name('biz-lead-google-search-summary')
+    create_google_regex_search_index_entities_wf(task_str_id, eval_str_id, agg_task_str_id)

@@ -9,7 +9,7 @@
   "model": "gpt-4-0125-preview",
   "temperature": 1,
   "marginBuffer": 0.5,
-  "prompt": "Name, company",
+  "prompt": "",
   "schemas": [
     {
       "schemaID": 0,
@@ -17,7 +17,7 @@
       "schemaName": "google-search-query-params",
       "schemaGroup": "google-search",
       "schemaDescription": "Gets query value string for google api call",
-      "isObjArray": false,
+      "isObjArray": true,
       "fields": [
         {
           "fieldID": 0,
@@ -44,7 +44,7 @@
           "schemaName": "google-search-query-params",
           "schemaGroup": "google-search",
           "schemaDescription": "Gets query value string for google api call",
-          "isObjArray": false,
+          "isObjArray": true,
           "fields": [
             {
               "fieldID": 0,

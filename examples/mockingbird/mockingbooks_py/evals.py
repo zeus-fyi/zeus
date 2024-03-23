@@ -20,6 +20,23 @@ def get_evals():
     return response.json()
 
 
+def get_eval_by_name(en):
+    url = api_v1_path + "/evals/ai"
+    headers = get_headers()
+    response = requests.get(url, headers=headers)
+    for eval_fn in response.json():
+        if eval_fn['evalName'] == en:
+            return eval_fn
+    return None
+
+
+def get_eval_id_by_name(en):
+    eval_fn = get_eval_by_name(en)
+    if eval_fn:
+        return eval_fn['evalStrID']
+    return '0'
+
+
 def create_or_update_eval(eval_fn):
     url = api_v1_path + "/evals/ai"
     headers = get_headers()

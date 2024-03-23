@@ -18,6 +18,20 @@ def get_triggers():
     return response.json()
 
 
+def get_trigger_by_name(tn):
+    trgs = get_triggers()
+    for trg in trgs:
+        if trg['triggerName'] == tn:
+            return trg
+
+
+def get_trigger_id_by_name(tn):
+    trg = get_trigger_by_name(tn)
+    if trg:
+        return trg['triggerStrID']
+    return '0'
+
+
 def create_or_update_trigger(trigger_fn):
     url = api_v1_path + "/actions/ai"
     headers = get_headers()

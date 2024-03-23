@@ -21,6 +21,24 @@ def get_task(tid):
     return response.json()
 
 
+def get_task_by_name(tn):
+    url = api_v1_path + "/tasks/ai"
+    headers = get_headers()
+    response = requests.get(url, headers=headers)
+
+    for task in response.json():
+        if task['taskName'] == tn:
+            return task
+    return None
+
+
+def get_task_id_by_name(tn):
+    te = get_task_by_name(tn)
+    if te:
+        return te['taskStrID']
+    return '0'
+
+
 def create_analysis_task(task):
     url = api_v1_path + "/tasks/ai"
     headers = get_headers()

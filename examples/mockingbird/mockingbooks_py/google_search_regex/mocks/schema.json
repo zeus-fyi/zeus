@@ -4,7 +4,7 @@
   "schemaName": "google-search-query-params",
   "schemaGroup": "google-search",
   "schemaDescription": "Gets query value string for google api call",
-  "isObjArray": false,
+  "isObjArray": true,
   "fields": [
     {
       "fieldID": 0,

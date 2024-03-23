@@ -21,6 +21,33 @@ def get_retrieval(rid):
     return response.json()
 
 
+def get_retrievals():
+    headers = get_headers()
+    url = api_v1_path + "/retrievals/ai"
+    response = requests.get(url, headers=headers)
+
+    if response.status_code == 200:
+        return response.json()
+    else:
+        print("Failed to fetch task data. Status Code:", response.status_code)
+    return response.json()
+
+
+def get_retrieval_by_name(ret_name):
+    rets = get_retrievals()
+    for ret in rets:
+        if ret['retrievalName'] == ret_name:
+            return ret
+    return None
+
+
+def get_retrieval_id_by_name(ret_name):
+    ret = get_retrieval_by_name(ret_name)
+    if ret:
+        return ret['retrievalStrID']
+    return '0'
+
+
 def create_or_update_retrieval(ret):
     url = api_v1_path + "/retrievals/ai"
     headers = get_headers()
