@@ -1,5 +1,6 @@
 import json
 
+from examples.mockingbird.mockingbooks_py.agg_tasks import create_agg_task
 from examples.mockingbird.mockingbooks_py.analysis_tasks import create_analysis_task
 from examples.mockingbird.mockingbooks_py.evals import create_or_update_eval
 from examples.mockingbird.mockingbooks_py.retrievals import create_or_update_retrieval, get_retrieval_id_by_name
@@ -9,6 +10,12 @@ from examples.mockingbird.mockingbooks_py.triggers import create_or_update_trigg
 
 def schema_create():
     with open('mocks/schema.json', 'r') as file:
+        data = json.load(file)
+    create_or_update_schema(data)
+
+
+def agg_schema_create():
+    with open('mocks/agg_schema.json', 'r') as file:
         data = json.load(file)
     create_or_update_schema(data)
 
@@ -30,7 +37,14 @@ def agg_create():
     with open('mocks/agg_task.json', 'r') as file:
         data = json.load(file)
     data['schemas'] = [get_schema_by_name('google-search-query-params')]
-    create_analysis_task(data)
+    create_agg_task(data)
+
+
+def agg_json_create():
+    with open('mocks/agg_task_json_format.json', 'r') as file:
+        data = json.load(file)
+    data['schemas'] = [get_schema_by_name('google-search-results-agg')]
+    create_agg_task(data)
 
 
 def eval_fn_create():
@@ -72,9 +86,10 @@ def trigger_create():
 
 
 if __name__ == '__main__':
+    agg_json_create()
     schema_create()
     retrieval_create()
     trigger_create()
     eval_fn_create()
     analysis_create()
-    agg_create()
+    agg_json_create()

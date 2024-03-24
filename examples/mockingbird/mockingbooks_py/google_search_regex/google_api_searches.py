@@ -66,5 +66,5 @@ if __name__ == '__main__':
     # create subcomponents first, if not already created
     task_str_id = get_task_id_by_name('zeusfyi-verbatim')
     eval_str_id = get_eval_id_by_name('google-search-query-param')
-    agg_task_str_id = get_task_id_by_name('biz-lead-google-search-summary')
+    agg_task_str_id = get_task_id_by_name('google-results-agg')
     create_google_regex_search_index_entities_wf(task_str_id, eval_str_id, agg_task_str_id)
