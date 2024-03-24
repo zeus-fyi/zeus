@@ -44,6 +44,8 @@ type TestContainer struct {
 	AwsAccountNumber         string
 	AwsAccessKeyLambdaInvoke string
 	AwsSecretKeyLambdaInvoke string
+
+	RapidApiLinkedInApiKey string
 }
 
 func InitLocalTestConfigs() TestContainer {
@@ -51,6 +53,7 @@ func InitLocalTestConfigs() TestContainer {
 	testCont.Env = viper.GetString("ENV")
 	testCont.Bearer = viper.GetString("BEARER")
 
+	testCont.RapidApiLinkedInApiKey = viper.GetString("RAPID_API_LINKEDIN_API_KEY")
 	// snapshot testing
 	testCont.PresignedBucketURL = viper.GetString("PRESIGNED_BUCKET_URL")
 	testCont.Web3SignerAuthURL = viper.GetString("WEB3SIGNER_AUTH_URL")
