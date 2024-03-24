@@ -1,0 +1,12 @@
+{
+  "workflowName": "linkedin-rapid-api-profiles-wf",
+  "workflowGroupName": "linkedIn",
+  "stepSize": 30,
+  "stepSizeUnit": "minutes",
+  "models": {
+  },
+  "evalsMap": {},
+  "evalTasksMap": {},
+  "aggregateSubTasksMap": {},
+  "analysisRetrievalsMap": {}
+}

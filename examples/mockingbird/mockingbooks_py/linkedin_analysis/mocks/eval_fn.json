@@ -1,0 +1,11 @@
+{
+  "evalStrID": "0",
+  "evalID": 0,
+  "evalName": "linkedin-rapid-api-profiles-qps",
+  "evalType": "model",
+  "evalGroupName": "linkedin",
+  "evalModel": "gpt-4-0125-preview",
+  "evalFormat": "json",
+  "triggerFunctions": [],
+  "schemas": []
+}
