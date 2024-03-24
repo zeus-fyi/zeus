@@ -6,25 +6,24 @@ from examples.mockingbird.mockingbooks_py.api_setup import get_headers, api_v1_p
 from examples.mockingbird.mockingbooks_py.triggers import trigger_function_template
 
 
-def get_evals():
+def get_evals(pp=False):
     url = api_v1_path + "/evals/ai"
     headers = get_headers()
     response = requests.get(url, headers=headers)
     if response.status_code == 200:
         data = response.json()
-        pretty_data = json.dumps(data, indent=4)
-        print(pretty_data)
-        return pretty_data
+        if pp:
+            pretty_data = json.dumps(data, indent=4)
+            print(pretty_data)
+        return data
     else:
         print("Status Code:", response.status_code)
     return response.json()
 
 
 def get_eval_by_name(en):
-    url = api_v1_path + "/evals/ai"
-    headers = get_headers()
-    response = requests.get(url, headers=headers)
-    for eval_fn in response.json():
+    response = get_evals()
+    for eval_fn in response:
         if eval_fn['evalName'] == en:
             return eval_fn
     return None

@@ -45,12 +45,13 @@ def get_schema_by_name(schema_name):
     """
     schemas_obj = get_schemas()
     # Ensure schemas is a list of dictionaries
-    schemas = schemas_obj['jsonSchemaDefinitionsSlice']
-    for schema in schemas:
-        # Ensure each schema is a dictionary
-        # Check if schemaName matches
-        if schema['schemaName'] == schema_name:
-            return schema
+    if schemas_obj:
+        schemas = schemas_obj['jsonSchemaDefinitionsSlice']
+        for schema in schemas:
+            # Ensure each schema is a dictionary
+            # Check if schemaName matches
+            if schema['schemaName'] == schema_name:
+                return schema
     return None
 
 

@@ -1,0 +1,24 @@
+{
+  "schemaID": 0,
+  "schemaStrID": "0",
+  "schemaName": "results-agg",
+  "schemaGroup": "search-aggregates",
+  "schemaDescription": "Gets generated result summaries from search results.",
+  "isObjArray": true,
+  "fields": [
+    {
+      "fieldID": 0,
+      "fieldStrID": "0",
+      "fieldName": "entity",
+      "fieldDescription": "The relevant person and/or associated business you are summarizing from the search results.",
+      "dataType": "string"
+    },
+    {
+      "fieldID": 0,
+      "fieldStrID": "0",
+      "fieldName": "summary",
+      "fieldDescription": "Can you summarize the relevant person and/or associated business from the search results? It should use the most relevant search result that matches best and ignore others to prevent mixing multiple profiles. I want to know what this person does and what kind of role they perform, and summarize any other details that you can find and you should strive for accuracy over greater inclusion.",
+      "dataType": "string"
+    }
+  ]
+}

@@ -23,13 +23,14 @@ def get_trigger_by_name(tn):
     for trg in trgs:
         if trg['triggerName'] == tn:
             return trg
+    return None
 
 
 def get_trigger_id_by_name(tn):
     trg = get_trigger_by_name(tn)
     if trg:
         return trg['triggerStrID']
-    return '0'
+    return ''
 
 
 def create_or_update_trigger(trigger_fn):
