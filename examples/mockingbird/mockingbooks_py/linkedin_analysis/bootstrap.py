@@ -2,7 +2,7 @@ import json
 
 from examples.mockingbird.mockingbooks_py.agg_tasks import create_agg_task
 from examples.mockingbird.mockingbooks_py.analysis_tasks import create_analysis_task
-from examples.mockingbird.mockingbooks_py.evals import create_or_update_eval
+from examples.mockingbird.mockingbooks_py.evals import create_or_update_eval, get_eval_id_by_name
 from examples.mockingbird.mockingbooks_py.retrievals import create_or_update_retrieval, get_retrieval_by_name
 from examples.mockingbird.mockingbooks_py.schemas import create_or_update_schema, get_schema_by_name
 from examples.mockingbird.mockingbooks_py.triggers import create_or_update_trigger, get_trigger_id_by_name
@@ -71,18 +71,6 @@ def eval_fn_create():
                     }
                 },
             ]
-        if field['fieldName'] == 'include_skills':
-            field['evalMetrics'] = [
-                {
-                    "evalMetricID": 0,
-                    "evalOperator": "",
-                    "evalState": "info",
-                    "evalExpectedResultState": "ignore",
-                    "evalMetricComparisonValues": {
-                        "evalComparisonBoolean": False,
-                    }
-                },
-            ]
     data['schemas'] = [schema]
     data['triggerFunctions'] = [
         {
@@ -103,13 +91,14 @@ def eval_fn_create():
             ]
         }
     ]
+    data['evalStrID'] = get_eval_id_by_name('linkedin-rapid-api-profiles-qps')
     pretty_data = json.dumps(data, indent=4)
     print(pretty_data)
     create_or_update_eval(data)
 
 
 if __name__ == '__main__':
-    # retrieval_create()
+    retrieval_create()
     # schema_create()
     # analysis_create()
     # trigger_create()

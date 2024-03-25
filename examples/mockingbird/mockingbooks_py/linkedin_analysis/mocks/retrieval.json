@@ -19,7 +19,7 @@
       "lbStrategy": "",
       "maxRetries": 6,
       "backoffCoefficient": 2,
-      "endpointRoutePath": "/get-linkedin-profile?linkedin_url={linkedin_url}&include_skills={include_skills}",
+      "endpointRoutePath": "/get-linkedin-profile?linkedin_url={linkedin_url}",
       "endpointREST": "get",
       "payloadPreProcessing": "iterate",
       "headers": {
