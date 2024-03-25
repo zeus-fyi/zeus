@@ -19,7 +19,7 @@
       "lbStrategy": "",
       "maxRetries": 0,
       "backoffCoefficient": 2,
-      "endpointRoutePath": "/?email={email}token={YOUR_API_KEY}",
+      "endpointRoutePath": "/?email={email}&token={YOUR_API_KEY}",
       "endpointREST": "get",
       "payloadPreProcessing": "iterate"
     }
