@@ -1,0 +1,12 @@
+{
+  "workflowName": "validate-emails",
+  "workflowGroupName": "emails",
+  "stepSize": 1,
+  "stepSizeUnit": "day",
+  "models": {
+  },
+  "evalsMap": {},
+  "evalTasksMap": {},
+  "aggregateSubTasksMap": {},
+  "analysisRetrievalsMap": {}
+}

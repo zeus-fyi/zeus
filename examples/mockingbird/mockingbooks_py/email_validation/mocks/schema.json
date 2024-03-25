@@ -1,0 +1,17 @@
+{
+  "schemaID": 0,
+  "schemaStrID": "0",
+  "schemaName": "validemail-query-params",
+  "schemaGroup": "emails",
+  "schemaDescription": "Gets query value string for validemail api call",
+  "isObjArray": true,
+  "fields": [
+    {
+      "fieldID": 0,
+      "fieldStrID": "0",
+      "fieldName": "email",
+      "fieldDescription": "This is an email address",
+      "dataType": "string"
+    }
+  ]
+}
