@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Mockingbird API
-  version: "1.0.0"
+  version: "1.0.1"
 servers:
   - url: https://api.zeus.fyi/v1
 paths:
@@ -1082,12 +1082,18 @@ components:
         endpointRoutePath:
           type: string
           nullable: true
+        headers:
+          type: object
+          nullable: true
+          additionalProperties:
+            type: string
         endpointREST:
           type: string
           enum:
             - get
             - put
             - post
+            - post-form
             - delete
           nullable: true
         payloadPreProcessing:

@@ -1,8 +1,8 @@
 {
   "retrievalStrID": "",
   "retrievalID": 0,
-  "retrievalName": "google-query-params",
-  "retrievalGroup": "google-search",
+  "retrievalName": "linkedin-profile",
+  "retrievalGroup": "linkedIn",
   "retrievalItemInstruction": {
     "retrievalPlatform": "api",
     "retrievalPrompt": "",
@@ -15,17 +15,17 @@
       "category": ""
     },
     "webFilters": {
-      "routingGroup": "google-search",
+      "routingGroup": "linkedIn",
       "lbStrategy": "",
       "maxRetries": 6,
       "backoffCoefficient": 2,
-      "endpointRoutePath": "customsearch/v1?q={q}&cx=SEARCH_KEY&key=API_KEY",
+      "endpointRoutePath": "/get-linkedin-profile?linkedin_url={linkedin_url}",
       "endpointREST": "get",
       "payloadPreProcessing": "iterate",
-      "regexPatterns": [
-        "`https?://[^\\s<>\"]+|www\\.[^\\s<>\"]+`",
-        "`og:([^\":]+)\":\\s*\"([^\"]+)`"
-      ]
+      "headers": {
+        "X-RapidAPI-Host": "fresh-linkedin-profile-data.p.rapidapi.com",
+        "X-RapidAPI-Key": "{YOUR_RAPID_API_KEY}"
+      }
     }
   }
 }

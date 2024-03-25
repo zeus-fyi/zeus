@@ -1,0 +1,9 @@
+{
+  "triggerStrID": "0",
+  "triggerID": 0,
+  "triggerName": "linkedin-rapid-api-profile-search",
+  "triggerGroup": "linkedin",
+  "triggerAction": "api-retrieval",
+  "triggerRetrievals": [],
+  "evalTriggerActions": []
+}

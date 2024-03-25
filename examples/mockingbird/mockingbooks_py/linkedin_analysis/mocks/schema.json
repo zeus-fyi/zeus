@@ -1,0 +1,17 @@
+{
+  "schemaID": 0,
+  "schemaStrID": "0",
+  "schemaName": "linked-in-rapid-api-profile-qps",
+  "schemaGroup": "linkedIn",
+  "schemaDescription": "Gets query parameter values for rapid api call to get LinkedIn profile information",
+  "isObjArray": true,
+  "fields": [
+    {
+      "fieldID": 0,
+      "fieldStrID": "0",
+      "fieldName": "linkedin_url",
+      "fieldDescription": "this will be the url of the linkedin profile: examples: [https://www.linkedin.com/in/williamhgates/, https://www.linkedin.com/in/jeffweiner08/]. This is a generality of https://www.linkedin.com/in/{nameID}/",
+      "dataType": "string"
+    }
+  ]
+}

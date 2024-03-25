@@ -5,7 +5,7 @@ from examples.mockingbird.mockingbooks_py.evals import get_eval_id_by_name
 from examples.mockingbird.mockingbooks_py.workflows import create_wf
 
 
-def create_google_regex_search_index_entities_wf(task_str_id, eval_str_id, agg_task_str_id, agg_eval_str_id=None):
+def create_linkedin_rapid_api_wf(task_str_id, eval_str_id, agg_task_str_id, agg_eval_str_id=None):
     with open('mocks/workflow.json', 'r') as file:
         jdata = json.load(file)
 
@@ -26,13 +26,9 @@ def create_google_regex_search_index_entities_wf(task_str_id, eval_str_id, agg_t
         ef_data = json.load(file)
 
     ef_data['evalStrID'] = eval_str_id
-    # Add an eval to the workflow
-    # with open('../entities_triggers/mocks/eval_fn_create_entities.json', 'r') as file:
-    #     agg_ef_data = json.load(file)
 
     jdata['evalsMap'] = {
         eval_str_id: ef_data,
-        # agg_eval_str_id: agg_ef_data
     }
 
     # Add an aggregate task to the workflow
@@ -47,14 +43,10 @@ def create_google_regex_search_index_entities_wf(task_str_id, eval_str_id, agg_t
             task_str_id: True
         }
     }
-    # Add entities indexer trigger to agg output
     jdata['evalTasksMap'] = {
         task_str_id: {
             eval_str_id: True
         },
-        # agg_task_str_id: {
-        #     agg_eval_str_id: True
-        # }
     }
 
     pretty_data = json.dumps(jdata, indent=4)
@@ -63,8 +55,7 @@ def create_google_regex_search_index_entities_wf(task_str_id, eval_str_id, agg_t
 
 
 if __name__ == '__main__':
-    # create subcomponents first, if not already created
-    task_str_id = get_task_id_by_name('zeusfyi-verbatim')
-    eval_str_id = get_eval_id_by_name('google-search-query-param')
-    agg_task_str_id = get_task_id_by_name('google-results-agg')
-    create_google_regex_search_index_entities_wf(task_str_id, eval_str_id, agg_task_str_id)
+    task_id = get_task_id_by_name('linkedin-profiles-rapid-api-qps')
+    eval_id = get_eval_id_by_name('linkedin-rapid-api-profiles-qps')
+    agg_task_id = get_task_id_by_name('linkedin-search-summary')
+    create_linkedin_rapid_api_wf(task_id, eval_id, agg_task_id)

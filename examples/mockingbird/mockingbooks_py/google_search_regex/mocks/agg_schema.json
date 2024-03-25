@@ -1,0 +1,17 @@
+{
+  "schemaID": 0,
+  "schemaStrID": "0",
+  "schemaName": "google-search-results-agg",
+  "schemaGroup": "google-search",
+  "schemaDescription": "Gets generated result summaries for each returned google search result. This schema is used to aggregate the results of the google-search schema.",
+  "isObjArray": true,
+  "fields": [
+    {
+      "fieldID": 0,
+      "fieldStrID": "0",
+      "fieldName": "summary",
+      "fieldDescription": "",
+      "dataType": "string"
+    }
+  ]
+}

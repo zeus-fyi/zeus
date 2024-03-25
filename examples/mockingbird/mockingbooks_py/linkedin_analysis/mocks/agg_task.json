@@ -1,0 +1,15 @@
+{
+  "taskStrID": "0",
+  "taskID": 0,
+  "maxTokensPerTask": 0,
+  "taskType": "aggregation",
+  "taskName": "linkedin-search-summary",
+  "taskGroup": "linkedIn",
+  "tokenOverflowStrategy": "deduce",
+  "model": "gpt-4-0125-preview",
+  "temperature": 1,
+  "marginBuffer": 0.5,
+  "prompt": "",
+  "schemas": [],
+  "responseFormat": "json"
+}

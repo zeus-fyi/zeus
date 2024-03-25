@@ -1,0 +1,15 @@
+{
+  "taskStrID": "0",
+  "taskID": 0,
+  "maxTokensPerTask": 0,
+  "taskType": "analysis",
+  "taskName": "linkedin-profiles-rapid-api-qps",
+  "taskGroup": "default",
+  "tokenOverflowStrategy": "deduce",
+  "model": "gpt-4-0125-preview",
+  "temperature": 1,
+  "marginBuffer": 0.5,
+  "prompt": "",
+  "responseFormat": "json",
+  "schemas": []
+}
