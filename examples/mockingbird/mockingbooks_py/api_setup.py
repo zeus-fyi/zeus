@@ -1,6 +1,6 @@
 import yaml
 
-config_file_path = '../../../test/configs/config.yaml'
+config_file_path = '../../../../test/configs/config.yaml'
 with open(config_file_path, 'r') as file:
     config = yaml.safe_load(file)
 

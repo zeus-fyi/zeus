@@ -1,8 +1,8 @@
 {
-  "workflowName": "validate-emails",
-  "workflowGroupName": "emails",
-  "stepSize": 1,
-  "stepSizeUnit": "day",
+  "workflowName": "website-analysis-wf",
+  "workflowGroupName": "websites",
+  "stepSize": 4,
+  "stepSizeUnit": "hours",
   "models": {
   },
   "evalsMap": {},

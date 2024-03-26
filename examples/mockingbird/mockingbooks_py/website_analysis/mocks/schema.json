@@ -1,16 +1,16 @@
 {
   "schemaID": 0,
   "schemaStrID": "0",
-  "schemaName": "validemail-query-params",
-  "schemaGroup": "emails",
-  "schemaDescription": "Gets query value string for validemail api call",
+  "schemaName": "website-analysis",
+  "schemaGroup": "websites",
+  "schemaDescription": "Gets analysis of the website",
   "isObjArray": true,
   "fields": [
     {
       "fieldID": 0,
       "fieldStrID": "0",
-      "fieldName": "email",
-      "fieldDescription": "This is an email address",
+      "fieldName": "summary",
+      "fieldDescription": "Summary of the website",
       "dataType": "string"
     }
   ]

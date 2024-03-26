@@ -2,7 +2,7 @@
   "retrievalStrID": "",
   "retrievalID": 0,
   "retrievalName": "website-analysis",
-  "retrievalGroup": "web-proxy",
+  "retrievalGroup": "proxies",
   "retrievalItemInstruction": {
     "retrievalPlatform": "api",
     "retrievalPrompt": "",
@@ -15,13 +15,18 @@
       "category": ""
     },
     "webFilters": {
-      "routingGroup": "web-proxy",
+      "routingGroup": "iris",
       "lbStrategy": "",
-      "maxRetries": 0,
+      "maxRetries": 20,
       "backoffCoefficient": 2,
-      "endpointRoutePath": "/?email={email}token={YOUR_API_KEY}",
+      "endpointRoutePath": "/?url={url}",
       "endpointREST": "get",
-      "payloadPreProcessing": "iterate"
+      "payloadPreProcessing": "iterate",
+      "regexPatterns": [
+        "`<h[1-6][^>]*>(.*?)<\\/h[1-6]>`",
+        "`<meta\\s+(?:property|name)=\"([^\"]+)\"\\s+content=\"([^\"]+)\"\\s*/?>`",
+        "`<p[^>]*>(.*?)<\\/p>`"
+      ]
     }
   }
 }
