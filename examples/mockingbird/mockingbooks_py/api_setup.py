@@ -1,6 +1,6 @@
 import yaml
 
-config_file_path = '../../../../test/configs/config.yaml'
+config_file_path = '../../../test/configs/config.yaml'
 with open(config_file_path, 'r') as file:
     config = yaml.safe_load(file)
 
@@ -9,10 +9,10 @@ headers = {
     'Authorization': f'Bearer {bearer_token}'
 }
 
-# api_v1_path = "https://api.zeus.fyi/v1"
+api_v1_path = "https://api.zeus.fyi/v1"
 
 
-api_v1_path = "http://localhost:9001/v1"
+# api_v1_path = "http://localhost:9001/v1"
 
 
 def get_headers():
