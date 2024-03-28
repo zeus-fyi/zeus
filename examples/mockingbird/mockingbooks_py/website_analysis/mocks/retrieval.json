@@ -22,11 +22,9 @@
       "endpointRoutePath": "/?url={url}",
       "endpointREST": "get",
       "payloadPreProcessing": "iterate",
-      "regexPatterns": [
-        "`<h[1-6][^>]*>(.*?)<\\/h[1-6]>`",
-        "`<meta\\s+(?:property|name)=\"([^\"]+)\"\\s+content=\"([^\"]+)\"\\s*/?>`",
-        "`<p[^>]*>(.*?)<\\/p>`"
-      ]
+      "headers": {
+        "X-Scrape-Html": "true"
+      }
     }
   }
 }
