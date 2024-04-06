@@ -21,6 +21,12 @@ def retrieval_create():
     create_or_update_retrieval(data)
 
 
+def retrieval_biz_create():
+    with open('mocks/retrieval_biz.json', 'r') as file:
+        data = json.load(file)
+    create_or_update_retrieval(data)
+
+
 def agg_schema_create():
     with open('mocks/agg_schema.json', 'r') as file:
         data = json.load(file)
@@ -98,7 +104,7 @@ def eval_fn_create():
 
 
 if __name__ == '__main__':
-    retrieval_create()
+    retrieval_biz_create()
     # schema_create()
     # analysis_create()
     # trigger_create()

@@ -1,7 +1,7 @@
 {
   "retrievalStrID": "",
   "retrievalID": 0,
-  "retrievalName": "linkedin-profile",
+  "retrievalName": "linkedin-biz-profile",
   "retrievalGroup": "linkedIn",
   "retrievalItemInstruction": {
     "retrievalPlatform": "api",
@@ -19,9 +19,13 @@
       "lbStrategy": "",
       "maxRetries": 6,
       "backoffCoefficient": 2,
-      "endpointRoutePath": "/get-linkedin-profile?linkedin_url={linkedin_url}",
+      "endpointRoutePath": "/get-company-by-linkedinurl?linkedin_url={linkedin_url}",
       "endpointREST": "get",
       "payloadPreProcessing": "iterate",
+      "dontRetryStatusCodes": [
+        400,
+        404
+      ],
       "headers": {
         "X-RapidAPI-Host": "fresh-linkedin-profile-data.p.rapidapi.com",
         "X-RapidAPI-Key": "{YOUR_RAPID_API_KEY}"
