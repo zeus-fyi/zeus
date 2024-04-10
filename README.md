@@ -2,6 +2,10 @@
 
 https://docs.zeus.fyi
 
+## Mockingbird Front End GitHub
+
+https://github.com/zeus-fyi/mockingbird
+
 ## Mockingbird
 
 Mockingbird is a time series controlled AI systems coordinator & workflow executor system, data indexer and searcher,
@@ -13,10 +17,13 @@ model-to-model communication via synchronized quorums.
 
 Mockingbird is currently a model based supervisor entity, and soon, it will be a Model Supervised Intelligent Network, and now a product you can use, like ChatGPT 4, but with power steering and cruise control.
 
+### Quickstart
+
+https://github.com/zeus-fyi/zeus/assets/17446735/af178092-e47c-4782-ab91-985ef2e57086
+
 ### Costs
 
-Mockingbird is free to use for the first 3 days, which starts once you add a cc and start your first workflow. Though we may restrict account usage if we see abuse. If you connect your own OpenAI API key, you will be responsible for any costs associated with that, otherwise we will use our API key and then charge you 1-to-1 for the cost of the API usage that we incur, however you may have
-your usage throttled if you exceed our usage limits while using our API key.
+Mockingbird is free to use for the first 3 days without a credit card with a valid login account. Though we may restrict account usage if we see abuse. If you connect your own OpenAI API key, you will be responsible for any costs associated with that, otherwise we will use our API key and then charge you 1-to-1 for the cost of the API usage that we incur, however you may have your usage throttled if you exceed our usage limits while using our API key.
 
 ### Features Available via Self Service UI
 
