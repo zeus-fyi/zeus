@@ -1,4 +1,4 @@
-package db_api
+package echo_server_template
 
 import (
 	"github.com/spf13/cobra"
@@ -11,14 +11,13 @@ func Api() {
 	cfg.Host = "0.0.0.0"
 	srv := NewEchoServerTemplate(cfg)
 	// Echo instance
-	srv.E = db_api.Routes(srv.E)
+	srv.E = v1_echo_server_template.Routes(srv.E)
 	// Start server
 	srv.Start()
 }
 
 func init() {
 	viper.AutomaticEnv()
-	Cmd.Flags().StringVar(&cfg.PGConnStr, "postgres-conn-str", "postgresql://localhost/postgres?user=postgres&password=postgres", "postgres connection string")
 	Cmd.Flags().StringVar(&cfg.Port, "port", "9090", "server port")
 }
 

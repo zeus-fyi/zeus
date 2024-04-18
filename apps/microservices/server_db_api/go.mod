@@ -4,7 +4,7 @@ go 1.21
 
 require (
 	github.com/labstack/echo/v4 v4.11.3
-	github.com/rs/zerolog v1.32.0
+	github.com/rs/zerolog v1.31.0
 	github.com/spf13/cobra v1.8.0
 	github.com/spf13/viper v1.17.0
 )

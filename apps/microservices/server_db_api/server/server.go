@@ -1,4 +1,4 @@
-package db_api
+package echo_server_template
 
 import (
 	"context"
@@ -20,10 +20,9 @@ type Server struct {
 }
 
 type Config struct {
-	Host      string
-	Port      string
-	Name      string
-	PGConnStr string
+	Host string
+	Port string
+	Name string
 }
 
 func NewEchoServerTemplate(cfg Config) Server {
