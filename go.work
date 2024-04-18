@@ -8,6 +8,7 @@ use (
 
 	./apps/hercules
 
+	./apps/microservices/server_db_api
 	./apps/microservices/choreography
 	./apps/microservices/load_simulator
 	./apps/microservices/server_template

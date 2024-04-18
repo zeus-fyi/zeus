@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "zeus-api"
+  labels:
+    app.kubernetes.io/instance: "zeus-api"
+    app.kubernetes.io/name: "zeus-api"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "zeus-api"
+      app.kubernetes.io/instance: "zeus-api"
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: "zeus-api"
+        app.kubernetes.io/instance: "zeus-api"
+    spec:
+      containers:
+        - name: "zeus-api"
+          image: "zeusfyi/api:latest"
+          volumeMounts:
+            - mountPath: "/scripts"
+              name: "cm-api"
+          imagePullPolicy: Always
+          command: [ "/bin/sh" ]
+          args: [ "-c","/scripts/start.sh" ]
+          env:
+            - name: BEARER
+              valueFrom:
+                secretKeyRef:
+                  name: api
+                  key: bearer
+            - name: CLOUD_PROVIDER
+              valueFrom:
+                secretKeyRef:
+                  name: api
+                  key: cloud-provider
+            - name: CTX
+              valueFrom:
+                secretKeyRef:
+                  name: api
+                  key: ctx
+            - name: NS
+              valueFrom:
+                secretKeyRef:
+                  name: api
+                  key: ns
+            - name: REGION
+              valueFrom:
+                secretKeyRef:
+                  name: api
+                  key: region
+          ports:
+            - name: "http"
+              containerPort: 9999
+              protocol: "TCP"
+          livenessProbe:
+            httpGet:
+              path: "/health"
+              port: "http"
+          readinessProbe:
+            httpGet:
+              path: "/health"
+              port: "http"
+          resources:
+            { }
+      volumes:
+        - name: cm-api
+          configMap:
+            name: cm-api
+            defaultMode: 0744
+      nodeSelector:
+        { }
+      affinity:
+        { }
+      tolerations:
+        [ ]

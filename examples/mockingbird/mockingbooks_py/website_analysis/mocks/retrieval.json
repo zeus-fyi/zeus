@@ -1,8 +1,8 @@
 {
   "retrievalStrID": "",
   "retrievalID": 0,
-  "retrievalName": "linkedin-profile",
-  "retrievalGroup": "linkedIn",
+  "retrievalName": "website-analysis",
+  "retrievalGroup": "proxies",
   "retrievalItemInstruction": {
     "retrievalPlatform": "api",
     "retrievalPrompt": "",
@@ -15,20 +15,15 @@
       "category": ""
     },
     "webFilters": {
-      "routingGroup": "linkedIn",
+      "routingGroup": "iris",
       "lbStrategy": "",
-      "maxRetries": 6,
+      "maxRetries": 20,
       "backoffCoefficient": 2,
-      "endpointRoutePath": "/get-linkedin-profile?linkedin_url={linkedin_url}",
+      "endpointRoutePath": "/?url={url}",
       "endpointREST": "get",
       "payloadPreProcessing": "iterate",
-      "dontRetryStatusCodes": [
-        400,
-        404
-      ],
       "headers": {
-        "X-RapidAPI-Host": "fresh-linkedin-profile-data.p.rapidapi.com",
-        "X-RapidAPI-Key": "{YOUR_RAPID_API_KEY}"
+        "X-Scrape-Html": "true"
       }
     }
   }

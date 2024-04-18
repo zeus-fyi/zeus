@@ -9,7 +9,7 @@ func Routes(e *echo.Echo) *echo.Echo {
 	e.GET("/health", Health)
 	e.GET("/healthy", Health)
 
-	e.GET("/create/entry", EntryRequestHandler)
+	e.GET("/demo", SampleResponse)
 	return e
 }
 
@@ -17,7 +17,6 @@ func Health(c echo.Context) error {
 	return c.String(http.StatusOK, "ok")
 }
 
-func EntryRequestHandler(c echo.Context) error {
-
+func SampleResponse(c echo.Context) error {
 	return c.String(http.StatusOK, "Sample Response A")
 }

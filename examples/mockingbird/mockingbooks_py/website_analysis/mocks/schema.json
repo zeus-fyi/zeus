@@ -1,0 +1,17 @@
+{
+  "schemaID": 0,
+  "schemaStrID": "0",
+  "schemaName": "website-analysis",
+  "schemaGroup": "websites",
+  "schemaDescription": "Gets analysis of the website",
+  "isObjArray": true,
+  "fields": [
+    {
+      "fieldID": 0,
+      "fieldStrID": "0",
+      "fieldName": "summary",
+      "fieldDescription": "Summary of the website",
+      "dataType": "string"
+    }
+  ]
+}

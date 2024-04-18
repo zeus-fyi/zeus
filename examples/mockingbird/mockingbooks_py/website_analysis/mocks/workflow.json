@@ -1,0 +1,12 @@
+{
+  "workflowName": "website-analysis-wf",
+  "workflowGroupName": "websites",
+  "stepSize": 4,
+  "stepSizeUnit": "hours",
+  "models": {
+  },
+  "evalsMap": {},
+  "evalTasksMap": {},
+  "aggregateSubTasksMap": {},
+  "analysisRetrievalsMap": {}
+}
